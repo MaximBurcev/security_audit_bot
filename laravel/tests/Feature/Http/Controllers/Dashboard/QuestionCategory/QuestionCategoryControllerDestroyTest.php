@@ -55,16 +55,16 @@ class QuestionCategoryControllerDestroyTest extends TestCase
 
     protected function getRoute(QuestionCategory $item = null):string
     {
-        return route('dashboard.category.destroy',['category' => $item]);
+        return route('dashboard.category.destroy',['category' => $item, 'locale' => 'en']);
     }
 
     protected function getPreviousRoute()
     {
-        return route('dashboard.category.create');
+        return route('dashboard.category.create',['locale' => 'en']);
     }
 
     protected function getRightFinalRoute(?QuestionCategory $item = null)
     {
-        return route('dashboard.category.index');
+        return route('dashboard.category.index',['locale' => 'en']);
     }
 }

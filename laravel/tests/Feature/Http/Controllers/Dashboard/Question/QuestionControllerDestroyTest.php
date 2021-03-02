@@ -54,16 +54,16 @@ class QuestionControllerDestroyTest extends TestCase
 
     protected function getRoute(Question $item = null):string
     {
-        return route('dashboard.question.destroy',['question' => $item]);
+        return route('dashboard.question.destroy',['question' => $item,'locale' => 'en']);
     }
 
     protected function getPreviousRoute()
     {
-        return route('dashboard.question.create');
+        return route('dashboard.question.create',['locale' => 'en']);
     }
 
     protected function getRightFinalRoute(?Question $item = null)
     {
-        return route('dashboard.question.index');
+        return route('dashboard.question.index',['locale' => 'en']);
     }
 }

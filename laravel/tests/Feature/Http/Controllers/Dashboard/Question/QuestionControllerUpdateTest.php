@@ -86,16 +86,16 @@ class QuestionControllerUpdateTest extends TestCase
 
     protected function getRoute($item):string
     {
-        return route('dashboard.question.update',['question' => $item]);
+        return route('dashboard.question.update',['question' => $item, 'locale' => 'en']);
     }
 
     protected function getPreviousRoute()
     {
-        return route('dashboard.question.create');
+        return route('dashboard.question.create',['locale' => 'en']);
     }
 
     protected function getRightFinalRoute(Question $item)
     {
-        return route('dashboard.question.edit',['question' => $item]);
+        return route('dashboard.question.edit',['question' => $item, 'locale' => 'en']);
     }
 }

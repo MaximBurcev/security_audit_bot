@@ -24,6 +24,7 @@ class QuestionControllerCreateTest extends TestCase
 
     /**
      * @group http
+     * @group g5
      * */
     public function testAdminAllowed()
     {
@@ -35,7 +36,7 @@ class QuestionControllerCreateTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.question.create');
+        return route('dashboard.question.create',['locale' => 'en']);
     }
 
 }

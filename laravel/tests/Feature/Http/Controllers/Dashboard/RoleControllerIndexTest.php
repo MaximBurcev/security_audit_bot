@@ -35,7 +35,7 @@ class RoleControllerIndexTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.role.index');
+        return route('dashboard.role.index',['locale' => 'en']);
     }
 
 }
