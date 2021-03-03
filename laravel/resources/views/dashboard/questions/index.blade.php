@@ -1,7 +1,7 @@
 <?php
     /** @var \App\Models\Question[] $questions */
 ?>
-<x-app-layout>
+<x-dashboard-layout>
     <x-slot name="header">
         {{ trans('messages.questions_list') }}
     </x-slot>
@@ -11,4 +11,4 @@
         @each('dashboard.questions.blocks.list.item', $questions, 'question')
         </tbody>
     </table>
-</x-app-layout>
+</x-dashboard-layout>

@@ -14,7 +14,7 @@ $arrayExistCategories = $question->categories->pluck('id')->toArray();
 $arrayExistCategories = count($arrayExistCategories) > 0 ? $arrayExistCategories : $question->getDefaultCategories();
 ?>
 
-<x-app-layout>
+<x-dashboard-layout>
     <x-slot name="header">
         {{ $pageH1 }}
     </x-slot>
@@ -135,4 +135,4 @@ $arrayExistCategories = count($arrayExistCategories) > 0 ? $arrayExistCategories
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     @endpush
 
-</x-app-layout>
+</x-dashboard-layout>
