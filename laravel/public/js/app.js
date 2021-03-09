@@ -32181,6 +32181,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! ./editor */ "./resources/js/editor.js");
 
+__webpack_require__(/*! ./phpquiz */ "./resources/js/phpquiz.js");
+
 __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
 
 /***/ }),
@@ -32283,6 +32285,34 @@ $(document).ready(function () {
       var html = $(".visRedactor[data-name='" + name + "'] .ql-editor").html();
       $(selector).val(html);
     });
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/phpquiz.js":
+/*!*********************************!*\
+  !*** ./resources/js/phpquiz.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// @todo: Refactoring it
+$(document).ready(function () {
+  var question = 1;
+  $(document).on('click', '.answer_buttons button', function () {
+    $(".next_question_buttons").removeClass('hidden');
+    $(".answer_buttons").addClass('hidden');
+    $(".comment_area").removeClass('hidden');
+  });
+  $(document).on('click', '.next_question_buttons button', function () {
+    //alert(question);
+    question++;
+    $(".next_question_buttons").addClass('hidden');
+    $(".answer_buttons").removeClass('hidden');
+    $(".comment_area").addClass('hidden');
+    $(".comment_area").html($(".a" + question).html());
+    $(".question").html($(".q" + question).html());
   });
 });
 

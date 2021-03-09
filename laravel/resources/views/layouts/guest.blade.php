@@ -45,26 +45,28 @@
 
 
 
-<div class="h-screen pb-14 bg-right bg-cover" style="background-image:url('images/bg.svg');">
+<div class="h-screen pb-14 bg-right bg-cover" style="background-image:url('/images/bg.svg');">
     <!--Nav-->
     <div class="w-full container mx-auto p-6">
 
         <div class="w-full flex items-center justify-between">
-            <a class="flex items-center text-indigo-400 no-underline hover:no-underline font-bold text-2xl lg:text-4xl"  href="#">
+            <a class="flex items-center text-indigo-400 no-underline hover:no-underline font-bold text-2xl lg:text-4xl"  href="{{ route('homepage') }}">
                 <svg class="h-8 fill-current text-indigo-600 pr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm-5.6-4.29a9.95 9.95 0 0 1 11.2 0 8 8 0 1 0-11.2 0zm6.12-7.64l3.02-3.02 1.41 1.41-3.02 3.02a2 2 0 1 1-1.41-1.41z"/></svg>
                 Code Boost
             </a>
             <a class="flex items-left text-indigo-200 no-underline hover:no-underline font-bold text-l lg:text-xl"  href="#">
                 <div class="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
-                    <a href="#" class="font-medium text-gray-500 hover:text-gray-900">@lang('menu.homepage')</a>
+                    <a href="{{ route('homepage') }}" class="font-medium text-gray-500 hover:text-gray-900">@lang('menu.homepage')</a>
 
-                    <a href="#" class="font-medium text-gray-500 hover:text-gray-900">@lang('menu.about')</a>
+                    <a href="{{ route('quiz', ['locale' => $locale] ) }}" class="font-medium text-gray-500 hover:text-gray-900">@lang('menu.training')</a>
 
-                    <a href="#" class="font-medium text-gray-500 hover:text-gray-900">@lang('menu.pricing')</a>
+                    <a href="{{ route('about', ['locale' => $locale] ) }}" class="font-medium text-gray-500 hover:text-gray-900">@lang('menu.about')</a>
+
+                    <a href="{{ route('pricing', ['locale' => $locale] ) }}" class="font-medium text-gray-500 hover:text-gray-900">@lang('menu.pricing')</a>
 
                     <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">@lang('menu.logout')</a>
 
-                    <x-locale-select  />
+                    {{--<x-locale-select  />--}}
                 </div>
             </a>
 
@@ -82,13 +84,17 @@
     </div>
 
     <!--Main-->
-    <div class="container pt-24 md:pt-48 px-6 mx-auto flex flex-wrap flex-col md:flex-row items-center">
-        {{ $slot }}
+    {{ $slot }}
+
+    <!--Footer-->
+
+    <div class="w-full container mx-auto p-6">
+        <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
+            <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; Code boost 2021</a>
+        </div>
     </div>
 
-
 </div>
-
 </body>
 
 </html>
