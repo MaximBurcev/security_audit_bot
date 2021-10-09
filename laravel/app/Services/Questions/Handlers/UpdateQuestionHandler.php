@@ -19,14 +19,14 @@ class UpdateQuestionHandler
     }
 
 
-    public function handle(Question $question, UpdateQuestionDTO $dto): Question
+    public function handle(Question $question, UpdateQuestionDTO $createQuestionDTO): Question
     {
         $question->categories()->detach();
         $this->repository
-            ->updateTitle($question, $dto)
-            ->saveCategories($question, $dto)
-            ->updateAnswersTranslations($question, $dto)
-            ->updateFromDTO($question, $dto);
+            ->updateTitle($question, $createQuestionDTO)
+            ->saveCategories($question, $createQuestionDTO)
+            ->updateAnswersTranslations($question, $createQuestionDTO)
+            ->updateFromDTO($question, $createQuestionDTO);
         return $question;
     }
 

@@ -66,7 +66,7 @@ $arrayExistCategories = count($arrayExistCategories) > 0 ? $arrayExistCategories
 
         @foreach ($question->answers as $key => $answer)
             <div>
-                {{ Form::label('answer'.$answer->id.'ru', trans('messages.answer'.($key+1).'_ru'),['class'=>$labelClass]) }}
+                {{ Form::label('status', trans('messages.answer'.($key+1).'_ru'),['class'=>$labelClass]) }}
                 <div class="mt-1">
 
                     @php($field = 'answer['.$answer->id.'][ru]')

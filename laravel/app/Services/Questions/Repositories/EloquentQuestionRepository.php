@@ -31,15 +31,15 @@ class EloquentQuestionRepository
         return Question::getStatuses();
     }
 
-    public function createFromDTO(DTOInterface $dto): Question
+    public function createFromDTO(DTOInterface $questionDTO): Question
     {
-        $data = $dto->toArray();
+        $data = $questionDTO->toArray();
         return Question::create($data);
     }
 
-    public function saveTranslations(Question $question, DTOInterface $dto): self
+    public function saveTranslations(Question $question, DTOInterface $questionDTO): self
     {
-        $data = $dto->toArray();
+        $data = $questionDTO->toArray();
         $translationModels = [];
 
         foreach ( Arr::get($data, 'title', []) as $locale => $text) {
@@ -54,9 +54,9 @@ class EloquentQuestionRepository
         return $this;
     }
 
-    public function saveCategories(Question $question, DTOInterface $dto): self
+    public function saveCategories(Question $question, DTOInterface $questionDTO): self
     {
-        $data = $dto->toArray();
+        $data = $questionDTO->toArray();
         $questionCategories = [];
         foreach ( Arr::get($data, 'question_category_id', []) as $index => $questionCategoryId) {
             // @todo Избавиться от прямой зависимости от QuestionCategory
@@ -79,9 +79,9 @@ class EloquentQuestionRepository
         return $this;
     }
 
-    public function updateTitle(Question $question, DTOInterface $dto): self
+    public function updateTitle(Question $question, DTOInterface $questionDTO): self
     {
-        $data = $dto->toArray();
+        $data = $questionDTO->toArray();
         $titleRu = Arr::get($data,'title.ru');
         $titleEn = Arr::get($data,'title.en');
 
@@ -99,9 +99,9 @@ class EloquentQuestionRepository
         return $this;
     }
 
-    public function updateAnswersTranslations(Question $question, DTOInterface $dto): self
+    public function updateAnswersTranslations(Question $question, DTOInterface $questionDTO): self
     {
-        $data = $dto->toArray();
+        $data = $questionDTO->toArray();
         $question->answers()->each(function (Answer $answer) use ($data){
             $answerTranslations = Arr::get($data,'answer.'.$answer->id,[]);
             foreach ($answerTranslations as $locale => $text) {
@@ -118,9 +118,9 @@ class EloquentQuestionRepository
         return $this;
     }
 
-    public function updateFromDTO(Question $question, DTOInterface $dto): self
+    public function updateFromDTO(Question $question, DTOInterface $questionDTO): self
     {
-        $data = $dto->toArray();
+        $data = $questionDTO->toArray();
         $question->update($data);
         return $this;
     }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Dashboard;
 
 
-use App\Http\Controllers\Dashboard\Requests\QuestionEditRequest;
 use App\Http\Controllers\Dashboard\Requests\QuestionStoreRequest;
 use App\Models\Question;
 use App\Services\Questions\QuestionsService;
@@ -87,7 +86,7 @@ class QuestionController extends DashboardController
     }
 
 
-    public function update(QuestionEditRequest $request, Question $question)
+    public function update(Request $request, Question $question)
     {
         $this->questionsService->updateQuestion($question, $request->all());
         return redirect(route('dashboard.question.edit', ['question' => $question ]));
