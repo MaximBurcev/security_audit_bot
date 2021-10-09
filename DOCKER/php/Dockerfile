@@ -1,7 +1,7 @@
 FROM php:7.4-fpm-alpine
 
 
-ARG DEPS="bash vim git wget npm"
+ARG DEPS="bash vim git wget"
 RUN apk update && apk add --no-cache $DEPS
 
 ARG DEPS_PHP="xdebug http pdo_mysql mcrypt zip intl gd"

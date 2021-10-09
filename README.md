@@ -1,30 +1,26 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-
+<p align="center">
+<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
 ## Задание
-Для выбранной Вами темы нужно создать несколько страниц под управлением фронтэнд инструментов Laravel
+Цель: Сделать самые первые шаги в освоении нового инструмента
 
-1. Главная
-2. Страница пользователя
-3. Страница регистрации (прототип, без самой регистрации)
-4. Абстрактная статическая страница
+Развернуть рабочую среду для будущих заданий
 
-Критерии оценки:
- 1. Добавлены 4 страницы - 2 балла (0.5 - за каждую страницу)
-2. Страницы сделаны с использованием bootstrap - 2 балла (0.5 за каждую страницу)
-3*. Реализовано адаптивность верстки для разных экранов (планшет и смартфон) - 4 балла (0.5 за каждую страницу)
-
+Определиться с целевым проектом на время изучения
 
 ## Решение
-#### Laravel mix
+#### Docker
 
-С помощью Laravel Mix включена поддержка Twitter Bootstrap 4.5, затем добавлены несколько статичных фронтенд страниц
+Контейнеры собирались под Xubuntu
 
-http://mysite.local/user/1
+Чтобы запустить, наберите в консоли docker-compose up --build
 
-http://mysite.local/
+Откройте в браузере **mysite.local**
 
-http://mysite.local/task
-
-
+Не забудьте добавить **mysite.local** в hosts.

@@ -13,32 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-App::setLocale('ru');
-
 Route::get('/', function () {
-    return view('quiz.welcome', [
-        'tasksGroups' => [
-            'php' => '',
-            'Laravel' => 'Laravel',
-            'OOP' => 'OOP'
-        ]
-    ]);
-});
-
-Route::get('/task', function () {
-    return view('quiz.task');
-});
-
-
-Route::get('/user/1', function () {
-    return view('user.view', [
-        'user' => [
-            'name' => 'Ivan Ivanov',
-            'rating' => [
-                'php' => 4,
-                'Laravel' => 5,
-                'OOP' => 3
-            ]
-        ]
-    ]);
+    return view('welcome');
 });
