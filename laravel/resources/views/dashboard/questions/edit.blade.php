@@ -20,7 +20,6 @@ $btnClass = '"cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 roun
 
         <x-form-errors :errors="$errors" />
 
-
         <div class="grid grid-cols-3 gap-6">
             <div class="col-span-3 sm:col-span-2">
                 {{ Form::label('question_category_id[]', trans('messages.question_category'),['class'=>$labelClass] ) }}
@@ -33,13 +32,7 @@ $btnClass = '"cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 roun
         <div>
             {{ Form::label('status', trans('messages.question_body_ru'),['class'=>$labelClass]) }}
             <div class="mt-1">
-                <x-wysiwyg-textarea
-                    field="title[ru]"
-                    :value="$question->title('ru')->value"
-                    id="questionTitleRu"
-                    :textareaClass="$texareaClass"
-                    editorName="questionTitleRuEditor"
-                />
+                {{ Form::textarea('title[ru]', $question->title('ru')->value, ['rows'=>3,'class'=> $texareaClass]) }}
             </div>
             <p class="<?php echo $inputDescriptionClass;?>"></p>
         </div>
@@ -47,13 +40,7 @@ $btnClass = '"cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 roun
         <div>
             {{ Form::label('status', trans('messages.question_body_en'),['class'=>$labelClass]) }}
             <div class="mt-1">
-                <x-wysiwyg-textarea
-                    field="title[en]"
-                    :value="$question->title('en')->value"
-                    id="questionTitleEn"
-                    :textareaClass="$texareaClass"
-                    editorName="questionTitleEnEditor"
-                />
+                {{ Form::textarea('title[en]', $question->title('en')->value,['rows'=>3,'class'=> $texareaClass]) }}
             </div>
             <p class="<?php echo $inputDescriptionClass;?>"></p>
         </div>
@@ -64,38 +51,15 @@ $btnClass = '"cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 roun
             <div>
                 {{ Form::label('status', trans('messages.answer'.($key+1).'_ru'),['class'=>$labelClass]) }}
                 <div class="mt-1">
-
-                    @php($field = 'answer['.$answer->id.'][ru]')
-                    @php($id = 'answer'.$answer->id.'ru')
-                    @php($editorName = 'answerEditor'.$answer->id.'ru')
-
-                    <x-wysiwyg-textarea
-                        :field="$field"
-                        :value="$answer->text('ru')->value"
-                        :id="$id"
-                        :textareaClass="$texareaClass"
-                        :editorName="$editorName"
-                    />
+                    {{ Form::textarea('answer['.$answer->id.'][ru]', $answer->text('ru')->value, ['rows'=>3,'class'=> $texareaClass]) }}
                 </div>
                 <p class="<?php echo $inputDescriptionClass;?>"></p>
             </div>
 
-
             <div>
                 {{ Form::label('status', trans('messages.answer'.($key+1).'_en'),['class'=>$labelClass]) }}
                 <div class="mt-1">
-
-                    @php($field = 'answer['.$answer->id.'][en]')
-                    @php($id = 'answer'.$answer->id.'en')
-                    @php($editorName = 'answerEditor'.$answer->id.'en')
-
-                    <x-wysiwyg-textarea
-                        :field="$field"
-                        :value="$answer->text('en')->value"
-                        :id="$id"
-                        :textareaClass="$texareaClass"
-                        :editorName="$editorName"
-                    />
+                    {{ Form::textarea('answer['.$answer->id.'][en]', $answer->text('en')->value, ['rows'=>3,'class'=> $texareaClass]) }}
                 </div>
                 <p class="<?php echo $inputDescriptionClass;?>"></p>
             </div>
@@ -122,13 +86,5 @@ $btnClass = '"cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 roun
         {{ Form::close() }}
     </div>
     @endif
-
-    @push('styles')
-        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    @endpush
-
-    @push('scripts')
-        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    @endpush
 
 </x-app-layout>

@@ -35,7 +35,7 @@ $btnClass = '"cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 roun
                 @if ($answer->isRight() === false)
                     {{--@continue--}}
                 @endif
-                {!! $answer->text()->value !!}
+                {{ $answer->text()->value }}
             @endforeach
         </div>
     </td>
