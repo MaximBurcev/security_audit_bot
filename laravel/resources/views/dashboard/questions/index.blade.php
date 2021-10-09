@@ -1,14 +1,14 @@
 <?php
     /** @var \App\Models\Question[] $questions */
 ?>
-<x-app-layout>
-    <x-slot name="header">
-        {{ trans('messages.questions_list') }}
-    </x-slot>
+@extends('dashboard.layouts.app')
 
-    <table class="table-auto border-collapse border border-green-800">
+@section('h1'){{ trans('messages.questions_list') }} @endsection
+
+@section('content')
+    <table class="table table-striped">
         <tbody>
-        @each('dashboard.questions.blocks.list.item', $questions, 'question')
+            @each('dashboard.questions.blocks.list.item', $questions, 'question')
         </tbody>
     </table>
-</x-app-layout>
+@endsection

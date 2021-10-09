@@ -14,11 +14,7 @@ class UserController extends DashboardController
      */
     public function index()
     {
-        $users = User::paginate();
-
-        return view('dashboard.users.index',[
-            'users' => $users
-        ]);
+        //
     }
 
     /**

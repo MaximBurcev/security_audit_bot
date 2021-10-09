@@ -1,7 +1,7 @@
 <?php
 
 return [
-  'homepage' => 'Главная',
+  'home' => 'Главная',
   'training' => 'Тренироваться',
   'signIn' => 'Войти',
   'signUp' => 'Зарегистрироваться',
@@ -9,5 +9,4 @@ return [
   'submit_question' => 'Предложить вопрос',
   'about' => 'О сервисе',
   'all_questions' => 'Все вопросы',
-  'pricing' => 'Цены',
 ];

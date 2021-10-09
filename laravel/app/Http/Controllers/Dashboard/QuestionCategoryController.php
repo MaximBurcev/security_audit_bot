@@ -2,94 +2,118 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Dashboard\Requests\QuestionCategoryStoreRequest;
 use App\Models\QuestionCategory;
-use App\Services\Questions\Repositories\EloquentQuestionRepository;
-use App\Services\QuestionsCategories\Repositories\EloquentQuestionCategoryRepository;
+use App\Models\Translation;
 use Illuminate\Http\Request;
 
 class QuestionCategoryController extends DashboardController
 {
-
     /**
-     * @var EloquentQuestionRepository
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
      */
-    private $eloquentQuestionRepository;
-    /**
-     * @var EloquentQuestionCategoryRepository
-     */
-    private $eloquentQuestionCategoryRepository;
-
-    public function __construct(EloquentQuestionRepository $eloquentQuestionRepository, EloquentQuestionCategoryRepository $eloquentQuestionCategoryRepository)
-    {
-        $this->eloquentQuestionRepository = $eloquentQuestionRepository;
-        $this->eloquentQuestionCategoryRepository = $eloquentQuestionCategoryRepository;
-    }
-
     public function index()
     {
+        $categories = QuestionCategory::paginate();
+
         return view('dashboard.questions_categories.index',[
-            'categories' => $this->eloquentQuestionCategoryRepository->search()
+            'categories' => $categories
         ]);
     }
 
-
-    public function create(QuestionCategory $category)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-        return view('dashboard.questions_categories.edit',[
-            'categoriesData' => $this->eloquentQuestionCategoryRepository->getCategoriesData(),
-            'category' => $category,
-            'formOptions' => [
-                'url' => route('dashboard.category.store'),
-                'method' => 'POST'
-            ],
-            'pageH1' => trans('messages.questions_categories_create'),
+        $categoriesData = $this->getCategoriesData();
+
+        return view('dashboard.questions_categories.create',[
+            'categoriesData' => $categoriesData,
         ]);
     }
 
-
-    public function store(QuestionCategoryStoreRequest $request)
+    // @todo violates the SRP and MVC pattern
+    protected function getCategoriesData(): array
     {
-        $this->eloquentQuestionCategoryRepository->store($request->all());
+        $data = [];
+        foreach (QuestionCategory::where('question_category_id','=',null)->get() as $item){
+            $item->getCategoriesTree($data, $item);
+        }
+        return $data;
+    }
+
+
+    public function store(Request $request)
+    {
+        // @todo Validate input
+        /*$this->validate($request, [
+
+        ]);*/
+
+        $exist = QuestionCategory::create($request->all());
+
+        $translationModels = [];
+
+        foreach ($request->input('title') as $locale => $item) {
+            $translationModels[] = new Translation([
+                'locale' => $locale,
+                'key' => 'title',
+                'value' => $item ?? ''
+            ]);
+        }
+
+        $exist->translations()->saveMany($translationModels);
+
         return redirect()->route('dashboard.category.create');
     }
 
-
-    public function show(QuestionCategory $category)
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\QuestionCategory  $questionCategory
+     * @return \Illuminate\Http\Response
+     */
+    public function show(QuestionCategory $questionCategory)
     {
-        return view('dashboard.questions_categories.index',[
-            'questions' => [$category]
-        ]);
+        //
     }
 
-
-    public function edit(QuestionCategory $category)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\QuestionCategory  $questionCategory
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(QuestionCategory $questionCategory)
     {
-        $categoriesData = $this->eloquentQuestionCategoryRepository->getCategoriesData();
-
-        return view('dashboard.questions_categories.edit',[
-            'categoriesData' => $categoriesData,
-            'category' => $category,
-            'formOptions' => [
-                'url' => route('dashboard.category.update',['category' => $category->id]),
-                'method' => 'PUT'
-            ],
-            'pageH1' => trans('messages.questions_categories_edit'),
-        ]);
+        //
     }
 
-
-    public function update(Request $request, QuestionCategory $category)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\QuestionCategory  $questionCategory
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, QuestionCategory $questionCategory)
     {
-        $this->eloquentQuestionCategoryRepository->update($category, $request->all());
-        return redirect(route('dashboard.category.edit', ['category' => $category ]));
+        //
     }
 
-
-    public function destroy(QuestionCategory $category)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\QuestionCategory  $questionCategory
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(QuestionCategory $questionCategory)
     {
-        $this->eloquentQuestionCategoryRepository->destroy($category->id);
-        return redirect(route('dashboard.category.index'));
+        //
     }
 
 

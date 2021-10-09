@@ -14,11 +14,7 @@ class RoleController extends DashboardController
      */
     public function index()
     {
-        $roles = Role::paginate();
-
-        return view('dashboard.roles.index',[
-            'roles' => $roles
-        ]);
+        //
     }
 
     /**

@@ -7,33 +7,10 @@ use App\Models\Answer;
 use App\Models\Question;
 use App\Models\QuestionCategory;
 use App\Models\Translation;
-use App\Services\Questions\Repositories\EloquentQuestionRepository;
-use App\Services\QuestionsCategories\Repositories\EloquentQuestionCategoryRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class QuestionController extends DashboardController
 {
-
-    /**
-     * @var EloquentQuestionRepository
-     */
-    private $eloquentQuestionRepository;
-    /**
-     * @var EloquentQuestionCategoryRepository
-     */
-    private $eloquentQuestionCategoryRepository;
-
-    public function __construct(
-        EloquentQuestionRepository $eloquentQuestionRepository,
-        EloquentQuestionCategoryRepository $eloquentQuestionCategoryRepository
-    )
-    {
-        $this->eloquentQuestionRepository = $eloquentQuestionRepository;
-        $this->eloquentQuestionCategoryRepository = $eloquentQuestionCategoryRepository;
-    }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -41,81 +18,155 @@ class QuestionController extends DashboardController
      */
     public function index()
     {
+        /*$question = Question::where('id',1)->first();
+        $answer = $question->answers()->first();
+
+
+        echo 'Id question= '.$question->id.'<br/>';
+
+        $title = $question->title()->value;
+        echo 'Title = '.$title.'<hr/>';
+
+        $comment = $question->comment()->value;
+        echo 'Comment = '. $comment.'<br/>';
+
+        $value = $answer->text()->value;
+        echo 'Id first answer= '.$answer->id.'<br/>';
+        echo 'First answer = '. $value. '<br/>';*/
+
+
+        $questions = Question::paginate();
+
         return view('dashboard.questions.index',[
-           'questions' => $this->eloquentQuestionRepository->search(50, [])
+           'questions' => $questions
         ]);
     }
 
-
-    public function create(Question $question)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
         //@todo Консоль показывает что на этой странице 51 запрос к бд. За что??
 
-        $categoriesData = $this->eloquentQuestionCategoryRepository->getCategoriesData();
-        $statuses = $this->eloquentQuestionRepository->getStatuses();
+        $categoriesData = $this->getCategoriesData();
+        $statuses = $this->getStatuses();
 
-        return view('dashboard.questions.edit',[
+        return view('dashboard.questions.create',[
             'categoriesData' => $categoriesData,
-            'question' => $question,
             'statuses' => $statuses,
-            'formOptions' => [
-                'url' => route('dashboard.question.store'),
-                'method' => 'POST'
-            ],
-            'pageH1' => trans('messages.questions_create'),
         ]);
     }
 
-
-    public function store(Request $request)
+    // @todo violates the SRP and MVC pattern
+    protected function getCategoriesData(): array
     {
-        $item = $this->eloquentQuestionRepository->store($request->all());
-        return redirect(route('dashboard.question.edit',['question' => $item]));
+        $data = [];
+        foreach (QuestionCategory::where('question_category_id','=',null)->get() as $item){
+            $item->getCategoriesTree($data, $item);
+        }
+        return $data;
     }
 
+    protected function getStatuses(): array
+    {
+        // @todo violates the SRP and MVC pattern
+        return [
+            Question::STATUS_INACTIVE => __('messages.statuses.inactive'),
+            Question::STATUS_ACTIVE => __('messages.statuses.active'),
+        ];
+    }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        print_r($request->all());
+        //echo 'FFFFFFFFFFFFFFF';
+        dd($request);
+
+        $exist = Question::create($request->all());
+
+        $translationModels = $answerModels = [];
+
+        foreach ($request->input('title') as $locale => $item) {
+            $translationModels[] = new Translation([
+                'locale' => $locale,
+                'key' => 'title',
+                'value' => $item ?? ''
+            ]);
+        }
+
+        foreach ($request->input('answer') as $locale => $answers) {
+            foreach ($answers as $item) {
+                $answer = new Answer([
+                    'right' => Answer::RIGHT_NO
+                ]);
+                /*$translations[] = new Translation([
+                    'locale' => $locale,
+                    'key' => 'title',
+                    'value' => $item ?? ''
+                ]);*/
+
+                $answerModels[] = $answer;
+            }
+        }
+
+        $exist->answers()->saveMany($answerModels);
+        $exist->translations()->saveMany($translationModels);
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Question  $question
+     * @return \Illuminate\Http\Response
+     */
     public function show(Question $question)
     {
-        return view('dashboard.questions.index',[
+        return view('questions.index',[
             'questions' => [$question]
         ]);
     }
 
-
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Question  $question
+     * @return \Illuminate\Http\Response
+     */
     public function edit(Question $question)
     {
-        $categoriesData = $this->eloquentQuestionCategoryRepository->getCategoriesData();
-        $statuses = $this->eloquentQuestionRepository->getStatuses();
-
-        return view('dashboard.questions.edit',[
-            'categoriesData' => $categoriesData,
-            'question' => $question,
-            'statuses' => $statuses,
-            'formOptions' => [
-                'url' => route('dashboard.question.update',['question' => $question->id]),
-                'method' => 'PUT'
-            ],
-            'pageH1' => trans('messages.questions_edit'),
-        ]);
+        //
     }
 
-
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Question  $question
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, Question $question)
     {
-        $this->eloquentQuestionRepository->update($question, $request->all());
-        return redirect(route('dashboard.question.edit', ['question' => $question ]));
+        //
     }
 
-    public function addEmptyAnswer(Request $request, Question $question)
-    {
-        $this->eloquentQuestionRepository->addEmptyAnswer($question);
-        return redirect(route('dashboard.question.edit', ['question' => $question ]));
-    }
-
-
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Question  $question
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(Question $question)
     {
-        $this->eloquentQuestionRepository->destroy($question->id);
-        return redirect(route('dashboard.question.index'));
+        //
     }
 }
