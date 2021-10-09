@@ -12,7 +12,6 @@ use App\Services\Questions\Handlers\UpdateQuestionHandler;
 use App\Services\Questions\Repositories\EloquentQuestionRepository;
 use App\Services\QuestionsCategories\Repositories\EloquentQuestionCategoryRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Log;
 
 class QuestionsService
 {
@@ -36,19 +35,14 @@ class QuestionsService
 
     public function createQuestionFromArray(array $array): Question
     {
-        Log::info('QuestionService create question',[ 'array' => $array ]);
-
         $dto = CreateQuestionDTO::fromArray($array);
         $question = $this->createQuestionHandler->handle($dto);
         $this->eloquentQuestionRepository->addEmptyAnswer($question);
-
         return $question;
     }
 
     public function updateQuestion(Question $question, array $array): Question
     {
-        Log::info('QuestionService update question',[ 'array' => $array ]);
-
         $dto = UpdateQuestionDTO::fromArray($array);
         return $this->updateQuestionHandler->handle($question, $dto);
     }
@@ -75,8 +69,6 @@ class QuestionsService
 
     public function destroyQuestion(int $questionId)
     {
-        Log::info('QuestionService destroy question',[ 'questionId' => $questionId ]);
-
         $this->eloquentQuestionRepository->destroy($questionId);
     }
 }
