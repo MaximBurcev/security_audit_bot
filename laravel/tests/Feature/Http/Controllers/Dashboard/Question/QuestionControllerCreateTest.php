@@ -24,6 +24,7 @@ class QuestionControllerCreateTest extends TestCase
 
     /**
      * @group http
+     * @group g5
      * */
     public function testAdminAllowed()
     {
