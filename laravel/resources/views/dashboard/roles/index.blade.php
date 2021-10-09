@@ -1,7 +1,7 @@
 <?php
     /** @var \App\Models\Role[] $roles */
 ?>
-<x-dashboard-layout>
+<x-app-layout>
     <x-slot name="header">
         {{ trans('messages.roles_list') }}
     </x-slot>
@@ -11,4 +11,4 @@
         @each('dashboard.roles.blocks.list.item', $roles, 'role')
         </tbody>
     </table>
-</x-dashboard-layout>
+</x-app-layout>

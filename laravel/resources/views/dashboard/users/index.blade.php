@@ -1,7 +1,7 @@
 <?php
     /** @var \App\Models\User[] $users */
 ?>
-<x-dashboard-layout>
+<x-app-layout>
     <x-slot name="header">
         {{ trans('messages.users_list') }}
     </x-slot>
@@ -11,4 +11,4 @@
         @each('dashboard.users.blocks.list.item', $users, 'user')
         </tbody>
     </table>
-</x-dashboard-layout>
+</x-app-layout>
