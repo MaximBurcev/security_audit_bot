@@ -7,7 +7,6 @@ use App\Models\Answer;
 use App\Models\Question;
 use App\Models\QuestionCategory;
 use App\Models\Translation;
-use App\Services\Questions\QuestionsService;
 use App\Services\Questions\Repositories\EloquentQuestionRepository;
 use App\Services\QuestionsCategories\Repositories\EloquentQuestionCategoryRepository;
 use Illuminate\Http\Request;
@@ -15,13 +14,23 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionController extends DashboardController
 {
-    private QuestionsService $questionsService;
+
+    /**
+     * @var EloquentQuestionRepository
+     */
+    private $eloquentQuestionRepository;
+    /**
+     * @var EloquentQuestionCategoryRepository
+     */
+    private $eloquentQuestionCategoryRepository;
 
     public function __construct(
-        QuestionsService $questionsService
+        EloquentQuestionRepository $eloquentQuestionRepository,
+        EloquentQuestionCategoryRepository $eloquentQuestionCategoryRepository
     )
     {
-        $this->questionsService = $questionsService;
+        $this->eloquentQuestionRepository = $eloquentQuestionRepository;
+        $this->eloquentQuestionCategoryRepository = $eloquentQuestionCategoryRepository;
     }
 
 
@@ -33,7 +42,7 @@ class QuestionController extends DashboardController
     public function index()
     {
         return view('dashboard.questions.index',[
-           'questions' => $this->questionsService->searchQuestions(50, [])
+           'questions' => $this->eloquentQuestionRepository->search(50, [])
         ]);
     }
 
@@ -42,8 +51,8 @@ class QuestionController extends DashboardController
     {
         //@todo Консоль показывает что на этой странице 51 запрос к бд. За что??
 
-        $categoriesData = $this->questionsService->getCategoriesData();
-        $statuses = $this->questionsService->getQuestionStatuses();
+        $categoriesData = $this->eloquentQuestionCategoryRepository->getCategoriesData();
+        $statuses = $this->eloquentQuestionRepository->getStatuses();
 
         return view('dashboard.questions.edit',[
             'categoriesData' => $categoriesData,
@@ -60,7 +69,7 @@ class QuestionController extends DashboardController
 
     public function store(Request $request)
     {
-        $item = $this->questionsService->createQuestionFromArray($request->all());
+        $item = $this->eloquentQuestionRepository->store($request->all());
         return redirect(route('dashboard.question.edit',['question' => $item]));
     }
 
@@ -75,8 +84,8 @@ class QuestionController extends DashboardController
 
     public function edit(Question $question)
     {
-        $categoriesData = $this->questionsService->getCategoriesData();
-        $statuses = $this->questionsService->getQuestionStatuses();
+        $categoriesData = $this->eloquentQuestionCategoryRepository->getCategoriesData();
+        $statuses = $this->eloquentQuestionRepository->getStatuses();
 
         return view('dashboard.questions.edit',[
             'categoriesData' => $categoriesData,
@@ -93,20 +102,20 @@ class QuestionController extends DashboardController
 
     public function update(Request $request, Question $question)
     {
-        $this->questionsService->updateQuestion($question, $request->all());
+        $this->eloquentQuestionRepository->update($question, $request->all());
         return redirect(route('dashboard.question.edit', ['question' => $question ]));
     }
 
     public function addEmptyAnswer(Request $request, Question $question)
     {
-        $this->questionsService->addEmptyAnswerToQuestion($question);
+        $this->eloquentQuestionRepository->addEmptyAnswer($question);
         return redirect(route('dashboard.question.edit', ['question' => $question ]));
     }
 
 
     public function destroy(Question $question)
     {
-        $this->questionsService->destroyQuestion($question->id);
+        $this->eloquentQuestionRepository->destroy($question->id);
         return redirect(route('dashboard.question.index'));
     }
 }
