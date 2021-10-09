@@ -35,7 +35,7 @@ class QuestionControllerIndexTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.question.index',['locale' => 'en']);
+        return route('dashboard.question.index');
     }
 
 }

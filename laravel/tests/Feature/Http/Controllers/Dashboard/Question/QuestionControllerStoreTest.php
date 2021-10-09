@@ -70,16 +70,16 @@ class QuestionControllerStoreTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.question.store',['locale' => 'en']);
+        return route('dashboard.question.store');
     }
 
     protected function getPreviousRoute()
     {
-        return route('dashboard.question.create',['locale' => 'en']);
+        return route('dashboard.question.create');
     }
 
     protected function getRightFinalRoute(Question $question)
     {
-        return route('dashboard.question.edit',['question'=>$question, 'locale' => 'en']);
+        return route('dashboard.question.edit',['question'=>$question]);
     }
 }

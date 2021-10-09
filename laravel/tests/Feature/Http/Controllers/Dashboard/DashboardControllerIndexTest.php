@@ -34,6 +34,6 @@ class DashboardControllerIndexTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.index',['locale' => 'en']);
+        return route('dashboard.index');
     }
 }

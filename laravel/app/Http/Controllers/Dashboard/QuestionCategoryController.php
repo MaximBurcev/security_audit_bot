@@ -33,7 +33,7 @@ class QuestionCategoryController extends DashboardController
             'categoriesData' => $this->questionsCategoriesService->getCategoriesData(),
             'category' => $category,
             'formOptions' => [
-                'url' => route('dashboard.category.store',['locale' => app()->getLocale()]),
+                'url' => route('dashboard.category.store'),
                 'method' => 'POST'
             ],
             'pageH1' => trans('messages.questions_categories_create'),
@@ -44,7 +44,7 @@ class QuestionCategoryController extends DashboardController
     public function store(QuestionCategoryStoreRequest $request)
     {
         $this->questionsCategoriesService->createQuestionCategoryFromArray($request->all());
-        return redirect()->route('dashboard.category.create',['locale' => app()->getLocale()]);
+        return redirect()->route('dashboard.category.create');
     }
 
 
@@ -64,7 +64,7 @@ class QuestionCategoryController extends DashboardController
             'categoriesData' => $categoriesData,
             'category' => $category,
             'formOptions' => [
-                'url' => route('dashboard.category.update',['category' => $category->id, 'locale' => app()->getLocale()]),
+                'url' => route('dashboard.category.update',['category' => $category->id]),
                 'method' => 'PUT'
             ],
             'pageH1' => trans('messages.questions_categories_edit'),
@@ -75,14 +75,14 @@ class QuestionCategoryController extends DashboardController
     public function update(QuestionCategoryEditRequest $request, QuestionCategory $category)
     {
         $this->questionsCategoriesService->updateQuestionCategory($category, $request->all());
-        return redirect(route('dashboard.category.edit', ['category' => $category, 'locale' => app()->getLocale() ]));
+        return redirect(route('dashboard.category.edit', ['category' => $category ]));
     }
 
 
     public function destroy(QuestionCategory $category)
     {
         $this->questionsCategoriesService->destroyQuestionCategory($category->id);
-        return redirect(route('dashboard.category.index', ['locale' => app()->getLocale()]));
+        return redirect(route('dashboard.category.index'));
     }
 
 }

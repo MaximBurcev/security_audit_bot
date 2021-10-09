@@ -82,16 +82,16 @@ class QuestionCategoryControllerUpdateTest extends TestCase
 
     protected function getRoute($item):string
     {
-        return route('dashboard.category.update',['category' => $item, 'locale' => 'en']);
+        return route('dashboard.category.update',['category' => $item]);
     }
 
     protected function getPreviousRoute()
     {
-        return route('dashboard.category.create',['locale' => 'en']);
+        return route('dashboard.category.create');
     }
 
     protected function getRightFinalRoute(QuestionCategory $item)
     {
-        return route('dashboard.category.edit',['category' => $item, 'locale' => 'en']);
+        return route('dashboard.category.edit',['category' => $item]);
     }
 }

@@ -68,16 +68,16 @@ class QuestionCategoryControllerStoreTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.category.store',['locale' => 'en']);
+        return route('dashboard.category.store');
     }
 
     protected function getPreviousRoute()
     {
-        return route('dashboard.category.create',['locale' => 'en']);
+        return route('dashboard.category.create');
     }
 
     protected function getRightFinalRoute()
     {
-        return route('dashboard.category.create',['locale' => 'en']);
+        return route('dashboard.category.create');
     }
 }

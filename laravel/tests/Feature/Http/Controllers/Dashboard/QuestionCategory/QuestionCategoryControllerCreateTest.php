@@ -35,7 +35,7 @@ class QuestionCategoryControllerCreateTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.category.create',['locale' => 'en']);
+        return route('dashboard.category.create');
     }
 
 }

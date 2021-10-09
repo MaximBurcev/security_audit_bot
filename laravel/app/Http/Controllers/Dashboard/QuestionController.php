@@ -46,7 +46,7 @@ class QuestionController extends DashboardController
             'question' => $question,
             'statuses' => $statuses,
             'formOptions' => [
-                'url' => route('dashboard.question.store', ['locale' => app()->getLocale()]),
+                'url' => route('dashboard.question.store'),
                 'method' => 'POST'
             ],
             'pageH1' => trans('messages.questions_create'),
@@ -57,7 +57,7 @@ class QuestionController extends DashboardController
     public function store(QuestionStoreRequest $request)
     {
         $item = $this->questionsService->createQuestionFromArray($request->all());
-        return redirect(route('dashboard.question.edit',['question' => $item, 'locale' => app()->getLocale()]));
+        return redirect(route('dashboard.question.edit',['question' => $item]));
     }
 
 
@@ -79,7 +79,7 @@ class QuestionController extends DashboardController
             'question' => $question,
             'statuses' => $statuses,
             'formOptions' => [
-                'url' => route('dashboard.question.update',['question' => $question->id, 'locale' => app()->getLocale()]),
+                'url' => route('dashboard.question.update',['question' => $question->id]),
                 'method' => 'PUT'
             ],
             'pageH1' => trans('messages.questions_edit'),
@@ -90,19 +90,19 @@ class QuestionController extends DashboardController
     public function update(QuestionEditRequest $request, Question $question)
     {
         $this->questionsService->updateQuestion($question, $request->all());
-        return redirect(route('dashboard.question.edit', ['question' => $question, 'locale' => app()->getLocale() ]));
+        return redirect(route('dashboard.question.edit', ['question' => $question ]));
     }
 
     public function addEmptyAnswer(Request $request, Question $question)
     {
         $this->questionsService->addEmptyAnswerToQuestion($question);
-        return redirect(route('dashboard.question.edit', ['question' => $question, 'locale' => app()->getLocale() ]));
+        return redirect(route('dashboard.question.edit', ['question' => $question ]));
     }
 
 
     public function destroy(Question $question)
     {
         $this->questionsService->destroyQuestion($question->id);
-        return redirect(route('dashboard.question.index',['locale' => app()->getLocale()]));
+        return redirect(route('dashboard.question.index'));
     }
 }

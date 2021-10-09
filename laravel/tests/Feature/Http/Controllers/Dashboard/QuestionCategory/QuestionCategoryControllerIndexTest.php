@@ -35,7 +35,7 @@ class QuestionCategoryControllerIndexTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.category.index',['locale' => 'en']);
+        return route('dashboard.category.index');
     }
 
 }

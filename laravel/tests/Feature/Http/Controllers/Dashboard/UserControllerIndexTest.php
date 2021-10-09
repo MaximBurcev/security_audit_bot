@@ -36,7 +36,7 @@ class UserControllerIndexTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.user.index',['locale' => 'en']);
+        return route('dashboard.user.index');
     }
 
 }
