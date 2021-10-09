@@ -27,7 +27,7 @@ services:
   php:
     build: ./DOCKER/php
     container_name: php
-
+    
     restart: always
     volumes:
       - ./:/var/www/mysite.local
@@ -47,7 +47,6 @@ services:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
-      - ./backups_db:/backups_db
       #- ./DOCKER/db_percona/db_data:/var/lib/mysql
     ports:
       - "${DB_PORT}:3306"
@@ -60,4 +59,4 @@ networks:
         ipam:
             driver: default
             config:
-                - subnet: 172.70.0.0/20
+                - subnet: 172.10.0.0/20

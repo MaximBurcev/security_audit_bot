@@ -29,7 +29,6 @@ Route::get('/task', function () {
     return view('quiz.task');
 });
 
-Route::resource('question', \App\Http\Controllers\QuestionController::class);
 
 Route::get('/user/1', function () {
     return view('user.view', [
