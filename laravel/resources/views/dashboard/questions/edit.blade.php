@@ -8,10 +8,6 @@ $labelClass = 'block text-sm font-medium text-gray-700';
 $selectInputClass = 'focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300';
 $inputClass = 'focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300';
 $btnClass = '"cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"';
-
-// @todo: temporarily. remove.
-$arrayExistCategories = $question->categories->pluck('id')->toArray();
-$arrayExistCategories = count($arrayExistCategories) > 0 ? $arrayExistCategories : $question->getDefaultCategories();
 ?>
 
 <x-app-layout>
@@ -29,7 +25,7 @@ $arrayExistCategories = count($arrayExistCategories) > 0 ? $arrayExistCategories
             <div class="col-span-3 sm:col-span-2">
                 {{ Form::label('question_category_id[]', trans('messages.question_category'),['class'=>$labelClass] ) }}
                 <div class="mt-1 flex rounded-md shadow-sm">
-                    {{ Form::select('question_category_id[]', $categoriesData, $arrayExistCategories, [ 'class'=>$selectInputClass.' h-60', 'multiple'=>'multiple'] ) }}
+                    {{ Form::select('question_category_id[]', $categoriesData, $question->categories->pluck('id')->toArray(), [ 'class'=>$selectInputClass, 'multiple'=>'multiple'] ) }}
                 </div>
             </div>
         </div>
@@ -48,7 +44,7 @@ $arrayExistCategories = count($arrayExistCategories) > 0 ? $arrayExistCategories
             <p class="<?php echo $inputDescriptionClass;?>"></p>
         </div>
 
-        {{--<div>
+        <div>
             {{ Form::label('status', trans('messages.question_body_en'),['class'=>$labelClass]) }}
             <div class="mt-1">
                 <x-wysiwyg-textarea
@@ -60,7 +56,7 @@ $arrayExistCategories = count($arrayExistCategories) > 0 ? $arrayExistCategories
                 />
             </div>
             <p class="<?php echo $inputDescriptionClass;?>"></p>
-        </div>--}}
+        </div>
 
         <hr/>
 
@@ -85,7 +81,7 @@ $arrayExistCategories = count($arrayExistCategories) > 0 ? $arrayExistCategories
             </div>
 
 
-            {{--<div>
+            <div>
                 {{ Form::label('status', trans('messages.answer'.($key+1).'_en'),['class'=>$labelClass]) }}
                 <div class="mt-1">
 
@@ -102,7 +98,7 @@ $arrayExistCategories = count($arrayExistCategories) > 0 ? $arrayExistCategories
                     />
                 </div>
                 <p class="<?php echo $inputDescriptionClass;?>"></p>
-            </div>--}}
+            </div>
         @endforeach
 
         <div class="grid grid-cols-3 gap-6">

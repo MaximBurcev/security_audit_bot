@@ -35,19 +35,6 @@ class Question extends Model
         'status',
     ];
 
-    protected $attributes = [
-        'status' => Question::STATUS_ACTIVE
-    ];
-
-    /**
-     * @todo Temporary. Remove.
-     * @return array
-     */
-    public function getDefaultCategories(): array
-    {
-        return [58];
-    }
-
     public function categories(): belongsToMany
     {
         return $this->belongsToMany(QuestionCategory::class)
