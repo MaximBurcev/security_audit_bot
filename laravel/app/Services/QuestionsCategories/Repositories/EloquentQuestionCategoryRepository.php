@@ -5,7 +5,6 @@ namespace App\Services\QuestionsCategories\Repositories;
 
 use App\Models\QuestionCategory;
 use App\Models\Translation;
-use App\Services\QuestionsCategories\DTO\DTOInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 
@@ -17,7 +16,6 @@ class EloquentQuestionCategoryRepository
     {
         $query = QuestionCategory::query();
         $query->with($with);
-        $query->orderByDesc('id');
         return $query->paginate( $perPage ?? static::DEFAULT_PERPAGE );
     }
 
@@ -32,15 +30,10 @@ class EloquentQuestionCategoryRepository
         return $data;
     }
 
-    public function createFromDTO(DTOInterface $dto): QuestionCategory
+    public function store(array $data): void
     {
-        $data = $dto->toArray();
-        return QuestionCategory::create($data);
-    }
+        $exist = QuestionCategory::create($data);
 
-    public function saveTranslations(QuestionCategory $category, DTOInterface $dto): self
-    {
-        $data = $dto->toArray();
         $translationModels = [];
 
         foreach ( Arr::get($data, 'title', []) as $locale => $item) {
@@ -51,32 +44,16 @@ class EloquentQuestionCategoryRepository
             ]);
         }
 
-        $category->translations()->saveMany($translationModels);
-        return $this;
+        $exist->translations()->saveMany($translationModels);
     }
 
-    public function updateFromDTO(QuestionCategory $category, DTOInterface $dto): self
+    public function update(QuestionCategory $category, array $data): QuestionCategory
     {
-        $data = $dto->toArray();
-        $category->update($data);
-        return $this;
-    }
-
-    public function updateParentCategory(QuestionCategory $category, DTOInterface $dto): self
-    {
-        $data = $dto->toArray();
-
         $parentCategory = QuestionCategory::find( Arr::get($data,'parent_id',0) );
 
         if ($parentCategory !== null) {
             $category->parent()->associate($parentCategory);
         }
-        return $this;
-    }
-
-    public function updateTitle(QuestionCategory $category, DTOInterface $dto): self
-    {
-        $data = $dto->toArray();
 
         $titleRu = Arr::get($data,'title.ru');
         $titleEn = Arr::get($data,'title.en');
@@ -94,8 +71,7 @@ class EloquentQuestionCategoryRepository
         }
 
         $category->update($data);
-
-        return $this;
+        return $category;
     }
 
     /**
