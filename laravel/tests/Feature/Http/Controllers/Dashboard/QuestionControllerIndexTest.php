@@ -4,38 +4,33 @@
 namespace Tests\Feature\Http\Controllers\Dashboard;
 
 
-use Tests\Generators\UsersGenerator;
+use App\Models\User;
 use Tests\TestCase;
 
 class QuestionControllerIndexTest extends TestCase
 {
-
-    /**
-     * @group http
-     * */
     public function testIndexNotAllowed()
     {
-        $response = $this->get($this->getRoute());
+        $response = $this->get(route('dashboard.question.index'));
         $response
             ->assertStatus(302)
             ->assertRedirect('/login')
         ;
     }
 
-    /**
-     * @group http
-     * */
     public function testIndexAdminAllowed()
     {
         $response = $this
-            ->actingAs(UsersGenerator::generateAdmin())
-            ->get($this->getRoute());
+            ->actingAs($this->createAdmin())
+            ->get(route('dashboard.question.index'));
         $response->assertStatus(200);
     }
 
-    protected function getRoute():string
-    {
-        return route('dashboard.question.index');
-    }
 
+    protected function createAdmin(): User
+    {
+        return User::factory()->create([
+           'level' => User::LEVEL_ADMIN
+        ]);
+    }
 }
