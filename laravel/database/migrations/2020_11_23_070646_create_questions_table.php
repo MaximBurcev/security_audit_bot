@@ -16,7 +16,7 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedSmallInteger('status')->default(Question::STATUS_ACTIVE);
+            $table->unsignedSmallInteger('status')->default(Question::STATUS_ENABLE);
             $table->timestamps();
         });
     }

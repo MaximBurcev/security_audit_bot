@@ -22,7 +22,7 @@ class QuestionFactory extends Factory
     public function definition()
     {
         return [
-            'status' => random_int(0,1) === 0 ? Question::STATUS_ACTIVE : Question::STATUS_INACTIVE
+            'status' => random_int(0,1) === 0 ? Question::STATUS_ENABLE : Question::STATUS_DISABLE
         ];
     }
 }

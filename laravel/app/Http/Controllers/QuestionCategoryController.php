@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers;
 
 use App\Models\QuestionCategory;
-use App\Models\Translation;
 use Illuminate\Http\Request;
 
-class QuestionCategoryController extends DashboardController
+class QuestionCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +14,7 @@ class QuestionCategoryController extends DashboardController
      */
     public function index()
     {
-        $categories = QuestionCategory::paginate();
-
-        return view('dashboard.questions_categories.index',[
-            'categories' => $categories
-        ]);
+        //
     }
 
     /**
@@ -29,46 +24,18 @@ class QuestionCategoryController extends DashboardController
      */
     public function create()
     {
-        $categoriesData = $this->getCategoriesData();
-
-        return view('dashboard.questions_categories.create',[
-            'categoriesData' => $categoriesData,
-        ]);
+        //
     }
 
-    // @todo violates the SRP and MVC pattern
-    protected function getCategoriesData(): array
-    {
-        $data = [];
-        foreach (QuestionCategory::where('question_category_id','=',null)->get() as $item){
-            $item->getCategoriesTree($data, $item);
-        }
-        return $data;
-    }
-
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
-        // @todo Validate input
-        /*$this->validate($request, [
-
-        ]);*/
-
-        $exist = QuestionCategory::create($request->all());
-
-        $translationModels = [];
-
-        foreach ($request->input('title') as $locale => $item) {
-            $translationModels[] = new Translation([
-                'locale' => $locale,
-                'key' => 'title',
-                'value' => $item ?? ''
-            ]);
-        }
-
-        $exist->translations()->saveMany($translationModels);
-
-        return redirect()->route('dashboard.category.create');
+        //
     }
 
     /**
@@ -115,8 +82,4 @@ class QuestionCategoryController extends DashboardController
     {
         //
     }
-
-
-
-
 }

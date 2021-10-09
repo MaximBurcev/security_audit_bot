@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
-use App\Models\Question;
 use Illuminate\Http\Request;
 
-class QuestionController extends Controller
+class AnswerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,22 +14,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $question = Question::where('id',1)->first();
-        /** @var Answer $answer */
-        $answer = $question->answers()->first();
-
-
-        echo 'Id question= '.$question->id.'<br/>';
-
-        $title = $question->title()->value;
-        echo 'Title = '.$title.'<hr/>';
-
-        $comment = $question->comment()->value;
-        echo 'Comment = '. $comment.'<br/>';
-
-        $value = $answer->text()->value;
-        echo 'Id first answer= '.$answer->id.'<br/>';
-        echo 'First answer = '. $value. '<br/>';
+        //
     }
 
     /**
@@ -57,10 +41,10 @@ class QuestionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Question  $question
+     * @param  \App\Models\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function show(Question $question)
+    public function show(Answer $answer)
     {
         //
     }
@@ -68,10 +52,10 @@ class QuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Question  $question
+     * @param  \App\Models\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Question $question)
+    public function edit(Answer $answer)
     {
         //
     }
@@ -80,10 +64,10 @@ class QuestionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Question  $question
+     * @param  \App\Models\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
+    public function update(Request $request, Answer $answer)
     {
         //
     }
@@ -91,10 +75,10 @@ class QuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Question  $question
+     * @param  \App\Models\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Question $question)
+    public function destroy(Answer $answer)
     {
         //
     }

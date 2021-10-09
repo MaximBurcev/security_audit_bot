@@ -22,6 +22,8 @@ class AnswerFactory extends Factory
     public function definition()
     {
         return [
+            //'text_en' => $this->faker->sentence,
+            //'text_ru' => $this->faker->sentence,
             'right' => random_int(0,1) === 1 ? $this->model::RIGHT_YES : $this->model::RIGHT_NO,
             'question_id' => random_int(1,50)
         ];

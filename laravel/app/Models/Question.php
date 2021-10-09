@@ -27,8 +27,8 @@ use Illuminate\Support\Facades\App;
  */
 class Question extends Model
 {
-    const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE = 20;
+    const STATUS_DISABLE = 0;
+    const STATUS_ENABLE = 20;
 
     protected $fillable = [
         'status',

@@ -12,12 +12,14 @@ class UserTableSeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * @param User $model
      * @return void
-     * @throws \Exception
      */
     public function run(User $model)
     {
+        $tableName = $model->getTable();
+        DB::table( $tableName )->delete();
+        DB::statement("ALTER TABLE `{$tableName}` AUTO_INCREMENT = 1");
+
         $password = Hash::make('toptal');
 
         User::create([
@@ -31,12 +33,4 @@ class UserTableSeeder extends Seeder
 
         $model::factory(10)->create();
     }
-
-    public function clearTables(User $model): void
-    {
-        $tableName = $model->getTable();
-        DB::table( $tableName )->delete();
-        DB::statement("ALTER TABLE `{$tableName}` AUTO_INCREMENT = 1");
-    }
-
 }

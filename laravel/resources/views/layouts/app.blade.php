@@ -34,7 +34,7 @@
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item"><a class="nav-link" href="#">@lang('menu.home')</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">@lang('menu.training')</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">@lang('menu.submit_question')</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">@lang('menu.submitQuestion')</a></li>
                     </ul>
 
                     <div>
@@ -50,9 +50,6 @@
         <main class="container">
             @yield('content')
         </main>
-        <footer>
-            <a class="" href="#">@lang('menu.all_questions')</a>
-        </footer>
     </div>
 </body>
 </html>

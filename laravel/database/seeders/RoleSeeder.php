@@ -16,13 +16,10 @@ class RoleSeeder extends Seeder
      */
     public function run(Role $model)
     {
-        $model::factory(5)->create();
-    }
-
-    public function clearTables(Role $model): void
-    {
         $tableName = $model->getTable();
         DB::table( $tableName )->delete();
         DB::statement("ALTER TABLE `{$tableName}` AUTO_INCREMENT = 1");
+
+        $model::factory(5)->create();
     }
 }

@@ -15,11 +15,7 @@ class AnswerSeeder extends Seeder
      */
     public function run(Answer $model)
     {
-        $model::factory(50)->create();
-    }
-
-    public function clearTables(Answer $model): void
-    {
         $model::truncate();
+        $model::factory(50)->create();
     }
 }

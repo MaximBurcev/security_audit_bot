@@ -43,18 +43,18 @@
     <div class="row answer_buttons">
         <div class="col-3"></div>
         <div class="col-2">
-            <button class="btn btn-warning iNotRemember">@lang('messages.do_not_remember')</button><br/>
+            <button class="btn btn-warning iNotRemember">@lang('messages.doNotRemember')</button><br/>
             <span class="tinyNote">Ctrl + <-</span>
         </div>
         <div class="col-2">
             <div class="iknowArea">
-                <button class="btn btn-primary iKnowBtn">@lang('messages.check_it')</button><br/>
+                <button class="btn btn-primary iKnowBtn">@lang('messages.checkIt')</button><br/>
                 <span class="tinyNote">Ctrl + Enter</span>
             </div>
         </div>
         <div class="col-2">
             <div class="iRememberArea">
-                <button class="btn btn-primary iRemember">@lang('messages.i_remember')</button><br/>
+                <button class="btn btn-primary iRemember">@lang('messages.iRemember')</button><br/>
                 <span class="tinyNote">Ctrl + -></span>
             </div>
         </div>
