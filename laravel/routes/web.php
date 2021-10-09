@@ -27,10 +27,10 @@ Route::group([
     'as' => 'dashboard.',
     'middleware' => ['auth:sanctum', 'verified']
 ], static function (){
-    Route::resource('question', QuestionController::class)->middleware('can:admin');
-    Route::resource('role', RoleController::class)->middleware('can:admin');
-    Route::resource('category', QuestionCategoryController::class)->middleware('can:admin');
-    Route::resource('user', UserController::class)->middleware('can:admin');
-    Route::post('question/addEmptyAnswer/{question}', [QuestionController::class, 'addEmptyAnswer'])->name('question.addEmptyAnswer')->middleware('can:admin');
-    Route::get('/', [DashboardController::class,'index'])->name('index')->middleware('can:admin');
+    Route::resource('question', QuestionController::class);
+    Route::resource('role', RoleController::class);
+    Route::resource('category', QuestionCategoryController::class);
+    Route::resource('user', UserController::class);
+    Route::post('question/addEmptyAnswer/{question}', [QuestionController::class, 'addEmptyAnswer'])->name('question.addEmptyAnswer');
+    Route::get('/', [DashboardController::class,'index'])->name('index');
 });
