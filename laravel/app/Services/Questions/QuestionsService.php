@@ -36,9 +36,7 @@ class QuestionsService
     public function createQuestionFromArray(array $array): Question
     {
         $dto = CreateQuestionDTO::fromArray($array);
-        $question = $this->createQuestionHandler->handle($dto);
-        $this->eloquentQuestionRepository->addEmptyAnswer($question);
-        return $question;
+        return $this->createQuestionHandler->handle($dto);
     }
 
     public function updateQuestion(Question $question, array $array): Question
