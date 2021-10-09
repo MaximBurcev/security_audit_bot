@@ -44,13 +44,13 @@
                                 </h6>
                                 <ul class="nav flex-column mb-2">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('dashboard.question.index',['locale' => $locale]) }}">
+                                        <a class="nav-link" href="{{ route('dashboard.question.index') }}">
                                             <span data-feather="file-text"></span>
                                             {{ trans('messages.questions_list') }}
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('dashboard.question.create',['locale' => $locale]) }}">
+                                        <a class="nav-link" href="{{ route('dashboard.question.create') }}">
                                             <span data-feather="file-text"></span>
                                             {{ trans('messages.questions_create') }}
                                         </a>
@@ -65,13 +65,13 @@
                                 </h6>
                                 <ul class="nav flex-column mb-2">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('dashboard.category.index',['locale' => $locale]) }}">
+                                        <a class="nav-link" href="{{ route('dashboard.category.index') }}">
                                             <span data-feather="file-text"></span>
                                             {{ trans('messages.questions_categories_list') }}
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('dashboard.category.create',['locale' => $locale]) }}">
+                                        <a class="nav-link" href="{{ route('dashboard.category.create') }}">
                                             <span data-feather="file-text"></span>
                                             {{ trans('messages.questions_categories_create') }}
                                         </a>
@@ -87,7 +87,7 @@
                                 </h6>
                                 <ul class="nav flex-column mb-2">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('dashboard.user.index',['locale' => $locale]) }}">
+                                        <a class="nav-link" href="{{ route('dashboard.user.index') }}">
                                             <span data-feather="file-text"></span>
                                             {{ trans('messages.users_list') }}
                                         </a>
@@ -102,13 +102,13 @@
                                 </h6>
                                 <ul class="nav flex-column mb-2">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('dashboard.role.index',['locale' => $locale]) }}">
+                                        <a class="nav-link" href="{{ route('dashboard.role.index') }}">
                                             <span data-feather="file-text"></span>
                                             {{ trans('messages.roles_list') }}
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('dashboard.role.create',['locale' => $locale]) }}">
+                                        <a class="nav-link" href="{{ route('dashboard.role.create') }}">
                                             <span data-feather="file-text"></span>
                                             {{ trans('messages.roles_create') }}
                                         </a>

@@ -23,7 +23,7 @@ App::setLocale('ru');
 Route::get('/','App\Http\Controllers\CommonController@index')->name('homepage');
 
 Route::group([
-    'prefix' => '/{locale}/dashboard',
+    'prefix' => '/dashboard',
     'as' => 'dashboard.',
     'middleware' => ['auth:sanctum', 'verified', 'can:admin']
 ], static function (){

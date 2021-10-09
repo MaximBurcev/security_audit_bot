@@ -59,8 +59,6 @@
                                 <a href="#" class="font-medium text-gray-500 hover:text-gray-900">@lang('menu.pricing')</a>
 
                                 <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">@lang('menu.logout')</a>
-
-                                <x-locale-select  />
                             </div>
                         </nav>
                     </div>

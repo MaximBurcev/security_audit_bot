@@ -121,7 +121,7 @@ $arrayExistCategories = count($arrayExistCategories) > 0 ? $arrayExistCategories
 
     @if($question->exists)
     <div class="<?php echo $formClass; ?>">
-        {{ Form::open(['url' => route('dashboard.question.addEmptyAnswer', ['question' => $question,'locale' => $locale]),'method' => 'POST']) }}
+        {{ Form::open(['url' => route('dashboard.question.addEmptyAnswer', ['question' => $question]),'method' => 'POST']) }}
         {{ Form::submit(trans('messages.answers_create'), ['class' => $btnClass]) }}
         {{ Form::close() }}
     </div>

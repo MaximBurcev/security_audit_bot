@@ -7,7 +7,7 @@ $btnClass = '"cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 roun
 <tr>
     <td>
         <div class="mt-10 mb-2">
-            <a href="{{ route('dashboard.question.show',['question'=> $question,'locale' => $locale]) }}" >{!! $question->title()->value !!}</a>
+            <a href="{{ route('dashboard.question.show',['question'=> $question]) }}" >{!! $question->title()->value !!}</a>
         </div>
     </td>
     <td>
@@ -19,11 +19,11 @@ $btnClass = '"cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 roun
         @endforeach
     </td>
     <td>
-        {{ Form::open(['url'=> route('dashboard.question.edit',['question'=> $question,'locale' => $locale]), 'method' => 'get' ]) }}
+        {{ Form::open(['url'=> route('dashboard.question.edit',['question'=> $question]), 'method' => 'get' ]) }}
         {{ Form::submit(trans('messages.edit'), ['class' => $btnClass]) }}
         {{ Form::close() }}
 
-        {{ Form::open(['url'=> route('dashboard.question.destroy',['question'=> $question,'locale' => $locale]), 'method' => 'delete' ]) }}
+        {{ Form::open(['url'=> route('dashboard.question.destroy',['question'=> $question]), 'method' => 'delete' ]) }}
         {{ Form::submit(trans('messages.delete'), ['class' => $btnClass]) }}
         {{ Form::close() }}
     </td>
