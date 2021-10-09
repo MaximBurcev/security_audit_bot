@@ -1,19 +1,19 @@
 <?php
 
 
-namespace Tests\Feature\Http\Controllers\Dashboard\Question;
+namespace Tests\Feature\Http\Controllers\Dashboard;
 
 
 use Tests\Generators\UsersGenerator;
 use Tests\TestCase;
 
-class QuestionControllerIndexTest extends TestCase
+class QuestionControllerCreateTest extends TestCase
 {
 
     /**
      * @group http
      * */
-    public function testIndexNotAllowed()
+    public function testNotAllowed()
     {
         $response = $this->get($this->getRoute());
         $response
@@ -25,7 +25,7 @@ class QuestionControllerIndexTest extends TestCase
     /**
      * @group http
      * */
-    public function testIndexAdminAllowed()
+    public function testAdminAllowed()
     {
         $response = $this
             ->actingAs(UsersGenerator::generateAdmin())
@@ -35,7 +35,7 @@ class QuestionControllerIndexTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.question.index');
+        return route('dashboard.question.create');
     }
 
 }

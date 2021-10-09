@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Tests\Feature\Http\Controllers\Dashboard\Question;
+namespace Tests\Feature\Http\Controllers\Dashboard;
 
 
 use Tests\Generators\UsersGenerator;
 use Tests\TestCase;
 
-class QuestionControllerCreateTest extends TestCase
+class QuestionCategoryControllerCreateTest extends TestCase
 {
 
     /**
@@ -35,7 +35,7 @@ class QuestionControllerCreateTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.question.create');
+        return route('dashboard.category.create');
     }
 
 }

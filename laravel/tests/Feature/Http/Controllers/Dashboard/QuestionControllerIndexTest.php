@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Tests\Feature\Http\Controllers\Dashboard\QuestionCategory;
+namespace Tests\Feature\Http\Controllers\Dashboard;
 
 
 use Tests\Generators\UsersGenerator;
 use Tests\TestCase;
 
-class QuestionCategoryControllerIndexTest extends TestCase
+class QuestionControllerIndexTest extends TestCase
 {
 
     /**
@@ -35,7 +35,7 @@ class QuestionCategoryControllerIndexTest extends TestCase
 
     protected function getRoute():string
     {
-        return route('dashboard.category.index');
+        return route('dashboard.question.index');
     }
 
 }

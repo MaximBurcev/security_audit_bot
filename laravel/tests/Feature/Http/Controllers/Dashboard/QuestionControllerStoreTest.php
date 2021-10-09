@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\Feature\Http\Controllers\Dashboard\Question;
+namespace Tests\Feature\Http\Controllers\Dashboard;
 
 
 use App\Models\Question;
