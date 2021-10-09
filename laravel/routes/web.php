@@ -1,12 +1,10 @@
 <?php
 
-use App\Http\Controllers\CommonController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\QuestionController;
 use App\Http\Controllers\Dashboard\QuestionCategoryController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\UserController;
-use App\Http\Controllers\QuizController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,11 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 App::setLocale('ru');
 
-Route::get('/',[CommonController::class,'index'])->name('homepage');
-Route::get('/{locale}/about',[CommonController::class,'about'])->name('about');
-Route::get('/{locale}/pricing',[CommonController::class,'about'])->name('pricing');
-Route::get('/{locale}/quiz',[QuizController::class,'index'])->name('quiz');
-Route::post('/{locale}/quiz/run',[QuizController::class,'run'])->name('quiz.run');
+Route::get('/','App\Http\Controllers\CommonController@index')->name('homepage');
 
 Route::group([
     'prefix' => '/{locale}/dashboard',

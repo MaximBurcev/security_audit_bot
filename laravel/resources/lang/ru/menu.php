@@ -2,7 +2,7 @@
 
 return [
   'homepage' => 'Главная',
-  'training' => 'Тест',
+  'training' => 'Тренироваться',
   'signIn' => 'Войти',
   'signUp' => 'Зарегистрироваться',
   'logout' => 'Выйти',

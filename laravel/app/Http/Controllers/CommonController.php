@@ -12,24 +12,18 @@ use Illuminate\Contracts\View\View;
 class CommonController extends Controller
 {
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Application|Factory|View
+     */
     public function index()
     {
-        return view('common.welcome', [
-        ]);
-    }
-
-
-    public function about()
-    {
         $questionCategories = QuestionCategory::paginate(50);
-        return view('common.about', [
+        return view('quiz.welcome', [
             'questionCategories' => $questionCategories
         ]);
     }
 
-    public function pricing()
-    {
-        return view('common.pricing', [
-        ]);
-    }
+
 }
