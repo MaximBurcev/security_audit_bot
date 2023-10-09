@@ -12,8 +12,6 @@
 <body id="page-top">
 
 @include('layout.navigation')
-
-@yield('header')
 @yield('content')
 
 <!-- Footer-->
