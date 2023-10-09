@@ -1,16 +1,7 @@
 @extends('layout.app')
 
 
-
-@section('header')
-    <!-- Header-->
-    <header class="bg-primary bg-gradient text-white">
-        <div class="container px-4 text-center">
-            <h1 class="fw-bolder">Аудит безопасности проекта</h1>
-            <a class="btn btn-lg btn-light" href="#about">Узнай больше!</a>
-        </div>
-    </header>
-@endsection
+<x-header type="main" title="Аудит безопасности проекта" />
 
 @section('content')
     <!-- About section-->
