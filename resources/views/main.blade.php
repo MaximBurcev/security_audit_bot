@@ -1,9 +1,9 @@
 @extends('layout.app')
 
-
-<x-header type="main" title="Аудит безопасности проекта" />
-
 @section('content')
+
+    <x-header type="main" title="Аудит безопасности проекта" />
+
     <!-- About section-->
     <section id="about">
         <div class="container px-4">

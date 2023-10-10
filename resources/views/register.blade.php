@@ -1,6 +1,5 @@
 @extends('layout.app')
 
-
 @section('content')
     <div class="container">
         <section class="vh-100">

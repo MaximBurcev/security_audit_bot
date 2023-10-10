@@ -1,8 +1,11 @@
 @extends('layout.app')
 
-<x-header type="personal" title="Личный кабинет" />
+
 
 @section('content')
+
+    <x-header type="personal" title="Личный кабинет" />
+
     <div class="container">
         <p>Данные о пользователе</p>
     </div>
