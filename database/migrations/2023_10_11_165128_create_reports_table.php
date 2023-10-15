@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->string('status');
+            $table->text('content');
             $table->unsignedBigInteger('project_id');
             $table->index('project_id', 'report_project_idx');
             $table->foreign('project_id')->on('projects')->references('id');
