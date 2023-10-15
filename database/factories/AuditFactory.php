@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Report;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,8 +20,8 @@ class AuditFactory extends Factory
     {
         return [
             'title'     => fake()->name(),
-            'user_id'   => fake()->randomDigitNotZero(),
-            'report_id' => fake()->randomDigitNotZero()
+            'user_id'   => User::all()->random(),
+            'report_id' => Report::all()->random()
         ];
     }
 }

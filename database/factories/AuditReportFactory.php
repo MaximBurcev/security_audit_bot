@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Audit;
+use App\Models\AuditReport;
+use App\Models\Report;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +20,8 @@ class AuditReportFactory extends Factory
     public function definition(): array
     {
         return [
-            'audit_id' => fake()->randomDigitNotZero(),
-            'report_id' => fake()->randomDigitNotZero()
+            'audit_id' => Audit::all()->random(),
+            'report_id' => Report::all()->random()
         ];
     }
 }

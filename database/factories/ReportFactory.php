@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Project;
+use App\Models\Utility;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,8 +21,8 @@ class ReportFactory extends Factory
         return [
             'status'     => fake()->text(10),
             'content'    => fake()->realText(),
-            'project_id' => fake()->randomDigitNotZero(),
-            'utility_id' => fake()->randomDigitNotZero()
+            'project_id' => Project::all()->random(),
+            'utility_id' => Utility::all()->random()
         ];
     }
 }
