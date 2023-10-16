@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Audit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,6 @@ class AuditSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Audit::factory(5)->create();
     }
 }
