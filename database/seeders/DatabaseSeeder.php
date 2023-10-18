@@ -23,6 +23,5 @@ class DatabaseSeeder extends Seeder
         Project::factory(5)->create();
         Report::factory(5)->create();
         Audit::factory(5)->create();
-        AuditReport::factory(5)->create();
     }
 }

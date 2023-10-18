@@ -20,8 +20,8 @@ class AuditFactory extends Factory
     {
         return [
             'title'     => fake()->name(),
-            'user_id'   => User::all()->random(),
-            'report_id' => Report::all()->random()
+            'user_id'   => User::inRandomOrder()->first()->id,
+            'report_id' => Report::inRandomOrder()->first()->id
         ];
     }
 }
