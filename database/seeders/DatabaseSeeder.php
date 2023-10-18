@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Audit;
-use App\Models\AuditReport;
 use App\Models\Project;
 use App\Models\Report;
 use App\Models\User;
