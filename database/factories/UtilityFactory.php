@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Report;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,8 @@ class UtilityFactory extends Factory
     {
         return [
             'title'   => fake()->name(),
-            'command' => fake()->name()
+            'command' => fake()->name(),
+            'report_id' =>  Report::factory()
         ];
     }
 }

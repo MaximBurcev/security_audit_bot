@@ -11,7 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::rename('audits_reports', 'audit_report');
+        Schema::create('reports', function (Blueprint $table) {
+            $table->id();
+            $table->string('status');
+            $table->text('content');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -19,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::rename('audit_report', 'audits_reports');
+        Schema::dropIfExists('reports');
     }
 };

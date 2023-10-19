@@ -21,8 +21,6 @@ class ReportFactory extends Factory
         return [
             'status'     => fake()->text(10),
             'content'    => fake()->realText(),
-            'project_id' => Project::inRandomOrder()->first()->id,
-            'utility_id' => Utility::inRandomOrder()->first()->id
         ];
     }
 }

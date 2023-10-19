@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Audit;
 use App\Models\Report;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AuditReport>
  */
-class ProjectFactory extends Factory
+class AuditReportFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +19,7 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->name(),
+            'audit_id'  =>  Audit::factory(),
             'report_id' =>  Report::factory()
         ];
     }
