@@ -21,6 +21,8 @@ class ReportFactory extends Factory
         return [
             'status'     => fake()->text(10),
             'content'    => fake()->realText(),
+            'utility_id' => Utility::factory(),
+            'project_id' => Project::factory()
         ];
     }
 }

@@ -15,9 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('command');
-            $table->unsignedBigInteger('report_id');
-            $table->index('report_id', 'report_utility_idx');
-            $table->foreign('report_id')->references('id')->on('reports');
+
             $table->timestamps();
         });
     }

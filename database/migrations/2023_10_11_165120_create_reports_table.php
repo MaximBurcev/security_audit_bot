@@ -15,6 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('status');
             $table->text('content');
+            $table->unsignedBigInteger('utility_id');
+            $table->index('utility_id', 'report_utility_idx');
+            $table->foreign('utility_id')->references('id')->on('utilities');
+            $table->unsignedBigInteger('project_id');
+            $table->index('project_id', 'report_project_idx');
+            $table->foreign('project_id')->references('id')->on('projects');
             $table->timestamps();
         });
     }

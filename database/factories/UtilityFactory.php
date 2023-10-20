@@ -20,7 +20,6 @@ class UtilityFactory extends Factory
         return [
             'title'   => fake()->name(),
             'command' => fake()->name(),
-            'report_id' =>  Report::factory()
         ];
     }
 }

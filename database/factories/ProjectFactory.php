@@ -19,7 +19,7 @@ class ProjectFactory extends Factory
     {
         return [
             'title' => fake()->name(),
-            'report_id' =>  Report::factory()
+            'url'     => fake()->url()
         ];
     }
 }
