@@ -10,6 +10,8 @@ class Utility extends BaseModel
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = ['title', 'command'];
+
     public function reports(): HasMany
     {
         return $this->HasMany(Report::class);

@@ -10,6 +10,8 @@ class Project extends BaseModel
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = ['title', 'url'];
+
     public function reports(): HasMany
     {
         return $this->HasMany(Report::class);
