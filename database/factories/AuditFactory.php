@@ -21,7 +21,6 @@ class AuditFactory extends Factory
         return [
             'title'     => fake()->name(),
             'user_id'   => User::factory(),
-            'report_id' => Report::factory()
         ];
     }
 }

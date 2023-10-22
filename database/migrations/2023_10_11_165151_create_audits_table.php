@@ -17,9 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->index('user_id', 'audit_user_idx');
             $table->foreign('user_id')->on('users')->references('id');
-            $table->unsignedBigInteger('report_id');
-            $table->index('report_id', 'audit_report_idx');
-            $table->foreign('report_id')->on('reports')->references('id');
             $table->timestamps();
         });
     }

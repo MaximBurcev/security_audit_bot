@@ -11,6 +11,13 @@ class Report extends BaseModel
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = ['status', 'content', 'utility_id', 'project_id'];
+
+    public static function getStatuses()
+    {
+        return ['Создан', 'В процессе', 'Завершен'];
+    }
+
     public function project(): BelongsTo
     {
         return $this->BelongsTo(Project::class);
