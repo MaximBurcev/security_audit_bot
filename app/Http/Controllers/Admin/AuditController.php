@@ -13,6 +13,12 @@ use App\Models\Utility;
 
 class AuditController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Audit::class);
+    }
+
     /**
      * Display a listing of the resource.
      */

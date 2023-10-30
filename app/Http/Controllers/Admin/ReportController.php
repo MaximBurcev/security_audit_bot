@@ -11,6 +11,12 @@ use App\Models\Utility;
 
 class ReportController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Report::class);
+    }
+
     /**
      * Display a listing of the resource.
      */

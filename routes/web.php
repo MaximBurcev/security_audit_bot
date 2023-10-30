@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'main')->name('main');
 
-Route::view('/personal', 'personal')->name('personal');
-
-Route::view('/register', 'register')->name('register');
+Route::view('/personal', 'personal')->name('personal')->middleware('auth');
 
 Route::view('/terms', 'terms')->name('terms');
+
+Auth::routes();

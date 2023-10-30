@@ -5,11 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Utility\StoreRequest;
 use App\Http\Requests\Admin\Utility\UpdateRequest;
+use App\Models\User;
 use App\Models\Utility;
 use Illuminate\Http\Request;
 
 class UtilityController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Utility::class);
+    }
+
     /**
      * Display a listing of the resource.
      */

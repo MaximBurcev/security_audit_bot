@@ -18,7 +18,7 @@ class Audit extends BaseModel
 
     public function user(): BelongsTo
     {
-        return $this->BelongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     protected $fillable = ['title', 'user_id'];
