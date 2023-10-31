@@ -14,6 +14,6 @@ class Project extends BaseModel
 
     public function reports(): HasMany
     {
-        return $this->HasMany(Report::class);
+        return $this->hasMany(Report::class);
     }
 }

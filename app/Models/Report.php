@@ -20,12 +20,12 @@ class Report extends BaseModel
 
     public function project(): BelongsTo
     {
-        return $this->BelongsTo(Project::class);
+        return $this->belongsTo(Project::class);
     }
 
     public function utility(): BelongsTo
     {
-        return $this->BelongsTo(Utility::class);
+        return $this->belongsTo(Utility::class);
     }
 
     public function audits(): BelongsToMany

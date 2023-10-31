@@ -13,12 +13,12 @@ class Audit extends BaseModel
 
     public function reports(): BelongsToMany
     {
-        return $this->BelongsToMany(Report::class);
+        return $this->belongsToMany(Report::class);
     }
 
     public function user(): BelongsTo
     {
-        return $this->BelongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     protected $fillable = ['title', 'user_id'];
