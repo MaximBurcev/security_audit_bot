@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ReportStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,7 +16,7 @@ class Report extends BaseModel
 
     public static function getStatuses()
     {
-        return ['Создан', 'В процессе', 'Завершен'];
+        return ReportStatusEnum::cases();
     }
 
     public function project(): BelongsTo
