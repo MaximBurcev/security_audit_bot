@@ -6,13 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Audit\StoreRequest;
 use App\Http\Requests\Admin\Audit\UpdateRequest;
 use App\Models\Audit;
-use App\Models\Project;
 use App\Models\Report;
 use App\Models\User;
-use App\Models\Utility;
+use App\Service\AuditService;
 
 class AuditController extends Controller
 {
+    public AuditService $auditService;
+
+    public function __construct(AuditService $auditService)
+    {
+        $this->auditService = $auditService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -39,7 +45,7 @@ class AuditController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->service->store($request);
+        $this->auditService->store($request);
         return redirect()->route('audits.index');
     }
 
@@ -66,7 +72,7 @@ class AuditController extends Controller
      */
     public function update(UpdateRequest $request, Audit $audit)
     {
-        $this->service->update($request, $audit);
+        $this->auditService->update($request, $audit);
         return redirect()->route('audits.show', $audit->id);
     }
 
