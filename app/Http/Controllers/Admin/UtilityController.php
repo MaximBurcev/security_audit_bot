@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Utility\StoreRequest;
-use App\Http\Requests\Admin\Utility\UpdateRequest;
+use App\Http\Requests\Admin\Utility\StoreFormRequest;
+use App\Http\Requests\Admin\Utility\UpdateFormRequest;
 use App\Models\Utility;
-use Illuminate\Http\Request;
 
 class UtilityController extends Controller
 {
@@ -30,7 +29,7 @@ class UtilityController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request)
+    public function store(StoreFormRequest $request)
     {
         Utility::firstOrCreate($request->validated());
         return redirect()->route('utilities.index');
@@ -55,7 +54,7 @@ class UtilityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Utility $utility)
+    public function update(UpdateFormRequest $request, Utility $utility)
     {
         $utility->update($request->validated());
         return redirect()->route('utilities.show', $utility->id);

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Audit\StoreRequest;
-use App\Http\Requests\Admin\Audit\UpdateRequest;
+use App\Http\Requests\Admin\Audit\StoreFormRequest;
+use App\Http\Requests\Admin\Audit\UpdateFormRequest;
 use App\Models\Audit;
 use App\Models\Report;
 use App\Models\User;
 use App\Service\AuditService;
+use Illuminate\Foundation\Http\FormRequest;
 
 class AuditController extends Controller
 {
@@ -43,7 +44,7 @@ class AuditController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request)
+    public function store(StoreFormRequest $request)
     {
         $this->auditService->store($request);
         return redirect()->route('audits.index');
@@ -70,7 +71,7 @@ class AuditController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Audit $audit)
+    public function update(UpdateFormRequest $request, Audit $audit)
     {
         $this->auditService->update($request, $audit);
         return redirect()->route('audits.show', $audit->id);
