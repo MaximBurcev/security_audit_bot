@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.projects.create');
+        return view('admin.users.create');
     }
 
     /**
@@ -34,7 +34,7 @@ class UserController extends Controller
     public function store(StoreRequest $request)
     {
         Project::firstOrCreate($request->validated());
-        return redirect()->route('projects.index');
+        return redirect()->route('users.index');
     }
 
     /**
@@ -56,10 +56,10 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Project $project)
+    public function update(UpdateRequest $request, User $user)
     {
-        $project->update($request->validated());
-        return redirect()->route('users.show', $project->id);
+        $user->update($request->validated());
+        return redirect()->route('users.show', $user->id);
     }
 
     /**

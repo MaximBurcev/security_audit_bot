@@ -12,10 +12,10 @@ use Illuminate\Http\Request;
 class MainController extends Controller
 {
     public function index(){
-        $auditsCount = Audit::all()->count();
-        $reportsCount = Report::all()->count();
-        $projectsCount = Project::all()->count();
-        $utilitiesCount = Utility::all()->count();
+        $auditsCount = Audit::count();
+        $reportsCount = Report::count();
+        $projectsCount = Project::count();
+        $utilitiesCount = Utility::count();
         return view('admin.main.index', compact('auditsCount', 'reportsCount', 'projectsCount', 'utilitiesCount'));
     }
 }
