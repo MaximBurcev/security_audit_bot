@@ -3,19 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Audit\StoreRequest;
-use App\Http\Requests\Admin\Audit\UpdateRequest;
+use App\Http\Requests\Admin\Audit\StoreFormRequest;
+use App\Http\Requests\Admin\Audit\UpdateFormRequest;
 use App\Models\Audit;
-use App\Models\Project;
 use App\Models\Report;
 use App\Models\User;
-use App\Models\Utility;
+use App\Service\AuditService;
+use Illuminate\Foundation\Http\FormRequest;
 
 class AuditController extends Controller
 {
 
-    public function __construct()
+
+    public function __construct(AuditService $auditService)
     {
+        $this->auditService = $auditService;
         $this->authorizeResource(Audit::class);
     }
 
@@ -25,6 +27,7 @@ class AuditController extends Controller
     public function index()
     {
         $audits = Audit::all();
+
         return view('admin.audits.index', compact('audits'));
     }
 
@@ -43,9 +46,10 @@ class AuditController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request)
+    public function store(StoreFormRequest $request)
     {
-        $this->service->store($request);
+        $this->auditService->store($request);
+
         return redirect()->route('audits.index');
     }
 
@@ -64,15 +68,17 @@ class AuditController extends Controller
     {
         $users = User::all();
         $reports = Report::all();
+
         return view('admin.audits.edit', compact('audit', 'users', 'reports'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Audit $audit)
+    public function update(UpdateFormRequest $request, Audit $audit)
     {
-        $this->service->update($request, $audit);
+        $this->auditService->update($request, $audit);
+
         return redirect()->route('audits.show', $audit->id);
     }
 
@@ -82,6 +88,7 @@ class AuditController extends Controller
     public function destroy(Audit $audit)
     {
         $audit->delete();
+
         return redirect()->route('audits.index');
     }
 }

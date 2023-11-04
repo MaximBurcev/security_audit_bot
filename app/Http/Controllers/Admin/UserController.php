@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Project\StoreRequest;
-use App\Http\Requests\Admin\Project\UpdateRequest;
-use App\Models\Project;
+use App\Http\Requests\Admin\User\StoreFormRequest;
+use App\Http\Requests\Admin\User\UpdateFormRequest;
 use App\Models\User;
-use App\Service\AuditService;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -32,16 +29,16 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.projects.create');
+        return view('admin.users.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request)
+    public function store(StoreFormRequest $request)
     {
-        Project::firstOrCreate($request->validated());
-        return redirect()->route('projects.index');
+        User::firstOrCreate($request->validated());
+        return redirect()->route('users.index');
     }
 
     /**
@@ -63,10 +60,10 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Project $project)
+    public function update(UpdateFormRequest $request, User $user)
     {
-        $project->update($request->validated());
-        return redirect()->route('users.show', $project->id);
+        $user->update($request->validated());
+        return redirect()->route('users.show', $user->id);
     }
 
     /**

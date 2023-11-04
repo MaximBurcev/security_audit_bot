@@ -2,14 +2,15 @@
 
 namespace App\Service;
 
-use App\Http\Requests\Admin\Audit\StoreRequest;
-use App\Http\Requests\Admin\Audit\UpdateRequest;
+use App\Http\Requests\Admin\Audit\StoreFormRequest;
+use App\Http\Requests\Admin\Audit\UpdateFormRequest;
 use App\Models\Audit;
+use Illuminate\Foundation\Http\FormRequest;
 
 class AuditService
 {
 
-    public function store(StoreRequest $request): void
+    public function store(StoreFormRequest $request): void
     {
         $data = $request->validated();
         $reportIds = $data['report_id'];
@@ -20,7 +21,7 @@ class AuditService
         }
     }
 
-    public function update(UpdateRequest $request, Audit $audit): void
+    public function update(UpdateFormRequest $request, Audit $audit): void
     {
         $data = $request->validated();
         $reportIds = $data['report_id'];

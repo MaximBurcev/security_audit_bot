@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Project\StoreRequest;
-use App\Http\Requests\Admin\Project\UpdateRequest;
+use App\Http\Requests\Admin\Project\StoreFormRequest;
+use App\Http\Requests\Admin\Project\UpdateFormRequest;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -37,7 +37,7 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request)
+    public function store(StoreFormRequest $request)
     {
         Project::firstOrCreate($request->validated());
         return redirect()->route('projects.index');
@@ -62,7 +62,7 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Project $project)
+    public function update(UpdateFormRequest $request, Project $project)
     {
         $project->update($request->validated());
         return redirect()->route('projects.show', $project->id);

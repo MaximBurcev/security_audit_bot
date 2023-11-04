@@ -6,7 +6,7 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Создание нового проекта</h1>
+            <h1 class="h3 mb-0 text-gray-800">Добавление пользователя</h1>
 
         </div>
 
@@ -17,30 +17,30 @@
             <div class="col-6">
 
 
-                <form action="{{ route('projects.store') }}" method="post">
+                <form action="{{ route('users.store') }}" method="post">
                     @csrf
-
+                    @method('POST')
                     <div class="form-group">
                         <input
                                 type="text"
-                                class="form-control form-control-user @error('title') is-invalid @enderror"
-                                id="title"
-                                name="title"
-                                placeholder="Введите название проекта"
-                            value="{{ old('title') }}"
+                                class="form-control form-control-user @error('name') is-invalid @enderror"
+                                id="name"
+                                name="name"
+                                placeholder="Имя пользователя"
+                                value="{{ old('name') }}"
                         >
-                        @error('title')
+                        @error('name')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-group">
-                        <input type="url" class="form-control form-control-user @error('url') is-invalid @enderror"
-                               id="url" name="url"
-                               placeholder="Введите URL проекта"
-                            value="{{ old('url') }}"
+                        <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror"
+                               id="email" name="email"
+                               placeholder="Введите Email пользователя"
+                               value="{{ old('email')  }}"
                         >
-                        @error('url')
+                        @error('email')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
@@ -48,6 +48,11 @@
                     <div class="form-group">
                         <input type="submit" class="btn btn-primary" value="Добавить">
                     </div>
+
+                    <div class="form-group">
+                        <p class="text-danger">Пароль будет выслан на почту</p>
+                    </div>
+
 
                 </form>
 

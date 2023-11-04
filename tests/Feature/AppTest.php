@@ -5,6 +5,7 @@ namespace Tests\Feature;
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Audit;
 use App\Models\Project;
+use App\Models\Report;
 use App\Models\User;
 use App\Models\Utility;
 use Tests\TestCase;
@@ -52,6 +53,25 @@ class AppTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_the_admin_audit_store_returns_a_successful_response(): void
+    {
+        $user = User::where('role', User::ROLE_ADMIN)->first();
+        $audit = Audit::factory()->make()->toArray();
+        $audit['report_id'] = Report::all()->random(2)->pluck('id')->toArray();
+        $response = $this->actingAs($user)->post(route('audits.store', $audit));
+
+        $response->assertRedirect(route('audits.index'));
+    }
+
+    public function test_the_admin_audit_edit_returns_a_successful_response(): void
+    {
+        $user = User::where('role', User::ROLE_ADMIN)->first();
+        $audit = Audit::all()->first();
+        $response = $this->actingAs($user)->get(route('audits.edit', $audit->id));
+
+        $response->assertStatus(200);
+    }
+
     public function test_the_admin_audit_show_returns_a_successful_response(): void
     {
         $user = User::where('role', User::ROLE_ADMIN)->first();
@@ -62,14 +82,42 @@ class AppTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_the_admin_audit_store_returns_a_successful_response(): void
+    public function test_the_admin_audit_destroy_returns_a_successful_response(): void
     {
         $user = User::where('role', User::ROLE_ADMIN)->first();
-        $url = route('audits.store');
-        $data = Audit::factory()->make()->toArray();
-        $response = $this->actingAs($user)->post($url, $data);
-        //$response->assertRedirect(route('audits.index'));
-        $response->assertStatus(302);
+        $audit = Audit::all()->random();
+        $url = route('audits.destroy', $audit->id);
+        $response = $this->actingAs($user)->delete($url);
+        $response->assertRedirect(route('audits.index'));
+    }
+
+
+
+    public function test_the_admin_report_index_returns_a_successful_response(): void
+    {
+        $user = User::where('role', User::ROLE_ADMIN)->first();
+
+        $response = $this->actingAs($user)->get(route('reports.index'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_the_admin_report_create_returns_a_successful_response(): void
+    {
+        $user = User::where('role', User::ROLE_ADMIN)->first();
+
+        $response = $this->actingAs($user)->get(route('reports.create'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_the_admin_report_store_returns_a_successful_response(): void
+    {
+        $user = User::where('role', User::ROLE_ADMIN)->first();
+
+        $response = $this->actingAs($user)->post(route('reports.store'), Report::factory()->make()->toArray());
+
+        $response->assertRedirect(route('reports.index'));
     }
 
     public function test_the_admin_project_store_returns_a_successful_response(): void
@@ -106,5 +154,32 @@ class AppTest extends TestCase
         $url = route('utilities.destroy', $utility->id);
         $response = $this->actingAs($user)->delete($url, $utility->toArray());
         $response->assertRedirect(route('utilities.index'));
+    }
+
+    public function test_the_admin_user_index_returns_a_successful_response(): void
+    {
+        $user = User::where('role', User::ROLE_ADMIN)->first();
+        $url = route('users.index');
+        $response = $this->actingAs($user)->get($url);
+        $response->assertStatus(200);
+    }
+
+    public function test_the_admin_user_create_returns_a_successful_response(): void
+    {
+        $user = User::where('role', User::ROLE_ADMIN)->first();
+        $url = route('users.create');
+        $response = $this->actingAs($user)->get($url);
+        $response->assertStatus(200);
+    }
+
+    public function test_the_admin_user_store_returns_a_successful_response(): void
+    {
+        $user = User::where('role', User::ROLE_ADMIN)->first();
+        $url = route('users.store');
+        $arUser = User::factory()->make()->toArray();
+        $arUser['password'] = md5(fake()->password());
+        //dd($arUser);
+        $response = $this->actingAs($user)->post($url, $arUser);
+        $response->assertRedirect(route('users.index'));
     }
 }

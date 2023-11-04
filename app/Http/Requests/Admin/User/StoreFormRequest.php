@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\Audit;
+namespace App\Http\Requests\Admin\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class StoreFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,18 +22,16 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'     => 'required|string',
-            'user_id'   => 'required|integer',
-            'report_id' => 'required|array'
+            'name' =>  'required|string',
+            'email'   =>  'required|email',
+            'password'  =>  'required'
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required'     => 'Укажите название аудита',
-            'user_id.required'   => 'Пользователь не указан',
-            'report_id.required' => 'Отчеты не указаны'
+
         ];
     }
 }

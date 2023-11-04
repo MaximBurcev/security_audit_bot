@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\Utility;
+namespace App\Http\Requests\Admin\Audit;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class UpdateFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,18 +22,18 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' =>  'required|string',
-            'command'   =>  'required|string'
+            'title'     => 'required|string',
+            'user_id'   => 'required|integer',
+            'report_id' => 'required|array'
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required'   =>  'Укажите название проекта',
-            'command.required'  =>  'Укажите URL проекта',
-            'title.alpha'   =>  'Название должно содержать только буквы',
-            'title.unique'  =>  'Проект с таким названием уже есть',
+            'title.required'     => 'Укажите название аудита',
+            'user_id.required'   => 'Пользователь не указан',
+            'report_id.required' => 'Отчеты не указаны'
         ];
     }
 }

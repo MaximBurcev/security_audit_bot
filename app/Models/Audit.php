@@ -13,7 +13,7 @@ class Audit extends BaseModel
 
     public function reports(): BelongsToMany
     {
-        return $this->BelongsToMany(Report::class);
+        return $this->belongsToMany(Report::class);
     }
 
     public function user(): BelongsTo

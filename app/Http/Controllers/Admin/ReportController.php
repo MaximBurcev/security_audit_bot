@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Report\StoreRequest;
-use App\Http\Requests\Admin\Report\UpdateRequest;
+use App\Http\Requests\Admin\Report\StoreFormRequest;
+use App\Http\Requests\Admin\Report\UpdateFormRequest;
 use App\Models\Project;
 use App\Models\Report;
 use App\Models\Utility;
@@ -40,7 +40,7 @@ class ReportController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request)
+    public function store(StoreFormRequest $request)
     {
         Report::firstOrCreate($request->validated());
         return redirect()->route('reports.index');
@@ -68,7 +68,7 @@ class ReportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Report $report)
+    public function update(UpdateFormRequest $request, Report $report)
     {
         $report->update($request->validated());
         return redirect()->route('reports.show', $report->id);
