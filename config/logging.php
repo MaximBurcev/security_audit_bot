@@ -81,9 +81,9 @@ return [
             'level' => env('LOG_LEVEL', 'critical'),
             'replace_placeholders' => true,
         ],
-        'slackRandom' => [
+        'slackUtility' => [
             'driver' => 'slack',
-            'channel'   =>  'C06550VKZA4',
+            'channel'   =>  env('LOG_SLACK_UTILITY_CHANNEL_ID'),
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
             'username' => 'Laravel Log',
             'emoji' => ':boom:',

@@ -40,9 +40,9 @@ class UtilityController extends Controller
     public function store(StoreFormRequest $request)
     {
         Utility::firstOrCreate($request->validated());
-        Log::channel('slackRandom')->notice('Создана новая утилита', $request->validated());
-        Log::channel('slackRandom')->warning('Создана новая утилита', $request->validated());
-        Log::channel('slackRandom')->alert('Создана новая утилита', $request->validated());
+        Log::channel('slackUtility')->notice('Создана новая утилита', $request->validated());
+        Log::channel('slackUtility')->warning('Создана новая утилита', $request->validated());
+        Log::channel('slackUtility')->alert('Создана новая утилита', $request->validated());
         return redirect()->route('utilities.index');
     }
 
