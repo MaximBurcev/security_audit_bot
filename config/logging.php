@@ -81,7 +81,15 @@ return [
             'level' => env('LOG_LEVEL', 'critical'),
             'replace_placeholders' => true,
         ],
-
+        'slackRandom' => [
+            'driver' => 'slack',
+            'channel'   =>  'C06550VKZA4',
+            'url' => env('LOG_SLACK_WEBHOOK_URL'),
+            'username' => 'Laravel Log',
+            'emoji' => ':boom:',
+            'level' => env('LOG_LEVEL', 'critical'),
+            'replace_placeholders' => true,
+        ],
         'papertrail' => [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
