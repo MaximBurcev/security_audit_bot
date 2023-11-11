@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Админка</title>
+    <title>{{ trans('admin.admin') }}</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -31,11 +31,11 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.main', [app()->getLocale()]) }}">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">Админка</div>
+            <div class="sidebar-brand-text mx-3">{{ trans('admin.admin') }}</div>
         </a>
 
         <!-- Divider -->
@@ -43,9 +43,9 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="{{ route('admin.main') }}">
+            <a class="nav-link" href="{{ route('admin.main', [app()->getLocale()]) }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Главная</span></a>
+                <span>{{ trans('admin.main') }}</span></a>
         </li>
 
         <!-- Divider -->
@@ -53,41 +53,41 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-            Разделы
+            {{ trans('admin.sections') }}
         </div>
 
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('users.index') }}">
+            <a class="nav-link" href="{{ route('users.index', [app()->getLocale()]) }}">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Пользователи</span></a>
+                <span>{{ trans('admin.users') }}</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
             <a class="nav-link" href="{{ route('projects.index') }}">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Проекты</span></a>
+                <span>{{ trans('admin.projects') }}</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item">
             <a class="nav-link" href="{{ route('utilities.index') }}">
                 <i class="fas fa-fw fa-table"></i>
-                <span>Утилиты</span></a>
+                <span>{{ trans('admin.utilities') }}</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item">
             <a class="nav-link" href="{{ route('reports.index') }}">
                 <i class="fas fa-fw fa-table"></i>
-                <span>Отчеты</span></a>
+                <span>{{ trans('admin.reports') }}</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item">
             <a class="nav-link" href="{{ route('audits.index') }}">
                 <i class="fas fa-fw fa-table"></i>
-                <span>Аудиты</span></a>
+                <span>{{ trans('admin.audits') }}</span></a>
         </li>
 
         <!-- Divider -->

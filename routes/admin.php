@@ -9,9 +9,6 @@ use App\Http\Controllers\Admin\UtilityController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function (){
-    Route::get('/', [MainController::class, 'index'])->name('admin.main');
-
-    Route::prefix('users')->resource('users', UserController::class);
 
     Route::prefix('projects')->resource('projects', ProjectController::class);
 
@@ -21,5 +18,15 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('audits')->resource('audits', AuditController::class);
 });
+
+Route::group(['middleware' => 'lang', 'prefix' => '{lang}/admin', 'where' => ['lang' => 'en|ru']], function () {
+    Route::get('/', [MainController::class, 'index'])->name('admin.main');
+
+});
+
+Route::group(['middleware' => 'lang', 'prefix' => '{lang}/admin', 'where' => ['lang' => 'en|ru']], function () {
+    Route::resource('users', UserController::class);
+});
+
 
 
