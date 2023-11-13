@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Utility;
 use App\Service\AuditService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class MainController extends Controller
 {
@@ -20,10 +21,22 @@ class MainController extends Controller
     }
 
     public function index(){
-        $auditsCount = Audit::count();
-        $reportsCount = Report::count();
-        $projectsCount = Project::count();
-        $utilitiesCount = Utility::count();
+        $auditsCount = Cache::remember('auditsCount', env('CACHE_TTL'), function () {
+            return Audit::all()->count();
+        });
+
+        $reportsCount = Cache::remember('reportsCount', env('CACHE_TTL'), function () {
+            return Report::all()->count();
+        });
+
+        $projectsCount = Cache::remember('projectsCount', env('CACHE_TTL'), function () {
+            return Project::all()->count();
+        });
+
+        $utilitiesCount = Cache::remember('utilitiesCount', env('CACHE_TTL'), function () {
+            return Utility::all()->count();
+        });
+
         return view('admin.main.index', compact('auditsCount', 'reportsCount', 'projectsCount', 'utilitiesCount'));
     }
 }
