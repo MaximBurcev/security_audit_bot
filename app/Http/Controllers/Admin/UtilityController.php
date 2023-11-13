@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Utility\StoreFormRequest;
 use App\Http\Requests\Admin\Utility\UpdateFormRequest;
 use App\Models\Utility;
+use Illuminate\Support\Facades\Log;
 
 class UtilityController extends Controller
 {
@@ -39,6 +40,9 @@ class UtilityController extends Controller
     public function store(StoreFormRequest $request)
     {
         Utility::firstOrCreate($request->validated());
+        Log::channel('slackUtility')->notice('Создана новая утилита', $request->validated());
+        Log::channel('slackUtility')->warning('Создана новая утилита', $request->validated());
+        Log::channel('slackUtility')->alert('Создана новая утилита', $request->validated());
         return redirect()->route('utilities.index');
     }
 
