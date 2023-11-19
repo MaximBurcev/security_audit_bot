@@ -9,34 +9,23 @@ use App\Models\Report;
 use App\Models\User;
 use App\Models\Utility;
 use App\Service\AuditService;
+use App\Service\DataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class MainController extends Controller
 {
 
-    public function __construct()
+    private DataService $dataService;
+
+    public function __construct(DataService $dataService)
     {
+        $this->dataService = $dataService;
         $this->authorizeResource(User::class);
     }
 
     public function index(){
-        $auditsCount = Cache::remember('auditsCount', env('CACHE_TTL'), function () {
-            return Audit::all()->count();
-        });
-
-        $reportsCount = Cache::remember('reportsCount', env('CACHE_TTL'), function () {
-            return Report::all()->count();
-        });
-
-        $projectsCount = Cache::remember('projectsCount', env('CACHE_TTL'), function () {
-            return Project::all()->count();
-        });
-
-        $utilitiesCount = Cache::remember('utilitiesCount', env('CACHE_TTL'), function () {
-            return Utility::all()->count();
-        });
-
-        return view('admin.main.index', compact('auditsCount', 'reportsCount', 'projectsCount', 'utilitiesCount'));
+        $dashboardData = $this->dataService->getDashboardData();
+        return view('admin.main.index', $dashboardData);
     }
 }

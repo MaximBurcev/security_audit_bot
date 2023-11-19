@@ -9,14 +9,14 @@ use App\Models\Utility;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 
-class warmup extends Command
+class WarmupCacheCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:warmup';
+    protected $signature = 'app:cache:warmup';
 
     /**
      * The console command description.
@@ -30,9 +30,9 @@ class warmup extends Command
      */
     public function handle()
     {
-        Cache::put('auditsCount', Audit::all()->count(), env('CACHE_TTL'));
-        Cache::put('reportsCount', Report::all()->count(), env('CACHE_TTL'));
-        Cache::put('projectsCount', Project::all()->count(), env('CACHE_TTL'));
-        Cache::put('utilitiesCount', Utility::all()->count(), env('CACHE_TTL'));
+        Cache::put('auditsCount', Audit::all()->count(), config('cache.ttl'));
+        Cache::put('reportsCount', Report::all()->count(), config('cache.ttl'));
+        Cache::put('projectsCount', Project::all()->count(), config('cache.ttl'));
+        Cache::put('utilitiesCount', Utility::all()->count(), config('cache.ttl'));
     }
 }
