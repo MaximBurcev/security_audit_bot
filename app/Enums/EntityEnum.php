@@ -4,13 +4,13 @@ namespace App\Enums;
 
 enum EntityEnum: string
 {
-    case AUDITS = 'audits';
+    case AUDIT = 'Audit';
 
-    case REPORTS = 'reports';
+    case REPORT = 'Report';
 
-    case PROJECTS = 'projects';
+    case PROJECT = 'Project';
 
-    case UTILITIES = 'utilities';
+    case UTILITY = 'Utility';
 
-    case ALL = 'all';
+    case ALL = 'All';
 }

@@ -60,8 +60,12 @@ class WarmupCacheCommand extends Command
         }
 
         if ($entity == EntityEnum::ALL->value) {
-            foreach (array_column(EntityEnum::cases(), 'value') as $entity) {
-                Cache::put($entity . 'Count', Audit::all()->count(), $ttl);
+            foreach (array_column(EntityEnum::cases(), 'value') as $enumEntity) {
+                if ($enumEntity == EntityEnum::ALL->value) {
+                    continue;
+                }
+                Cache::put($enumEntity . 'Count', call_user_func(['\\App\\Models\\' . $enumEntity, "all"])->count(),
+                    $ttl);
             }
 
             if ($ttl == self::ZERO_TTL) {
@@ -71,7 +75,7 @@ class WarmupCacheCommand extends Command
             }
 
         } else {
-            Cache::put($entity . 'Count', Audit::all()->count(), $ttl);
+            Cache::put($entity . 'Count', call_user_func(['\\App\\Models\\' . $entity, "all"])->count(), $ttl);
 
             if ($ttl == self::ZERO_TTL) {
                 $this->info("Clear $entity cache completed!");
