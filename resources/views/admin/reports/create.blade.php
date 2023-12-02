@@ -26,20 +26,14 @@
                         <select class="form-control form-control-user @error('status') is-invalid @enderror"
                                id="status"
                                 name="status"
+                                @readonly(true)
                         >
-                            <option value="" selected>Выберите статус</option>
                             @foreach($statuses as $status)
-                                <option value="{{ $status }}" @selected(old('status') == $status)>{{ $status }}</option>
+                                {{ var_dump($status) }}
+                                <option value="{{ $status }}">{{ $status }}</option>
                             @endforeach
                         </select>
                         @error('status')
-                        <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <textarea name="content" placeholder="Укажите содержимое для отчета" class="form-control @error('content') is-invalid @enderror">{{ old('content') }}</textarea>
-                        @error('content')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>

@@ -21,6 +21,11 @@
                     <a class="btn btn-primary" href="{{ route('reports.create') }}">Добавить</a>
                 </div>
 
+                <div class="mb-4">
+                    @if(Session::has('report.store'))
+                        <p class="alert alert-info">{{ Session::get('report.store') }}</p>
+                    @endif
+                </div>
 
                 <div class="card">
                     <div class="card-body table-responsive p-0">

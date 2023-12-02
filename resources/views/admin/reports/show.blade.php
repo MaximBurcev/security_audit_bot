@@ -45,9 +45,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Содержание</td>
+                                <td>Результат сканирования</td>
                                 <td>
-                                    {{ $report->content }}
+                                    {!! nl2br($report->content) !!}
                                 </td>
                             </tr>
                             </tbody>
@@ -59,10 +59,6 @@
 
                 </div>
 
-
-                <div class="mt-4">
-                    <a class="btn btn-primary" href="{{ route('reports.edit', $report->id) }}">Редактировать</a>
-                </div>
 
                 <div class="mt-4">
                     <form action="{{ route('reports.destroy', $report->id) }}" method="POST">

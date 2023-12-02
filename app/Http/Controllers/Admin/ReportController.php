@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Report\StoreFormRequest;
 use App\Http\Requests\Admin\Report\UpdateFormRequest;
+use App\Jobs\DoReportJob;
 use App\Models\Project;
 use App\Models\Report;
 use App\Models\Utility;
+use App\Service\ReportService;
+use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
 
-    public function __construct()
+    public function __construct(public readonly ReportService $reportService)
     {
         $this->authorizeResource(Report::class);
     }
@@ -42,8 +45,8 @@ class ReportController extends Controller
      */
     public function store(StoreFormRequest $request)
     {
-        Report::firstOrCreate($request->validated());
-        return redirect()->route('reports.index');
+        $this->reportService->store($request);
+        return redirect()->route('reports.index')->with('report.store', 'Создание отчета поставлено в очередь. Ожидайте.');
     }
 
     /**

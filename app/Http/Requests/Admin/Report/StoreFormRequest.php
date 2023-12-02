@@ -23,7 +23,6 @@ class StoreFormRequest extends FormRequest
     {
         return [
             'status'     => 'required|string',
-            'content'    => 'required|string',
             'utility_id' => 'required|integer',
             'project_id' => 'required|integer'
         ];
@@ -33,7 +32,6 @@ class StoreFormRequest extends FormRequest
     {
         return [
             'status.required'     => 'Укажите статус отчета',
-            'content.required'    => 'Контент не указан',
             'utility_id.required' => 'Утилита не выбрана',
             'project_id.required' => 'Проект не указан'
         ];
