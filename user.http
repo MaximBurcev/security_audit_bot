@@ -1,0 +1,39 @@
+### test
+GET http://laravel.otus/api/test?api_token=SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+Accept: application/json
+
+### GET users
+GET http://laravel.otus/api/users
+Accept: application/json
+Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+
+### GET user
+GET http://laravel.otus/api/users/2
+Accept: application/json
+Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+
+
+### DELETE user
+DELETE http://laravel.otus/api/users/4
+Accept: application/json
+
+
+### POST user
+POST http://laravel.otus/api/users
+Content-Type: application/x-www-form-urlencoded
+
+name = Max &
+email = maxim.b3@intensa.ru &
+password = R2NuUuLTHLeFFQYw
+
+
+
+
+
+### PUT user
+PUT http://laravel.otus/api/users/2
+Accept: application/json
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+
+name = WithToken

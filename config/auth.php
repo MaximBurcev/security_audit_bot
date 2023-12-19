@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard'     => 'web',
         'passwords' => 'users',
     ],
 
@@ -37,8 +37,13 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            'driver'   => 'session',
             'provider' => 'users',
+        ],
+        'api' => [
+            'driver'   => 'token',
+            'provider' => 'api_clients',
+            'hash'     => true,
         ],
     ],
 
@@ -60,11 +65,16 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'users'       => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model'  => App\Models\User::class,
         ],
-
+        'api_clients' => [ // <- Add the api_clients that was configured in our `api` guard
+                           'driver' => 'database',
+                           // We don't need eloquent
+                           'table'  => 'api_clients',
+                           // Change to be our table name, which happens to be the same as our provider name
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -93,8 +103,8 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table' => 'password_reset_tokens',
-            'expire' => 60,
+            'table'    => 'password_reset_tokens',
+            'expire'   => 60,
             'throttle' => 60,
         ],
     ],
