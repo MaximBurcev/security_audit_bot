@@ -139,6 +139,9 @@ use Illuminate\Http\Request;
  *        @OA\Response(
  *            response=200,
  *            description="OK",
+ *              @OA\JsonContent(
+ *                  @OA\Property(property="message", type="string", example="done")
+ *              ),
  *        ),
  *    ),
  */
@@ -181,7 +184,7 @@ class ReportController extends Controller
         Report::findOrFail($id)->delete();
 
         return response()->json([
-            'message' => 'OK'
+            'message' => 'done'
         ]);
     }
 }
