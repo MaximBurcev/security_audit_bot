@@ -27,9 +27,6 @@ email = maxim.b3@intensa.ru &
 password = R2NuUuLTHLeFFQYw
 
 
-
-
-
 ### PUT user
 PUT http://laravel.otus/api/users/2
 Accept: application/json
@@ -37,3 +34,44 @@ Content-Type: application/x-www-form-urlencoded
 Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
 
 name = WithToken
+
+
+### GET reports v1
+GET http://laravel.otus/api/v1/reports
+Accept: application/json
+Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+
+### CREATE reports v1
+POST http://laravel.otus/api/v1/reports
+Accept: application/json
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+
+status = Created &
+utility_id = 233 &
+project_id = 1
+
+### UPDATE reports v1
+PUT http://laravel.otus/api/v1/reports/160
+Accept: application/json
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+
+status = Created &
+utility_id = 232 &
+project_id = 2
+
+### show report v1
+GET http://laravel.otus/api/v1/reports/137
+Accept: application/json
+Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+
+### DELETE reports v1
+DELETE http://laravel.otus/api/v1/reports/137
+Accept: application/json
+Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+
+### GET reports v2
+GET http://laravel.otus/api/v2/reports
+Accept: application/json
+Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl

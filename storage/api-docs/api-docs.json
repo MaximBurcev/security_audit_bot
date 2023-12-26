@@ -1,0 +1,270 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Doc",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/": {},
+        "/api/v1/reports": {
+            "get": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Получение списка отчетов",
+                "operationId": "f5a7bc3651091437b8a06957c16de782",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 647
+                                                    },
+                                                    "utility_id": {
+                                                        "type": "integer",
+                                                        "example": 151
+                                                    },
+                                                    "project_id": {
+                                                        "type": "integer",
+                                                        "example": 6067
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Создание отчета",
+                "operationId": "b89d1ccd8cd9ad022d192abcff8f59ca",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "status": {
+                                                "type": "string",
+                                                "example": "Created"
+                                            },
+                                            "utility_id": {
+                                                "type": "integer",
+                                                "example": 12351
+                                            },
+                                            "project_id": {
+                                                "type": "integer",
+                                                "example": 678067
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 647
+                                                },
+                                                "utility_id": {
+                                                    "type": "integer",
+                                                    "example": 151
+                                                },
+                                                "project_id": {
+                                                    "type": "integer",
+                                                    "example": 6067
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reports/{report}": {
+            "get": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Получение отчета",
+                "operationId": "eda8d6f000ccf987c2beaf8c830b6d20",
+                "parameters": [
+                    {
+                        "name": "report",
+                        "in": "path",
+                        "description": "ID отчета",
+                        "required": true,
+                        "example": 647
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 647
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "Created"
+                                                },
+                                                "utility_id": {
+                                                    "type": "integer",
+                                                    "example": 151
+                                                },
+                                                "project_id": {
+                                                    "type": "integer",
+                                                    "example": 6067
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Обновление отчета",
+                "operationId": "b0dad0c10aee0e20e58399922b14d4bf",
+                "parameters": [
+                    {
+                        "name": "report",
+                        "in": "path",
+                        "description": "ID отчета",
+                        "required": true,
+                        "example": 647
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "status": {
+                                                "type": "string",
+                                                "example": "Created"
+                                            },
+                                            "utility_id": {
+                                                "type": "integer",
+                                                "example": 12351
+                                            },
+                                            "project_id": {
+                                                "type": "integer",
+                                                "example": 678067
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 647
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "Created"
+                                                },
+                                                "utility_id": {
+                                                    "type": "integer",
+                                                    "example": 151
+                                                },
+                                                "project_id": {
+                                                    "type": "integer",
+                                                    "example": 6067
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Удаление отчета",
+                "operationId": "b435d8e8221520ae2b78044cf17c72f3",
+                "parameters": [
+                    {
+                        "name": "report",
+                        "in": "path",
+                        "description": "ID отчета",
+                        "required": true,
+                        "example": 647
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    }
+}
