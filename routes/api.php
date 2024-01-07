@@ -23,15 +23,20 @@ Route::middleware('auth:api')->get('/test', function (Request $request) {
     return 'Authenticated!';
 });
 
-function apiRoutesV1(Router $router)
-{
-    $router->apiResource('/reports', ReportController::class);
+if (!function_exists('apiRoutesV1')) {
+    function apiRoutesV1(Router $router): void
+    {
+        $router->apiResource('/reports', ReportController::class)->names('api.v1.reports');
+    }
 }
 
-function apiRoutesV2(Router $router)
-{
-    $router->apiResource('/reports', \App\Http\Controllers\Api\V2\ReportController::class);
+if (!function_exists('apiRoutesV2')) {
+    function apiRoutesV2(Router $router): void
+    {
+        $router->apiResource('/reports', \App\Http\Controllers\Api\V2\ReportController::class);
+    }
 }
+
 
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], apiRoutesV1(...));
 

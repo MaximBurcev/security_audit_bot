@@ -62,7 +62,7 @@ utility_id = 232 &
 project_id = 2
 
 ### show report v1
-GET http://laravel.otus/api/v1/reports/137
+GET http://laravel.otus/api/v1/reports/138
 Accept: application/json
 Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
 
