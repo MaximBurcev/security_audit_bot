@@ -20,6 +20,8 @@ use Tests\TestCase;
 class ReportTest extends TestCase
 {
 
+    use RefreshDatabase;
+
     public function test_get_all_reports_with_no_token(): void
     {
         $url = route('api.v1.reports.index');
@@ -30,7 +32,9 @@ class ReportTest extends TestCase
 
     public function test_get_all_reports_with_token(): void
     {
-        $this->actingAs(User::all()->random(), 'api');
+        User::factory()->create();
+        $user = User::all()->random();
+        $this->actingAs($user, 'api');
         $url = route('api.v1.reports.index', ['token' => $this->generateToken()]);
         $response = $this->getJson($url);
 
@@ -49,7 +53,10 @@ class ReportTest extends TestCase
 
     public function test_get_report_with_token(): void
     {
-        $this->actingAs(User::all()->random(), 'api');
+        User::factory()->create();
+        Report::factory()->create();
+        $user = User::all()->random();
+        $this->actingAs($user, 'api');
         $url = route('api.v1.reports.show', ['report' => Report::all()->random(), 'token' => $this->generateToken()]);
         $response = $this->getJson($url);
 
@@ -66,7 +73,11 @@ class ReportTest extends TestCase
 
     public function test_create_report_with_token(): void
     {
-        $this->actingAs(User::all()->random(), 'api');
+        User::factory()->create();
+        Utility::factory()->create();
+        Project::factory()->create();
+        $user = User::all()->random();
+        $this->actingAs($user, 'api');
         $url = route('api.v1.reports.store', ['token' => $this->generateToken()]);
         $data = [
             'status'     => ReportStatusEnum::Created,
@@ -91,6 +102,7 @@ class ReportTest extends TestCase
 
     public function test_delete_report_with_no_token(): void
     {
+        Report::factory()->create();
         $url = route('api.v1.reports.destroy', ['report' => Report::all()->random()]);
         $response = $this->deleteJson($url);
 
@@ -99,7 +111,10 @@ class ReportTest extends TestCase
 
     public function test_delete_report_with_token(): void
     {
-        $this->actingAs(User::all()->random(), 'api');
+        User::factory()->create();
+        Report::factory()->create();
+        $user = User::all()->random();
+        $this->actingAs($user, 'api');
         $url = route('api.v1.reports.destroy',
             ['report' => Report::all()->random(), 'token' => $this->generateToken()]);
         $response = $this->deleteJson($url);
