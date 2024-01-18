@@ -11,6 +11,6 @@ class StartCommand extends Command
     protected string $description = 'Запуск/Перезапуск бота';
     public function handle()
     {
-        // TODO: Implement handle() method.
+        dd($this);
     }
 }
