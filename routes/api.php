@@ -43,4 +43,4 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], apiRoutesV1(...));
 
 Route::group(['prefix' => 'v2', 'middleware' => 'auth:api'], apiRoutesV2(...));
 
-Route::post('/webhook', WebhookController::class);
+

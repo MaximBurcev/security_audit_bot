@@ -23,4 +23,4 @@ Route::view('/terms', 'terms')->name('terms');
 
 Auth::routes();
 
-
+Route::post('/webhook', WebhookController::class);
