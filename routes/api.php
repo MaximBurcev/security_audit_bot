@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\V1\ReportController;
+use App\Http\Controllers\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -41,3 +42,5 @@ if (!function_exists('apiRoutesV2')) {
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], apiRoutesV1(...));
 
 Route::group(['prefix' => 'v2', 'middleware' => 'auth:api'], apiRoutesV2(...));
+
+Route::post('/webhook', WebhookController::class);
