@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,4 @@ Route::view('/terms', 'terms')->name('terms');
 Auth::routes();
 
 Route::post('/webhook', WebhookController::class);
+

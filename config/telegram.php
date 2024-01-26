@@ -32,11 +32,13 @@ return [
     */
     'bots' => [
         'max_security_audit_bot' => [
-            'token' => env('TELEGRAM_BOT_TOKEN', '6725460847:AAHPcBrou_s1DQC_E8pRaQS1_YERkmaiyzw'),
+            'token' => env('TELEGRAM_BOT_TOKEN', ''),
             'certificate_path' => env('TELEGRAM_CERTIFICATE_PATH', 'YOUR-CERTIFICATE-PATH'),
-            'webhook_url' => env('TELEGRAM_WEBHOOK_URL', 'https://security-audit-bot.ru/telegram/webhook'),
+            'webhook_url' => env('TELEGRAM_WEBHOOK_URL', ''),
             'commands' => [
                 App\Telegram\Commands\StartCommand::class,
+                App\Telegram\Commands\AboutCommand::class,
+                App\Telegram\Commands\TestCommand::class,
             ],
         ],
 

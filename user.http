@@ -17,6 +17,13 @@ Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4
 DELETE http://laravel.otus/api/users/4
 Accept: application/json
 
+### POST webhook
+POST https://7908-212-12-20-139.ngrok-free.app/webhook
+Content-Type: application/x-www-form-urlencoded
+
+name = Max &
+email = maxim.b3@intensa.ru &
+password = R2NuUuLTHLeFFQYw
 
 ### POST user
 POST http://laravel.otus/api/users
