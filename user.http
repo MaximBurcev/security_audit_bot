@@ -1,16 +1,16 @@
 ### test
-GET http://laravel.otus/api/test?api_token=SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+GET http://laravel.otus/api/test?api_token=
 Accept: application/json
 
 ### GET users
 GET http://laravel.otus/api/users
 Accept: application/json
-Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+Authorization: Bearer
 
 ### GET user
 GET http://laravel.otus/api/users/2
 Accept: application/json
-Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+Authorization: Bearer
 
 
 ### DELETE user
@@ -38,7 +38,7 @@ password = R2NuUuLTHLeFFQYw
 PUT http://laravel.otus/api/users/2
 Accept: application/json
 Content-Type: application/x-www-form-urlencoded
-Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+Authorization: Bearer
 
 name = WithToken
 
@@ -46,13 +46,13 @@ name = WithToken
 ### GET reports v1
 GET http://laravel.otus/api/v1/reports
 Accept: application/json
-Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+Authorization: Bearer
 
 ### CREATE reports v1
 POST http://laravel.otus/api/v1/reports
 Accept: application/json
 Content-Type: application/x-www-form-urlencoded
-Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+Authorization: Bearer
 
 status = Created &
 utility_id = 233 &
@@ -62,7 +62,7 @@ project_id = 1
 PUT http://laravel.otus/api/v1/reports/160
 Accept: application/json
 Content-Type: application/x-www-form-urlencoded
-Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+Authorization: Bearer
 
 status = Created &
 utility_id = 232 &
@@ -71,14 +71,14 @@ project_id = 2
 ### show report v1
 GET http://laravel.otus/api/v1/reports/138
 Accept: application/json
-Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+Authorization: Bearer
 
 ### DELETE reports v1
 DELETE http://laravel.otus/api/v1/reports/137
 Accept: application/json
-Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+Authorization: Bearer
 
 ### GET reports v2
 GET http://laravel.otus/api/v2/reports
 Accept: application/json
-Authorization: Bearer SeC6uOdA0dVy8hPQ1B4hFuhHxVhpJwwaJ6GcHZv5sRR3IcQce38PYNq7h4dl
+Authorization: Bearer
