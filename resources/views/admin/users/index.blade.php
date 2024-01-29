@@ -30,6 +30,7 @@
                                 <th>ID</th>
                                 <th>Логин</th>
                                 <th>Email</th>
+                                <th>Действия</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -38,6 +39,7 @@
                                     <td>{{ $user->id }}</td>
                                     <td><a href="{{ route('users.show', [app()->getLocale(), $user->id]) }}"> {{ $user->name }}</a></td>
                                     <td>{{ $user->email }}</td>
+                                    <td><a href="{{ route('users.reports', [app()->getLocale(), $user->id]) }}">Посмотреть отчеты</a></td>
                                 </tr>
                         @endforeach
                             </tbody>

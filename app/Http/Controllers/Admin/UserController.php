@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreFormRequest;
 use App\Http\Requests\Admin\User\UpdateFormRequest;
+use App\Models\Report;
 use App\Models\User;
 
 class UserController extends Controller
@@ -73,5 +74,17 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect()->route('users.index');
+    }
+
+    public function reports(User $user)
+    {
+        $reports = [];
+        foreach($user->audits as $audit) {
+            foreach($audit->reports as $report) {
+                $reports[] = $report;
+            }
+        }
+
+        return view('admin.users.reports', compact('reports'));
     }
 }

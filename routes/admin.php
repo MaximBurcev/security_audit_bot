@@ -25,6 +25,7 @@ Route::group(['middleware' => 'lang', 'prefix' => '{lang}/admin', 'where' => ['l
 
 Route::group(['middleware' => 'lang', 'prefix' => '{lang}/admin', 'where' => ['lang' => 'en|ru']], function () {
     Route::resource('users', UserController::class);
+    Route::get('/users/{user}/reports', [UserController::class, 'reports'])->name('users.reports');
 });
 
 
