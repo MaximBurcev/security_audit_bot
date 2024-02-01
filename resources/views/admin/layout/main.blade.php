@@ -58,7 +58,7 @@
 
         <li class="nav-item">
             <a class="nav-link" href="{{ route('users.index', [app()->getLocale()]) }}">
-                <i class="fas fa-fw fa-chart-area"></i>
+                <i class="fas fa-fw fa-user"></i>
                 <span>{{ trans('admin.users') }}</span></a>
         </li>
 
@@ -88,6 +88,12 @@
             <a class="nav-link" href="{{ route('audits.index') }}">
                 <i class="fas fa-fw fa-table"></i>
                 <span>{{ trans('admin.audits') }}</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('tasks.index') }}">
+                <i class="fas fa-fw fa-tasks"></i>
+                <span>{{ trans('admin.tasks') }}</span></a>
         </li>
 
         <!-- Divider -->

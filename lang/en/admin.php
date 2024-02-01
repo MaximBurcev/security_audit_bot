@@ -25,5 +25,6 @@ return [
     'auditsCount'    => 'Audits',
     'reportsCount'   => 'Reports',
     'projectsCount'  => 'Projects',
-    'utilitiesCount' => 'Utilities'
+    'utilitiesCount' => 'Utilities',
+    'tasks'          => 'Regular tasks'
 ];
