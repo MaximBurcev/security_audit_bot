@@ -5,7 +5,9 @@ namespace App\Console\Commands;
 use App\Enums\ReportStatusEnum;
 use App\Models\Project;
 use App\Models\Report;
+use App\Models\User;
 use App\Models\Utility;
+use App\Notifications\ReportUpdate;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
@@ -48,5 +50,8 @@ class ReportUpdateCommand extends Command
             ['report' => $report->id]);
         Log::channel('slackReport')->debug('Отчет обновился: ' . $reportUrl);
         Log::info('report.update', [$reportUrl]);
+        foreach ($report->audits as $audit) {
+            $audit->user->notify(new ReportUpdate($reportUrl));
+        }
     }
 }
