@@ -52,9 +52,7 @@
             <div class="row gx-4 justify-content-center">
                 <div class="col-lg-8">
                     <h2>Контакты</h2>
-                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero odio fugiat
-                        voluptatem dolor, provident officiis, id iusto! Obcaecati incidunt, qui nihil beatae magnam et
-                        repudiandae ipsa exercitationem, in, quo totam.</p>
+                    <p class="lead"><a href="https://t.me/max_security_audit_bot" target="_blank">https://t.me/max_security_audit_bot</a> </p>
                 </div>
             </div>
         </div>
