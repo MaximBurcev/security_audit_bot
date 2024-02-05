@@ -28,7 +28,7 @@
                                 <td>{{ $task->title }}</td>
                             </tr>
                             <tr>
-                                <td>Отчет</td>
+                                <td>ID Отчета</td>
                                 <td>
                                     {{ $task->report_id }}
                                 </td>

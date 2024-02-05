@@ -29,6 +29,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Название</th>
+                                <th>Cron</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -36,6 +37,7 @@
                                 <tr>
                                     <td>{{ $task->id }}</td>
                                     <td><a href="{{ route('tasks.show', $task->id) }}"> {{ $task->title }}</a></td>
+                                    <td>{{ $task->cron_format }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

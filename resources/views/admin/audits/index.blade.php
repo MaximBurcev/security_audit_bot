@@ -40,7 +40,7 @@
                                         <a href="{{ route('audits.show', $audit->id) }}">{{ $audit->title }}</a>
                                     </td>
                                     <td>
-                                        <a href="{{ route('users.show', $audit->user->id) }}">  {{ $audit->user->name }}</a>
+                                        <a href="{{ route('users.show', [app()->getLocale(), $audit->user->id]) }}">  {{ $audit->user->name }}</a>
                                     </td>
                                 </tr>
                             @endforeach

@@ -28,6 +28,7 @@
                                 <th>Статус</th>
                                 <th>Ссылка</th>
                                 <th>Дата создания</th>
+                                <th>Дата обновления</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -45,6 +46,7 @@
                     ['report' => $report->id]) }}">Посмотреть
                                             отчет</a></td>
                                     <td>{{$report->created_at}}</td>
+                                    <td>{{$report->updated_at}}</td>
                                 </tr>
                             @endforeach
                             </tbody>

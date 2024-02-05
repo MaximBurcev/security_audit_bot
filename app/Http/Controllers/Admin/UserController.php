@@ -81,9 +81,10 @@ class UserController extends Controller
         $reports = [];
         foreach($user->audits as $audit) {
             foreach($audit->reports as $report) {
-                $reports[] = $report;
+                $reports[$report->id] = $report;
             }
         }
+        ksort($reports);
 
         return view('admin.users.reports', compact('reports'));
     }

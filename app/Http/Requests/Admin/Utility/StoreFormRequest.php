@@ -30,9 +30,9 @@ class StoreFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.required'   => 'Укажите название проекта',
+            'title.required'   => 'Укажите название утилиты',
             'title.alpha'      => 'Название должно содержать только буквы',
-            'title.unique'     => 'Проект с таким названием уже есть',
+            'title.unique'     => 'Утилита с таким названием уже есть',
             'command.required' => 'Укажите команду для утилиты',
         ];
     }
