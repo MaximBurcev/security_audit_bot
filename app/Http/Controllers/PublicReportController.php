@@ -10,13 +10,13 @@ class PublicReportController extends Controller
 
     public function show($reportId, Request $request)
     {
-        if ($request->hasValidSignature()) {
+        //if ($request->hasValidSignature()) {
             $report = Report::findOrFail($reportId);
 
             return view('public_report', compact('report'));
-        } else {
-            abort(401);
-        }
+        //} else {
+         //   abort(401);
+        //}
 
     }
 }

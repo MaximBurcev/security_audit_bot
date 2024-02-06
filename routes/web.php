@@ -27,5 +27,5 @@ Auth::routes();
 
 Route::post('/webhook', WebhookController::class);
 
-Route::get('/public-report/{report}', [PublicReportController::class, 'show'])->name('public-report')->middleware('signed');
+Route::get('/public-report/{report}', [PublicReportController::class, 'show'])->name('public-report');
 
