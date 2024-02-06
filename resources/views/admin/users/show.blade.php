@@ -41,11 +41,11 @@
                 </div>
 
                 <div class="mt-4">
-                    <a class="btn btn-primary" href="{{ route('users.edit', $user->id) }}">Редактировать</a>
+                    <a class="btn btn-primary" href="{{ route('users.edit', [app()->getLocale(), $user->id]) }}">Редактировать</a>
                 </div>
 
                 <div class="mt-4">
-                    <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                    <form action="{{ route('users.destroy', [app()->getLocale(), $user->id]) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-secondary" value="Удалить" onclick="return confirm('Вы точно уверены?')">Удалить</button>
