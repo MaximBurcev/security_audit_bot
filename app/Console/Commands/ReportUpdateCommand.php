@@ -49,7 +49,7 @@ class ReportUpdateCommand extends Command
         $reportUrl = URL::signedRoute('public-report',
             ['report' => $report->id]);
         Log::channel('slackReport')->debug('Отчет обновился: ' . $reportUrl);
-        Log::info('report.update', [$reportUrl]);
+        info('report.update', [$reportUrl]);
         foreach ($report->audits as $audit) {
             $audit->user->notify(new ReportUpdate($reportUrl));
         }

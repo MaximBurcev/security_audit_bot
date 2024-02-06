@@ -15,7 +15,7 @@ class PublicReportController extends Controller
 
             return view('public_report', compact('report'));
         } else {
-            abort(403);
+            abort(401);
         }
 
     }
