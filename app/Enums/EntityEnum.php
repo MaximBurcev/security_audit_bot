@@ -12,5 +12,9 @@ enum EntityEnum: string
 
     case UTILITY = 'Utility';
 
+    case USER = 'User';
+
+    case TASK = 'Task';
+
     case ALL = 'All';
 }

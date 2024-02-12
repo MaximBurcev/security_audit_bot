@@ -10,8 +10,12 @@ use App\Models\Project;
 use App\Models\Report;
 use App\Models\User;
 use App\Models\Utility;
+use Illuminate\Bus\Batch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
+use Telegram\Bot\Api;
 use Telegram\Bot\Keyboard\Keyboard;
 
 class BotService
@@ -117,6 +121,7 @@ class BotService
                 Log::info('$arAuditData', $arAuditData);
 
                 if (!empty($arAuditData)) {
+                    $busChain = [];
                     foreach ($arAuditData as $arAuditDataItem) {
                         $arReportData = [
                             'project_id' => $arAuditDataItem['projectId'],
@@ -133,7 +138,7 @@ class BotService
                             'projectId' => $arReportData['project_id'],
                             'chatId'    => $chatId
                         ];
-                        BotReportJob::dispatch($arBotReportJobData);
+                        $busChain[] = new BotReportJob($arBotReportJobData);
 
                         $reportIds[] = $report->id;
                     }
@@ -148,14 +153,42 @@ class BotService
                     if (!empty($reportIds)) {
                         $audit->reports()->attach($reportIds);
                     }
+                    $auditId = $audit->id;
+
+                    BotMessage::where('user_id', '=', $userId)->delete();
+
+                    $bot->sendMessage([
+                        'chat_id' => $chatId,
+                        'text'    => 'Аудит проектов запущен. ',
+                    ]);
+
+                    $batch = Bus::batch($busChain)->progress(function (Batch $batch) use ($chatId) {
+                        info('Batch', $batch->toArray());
+                        $telegram = new Api(config('telegram.bots.max_security_audit_bot.token'));
+                        $telegram->sendMessage([
+                            'chat_id'    => $chatId,
+                            'text'       => 'Аудит готов на ' . $batch->progress() . '%',
+                        ]);
+                    })->then(function (Batch $batch) use ($chatId, $auditId) {
+                        $telegram = new Api(config('telegram.bots.max_security_audit_bot.token'));
+                        $reportsLinks = '';
+                        info('$auditId', [$auditId]);
+                        foreach (Audit::find($auditId)->reports as $report) {
+                            $reportUrl = URL::signedRoute('public-report', ['report' => $report->id]);
+                            $reportsLinks .= "<a href='{$reportUrl}'>{$report->id}</a>";
+                        }
+
+                        $telegram->sendMessage([
+                            'chat_id'    => $chatId,
+                            'text'       => 'Ссылки на отчеты ' . $reportsLinks,
+                            'parse_mode' => 'HTML',
+                        ]);
+                        info('Batch', ["Аудит завершен"]);
+                    })->dispatch();
+
+                    info('Batch id', [$batch->id]);
                 }
 
-                BotMessage::where('user_id', '=', $userId)->delete();
-
-                $bot->sendMessage([
-                    'chat_id' => $chatId,
-                    'text'    => 'Аудит проектов запущен. Ожидайте ссылки на отчеты',
-                ]);
             }
 
 

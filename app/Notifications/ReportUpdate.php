@@ -13,6 +13,8 @@ class ReportUpdate extends Notification
 
     private mixed $reportUrl;
 
+
+
     /**
      * Create a new notification instance.
      */
@@ -36,7 +38,7 @@ class ReportUpdate extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)->action('Посмотреть отчет', $this->reportUrl);
+        return (new MailMessage)->action('Посмотреть отчет', $this->reportUrl)->subject('Обновление отчета');
     }
 
     /**

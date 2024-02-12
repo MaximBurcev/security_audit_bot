@@ -6,6 +6,8 @@ use App\Enums\EntityEnum;
 use App\Models\Audit;
 use App\Models\Project;
 use App\Models\Report;
+use App\Models\Task;
+use App\Models\User;
 use App\Models\Utility;
 use Illuminate\Support\Facades\Cache;
 
@@ -32,6 +34,14 @@ class DataService
             return Utility::query()->count();
         });
 
-        return compact('auditsCount', 'reportsCount', 'projectsCount', 'utilitiesCount');
+        $usersCount = Cache::remember(EntityEnum::USER->value . self::SUFFIX, config('cache.ttl'), function () {
+            return User::query()->count();
+        });
+
+        $tasksCount = Cache::remember(EntityEnum::TASK->value . self::SUFFIX, config('cache.ttl'), function () {
+            return Task::query()->count();
+        });
+
+        return compact('auditsCount', 'reportsCount', 'projectsCount', 'utilitiesCount', 'usersCount', 'tasksCount');
     }
 }

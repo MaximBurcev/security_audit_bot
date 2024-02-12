@@ -24,7 +24,11 @@ class UpdateFormRequest extends FormRequest
         return [
             'title'       => 'required|string',
             'report_id'   => 'required|integer',
-            'cron_format' => 'required|string',
+            'cron_format' => [
+                'required',
+                'string',
+                'regex:/^((((\d+,)+\d+|(\d+(\/|-|#)\d+)|\d+L?|\*(\/\d+)?|L(-\d+)?|\?|[A-Z]{3}(-[A-Z]{3})?) ?){5,7})$/'
+            ],
         ];
     }
 
@@ -34,6 +38,7 @@ class UpdateFormRequest extends FormRequest
             'title.required'       => 'Название задачи не указано',
             'report_id.required'   => 'Вы не выбрали отчет',
             'cron_format.required' => 'Введите интервал выполнения задачи в cron-формате',
+            'cron_format.regex'    => 'Неверный формат'
         ];
     }
 }

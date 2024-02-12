@@ -6,6 +6,7 @@ use App\Enums\ReportStatusEnum;
 use App\Models\Project;
 use App\Models\Report;
 use App\Models\Utility;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,7 +20,7 @@ use Telegram\Bot\Api;
 
 class BotReportJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private mixed $arBotReportJobData;
 
@@ -51,12 +52,6 @@ class BotReportJob implements ShouldQueue
             'status'  => ReportStatusEnum::Finished
         ]);
 
-        $telegram = new Api(config('telegram.bots.max_security_audit_bot.token'));
-        $telegram->sendMessage([
-            'chat_id'    => $this->arBotReportJobData['chatId'],
-            'text'       => 'Ссылка на отчет <a href="' . URL::signedRoute('public-report',
-                    ['report' => $report->id]) . '">Здесь</a>',
-            'parse_mode' => 'HTML',
-        ]);
+
     }
 }

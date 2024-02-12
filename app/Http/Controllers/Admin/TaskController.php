@@ -29,7 +29,7 @@ class TaskController extends Controller
     public function store(StoreFormRequest $request)
     {
         Task::firstOrCreate($request->validated());
-        return view('admin.tasks.index');
+        return redirect()->route('tasks.index');
     }
 
     public function show(Task $task)

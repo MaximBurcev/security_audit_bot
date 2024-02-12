@@ -21,6 +21,7 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group">
+                        <label for="title">Название задачи</label>
                         <input
                                 type="text"
                                 class="form-control form-control-user @error('title') is-invalid @enderror"
@@ -35,6 +36,7 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="report_id">Отчет</label>
                         <select
                                 class="form-control form-control-user @error('report_id') is-invalid @enderror"
                                 id="report_id"
@@ -52,6 +54,7 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="cron_format">UNIX cron format</label>
                         <input
                                 type="text"
                                 class="form-control form-control-user @error('cron_format') is-invalid @enderror"

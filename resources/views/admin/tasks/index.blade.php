@@ -29,7 +29,10 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Название</th>
+                                <th>ID Отчета</th>
                                 <th>Cron</th>
+                                <th>Дата создания</th>
+                                <th>Дата изменения</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -37,7 +40,10 @@
                                 <tr>
                                     <td>{{ $task->id }}</td>
                                     <td><a href="{{ route('tasks.show', $task->id) }}"> {{ $task->title }}</a></td>
+                                    <td><a href="{{ route('reports.show', $task->report_id) }}">{{ $task->report_id }}</a> </td>
                                     <td>{{ $task->cron_format }}</td>
+                                    <td>{{ $task->created_at }}</td>
+                                    <td>{{ $task->updated_at }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

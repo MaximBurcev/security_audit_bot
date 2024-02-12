@@ -26,5 +26,7 @@ return [
     'reportsCount'   => 'Отчетов',
     'projectsCount'  => 'Проектов',
     'utilitiesCount' => 'Утилит',
+    'usersCount'     => 'Пользователей',
+    'tasksCount'     => 'Регулярных задач',
     'tasks'          => 'Регулярные задачи'
 ];
