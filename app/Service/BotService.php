@@ -159,7 +159,7 @@ class BotService
 
                     $bot->sendMessage([
                         'chat_id' => $chatId,
-                        'text'    => 'Аудит проектов запущен. ',
+                        'text'    => 'Аудит проектов запущен. Пожалуйста, ожидайте. ',
                     ]);
 
                     $batch = Bus::batch($busChain)->progress(function (Batch $batch) use ($chatId) {
@@ -175,7 +175,7 @@ class BotService
                         info('$auditId', [$auditId]);
                         foreach (Audit::find($auditId)->reports as $report) {
                             $reportUrl = URL::signedRoute('public-report', ['report' => $report->id]);
-                            $reportsLinks .= "<a href='{$reportUrl}'>{$report->id}</a>";
+                            $reportsLinks .= "<a href='{$reportUrl}'>№{$report->id}</a>";
                         }
 
                         $telegram->sendMessage([
