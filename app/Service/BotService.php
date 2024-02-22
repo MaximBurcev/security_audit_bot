@@ -171,16 +171,16 @@ class BotService
                         ]);
                     })->then(function (Batch $batch) use ($chatId, $auditId) {
                         $telegram = new Api(config('telegram.bots.max_security_audit_bot.token'));
-                        $reportsLinks = '';
                         info('$auditId', [$auditId]);
+                        $arReportLink = [];
                         foreach (Audit::find($auditId)->reports as $report) {
                             $reportUrl = URL::signedRoute('public-report', ['report' => $report->id]);
-                            $reportsLinks .= "<a href='{$reportUrl}'>№{$report->id}</a>";
+                            $arReportLink[] = "<a href='{$reportUrl}'>№{$report->id}</a>";
                         }
 
                         $telegram->sendMessage([
                             'chat_id'    => $chatId,
-                            'text'       => 'Ссылки на отчеты ' . $reportsLinks,
+                            'text'       => 'Ссылки на отчеты ' . implode(" ", $arReportLink),
                             'parse_mode' => 'HTML',
                         ]);
                         info('Batch', ["Аудит завершен"]);
@@ -188,14 +188,11 @@ class BotService
 
                     info('Batch id', [$batch->id]);
                 }
-
             }
-
 
         } else {
             $chatId = $arRequest['message']['chat']['id'];
             Log::info('no callback_query', ['chat_id' => $chatId]);
-
         }
     }
 }

@@ -13,10 +13,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
-use Telegram\Bot\BotsManager;
-use Telegram\Bot\Laravel\Facades\Telegram;
-use Telegram\Bot\Api;
 
 class BotReportJob implements ShouldQueue
 {

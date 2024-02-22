@@ -13,15 +13,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('inspire')->everyMinute()->sendOutputTo(storage_path('logs/inspire.log'), true);
-
         $schedule->command('app:clear-all-cache')->daily()->sendOutputTo(storage_path('logs/clear-all-cache.log'),
             true);
 
-        $schedule->command('app:cache:warmup')->dailyAt('07:00')->sendOutputTo(storage_path('logs/app.cache.warmup.log'),
+        $schedule->command('app:cache:warmup')->dailyAt('03:00')->sendOutputTo(storage_path('logs/app.cache.warmup.log'),
             true);
 
-        $tasks = Task::all();
+        $tasks = Task::query()->get();
         foreach ($tasks as $task) {
             $schedule->command('app:report.update',
                 [$task->report_id])->cron($task->cron_format)->sendOutputTo(storage_path('logs/app.report.update.log'),

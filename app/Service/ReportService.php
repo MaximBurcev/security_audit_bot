@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Http\Requests\Admin\Report\StoreFormRequest;
 use App\Http\Requests\Admin\Report\UpdateFormRequest;
-use App\Jobs\DoReportJob;
+use App\Jobs\BotReportJob;
 use App\Models\Audit;
 use App\Models\Utility;
 use Illuminate\Foundation\Http\FormRequest;
@@ -16,7 +16,7 @@ class ReportService
     public function store(StoreFormRequest $request): void
     {
         $data = $request->validated();
-        DoReportJob::dispatch($data);
+        BotReportJob::dispatch($data);
     }
 
 

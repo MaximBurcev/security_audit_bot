@@ -5,12 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Report\StoreFormRequest;
 use App\Http\Requests\Admin\Report\UpdateFormRequest;
-use App\Jobs\DoReportJob;
 use App\Models\Project;
 use App\Models\Report;
 use App\Models\Utility;
 use App\Service\ReportService;
-use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
