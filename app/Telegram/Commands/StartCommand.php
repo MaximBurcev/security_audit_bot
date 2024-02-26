@@ -56,8 +56,8 @@ class StartCommand extends Command
     private function addNewTelegramUser($userData): void
     {
         $this->user->insert([
-            'name'              => $userData->username,
-            'email'             => $userData->username . '@' . parse_url(config('app.url'), PHP_URL_HOST),
+            'name'              => $userData->username?? $userData->first_name,
+            'email'             => $userData->username?? $userData->first_name . '@' . parse_url(config('app.url'), PHP_URL_HOST),
             'email_verified_at' => now(),
             'password'          => Hash::make(fake()->password()),
             'remember_token'    => Str::random(10),
