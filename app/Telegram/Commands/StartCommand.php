@@ -28,7 +28,7 @@ class StartCommand extends Command
     {
         Log::info('StartCommand', [1]);
         $userData = $this->getUpdate()->message->from;
-        Log::info('$userData id', [$userData->id]);
+        Log::info('$userData', [$userData]);
         $userId = $userData->id;
         $telegramUser = $this->user->where('telegram_user_id', '=', $userId)->first();
         if (!$telegramUser) {
@@ -53,7 +53,7 @@ class StartCommand extends Command
         ]);
     }
 
-    private function addNewTelegramUser($userData)
+    private function addNewTelegramUser($userData): void
     {
         $this->user->insert([
             'name'              => $userData->username,
