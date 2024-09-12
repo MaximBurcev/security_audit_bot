@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('/users', UserController::class)->middleware('auth:api');
 
 Route::middleware('auth:api')->get('/test', function (Request $request) {
-    return 'Authenticated!';
+    return 'Authenticated!2';
 });
 
 
