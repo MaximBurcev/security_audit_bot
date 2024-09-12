@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('/users', UserController::class)->middleware('auth:api');
 
 Route::middleware('auth:api')->get('/statistic', function (Request $request) {
-    return \App\Models\User::query()->get();
+    return ['users' => \App\Models\User::query()->count()];
 });
 
 
