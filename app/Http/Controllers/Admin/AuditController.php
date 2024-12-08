@@ -8,7 +8,7 @@ use App\Http\Requests\Admin\Audit\UpdateFormRequest;
 use App\Models\Audit;
 use App\Models\Report;
 use App\Models\User;
-use App\Service\AuditService;
+use App\Services\AuditService;
 
 class AuditController extends Controller
 {

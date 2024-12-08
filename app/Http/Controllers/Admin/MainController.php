@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Service\DataService;
+use App\Services\DataService;
 
 class MainController extends Controller
 {

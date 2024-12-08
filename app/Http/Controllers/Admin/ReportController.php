@@ -8,7 +8,7 @@ use App\Http\Requests\Admin\Report\UpdateFormRequest;
 use App\Models\Project;
 use App\Models\Report;
 use App\Models\Utility;
-use App\Service\ReportService;
+use App\Services\ReportService;
 
 class ReportController extends Controller
 {

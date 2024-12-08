@@ -8,12 +8,13 @@
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
+        "laravel/horizon": "@stable",
         "laravel/sanctum": "^3.2",
+        "laravel/telescope": "@stable",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
         "maximburcev/security_audit_bot_statistic_page": "@dev",
-	    "laravel/telescope": "@stable",
-        "laravel/horizon": "@stable"
+        "nutgram/laravel": "^1.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

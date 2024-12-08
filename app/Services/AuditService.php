@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Services;
 
 use App\Http\Requests\Admin\Audit\StoreFormRequest;
 use App\Http\Requests\Admin\Audit\UpdateFormRequest;
