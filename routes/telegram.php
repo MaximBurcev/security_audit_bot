@@ -1,10 +1,12 @@
 <?php
 /** @var SergiX44\Nutgram\Nutgram $bot */
 
-use App\Models\Project;
 use App\Services\BotMessageService;
 use App\Services\ProjectService;
 use App\Services\UtilityService;
+use App\Telegram\Commands\AboutCommand;
+use App\Telegram\Commands\StartAuditCommand;
+use App\Telegram\Commands\StartCommand;
 use Illuminate\Support\Facades\Log;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
@@ -22,18 +24,8 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 
 $bot->onCommand('start', function (Nutgram $bot, ProjectService $projectService) {
-    Log::info('StartCommand', [1]);
 
-    $inlineKeyboardMarkup = InlineKeyboardMarkup::make();
-
-    foreach($projectService->getAll() as $project) {
-        $inlineKeyboardMarkup->addRow(InlineKeyboardButton::make($project->title, callback_data: 'project:' . $project->id));
-    }
-
-    $bot->sendMessage(
-        text: 'Выберите проект:',
-        reply_markup: $inlineKeyboardMarkup
-    );
+    (new StartCommand($bot, $projectService))->handle();
 
 });
 
@@ -64,9 +56,38 @@ $bot->onCallbackQueryData('project:{projectId}', function(Nutgram $bot, $project
 });
 
 $bot->onCallbackQueryData('utility:{utilityId}', function(Nutgram $bot, $utilityId, BotMessageService $botMessageService, UtilityService $utilityService) {
-   $bot->sendMessage($utilityId);
+
+    $userId = $bot->userId();
+    $strData = str_replace('{utilityId}', $utilityId, 'utility:{utilityId}');
+
+    Log::info('$userId', [$userId]);
+    Log::info('$strData', [$strData]);
+
+
+    $botMessageService->create([
+        'user_id' => $userId,
+        'data'    => $strData
+    ]);
+
+    $inlineKeyboardMarkup = InlineKeyboardMarkup::make()->addRow(
+        InlineKeyboardButton::make('Выбрать еще', callback_data: 'more'),
+        InlineKeyboardButton::make('Начать аудит', callback_data: 'startAudit')
+    );
+
+    $bot->sendMessage(
+        text: 'Что дальше?',
+        reply_markup: $inlineKeyboardMarkup
+    );
+});
+
+$bot->onCallbackQueryData('more', function(Nutgram $bot, ProjectService $projectService) {
+    (new StartCommand($bot, $projectService))->handle();
+});
+
+$bot->onCallbackQueryData('startAudit', function(Nutgram $bot, ProjectService $projectService, BotMessageService $botMessageService) {
+    (new StartAuditCommand($bot, $projectService, $botMessageService))->handle();
 });
 
 $bot->onCommand('about', function (Nutgram $bot) {
-    (new \App\Telegram\Commands\AboutCommand($bot))->handle();
+    (new AboutCommand($bot))->handle();
 });

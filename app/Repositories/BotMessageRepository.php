@@ -15,8 +15,8 @@ final class BotMessageRepository extends BaseRepository implements BaseContract
         parent::__construct($this->botMessage);
     }
 
-    public function getPublished(): Collection
+    public function getByUserId($userId): Collection
     {
-        return $this->model->where('is_published', true)->get();
+        return $this->model->where('user_id', $userId)->get();
     }
 }

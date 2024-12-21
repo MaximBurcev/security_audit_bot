@@ -2,16 +2,17 @@
 
 namespace App\Telegram\Commands;
 
-use App\Models\Project;
 use App\Models\User;
+use App\Services\ProjectService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
-use Telegram\Bot\Commands\Command;
-use Telegram\Bot\Keyboard\Keyboard;
+use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
-class StartCommand extends Command
+class StartCommand
 {
 
 
@@ -19,13 +20,15 @@ class StartCommand extends Command
     protected string $description = 'Запуск/Перезапуск бота';
     private User $user;
 
-    public function __construct(User $user)
+    public function __construct(protected Nutgram $bot, protected ProjectService $projectService)
     {
-        $this->user = $user;
+
     }
 
-    public function handle()
+    public function handle(): void
     {
+        /*
+
         Log::info('StartCommand', [1]);
         $userData = $this->getUpdate()->message->from;
         Log::info('$userData', [$userData]);
@@ -38,19 +41,20 @@ class StartCommand extends Command
             $this->replyWithMessage(['text' => 'Рады видеть вас снова!🥳']);
         }
 
-        $arProject = [];
-        foreach(Project::all() as $project) {
-            $arProject[] = Keyboard::button(['text' => $project->title, 'callback_data' => 'project:' . $project->id]);
+        */
+
+        Log::info('StartCommand', [1]);
+
+        $inlineKeyboardMarkup = InlineKeyboardMarkup::make();
+
+        foreach($this->projectService->getAll() as $project) {
+            $inlineKeyboardMarkup->addRow(InlineKeyboardButton::make($project->title, callback_data: 'project:' . $project->id));
         }
 
-        $keyboard = Keyboard::make()
-            ->inline()
-            ->row($arProject);
-
-        $this->replyWithMessage([
-            'text'         => 'Выберите проект:',
-            'reply_markup' => $keyboard
-        ]);
+        $this->bot->sendMessage(
+            text: 'Выберите проект:',
+            reply_markup: $inlineKeyboardMarkup
+        );
     }
 
     private function addNewTelegramUser($userData): void

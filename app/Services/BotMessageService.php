@@ -40,4 +40,9 @@ final class BotMessageService
     {
         return $this->botMessageRepository->delete($id);
     }
+
+    public function getByUserId(int $userId): Collection
+    {
+        return $this->botMessageRepository->getByUserId($userId);
+    }
 }
