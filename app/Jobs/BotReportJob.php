@@ -6,6 +6,9 @@ use App\Enums\ReportStatusEnum;
 use App\Models\Project;
 use App\Models\Report;
 use App\Models\Utility;
+use App\Services\ProjectService;
+use App\Services\ReportService;
+use App\Services\UtilityService;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,14 +21,17 @@ class BotReportJob implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private mixed $arBotReportJobData;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($arBotReportJobData)
+    public function __construct(
+        protected array          $arBotReportJobData,
+        protected UtilityService $utilityService,
+        protected ProjectService $projectService,
+        protected ReportService  $reportService,
+    )
     {
-        $this->arBotReportJobData = $arBotReportJobData;
     }
 
     /**
@@ -33,17 +39,19 @@ class BotReportJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $utility = Utility::query()->findOrFail($this->arBotReportJobData['utilityId']);
-        $project = Project::query()->findOrFail($this->arBotReportJobData['projectId']);
-        $report = Report::query()->findOrFail($this->arBotReportJobData['reportId']);
+        $utility = $this->utilityService->get($this->arBotReportJobData['utilityId']);
+        $project = $this->projectService->get($this->arBotReportJobData['projectId']);
         $url = $project->url;
 
-        $report->updateOrFail([
+        $this->reportService->update($this->arBotReportJobData['reportId'], [
             'status' => ReportStatusEnum::InProcess
         ]);
+
         $reportContent = shell_exec($utility->command . " " . parse_url($url, PHP_URL_HOST));
+
         Log::info(__CLASS__, ['command' => $utility->command, 'url' => $url]);
-        $report->updateOrFail([
+
+        $this->reportService->update($this->arBotReportJobData['reportId'], [
             'content' => $reportContent,
             'status'  => ReportStatusEnum::Finished
         ]);

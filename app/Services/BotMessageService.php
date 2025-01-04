@@ -45,4 +45,10 @@ final class BotMessageService
     {
         return $this->botMessageRepository->getByUserId($userId);
     }
+
+    public function deleteByTelegramUserId(int $telegramUserId): bool
+    {
+        return $this->botMessageRepository->deleteByTelegramUserId($telegramUserId);
+    }
+
 }

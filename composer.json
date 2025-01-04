@@ -20,7 +20,6 @@
         "barryvdh/laravel-debugbar": "^3.9",
         "darkaonline/l5-swagger": "8.5.2",
         "fakerphp/faker": "^1.9.1",
-        "irazasyed/telegram-bot-sdk": "v3.13.0",
         "laravel/envoy": "^2.8",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.39",
