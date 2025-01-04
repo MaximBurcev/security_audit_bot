@@ -3,9 +3,6 @@
 namespace App\Jobs;
 
 use App\Enums\ReportStatusEnum;
-use App\Models\Project;
-use App\Models\Report;
-use App\Models\Utility;
 use App\Services\ProjectService;
 use App\Services\ReportService;
 use App\Services\UtilityService;
