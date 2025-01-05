@@ -4,6 +4,7 @@ namespace App\Telegram\Commands;
 
 use App\Models\User;
 use App\Services\ProjectService;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
@@ -20,30 +21,31 @@ class StartCommand
     protected string $description = 'Запуск/Перезапуск бота';
     private User $user;
 
-    public function __construct(protected Nutgram $bot, protected ProjectService $projectService)
+    public function __construct(
+        protected Nutgram $bot,
+        protected ProjectService $projectService,
+        protected UserService $userService
+    )
     {
 
     }
 
     public function handle(): void
     {
-        /*
+
 
         Log::info('StartCommand', [1]);
-        $userData = $this->getUpdate()->message->from;
-        Log::info('$userData', [$userData]);
-        $userId = $userData->id;
-        $telegramUser = $this->user->where('telegram_user_id', '=', $userId)->first();
-        if (!$telegramUser) {
-            $this->addNewTelegramUser($userData);
-            $this->replyWithMessage(['text' => 'Добро пожаловать в наш телеграм бот!🥳']);
+        $telegramUser = $this->bot->user();
+        Log::info('$telegramUser', [$telegramUser]);
+        $user = $this->userService->getByTelegramId($telegramUser->id);
+        if (!$user) {
+            $this->userService->addTelegramUser($telegramUser);
+            $this->bot->sendMessage('Добро пожаловать в наш телеграм бот!🥳');
         } else {
-            $this->replyWithMessage(['text' => 'Рады видеть вас снова!🥳']);
+            $this->bot->sendMessage('Рады видеть вас снова!🥳');
         }
 
-        */
 
-        Log::info('StartCommand', [1]);
 
         $inlineKeyboardMarkup = InlineKeyboardMarkup::make();
 
@@ -57,15 +59,5 @@ class StartCommand
         );
     }
 
-    private function addNewTelegramUser($userData): void
-    {
-        $this->user->insert([
-            'name'              => $userData->username?? $userData->first_name,
-            'email'             => $userData->username?? $userData->first_name . '@' . parse_url(config('app.url'), PHP_URL_HOST),
-            'email_verified_at' => now(),
-            'password'          => Hash::make(fake()->password()),
-            'remember_token'    => Str::random(10),
-            'telegram_user_id'  => $userData->id
-        ]);
-    }
+
 }

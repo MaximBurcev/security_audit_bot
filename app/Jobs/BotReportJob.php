@@ -23,10 +23,7 @@ class BotReportJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        protected array          $arBotReportJobData,
-        protected UtilityService $utilityService,
-        protected ProjectService $projectService,
-        protected ReportService  $reportService,
+        protected array $arBotReportJobData,
     )
     {
     }
@@ -34,13 +31,13 @@ class BotReportJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(UtilityService $utilityService, ProjectService $projectService, ReportService $reportService): void
     {
-        $utility = $this->utilityService->get($this->arBotReportJobData['utilityId']);
-        $project = $this->projectService->get($this->arBotReportJobData['projectId']);
+        $utility = $utilityService->get($this->arBotReportJobData['utilityId']);
+        $project = $projectService->get($this->arBotReportJobData['projectId']);
         $url = $project->url;
 
-        $this->reportService->update($this->arBotReportJobData['reportId'], [
+        $reportService->update($this->arBotReportJobData['reportId'], [
             'status' => ReportStatusEnum::InProcess
         ]);
 
@@ -48,7 +45,7 @@ class BotReportJob implements ShouldQueue
 
         Log::info(__CLASS__, ['command' => $utility->command, 'url' => $url]);
 
-        $this->reportService->update($this->arBotReportJobData['reportId'], [
+        $reportService->update($this->arBotReportJobData['reportId'], [
             'content' => $reportContent,
             'status'  => ReportStatusEnum::Finished
         ]);

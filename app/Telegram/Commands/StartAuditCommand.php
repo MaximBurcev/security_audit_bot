@@ -57,7 +57,7 @@ class StartAuditCommand
     private function getAuditData(): array
     {
         $arAuditData = [];
-        $arBotMessage = $this->botMessageService->getByUserId($this->bot->userId());
+        $arBotMessage = $this->botMessageService->getByUserId($this->userService->getByTelegramId($this->bot->userId())->id);
         for ($i = 0; $i < count($arBotMessage); $i += 2) {
             Log::info('$arBotMessage', [$arBotMessage[$i]]);
             $projectIndex = $i;

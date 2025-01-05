@@ -7,6 +7,8 @@ namespace App\Services;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 final class UserService
 {
@@ -44,5 +46,17 @@ final class UserService
     public function getByTelegramId(?int $userId)
     {
         return $this->userRepository->getByTelegramId($userId);
+    }
+
+    public function addTelegramUser(\SergiX44\Nutgram\Telegram\Types\User\User $telegramUser): void
+    {
+        $this->userRepository->create([
+            'name'              => $telegramUser->username?? $telegramUser->first_name,
+            'email'             => $telegramUser->username?? $telegramUser->first_name . '@' . parse_url(config('app.url'), PHP_URL_HOST),
+            'email_verified_at' => now(),
+            'password'          => Hash::make(fake()->password()),
+            'remember_token'    => Str::random(10),
+            'telegram_user_id'  => $telegramUser->id
+        ]);
     }
 }

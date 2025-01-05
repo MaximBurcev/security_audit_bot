@@ -26,23 +26,22 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 */
 
 
-$bot->onCommand('start', function (Nutgram $bot, ProjectService $projectService) {
+$bot->onCommand('start', function (Nutgram $bot, ProjectService $projectService, UserService $userService) {
 
-    (new StartCommand($bot, $projectService))->handle();
+    (new StartCommand($bot, $projectService, $userService))->handle();
 
 });
 
-$bot->onCallbackQueryData('project:{projectId}', function (Nutgram $bot, $projectId, BotMessageService $botMessageService, UtilityService $utilityService) {
+$bot->onCallbackQueryData('project:{projectId}', function (Nutgram $bot, $projectId, BotMessageService $botMessageService, UtilityService $utilityService, UserService $userService ) {
 
-    $userId = $bot->userId();
     $strData = str_replace('{projectId}', $projectId, 'project:{projectId}');
 
-    Log::info('$userId', [$userId]);
+    Log::info('telegram user id', [$bot->userId()]);
     Log::info('$strData', [$strData]);
 
 
     $botMessageService->create([
-        'user_id' => $userId,
+        'user_id' => $userService->getByTelegramId($bot->userId())->id,
         'data'    => $strData
     ]);
 
@@ -58,17 +57,15 @@ $bot->onCallbackQueryData('project:{projectId}', function (Nutgram $bot, $projec
     );
 });
 
-$bot->onCallbackQueryData('utility:{utilityId}', function (Nutgram $bot, $utilityId, BotMessageService $botMessageService, UtilityService $utilityService) {
+$bot->onCallbackQueryData('utility:{utilityId}', function (Nutgram $bot, $utilityId, BotMessageService $botMessageService, UserService $userService) {
 
-    $userId = $bot->userId();
     $strData = str_replace('{utilityId}', $utilityId, 'utility:{utilityId}');
 
-    Log::info('$userId', [$userId]);
     Log::info('$strData', [$strData]);
 
 
     $botMessageService->create([
-        'user_id' => $userId,
+        'user_id' => $userService->getByTelegramId($bot->userId())->id,
         'data'    => $strData
     ]);
 
@@ -83,8 +80,8 @@ $bot->onCallbackQueryData('utility:{utilityId}', function (Nutgram $bot, $utilit
     );
 });
 
-$bot->onCallbackQueryData('more', function (Nutgram $bot, ProjectService $projectService) {
-    (new StartCommand($bot, $projectService))->handle();
+$bot->onCallbackQueryData('more', function (Nutgram $bot, ProjectService $projectService, UserService $userService) {
+    (new StartCommand($bot, $projectService, $userService))->handle();
 });
 
 $bot->onCallbackQueryData('startAudit', function (Nutgram $bot, ProjectService $projectService, BotMessageService $botMessageService, ReportService $reportService, AuditService $auditService, UserService $userService, UtilityService $utilityService) {
