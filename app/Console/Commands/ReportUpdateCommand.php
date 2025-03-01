@@ -8,6 +8,9 @@ use App\Models\Report;
 use App\Models\User;
 use App\Models\Utility;
 use App\Notifications\ReportUpdate;
+use App\Services\ProjectService;
+use App\Services\ReportService;
+use App\Services\UtilityService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
@@ -32,13 +35,13 @@ class ReportUpdateCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(ReportService $reportService, UtilityService $utilityService, ProjectService $projectService)
     {
         $reportId = $this->argument('report');
-        $report = Report::where('id', '=', $reportId)->get()->first();
+        $report = $reportService->get($reportId);
         $report->update(['status' => ReportStatusEnum::InProcess]);
-        $utility = Utility::query()->findOrFail($report->utility_id);
-        $project = Project::query()->findOrFail($report->project_id);
+        $utility = $utilityService->get($report->utility_id);
+        $project = $projectService->get($report->project_id);
         $command = $utility->command;
         $url = $project->url;
         $content = shell_exec(implode(" ", [$command, parse_url($url, PHP_URL_HOST)]));

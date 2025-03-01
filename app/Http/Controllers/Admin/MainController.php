@@ -17,7 +17,8 @@ class MainController extends Controller
         $this->authorizeResource(User::class);
     }
 
-    public function index(){
+    public function index()
+    {
         $dashboardData = $this->dataService->getDashboardData();
         return view('admin.main.index', $dashboardData);
     }

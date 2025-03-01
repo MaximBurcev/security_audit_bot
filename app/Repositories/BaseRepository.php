@@ -21,7 +21,7 @@ abstract class BaseRepository implements BaseContract
 
     public function findAll(): Collection
     {
-        return $this->model->get();
+        return $this->model->whereNull('deleted_at')->get();
     }
 
     public function create(array $data): Model
@@ -38,6 +38,6 @@ abstract class BaseRepository implements BaseContract
 
     public function delete(int $id): bool
     {
-        return $this->model->delete($id);
+        return $this->model->destroy($id);
     }
 }

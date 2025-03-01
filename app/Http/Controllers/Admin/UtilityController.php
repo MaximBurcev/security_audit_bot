@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Utility\StoreFormRequest;
 use App\Http\Requests\Admin\Utility\UpdateFormRequest;
 use App\Models\Utility;
+use App\Services\UtilityService;
 use Illuminate\Support\Facades\Log;
 
 class UtilityController extends Controller
@@ -20,9 +21,9 @@ class UtilityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(UtilityService $utilityService)
     {
-        $utilities = Utility::all();
+        $utilities = $utilityService->getAll();
         return view('admin.utilities.index', compact('utilities'));
     }
 
@@ -37,12 +38,9 @@ class UtilityController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreFormRequest $request)
+    public function store(StoreFormRequest $request, UtilityService $utilityService)
     {
-        Utility::firstOrCreate($request->validated());
-        Log::channel('slackUtility')->notice('Создана новая утилита', $request->validated());
-        Log::channel('slackUtility')->warning('Создана новая утилита', $request->validated());
-        Log::channel('slackUtility')->alert('Создана новая утилита', $request->validated());
+        $utilityService->create($request->validated());
         return redirect()->route('utilities.index');
     }
 
@@ -74,9 +72,9 @@ class UtilityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Utility $utility)
+    public function destroy(Utility $utility, UtilityService $utilityService)
     {
-        $utility->delete();
+        $utilityService->delete($utility->id);
         return redirect()->route('utilities.index');
     }
 }

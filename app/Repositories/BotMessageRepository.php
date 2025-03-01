@@ -20,8 +20,8 @@ final class BotMessageRepository extends BaseRepository implements BaseContract
         return $this->model->where('user_id', $userId)->get();
     }
 
-    public function deleteByTelegramUserId(int $telegramUserId): bool
+    public function deleteByUserId(int $userId): bool
     {
-        return $this->model->where('user_id', '=', $telegramUserId)->delete();
+        return $this->model->where('user_id', '=', $userId)->delete();
     }
 }

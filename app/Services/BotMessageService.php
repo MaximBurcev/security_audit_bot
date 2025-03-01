@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 final class BotMessageService
 {
     public function __construct(
-        protected BotMessageRepository $botMessageRepository
+        protected BotMessageRepository $botMessageRepository, protected UserService $userService
     )
     {
     }
@@ -48,7 +48,12 @@ final class BotMessageService
 
     public function deleteByTelegramUserId(int $telegramUserId): bool
     {
-        return $this->botMessageRepository->deleteByTelegramUserId($telegramUserId);
+        return $this->botMessageRepository->deleteByUserId($telegramUserId);
+    }
+
+    public function deleteByUserId(?int $userId): bool
+    {
+        return $this->botMessageRepository->deleteByUserId($userId);
     }
 
 }

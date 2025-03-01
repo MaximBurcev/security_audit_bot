@@ -4,9 +4,8 @@ namespace App\Telegram\Commands;
 
 use Illuminate\Support\Facades\Log;
 use SergiX44\Nutgram\Nutgram;
-use Telegram\Bot\Commands\Command;
 
-class AboutCommand extends Command
+class AboutCommand
 {
 
     public function __construct(protected Nutgram $bot)

@@ -61,6 +61,7 @@
                             @endforeach
                             </tbody>
                         </table>
+                        {{ $reports->links() }}
                     </div>
                 </div>
             </div>

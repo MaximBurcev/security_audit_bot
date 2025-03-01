@@ -7,13 +7,12 @@ use App\Services\ProjectService;
 use App\Services\ReportService;
 use App\Services\UserService;
 use App\Services\UtilityService;
+use App\Telegram\Callbacks\ProjectCallback;
+use App\Telegram\Callbacks\UtilityCallback;
 use App\Telegram\Commands\AboutCommand;
 use App\Telegram\Commands\StartAuditCommand;
 use App\Telegram\Commands\StartCommand;
-use Illuminate\Support\Facades\Log;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,52 +31,14 @@ $bot->onCommand('start', function (Nutgram $bot, ProjectService $projectService,
 
 });
 
-$bot->onCallbackQueryData('project:{projectId}', function (Nutgram $bot, $projectId, BotMessageService $botMessageService, UtilityService $utilityService, UserService $userService ) {
+$bot->onCallbackQueryData('project:{projectId}', function (Nutgram $bot, $projectId, BotMessageService $botMessageService, UtilityService $utilityService, UserService $userService) {
 
-    $strData = str_replace('{projectId}', $projectId, 'project:{projectId}');
-
-    Log::info('telegram user id', [$bot->userId()]);
-    Log::info('$strData', [$strData]);
-
-
-    $botMessageService->create([
-        'user_id' => $userService->getByTelegramId($bot->userId())->id,
-        'data'    => $strData
-    ]);
-
-    $inlineKeyboardMarkup = InlineKeyboardMarkup::make();
-
-    foreach ($utilityService->getAll() as $utility) {
-        $inlineKeyboardMarkup->addRow(InlineKeyboardButton::make($utility->title, callback_data: 'utility:' . $utility->id));
-    }
-
-    $bot->sendMessage(
-        text: 'Выберите утилиту:',
-        reply_markup: $inlineKeyboardMarkup
-    );
+    (new ProjectCallback($bot, $projectId, $botMessageService, $utilityService, $userService))->handle();
 });
 
 $bot->onCallbackQueryData('utility:{utilityId}', function (Nutgram $bot, $utilityId, BotMessageService $botMessageService, UserService $userService) {
 
-    $strData = str_replace('{utilityId}', $utilityId, 'utility:{utilityId}');
-
-    Log::info('$strData', [$strData]);
-
-
-    $botMessageService->create([
-        'user_id' => $userService->getByTelegramId($bot->userId())->id,
-        'data'    => $strData
-    ]);
-
-    $inlineKeyboardMarkup = InlineKeyboardMarkup::make()->addRow(
-        InlineKeyboardButton::make('Выбрать еще', callback_data: 'more'),
-        InlineKeyboardButton::make('Начать аудит', callback_data: 'startAudit')
-    );
-
-    $bot->sendMessage(
-        text: 'Что дальше?',
-        reply_markup: $inlineKeyboardMarkup
-    );
+    (new UtilityCallback($bot, $utilityId, $botMessageService, $userService))->handle();
 });
 
 $bot->onCallbackQueryData('more', function (Nutgram $bot, ProjectService $projectService, UserService $userService) {
@@ -91,3 +52,5 @@ $bot->onCallbackQueryData('startAudit', function (Nutgram $bot, ProjectService $
 $bot->onCommand('about', function (Nutgram $bot) {
     (new AboutCommand($bot))->handle();
 });
+
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\PaginationHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Report\StoreFormRequest;
 use App\Http\Requests\Admin\Report\UpdateFormRequest;
@@ -23,7 +24,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $reports = Report::all();
+        $reports = $this->reportService->getAll()->paginate(env('SHOW_PER_PAGE'));
         return view('admin.reports.index', compact('reports'));
     }
 

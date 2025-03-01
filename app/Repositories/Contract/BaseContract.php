@@ -37,7 +37,7 @@ interface BaseContract
      *
      * @param int $id
      * @param array $data
-     * @return Model
+     * @return integer
      */
     public function update(int $id, array $data): int;
 

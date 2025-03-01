@@ -103,7 +103,7 @@ class StartAuditCommand
         }
 
 
-        $this->botMessageService->deleteByTelegramUserId($this->bot->userId());
+        $this->botMessageService->deleteByUserId($this->userService->getByTelegramId($this->bot->userId())->id);
 
         $this->bot->sendMessage('Аудит проектов запущен. Пожалуйста, ожидайте.');
 

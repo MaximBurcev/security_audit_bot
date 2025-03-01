@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\Utility;
 use App\Repositories\UtilityRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 
 final class UtilityService
 {
@@ -28,6 +29,9 @@ final class UtilityService
 
     public function create(array $data = []): Utility
     {
+        Log::channel('slackUtility')->notice('Создана новая утилита', $data);
+        Log::channel('slackUtility')->warning('Создана новая утилита', $data);
+        Log::channel('slackUtility')->alert('Создана новая утилита', $data);
         return $this->utilityRepository->create($data);
     }
 
