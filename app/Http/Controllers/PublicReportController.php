@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\ReportAnalyzer\NiktoReportAnalyzerStrategy;
 use App\ReportAnalyzer\NmapReportAnalyzerStrategy;
 use App\ReportAnalyzer\ReportAnalyzer;
 use App\ReportAnalyzer\SslReportAnalyzerStrategy;
@@ -18,7 +19,7 @@ class PublicReportController extends Controller
             $report = $reportService->get($reportId);
 
             $strategy = match ($report->utility->title) {
-                'nikto' => $this->analyzeNiktoOutput($outputLines),
+                'nikto' => new NiktoReportAnalyzerStrategy(),
                 'nmap' => new NmapReportAnalyzerStrategy(),
                 'sslscan' => new SslReportAnalyzerStrategy(),
                 default => [],
