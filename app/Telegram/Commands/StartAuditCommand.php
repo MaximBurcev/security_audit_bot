@@ -119,9 +119,9 @@ class StartAuditCommand
         info('runAudit', ['chatId' => $chatId, 'auditId' => $auditId]);
 
         $batch = Bus::batch($this->busChain)->progress(function (Batch $batch) use ($chatId) {
-            //info('Batch', $batch->toArray());
+            info('Batch', $batch->toArray());
 
-            Telegram::sendMessage('Аудит готов на ' . $batch->progress() . '%', $chatId);
+            //Telegram::sendMessage('Аудит готов на ' . $batch->progress() . '%', $chatId);
 
         })->then(function (Batch $batch) use ($auditId, $chatId) {
 
@@ -132,7 +132,7 @@ class StartAuditCommand
                 $arReportLink[] = "<a href='{$reportUrl}'>№{$report->id}</a>";
             }
 
-            Telegram::sendMessage(text: 'Ссылки на отчеты ' . implode(" ", $arReportLink), chat_id: $chatId, parse_mode: 'html');
+            //Telegram::sendMessage(text: 'Ссылки на отчеты ' . implode(" ", $arReportLink), chat_id: $chatId, parse_mode: 'html');
 
             info('Batch', ["Аудит завершен"]);
 
