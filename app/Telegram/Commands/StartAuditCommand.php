@@ -116,6 +116,8 @@ class StartAuditCommand
 
         $chatId = $this->bot->chatId();
 
+        info('runAudit', ['chatId' => $chatId, 'auditId' => $auditId]);
+
         $batch = Bus::batch($this->busChain)->progress(function (Batch $batch) use ($chatId) {
             info('Batch', $batch->toArray());
 
