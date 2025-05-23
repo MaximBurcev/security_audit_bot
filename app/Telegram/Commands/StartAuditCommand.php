@@ -119,7 +119,7 @@ class StartAuditCommand
         info('runAudit', ['chatId' => $chatId, 'auditId' => $auditId]);
 
         $batch = Bus::batch($this->busChain)->progress(function (Batch $batch) use ($chatId) {
-            info('Batch', $batch->toArray());
+            //info('Batch', $batch->toArray());
 
             Telegram::sendMessage('Аудит готов на ' . $batch->progress() . '%', $chatId);
 
