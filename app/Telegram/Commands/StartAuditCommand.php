@@ -127,7 +127,7 @@ class StartAuditCommand
 
             info('$auditId', [$auditId]);
             $arReportLink = [];
-            foreach ($this->auditService->get($auditId)->reports as $report) {
+            foreach (Audit::find($auditId)->reports as $report) {
                 $reportUrl = URL::signedRoute('public-report', ['report' => $report->id]);
                 $arReportLink[] = "<a href='{$reportUrl}'>№{$report->id}</a>";
             }
