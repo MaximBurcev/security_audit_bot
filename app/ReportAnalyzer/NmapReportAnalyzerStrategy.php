@@ -31,11 +31,19 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
     {
         $recommendations = [];
         $portIndex = []; // port/proto => index in $recommendations
+        $currentScript = null; // последний NSE-скрипт: "| script-name:"
 
         foreach ($output as $line) {
+            // Отслеживаем имя NSE-скрипта по заголовку "| script-name:"
+            if (preg_match('/^\| ([\w-]+):$/', trim($line), $m)) {
+                $currentScript = $m[1];
+            }
+
             foreach ($this->patterns as $pattern => $type) {
                 if (preg_match($pattern, $line, $matches)) {
-                    $problem = $this->extractProblem($type, $line, $matches);
+                    $problem = $type === 'Уязвимость' && $currentScript
+                        ? $currentScript
+                        : $this->extractProblem($type, $line, $matches);
                     $item = [
                         'type'           => $type,
                         'problem'        => $problem,
@@ -81,7 +89,7 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
         return match ($type) {
             'Открытый порт'                   => "Проверьте необходимость порта $problem. Закройте его, если сервис не используется.",
             'CVE-уязвимость'                  => "Обнаружена уязвимость $problem. Примените патч или обновите уязвимый компонент.",
-            'Уязвимость'                      => "NSE-скрипт обнаружил уязвимость. Изучите полный отчёт и устраните проблему.",
+            'Уязвимость'                      => "NSE-скрипт «$problem» обнаружил уязвимость. Изучите полный отчёт и устраните проблему.",
             'Небезопасная конфигурация SMB'   => "Подпись SMB-пакетов отключена. Включите message signing для защиты от relay-атак.",
             'Небезопасные HTTP-методы'        => "Отключите небезопасные HTTP-методы ($problem) в конфигурации веб-сервера.",
             'Анонимный доступ FTP'            => "Анонимный вход на FTP-сервер разрешён. Отключите анонимный доступ.",
