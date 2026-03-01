@@ -6,31 +6,38 @@ class SslReportAnalyzerStrategy implements ReportAnalyzerInterface
 {
 
 
+    private array $patterns = [
+        '/Accepted\s+SSLv[0-9]/'               => 'Устаревший протокол',
+        '/Accepted\s+TLSv1\.0/'                => 'Устаревший протокол',
+        '/Accepted\s+cipher:\s+(WEAK|EXPORT)/' => 'Небезопасный шифр',
+        '/No certificate found/'               => 'Отсутствует сертификат',
+        '/Certificate\s+not\s+trusted/'        => 'Недостоверный сертификат',
+        '/Expired\s+certificate/'              => 'Истекший сертификат',
+        '/Self-signed certificate/'            => 'Самоподписанный сертификат',
+    ];
+
+    private array $severities = [
+        'Отсутствует сертификат'    => 'critical',
+        'Устаревший протокол'       => 'high',
+        'Небезопасный шифр'        => 'high',
+        'Истекший сертификат'       => 'high',
+        'Недостоверный сертификат'  => 'medium',
+        'Самоподписанный сертификат' => 'medium',
+    ];
+
     public function analyzeOutput($output): array
     {
         $recommendations = [];
 
-        // Регулярные выражения для обнаружения различных типов проблем
-        $patterns = [
-            '/Accepted\s+SSLv[0-9]/'               => 'Устаревший протокол',
-            '/Accepted\s+TLSv1\.0/'                => 'Устаревший протокол',
-            '/Accepted\s+cipher:\s+(WEAK|EXPORT)/' => 'Небезопасный шифр',
-            '/No certificate found/'               => 'Отсутствует сертификат',
-            '/Certificate\s+not\s+trusted/'        => 'Недостоверный сертификат',
-            '/Expired\s+certificate/'              => 'Истекший сертификат',
-            '/Self-signed certificate/'            => 'Самоподписанный сертификат',
-        ];
-
-        // Проходим по каждой строке вывода SSLScan
         foreach ($output as $line) {
-            foreach ($patterns as $pattern => $type) {
+            foreach ($this->patterns as $pattern => $type) {
                 if (preg_match($pattern, $line, $matches)) {
                     $problem = trim($matches[0]);
-                    $recommendation = $this->getRecommendation($type, $problem);
                     $recommendations[] = [
                         'type'           => $type,
                         'problem'        => $problem,
-                        'recommendation' => $recommendation,
+                        'recommendation' => $this->getRecommendation($type, $problem),
+                        'severity'       => $this->severities[$type] ?? 'low',
                     ];
                     break;
                 }

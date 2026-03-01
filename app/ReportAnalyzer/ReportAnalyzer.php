@@ -25,6 +25,8 @@ class ReportAnalyzer
     }
 
 
+    private const SEVERITY_ORDER = ['critical' => 0, 'high' => 1, 'medium' => 2, 'low' => 3];
+
     public function get($report): array
     {
         $seen = [];
@@ -37,6 +39,11 @@ class ReportAnalyzer
                 $result[] = $item;
             }
         }
+
+        usort($result, fn($a, $b) =>
+            (self::SEVERITY_ORDER[$a['severity'] ?? 'low'] ?? 3)
+            <=> (self::SEVERITY_ORDER[$b['severity'] ?? 'low'] ?? 3)
+        );
 
         return $result;
     }

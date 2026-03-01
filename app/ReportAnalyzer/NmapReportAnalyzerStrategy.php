@@ -17,6 +17,16 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
         '/Valid credentials/'                                    => 'Стандартные учетные данные',
     ];
 
+    private array $severities = [
+        'Стандартные учетные данные'    => 'critical',
+        'CVE-уязвимость'               => 'high',
+        'Уязвимость'                   => 'high',
+        'Небезопасная конфигурация SMB' => 'high',
+        'Анонимный доступ FTP'         => 'high',
+        'Небезопасные HTTP-методы'     => 'medium',
+        'Открытый порт'                => 'low',
+    ];
+
     public function analyzeOutput($output): array
     {
         $recommendations = [];
@@ -29,6 +39,7 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
                         'type'           => $type,
                         'problem'        => $problem,
                         'recommendation' => $this->getRecommendation($type, $problem),
+                        'severity'       => $this->severities[$type] ?? 'low',
                         'link'           => $type === 'CVE-уязвимость'
                             ? "https://nvd.nist.gov/vuln/detail/{$problem}"
                             : null,

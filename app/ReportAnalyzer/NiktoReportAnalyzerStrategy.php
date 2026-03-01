@@ -7,30 +7,37 @@ use App\ReportAnalyzer\ReportAnalyzerInterface;
 class NiktoReportAnalyzerStrategy implements ReportAnalyzerInterface
 {
 
+    private array $patterns = [
+        '/+ OSVDB-[0-9]+: (.+)/'                => 'Уязвимость',
+        '/+ Server leaks inodes via ETags/'     => 'Утечка информации',
+        '/+ Apache mod_negotiation is enabled/' => 'Небезопасная конфигурация',
+        '/+ Unnecessary service/.*running/'     => 'Ненужный сервис',
+        '/+ Allowed HTTP Methods: .+/'          => 'HTTP методы',
+        '/+ Web Server is outdated/'            => 'Устаревшее ПО',
+    ];
+
+    private array $severities = [
+        'Уязвимость'             => 'high',
+        'Устаревшее ПО'          => 'high',
+        'Утечка информации'      => 'medium',
+        'Небезопасная конфигурация' => 'medium',
+        'HTTP методы'            => 'medium',
+        'Ненужный сервис'        => 'low',
+    ];
+
     public function analyzeOutput($output): array
     {
         $recommendations = [];
 
-        // Регулярные выражения для обнаружения различных типов проблем
-        $patterns = [
-            '/+ OSVDB-[0-9]+: (.+)/'                => 'Уязвимость',
-            '/+ Server leaks inodes via ETags/'     => 'Утечка информации',
-            '/+ Apache mod_negotiation is enabled/' => 'Небезопасная конфигурация',
-            '/+ Unnecessary service/.*running/'     => 'Ненужный сервис',
-            '/+ Allowed HTTP Methods: .+/'          => 'HTTP методы',
-            '/+ Web Server is outdated/'            => 'Устаревшее ПО',
-        ];
-
-        // Проходим по каждой строке вывода Nikto
         foreach ($output as $line) {
-            foreach ($patterns as $pattern => $type) {
+            foreach ($this->patterns as $pattern => $type) {
                 if (preg_match($pattern, $line, $matches)) {
                     $problem = trim($matches[1] ?? $line);
-                    $recommendation = $this->getRecommendation($type, $problem);
                     $recommendations[] = [
                         'type'           => $type,
                         'problem'        => $problem,
-                        'recommendation' => $recommendation,
+                        'recommendation' => $this->getRecommendation($type, $problem),
+                        'severity'       => $this->severities[$type] ?? 'low',
                     ];
                     break;
                 }
