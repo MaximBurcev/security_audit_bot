@@ -22,7 +22,7 @@ $dirReleases = $dirBase . '/releases';
 $dirCurrentRelease = $dirReleases . '/' . $date->format('YmdHis');
 @endsetup
 
-@servers(['production' => '{{$authUser}}@{{$authServer}}'])
+@servers(['production' => "$authUser@$authServer"])
 
 @story('deploy', ['on' => 'production'])
 gitclone
