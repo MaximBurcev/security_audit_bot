@@ -17,6 +17,9 @@
                 <strong>Тип:</strong> {{ $recommendation['type'] }}<br>
             <strong>Проблема:</strong> {{ $recommendation['problem'] }}<br>
             <strong>Рекомендация:</strong> {{ $recommendation['recommendation'] }}
+            @if(!empty($recommendation['link']))
+                <a href="{{ $recommendation['link'] }}" target="_blank" rel="noopener noreferrer">Подробнее →</a>
+            @endif
             </p>
             <br>
         @endforeach

@@ -40,6 +40,9 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
                         'type'           => $type,
                         'problem'        => $problem,
                         'recommendation' => $this->getRecommendation($type, $problem),
+                        'link'           => $type === 'CVE-уязвимость'
+                            ? "https://nvd.nist.gov/vuln/detail/{$problem}"
+                            : null,
                     ];
                     break;
                 }
