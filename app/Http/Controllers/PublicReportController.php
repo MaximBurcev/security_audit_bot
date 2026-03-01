@@ -24,8 +24,8 @@ class PublicReportController extends Controller
                 $raw = $data['raw'] ?? '';
                 $recommendations = $data['analysis'] ?? [];
             } else {
-                // Старый формат: сырой текст — анализируем на лету
-                $raw = $report->content;
+                // Старый формат: сырой текст — стрипаем ANSI и анализируем на лету
+                $raw = $this->stripAnsi($report->content);
                 $strategy = match ($report->utility->title) {
                     'nikto'   => new NiktoReportAnalyzerStrategy(),
                     'nmap'    => new NmapReportAnalyzerStrategy(),
@@ -41,5 +41,10 @@ class PublicReportController extends Controller
         } else {
             abort(401);
         }
+    }
+
+    private function stripAnsi(string $text): string
+    {
+        return preg_replace('/\x1b\[[0-9;]*[A-Za-z]/', '', $text);
     }
 }

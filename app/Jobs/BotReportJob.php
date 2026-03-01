@@ -45,16 +45,21 @@ class BotReportJob implements ShouldQueue
             'status' => ReportStatusEnum::InProcess
         ]);
 
-        $raw = shell_exec($utility->command . " " . escapeshellarg(parse_url($url, PHP_URL_HOST)));
+        $raw = $this->stripAnsi(shell_exec($utility->command . " " . escapeshellarg(parse_url($url, PHP_URL_HOST))) ?? '');
 
         Log::info(__CLASS__, ['command' => $utility->command, 'url' => $url]);
 
-        $analysis = $this->analyze($utility->title, $raw ?? '');
+        $analysis = $this->analyze($utility->title, $raw);
 
         $reportService->update($this->arBotReportJobData['reportId'], [
             'content' => json_encode(['raw' => $raw, 'analysis' => $analysis]),
             'status'  => ReportStatusEnum::Finished
         ]);
+    }
+
+    private function stripAnsi(string $text): string
+    {
+        return preg_replace('/\x1b\[[0-9;]*[A-Za-z]/', '', $text);
     }
 
     private function analyze(string $utilityTitle, string $raw): array
