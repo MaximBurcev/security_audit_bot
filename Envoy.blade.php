@@ -60,7 +60,7 @@ echo "# Repository has been cloned"
 echo "# Composer task"
 
 cd {{$dirCurrentRelease}}
-composer install --no-interaction --quiet --no-dev --prefer-dist --optimize-autoloader
+composer install --no-interaction --quiet --no-dev --prefer-dist --optimize-autoloader --no-scripts
 
 echo "# Composer dependencies have been installed"
 @endtask
@@ -101,6 +101,9 @@ sudo chgrp -R www-data {{$dirShared}};
 sudo chgrp -R www-data {{$dirCurrentRelease}};
 sudo chmod -R ug+rwx {{$dirShared}};
 sudo chmod -R ug+rwx {{$dirCurrentRelease}};
+
+echo "# Discovering packages";
+php artisan package:discover --ansi;
 
 echo "# Optimising installation";
 php artisan config:cache;
