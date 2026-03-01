@@ -107,7 +107,6 @@ php artisan package:discover --ansi;
 
 echo "# Optimising installation";
 php artisan config:cache;
-php artisan route:cache;
 php artisan view:cache;
 @endtask
 
