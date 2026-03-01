@@ -30,12 +30,13 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
     public function analyzeOutput($output): array
     {
         $recommendations = [];
+        $portIndex = []; // port/proto => index in $recommendations
 
         foreach ($output as $line) {
             foreach ($this->patterns as $pattern => $type) {
                 if (preg_match($pattern, $line, $matches)) {
                     $problem = $this->extractProblem($type, $line, $matches);
-                    $recommendations[] = [
+                    $item = [
                         'type'           => $type,
                         'problem'        => $problem,
                         'recommendation' => $this->getRecommendation($type, $problem),
@@ -44,12 +45,25 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
                             ? "https://nvd.nist.gov/vuln/detail/{$problem}"
                             : null,
                     ];
+
+                    if ($type === 'Открытый порт') {
+                        $portKey = "{$matches[1]}/{$matches[2]}";
+                        if (isset($portIndex[$portKey])) {
+                            // Заменяем краткую verbose-запись на детальную из финальной таблицы
+                            $recommendations[$portIndex[$portKey]] = $item;
+                        } else {
+                            $portIndex[$portKey] = count($recommendations);
+                            $recommendations[] = $item;
+                        }
+                    } else {
+                        $recommendations[] = $item;
+                    }
                     break;
                 }
             }
         }
 
-        return $recommendations;
+        return array_values($recommendations);
     }
 
     private function extractProblem(string $type, string $line, array $matches): string
