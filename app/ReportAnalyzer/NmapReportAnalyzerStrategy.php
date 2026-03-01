@@ -59,7 +59,7 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
         };
     }
 
-    public function getRecommendation(string $type, string $problem): string
+    public function getRecommendation($type, $problem): string
     {
         return match ($type) {
             'Открытый порт'                   => "Проверьте необходимость порта $problem. Закройте его, если сервис не используется.",
