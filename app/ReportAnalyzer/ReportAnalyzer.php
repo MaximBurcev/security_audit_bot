@@ -27,6 +27,17 @@ class ReportAnalyzer
 
     public function get($report): array
     {
-        return $this->strategy->analyzeOutput($report);
+        $seen = [];
+        $result = [];
+
+        foreach ($this->strategy->analyzeOutput($report) as $item) {
+            $key = $item['type'] . '|' . $item['problem'];
+            if (!isset($seen[$key])) {
+                $seen[$key] = true;
+                $result[] = $item;
+            }
+        }
+
+        return $result;
     }
 }

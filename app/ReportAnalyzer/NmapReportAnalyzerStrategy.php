@@ -20,22 +20,11 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
     public function analyzeOutput($output): array
     {
         $recommendations = [];
-        $seenPorts = [];
 
         foreach ($output as $line) {
             foreach ($this->patterns as $pattern => $type) {
                 if (preg_match($pattern, $line, $matches)) {
                     $problem = $this->extractProblem($type, $line, $matches);
-
-                    // Дедупликация портов: verbose-режим и финальная таблица дают одинаковый порт
-                    if ($type === 'Открытый порт') {
-                        $portKey = "{$matches[1]}/{$matches[2]}";
-                        if (isset($seenPorts[$portKey])) {
-                            break;
-                        }
-                        $seenPorts[$portKey] = true;
-                    }
-
                     $recommendations[] = [
                         'type'           => $type,
                         'problem'        => $problem,
