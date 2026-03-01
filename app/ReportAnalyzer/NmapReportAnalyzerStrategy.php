@@ -2,36 +2,44 @@
 
 namespace App\ReportAnalyzer;
 
-use App\ReportAnalyzer\ReportAnalyzerInterface;
-
 class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
 {
+    private array $patterns = [
+        // Финальная таблица портов: "22/tcp  open  ssh  OpenSSH 7.4"
+        '/^(\d+)\/(tcp|udp)\s+open\s+(\S+)(?:\s+(.+))?/'       => 'Открытый порт',
+        // Verbose-режим (-v): "Discovered open port 443/tcp on 1.2.3.4"
+        '/^Discovered open port (\d+)\/(tcp|udp)/'              => 'Открытый порт',
+        '/\bCVE-(\d{4}-\d+)\b/'                                 => 'CVE-уязвимость',
+        '/State:\s+VULNERABLE/'                                  => 'Уязвимость',
+        '/message_signing:\s+disabled/'                          => 'Небезопасная конфигурация SMB',
+        '/Potentially risky methods:\s*(.+)/'                    => 'Небезопасные HTTP-методы',
+        '/Anonymous FTP login allowed/'                          => 'Анонимный доступ FTP',
+        '/Valid credentials/'                                    => 'Стандартные учетные данные',
+    ];
 
     public function analyzeOutput($output): array
     {
         $recommendations = [];
+        $seenPorts = [];
 
-        // Регулярные выражения для обнаружения различных типов проблем
-        $patterns = [
-            '/^(\d+)\/tcp\s+open\s+(\S+)/'   => 'Открытый порт',
-            '/^Host script results:/'        => 'Уязвимость',
-            '/Vulnerability (.+)/'           => 'Уязвимость',
-            '/Outdated service (.+)/'        => 'Устаревшее ПО',
-            '/Default credentials for (.+)/' => 'Стандартные учетные данные',
-        ];
-
-        //dd($output);
-
-        // Проходим по каждой строке вывода Nmap
         foreach ($output as $line) {
-            foreach ($patterns as $pattern => $type) {
+            foreach ($this->patterns as $pattern => $type) {
                 if (preg_match($pattern, $line, $matches)) {
-                    $problem = trim($matches[1] ?? $line);
-                    $recommendation = $this->getRecommendation($type, $problem);
+                    $problem = $this->extractProblem($type, $line, $matches);
+
+                    // Дедупликация портов: verbose-режим и финальная таблица дают одинаковый порт
+                    if ($type === 'Открытый порт') {
+                        $portKey = "{$matches[1]}/{$matches[2]}";
+                        if (isset($seenPorts[$portKey])) {
+                            break;
+                        }
+                        $seenPorts[$portKey] = true;
+                    }
+
                     $recommendations[] = [
                         'type'           => $type,
                         'problem'        => $problem,
-                        'recommendation' => $recommendation,
+                        'recommendation' => $this->getRecommendation($type, $problem),
                     ];
                     break;
                 }
@@ -41,14 +49,27 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
         return $recommendations;
     }
 
-    public function getRecommendation($type, $problem): string
+    private function extractProblem(string $type, string $line, array $matches): string
     {
         return match ($type) {
-            'Открытый порт' => "Рассмотрите возможность закрытия порта $problem, если он не требуется для работы системы.",
-            'Уязвимость' => "Обнаружена уязвимость: \"$problem\". Примените соответствующие патчи или обновления.",
-            'Устаревшее ПО' => "Служба $problem устарела. Обновите её до последней версии для устранения возможных уязвимостей.",
-            'Стандартные учетные данные' => "Используются стандартные учетные данные для $problem. Измените их на уникальные и безопасные.",
-            default => "Рекомендуется рассмотреть решение проблемы: \"$problem\".",
+            'Открытый порт'            => "{$matches[1]}/{$matches[2]}" . (!empty($matches[3]) ? " ({$matches[3]}" . (!empty($matches[4]) ? ' — ' . trim($matches[4]) : '') . ')' : ''),
+            'CVE-уязвимость'           => "CVE-{$matches[1]}",
+            'Небезопасные HTTP-методы' => trim($matches[1]),
+            default                    => trim($line),
+        };
+    }
+
+    public function getRecommendation(string $type, string $problem): string
+    {
+        return match ($type) {
+            'Открытый порт'                   => "Проверьте необходимость порта $problem. Закройте его, если сервис не используется.",
+            'CVE-уязвимость'                  => "Обнаружена уязвимость $problem. Примените патч или обновите уязвимый компонент.",
+            'Уязвимость'                      => "NSE-скрипт обнаружил уязвимость. Изучите полный отчёт и устраните проблему.",
+            'Небезопасная конфигурация SMB'   => "Подпись SMB-пакетов отключена. Включите message signing для защиты от relay-атак.",
+            'Небезопасные HTTP-методы'        => "Отключите небезопасные HTTP-методы ($problem) в конфигурации веб-сервера.",
+            'Анонимный доступ FTP'            => "Анонимный вход на FTP-сервер разрешён. Отключите анонимный доступ.",
+            'Стандартные учетные данные'      => "Обнаружены стандартные учетные данные. Смените их на уникальные.",
+            default                           => "Требует внимания: \"$problem\".",
         };
     }
 }

@@ -19,4 +19,9 @@ final class ReportRepository extends BaseRepository implements BaseContract
     {
         return $this->model->where('is_published', true)->get();
     }
+
+    public function paginate(int $perPage): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return $this->model->whereNull('deleted_at')->paginate($perPage);
+    }
 }

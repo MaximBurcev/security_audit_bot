@@ -24,7 +24,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $reports = $this->reportService->getAll()->paginate(env('SHOW_PER_PAGE'));
+        $reports = $this->reportService->paginate((int) env('SHOW_PER_PAGE', 15));
         return view('admin.reports.index', compact('reports'));
     }
 

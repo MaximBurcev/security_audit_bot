@@ -48,6 +48,11 @@ class ReportService
         return $this->reportRepository->findAll();
     }
 
+    public function paginate(int $perPage): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return $this->reportRepository->paginate($perPage);
+    }
+
 
     public function update(int $id, array $data = []): int
     {

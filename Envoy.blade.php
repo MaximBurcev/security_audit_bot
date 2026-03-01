@@ -15,7 +15,6 @@ if(!($authServer = $_ENV['DEPLOY_SERVER'] ?? false)) { throw new Exception('--DE
 $gitBranch = 'master';
 if(!($gitRepository = $_ENV['DEPLOY_REPOSITORY'] ?? false)) { throw new Exception('--DEPLOY_REPOSITORY must be specified'); }
 
-
 if(!($dirBase = $_ENV['DEPLOY_PATH'] ?? false)) { throw new Exception('--DEPLOY_PATH must be specified'); }
 $dirShared = $dirBase . '/shared';
 $dirCurrent = $dirBase . '/current';
@@ -23,14 +22,17 @@ $dirReleases = $dirBase . '/releases';
 $dirCurrentRelease = $dirReleases . '/' . $date->format('YmdHis');
 @endsetup
 
-@servers(['production' => 'deployer@103.137.249.210'])
+@servers(['production' => '{{$authUser}}@{{$authServer}}'])
 
 @story('deploy', ['on' => 'production'])
 gitclone
 composer
 npm
 config_project
+down
+migrate
 set_current
+up
 releases_clean
 @endstory
 
@@ -58,8 +60,7 @@ echo "# Repository has been cloned"
 echo "# Composer task"
 
 cd {{$dirCurrentRelease}}
-#composer install --no-interaction --quiet --no-dev --prefer-dist --optimize-autoloader
-composer update
+composer install --no-interaction --quiet --no-dev --prefer-dist --optimize-autoloader
 
 echo "# Composer dependencies have been installed"
 @endtask
@@ -101,11 +102,10 @@ sudo chgrp -R www-data {{$dirCurrentRelease}};
 sudo chmod -R ug+rwx {{$dirShared}};
 sudo chmod -R ug+rwx {{$dirCurrentRelease}};
 
-#echo "# Optimising installation";
-#php artisan clear-compiled --env={{$env}};
-#php artisan optimize --env={{$env}};
-#php artisan config:cache --env={{$env}};
-#php artisan cache:clear --env={{$env}};
+echo "# Optimising installation";
+php artisan config:cache;
+php artisan route:cache;
+php artisan view:cache;
 @endtask
 
 @task('down', ['on' => $on])
@@ -135,4 +135,3 @@ php artisan up;
 echo '# Linking current release';
 ln -nfs {{$dirCurrentRelease}} {{$dirCurrent}};
 @endtask
-

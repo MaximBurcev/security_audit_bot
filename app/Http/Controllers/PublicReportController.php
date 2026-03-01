@@ -2,11 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Report;
-use App\ReportAnalyzer\NiktoReportAnalyzerStrategy;
-use App\ReportAnalyzer\NmapReportAnalyzerStrategy;
-use App\ReportAnalyzer\ReportAnalyzer;
-use App\ReportAnalyzer\SslReportAnalyzerStrategy;
 use App\Services\ReportService;
 use Illuminate\Http\Request;
 
@@ -18,22 +13,13 @@ class PublicReportController extends Controller
         if ($request->hasValidSignature()) {
             $report = $reportService->get($reportId);
 
-            $strategy = match ($report->utility->title) {
-                'nikto' => new NiktoReportAnalyzerStrategy(),
-                'nmap' => new NmapReportAnalyzerStrategy(),
-                'sslscan' => new SslReportAnalyzerStrategy(),
-                default => [],
-            };
+            $data = json_decode($report->content, true);
+            $raw = $data['raw'] ?? $report->content;
+            $recommendations = $data['analysis'] ?? [];
 
-            $recommendations = (new ReportAnalyzer($strategy))->get(explode("\n", $report->content));
-
-            //dd($recommendations);
-
-
-            return view('public_report', compact('report', 'recommendations'));
+            return view('public_report', compact('report', 'raw', 'recommendations'));
         } else {
             abort(401);
         }
-
     }
 }

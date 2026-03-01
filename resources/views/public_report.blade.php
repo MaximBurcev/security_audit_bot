@@ -9,7 +9,7 @@
         <p><strong>Проект</strong>: {{$report->project->title}}</p>
         <p><strong>Утилита</strong>: {{$report->utility->title}}</p>
 
-        <p>{!! nl2br($report->content) !!} </p>
+        <p>{!! nl2br(e($raw)) !!} </p>
 
         <h2>Рекомендации</h2>
         @foreach($recommendations as $recommendation)
