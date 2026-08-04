@@ -24,19 +24,30 @@ $dirCurrentRelease = $dirReleases . '/' . $date->format('YmdHis');
 
 @servers(['production' => "$authUser@$authServer"])
 
+{{--
+    Деплой без простоя: сборка и миграции идут в новом релизе, пока текущий
+    обслуживает трафик, а переключение через set_current атомарно.
+
+    Задачи down/up намеренно исключены из сценария. Раньше порядок был
+    down -> migrate -> up, из-за чего прод лежал всё время миграций, а обрыв
+    связи между down и up оставлял его в maintenance навсегда.
+
+    Если в релизе есть обратно несовместимая миграция (удаление/переименование
+    колонки), которую старый код не переживёт, — гоняйте вручную:
+    envoy run down && envoy run deploy && envoy run up
+--}}
 @story('deploy', ['on' => 'production'])
 gitclone
 composer
 npm
 config_project
-down
 migrate
 set_current
-up
+queue_restart
 releases_clean
 @endstory
 
-@task('releases_clean')
+@task('releases_clean', ['on' => $on])
 purging=$(ls -dt {{$dirReleases}}/* | tail -n +{{$releaseRotate}});
 
 if [ "$purging" != "" ]; then
@@ -78,12 +89,6 @@ npm run build
 echo "# Npm dependencies have been installed"
 @endtask
 
-@task('backup', ['on' => $on])
-echo '# Backup';
-cd {{$dirCurrentRelease}};
-php artisan backup:run
-@endtask
-
 @task('config_project', ['on' => $on])
 echo "# Config project task";
 
@@ -112,8 +117,13 @@ php artisan view:cache;
 
 @task('down', ['on' => $on])
 echo "# Down task"
-cd {{$dirCurrentRelease}};
+
+if [ -L {{$dirCurrent}} ]; then
+cd {{$dirCurrent}};
 php artisan down;
+else
+echo "# No current release yet, skipping";
+fi
 @endtask
 
 @task('migrate', ['on' => $on])
@@ -129,8 +139,19 @@ php artisan key:generate
 
 @task('up', ['on' => $on])
 echo "# Up task"
-cd {{$dirCurrentRelease}};
+
+if [ -L {{$dirCurrent}} ]; then
+cd {{$dirCurrent}};
 php artisan up;
+else
+echo "# No current release yet, skipping";
+fi
+@endtask
+
+@task('queue_restart', ['on' => $on])
+echo "# Restarting queue workers";
+cd {{$dirCurrent}};
+php artisan queue:restart;
 @endtask
 
 @task('set_current', ['on' => $on])
