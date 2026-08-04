@@ -78,6 +78,8 @@ class UserController extends Controller
 
     public function reports(User $user)
     {
+        $this->authorize('view', $user);
+
         $reports = [];
         foreach($user->audits as $audit) {
             foreach($audit->reports as $report) {

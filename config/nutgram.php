@@ -4,6 +4,10 @@ return [
     // The Telegram BOT api token
     'token' => env('TELEGRAM_TOKEN'),
 
+    // Секрет, который Telegram присылает в заголовке X-Telegram-Bot-Api-Secret-Token.
+    // Задаётся при установке webhook (secret_token) и проверяется в WebhookController.
+    'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
+
     // if the webhook mode must validate the incoming IP range is from a telegram server
     'safe_mode' => env('APP_ENV', 'local') === 'production',
 

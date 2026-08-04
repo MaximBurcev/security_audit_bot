@@ -22,11 +22,11 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::prefix('tasks')->resource('tasks', TaskController::class);
 });
 
-Route::group(['middleware' => 'lang', 'prefix' => '{lang}/admin', 'where' => ['lang' => 'en|ru']], function () {
+Route::group(['middleware' => ['auth', 'lang'], 'prefix' => '{lang}/admin', 'where' => ['lang' => 'en|ru']], function () {
     Route::get('/', [MainController::class, 'index'])->name('admin.main');
 });
 
-Route::group(['middleware' => 'lang', 'prefix' => '{lang}/admin', 'where' => ['lang' => 'en|ru']], function () {
+Route::group(['middleware' => ['auth', 'lang'], 'prefix' => '{lang}/admin', 'where' => ['lang' => 'en|ru']], function () {
     Route::resource('users', UserController::class);
     Route::get('/users/{user}/reports', [UserController::class, 'reports'])->name('users.reports');
 });

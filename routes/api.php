@@ -24,7 +24,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('/users', UserController::class)->middleware('auth:api');
+// Управление конкретным пользователем недоступно через API: guard `auth:api` аутентифицирует
+// строку api_clients (машинный клиент), а не User, поэтому привязать Policy не к чему —
+// show/update/destroy давали любому держателю токена доступ к произвольному пользователю по id.
+// CRUD над пользователями живёт в админке под UserPolicy.
+Route::apiResource('/users', UserController::class)->only(['index', 'store'])->middleware('auth:api');
 
 Route::middleware('auth:api')->get('/statistic', function (Request $request) {
     return [

@@ -29,8 +29,3 @@ Route::post('/webhook', WebhookController::class);
 
 Route::get('/public-report/{report}', [PublicReportController::class, 'show'])->name('public-report');
 
-Route::get('/test', function () {
-    $reportContent = shell_exec("nmap php-psr.ru");
-    var_dump($reportContent);
-});
-
