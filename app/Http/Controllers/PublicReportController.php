@@ -17,7 +17,7 @@ class PublicReportController extends Controller
         if ($request->hasValidSignature()) {
             $report = $reportService->get($reportId);
 
-            $data = json_decode($report->content, true);
+            $data = json_decode($report->content ?? '', true);
 
             if (is_array($data) && array_key_exists('raw', $data)) {
                 // Новый формат: JSON с предвычисленным анализом
@@ -25,8 +25,9 @@ class PublicReportController extends Controller
                 $recommendations = $data['analysis'] ?? [];
             } else {
                 // Старый формат: сырой текст — стрипаем ANSI и анализируем на лету
-                $raw = $this->stripAnsi($report->content);
-                $strategy = match ($report->utility->title) {
+                $raw = $this->stripAnsi($report->content ?? '');
+                $utilityTitle = $report->utility?->title;
+                $strategy = match ($utilityTitle) {
                     'nikto'   => new NiktoReportAnalyzerStrategy(),
                     'nmap'    => new NmapReportAnalyzerStrategy(),
                     'sslscan' => new SslReportAnalyzerStrategy(),
