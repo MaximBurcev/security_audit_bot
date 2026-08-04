@@ -23,8 +23,8 @@ class UpdateFormRequest extends FormRequest
     {
         return [
             'status'     => 'required|string',
-            'utility_id' => 'required|integer',
-            'project_id' => 'required|integer'
+            'utility_id' => 'required|integer|exists:utilities,id',
+            'project_id' => 'required|integer|exists:projects,id'
         ];
     }
 

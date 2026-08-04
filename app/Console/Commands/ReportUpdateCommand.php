@@ -44,7 +44,16 @@ class ReportUpdateCommand extends Command
         $project = $projectService->get($report->project_id);
         $command = $utility->command;
         $url = $project->url;
-        $content = shell_exec(implode(" ", [$command, parse_url($url, PHP_URL_HOST)]));
+        $host = parse_url($url, PHP_URL_HOST);
+
+        if (empty($host)) {
+            $report->update(['status' => ReportStatusEnum::Created]);
+            $this->error("Не удалось определить хост из URL проекта: {$url}");
+
+            return self::FAILURE;
+        }
+
+        $content = shell_exec($command . ' ' . escapeshellarg($host));
         $report->update([
             'content' => $content,
             'status'  => ReportStatusEnum::Finished
@@ -56,5 +65,7 @@ class ReportUpdateCommand extends Command
         foreach ($report->audits as $audit) {
             $audit->user->notify(new ReportUpdate($reportUrl));
         }
+
+        return self::SUCCESS;
     }
 }

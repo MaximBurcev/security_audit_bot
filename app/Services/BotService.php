@@ -23,7 +23,9 @@ class BotService
     public static function handle(Request $request, $bot)
     {
         $arRequest = $request->toArray();
-        Log::info('request', $request->toArray());
+        // Тело webhook содержит PII (telegram id, имя, username, текст сообщений) — логируем
+        // только тип апдейта, этого достаточно для отладки маршрутизации.
+        Log::info('telegram webhook', ['update_type' => array_key_first($arRequest)]);
         if (array_key_exists('callback_query', $arRequest)) {
 
             $strData = $arRequest['callback_query']['data'];

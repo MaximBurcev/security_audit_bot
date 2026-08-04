@@ -25,7 +25,7 @@ Route::view('/terms', 'terms')->name('terms');
 
 Auth::routes();
 
-Route::post('/webhook', WebhookController::class);
+Route::post('/webhook', WebhookController::class)->middleware('throttle:120,1');
 
 Route::get('/public-report/{report}', [PublicReportController::class, 'show'])->name('public-report');
 

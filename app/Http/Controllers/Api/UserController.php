@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info('request', $request->toArray());
+        Log::info('user.store', $request->except(['password', 'password_confirmation']));
 
         return User::forceCreate([
             'name'      => $request->post('name'),

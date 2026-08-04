@@ -47,7 +47,16 @@
                             <tr>
                                 <td>Результат сканирования</td>
                                 <td>
-                                    {!! nl2br($report->content) !!}
+                                    @php
+                                        // Вывод сканера контролируется сканируемым хостом (баннеры, заголовки),
+                                        // поэтому экранируем его перед nl2br. Новый формат — JSON с ключом raw,
+                                        // старый — сырой текст.
+                                        $data = json_decode($report->content ?? '', true);
+                                        $scanOutput = is_array($data) && array_key_exists('raw', $data)
+                                            ? (string) $data['raw']
+                                            : (string) ($report->content ?? '');
+                                    @endphp
+                                    {!! nl2br(e($scanOutput)) !!}
                                 </td>
                             </tr>
                             </tbody>

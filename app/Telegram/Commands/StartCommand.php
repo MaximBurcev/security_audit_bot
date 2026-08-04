@@ -34,9 +34,9 @@ class StartCommand
     {
 
 
-        Log::info('StartCommand', [1]);
         $telegramUser = $this->bot->user();
-        Log::info('$telegramUser', [$telegramUser]);
+        // Профиль Telegram — PII, в лог кладём только идентификатор.
+        Log::info('StartCommand', ['telegram_user_id' => $telegramUser?->id]);
         $user = $this->userService->getByTelegramId($telegramUser->id);
         if (!$user) {
             $this->userService->addTelegramUser($telegramUser);
