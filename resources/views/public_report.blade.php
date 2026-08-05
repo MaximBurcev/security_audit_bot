@@ -6,8 +6,8 @@
 
     <div class="container">
         <p><strong>Дата обновления</strong>: {{$report->updated_at}}</p>
-        <p><strong>Проект</strong>: {{$report->project->title}}</p>
-        <p><strong>Утилита</strong>: {{$report->utility->title}}</p>
+        <p><strong>Проект</strong>: {{$report->project?->title ?? '—'}}</p>
+        <p><strong>Утилита</strong>: {{$report->utility?->title ?? '—'}}</p>
 
         <p>{!! nl2br(e($raw)) !!} </p>
 
@@ -16,6 +16,10 @@
             $severityBadge = ['critical' => 'danger', 'high' => 'warning', 'medium' => 'secondary', 'low' => 'info'];
             $severityLabel = ['critical' => 'Критическая', 'high' => 'Высокая', 'medium' => 'Средняя', 'low' => 'Низкая'];
         @endphp
+        @if(empty($recommendations))
+            <p>Проблем, требующих внимания, не обнаружено.</p>
+        @endif
+
         @foreach($recommendations as $recommendation)
             @php $severity = $recommendation['severity'] ?? 'low'; @endphp
             <p>

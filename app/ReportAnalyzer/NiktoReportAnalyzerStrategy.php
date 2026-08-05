@@ -7,22 +7,31 @@ use App\ReportAnalyzer\ReportAnalyzerInterface;
 class NiktoReportAnalyzerStrategy implements ReportAnalyzerInterface
 {
 
+    /**
+     * Строки отчёта Nikto начинаются с "+ ", поэтому плюс экранируется: без этого
+     * PCRE считает его квантификатором без предшествующего элемента, регулярка
+     * не компилируется и preg_match молча возвращает false на каждой строке.
+     */
     private array $patterns = [
-        '/+ OSVDB-[0-9]+: (.+)/'                => 'Уязвимость',
-        '/+ Server leaks inodes via ETags/'     => 'Утечка информации',
-        '/+ Apache mod_negotiation is enabled/' => 'Небезопасная конфигурация',
-        '/+ Unnecessary service/.*running/'     => 'Ненужный сервис',
-        '/+ Allowed HTTP Methods: .+/'          => 'HTTP методы',
-        '/+ Web Server is outdated/'            => 'Устаревшее ПО',
+        '/^\s*\+ OSVDB-\d+: (.+)$/'                              => 'Уязвимость',
+        '/^\s*\+ (Server leaks inodes via ETags.*)$/'             => 'Утечка информации',
+        '/^\s*\+ (Apache mod_negotiation is enabled.*)$/'         => 'Небезопасная конфигурация',
+        '/^\s*\+ (Unnecessary service.*running.*)$/'              => 'Ненужный сервис',
+        '/^\s*\+ (Allowed HTTP Methods: .+)$/'                    => 'HTTP методы',
+        '/^\s*\+ (Web Server is outdated.*)$/'                    => 'Устаревшее ПО',
+        '/^\s*\+ (The anti-clickjacking X-Frame-Options header is not present.*)$/' => 'Отсутствует заголовок безопасности',
+        '/^\s*\+ (Hostname .* does not match certificate.*)$/'    => 'Несоответствие сертификата',
     ];
 
     private array $severities = [
-        'Уязвимость'             => 'high',
-        'Устаревшее ПО'          => 'high',
-        'Утечка информации'      => 'medium',
-        'Небезопасная конфигурация' => 'medium',
-        'HTTP методы'            => 'medium',
-        'Ненужный сервис'        => 'low',
+        'Уязвимость'                       => 'high',
+        'Устаревшее ПО'                    => 'high',
+        'Утечка информации'                => 'medium',
+        'Небезопасная конфигурация'        => 'medium',
+        'HTTP методы'                      => 'medium',
+        'Несоответствие сертификата'       => 'medium',
+        'Отсутствует заголовок безопасности' => 'medium',
+        'Ненужный сервис'                  => 'low',
     ];
 
     public function analyzeOutput($output): array
@@ -56,6 +65,8 @@ class NiktoReportAnalyzerStrategy implements ReportAnalyzerInterface
             'Ненужный сервис' => "Отключите ненужные службы, которые не используются в текущей конфигурации сервера.",
             'HTTP методы' => "Ограничьте использование HTTP методов только необходимыми (например, GET, POST).",
             'Устаревшее ПО' => "Обновите ваш веб-сервер до последней версии, чтобы устранить известные уязвимости.",
+            'Отсутствует заголовок безопасности' => "Добавьте заголовок X-Frame-Options (или CSP frame-ancestors), чтобы защитить страницы от встраивания в чужой iframe.",
+            'Несоответствие сертификата' => "Имя хоста не совпадает с CN сертификата: \"$problem\". Выпустите сертификат на нужное имя или добавьте его в SAN.",
             default => "Рекомендуется рассмотреть решение проблемы: \"$problem\".",
         };
     }

@@ -17,6 +17,31 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
         '/Valid credentials/'                                    => 'Стандартные учетные данные',
     ];
 
+    /**
+     * Порты, доступность которых снаружи сама по себе является проблемой:
+     * СУБД, кеши, средства удалённого управления. Открытый 80/443 — норма,
+     * открытый 3306 — нет, поэтому у них не может быть одинаковой важности.
+     */
+    private array $sensitivePorts = [
+        21    => ['medium', 'FTP'],
+        22    => ['medium', 'SSH'],
+        23    => ['high', 'Telnet'],
+        135   => ['high', 'MS RPC'],
+        139   => ['high', 'NetBIOS'],
+        445   => ['high', 'SMB'],
+        1433  => ['high', 'MS SQL Server'],
+        1521  => ['high', 'Oracle DB'],
+        3306  => ['high', 'MySQL'],
+        3389  => ['high', 'RDP'],
+        5432  => ['high', 'PostgreSQL'],
+        5984  => ['high', 'CouchDB'],
+        6379  => ['high', 'Redis'],
+        9200  => ['high', 'Elasticsearch'],
+        11211 => ['high', 'Memcached'],
+        27017 => ['high', 'MongoDB'],
+        33060 => ['high', 'MySQL X Protocol'],
+    ];
+
     private array $severities = [
         'Стандартные учетные данные'    => 'critical',
         'CVE-уязвимость'               => 'high',
@@ -44,11 +69,13 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
                     $problem = $type === 'Уязвимость' && $currentScript
                         ? $currentScript
                         : $this->extractProblem($type, $line, $matches);
+                    $port = $type === 'Открытый порт' ? (int) $matches[1] : null;
+
                     $item = [
                         'type'           => $type,
                         'problem'        => $problem,
-                        'recommendation' => $this->getRecommendation($type, $problem),
-                        'severity'       => $this->severities[$type] ?? 'low',
+                        'recommendation' => $this->getRecommendation($type, $problem, $port),
+                        'severity'       => $this->resolveSeverity($type, $port),
                         'link'           => $type === 'CVE-уязвимость'
                             ? "https://nvd.nist.gov/vuln/detail/{$problem}"
                             : null,
@@ -84,8 +111,24 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
         };
     }
 
-    public function getRecommendation($type, $problem): string
+    private function resolveSeverity(string $type, ?int $port): string
     {
+        if ($type === 'Открытый порт' && $port !== null && isset($this->sensitivePorts[$port])) {
+            return $this->sensitivePorts[$port][0];
+        }
+
+        return $this->severities[$type] ?? 'low';
+    }
+
+    public function getRecommendation($type, $problem, ?int $port = null): string
+    {
+        if ($type === 'Открытый порт' && $port !== null && isset($this->sensitivePorts[$port])) {
+            $service = $this->sensitivePorts[$port][1];
+
+            return "Порт $problem ($service) доступен снаружи. Такие сервисы не должны "
+                . "смотреть в интернет: ограничьте доступ файрволом или VPN.";
+        }
+
         return match ($type) {
             'Открытый порт'                   => "Проверьте необходимость порта $problem. Закройте его, если сервис не используется.",
             'CVE-уязвимость'                  => "Обнаружена уязвимость $problem. Примените патч или обновите уязвимый компонент.",
