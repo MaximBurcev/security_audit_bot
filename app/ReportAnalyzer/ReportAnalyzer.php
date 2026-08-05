@@ -33,11 +33,26 @@ class ReportAnalyzer
 
     public function get($report): array
     {
+        return self::prioritize($this->strategy->analyzeOutput($report));
+    }
+
+    /**
+     * Убирает повторы и раскладывает находки по важности.
+     *
+     * Вынесено отдельно, потому что к разбору вывода утилиты добавляются находки
+     * из других источников (например, поиск CVE по версиям), и объединённый
+     * список нужно упорядочить теми же правилами.
+     *
+     * @param array<int, array<string, mixed>> $findings
+     * @return array<int, array<string, mixed>>
+     */
+    public static function prioritize(array $findings): array
+    {
         $seen = [];
         $result = [];
 
-        foreach ($this->strategy->analyzeOutput($report) as $item) {
-            $key = $item['type'] . '|' . $item['problem'];
+        foreach ($findings as $item) {
+            $key = ($item['type'] ?? '') . '|' . ($item['problem'] ?? '');
             if (!isset($seen[$key])) {
                 $seen[$key] = true;
                 $result[] = $item;

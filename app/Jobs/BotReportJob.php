@@ -8,6 +8,7 @@ use App\ReportAnalyzer\NmapReportAnalyzerStrategy;
 use App\ReportAnalyzer\ReportAnalyzer;
 use App\ReportAnalyzer\ReportAnalyzerInterface;
 use App\ReportAnalyzer\SslReportAnalyzerStrategy;
+use App\Services\CveLookupService;
 use App\Services\ProjectService;
 use App\Services\ReportService;
 use App\Services\UtilityService;
@@ -35,7 +36,12 @@ class BotReportJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(UtilityService $utilityService, ProjectService $projectService, ReportService $reportService): void
+    public function handle(
+        UtilityService $utilityService,
+        ProjectService $projectService,
+        ReportService $reportService,
+        CveLookupService $cveLookupService
+    ): void
     {
         $utility = $utilityService->get($this->arBotReportJobData['utilityId']);
         $project = $projectService->get($this->arBotReportJobData['projectId']);
@@ -50,6 +56,15 @@ class BotReportJob implements ShouldQueue
         Log::info(__CLASS__, ['command' => $utility->command, 'url' => $url]);
 
         $analysis = $this->analyze($utility->title, $raw);
+
+        // Поиск CVE по версиям сервисов делается здесь, а не в анализаторе:
+        // анализатор работает и при отрисовке публичной страницы, а она
+        // не должна ходить во внешние сервисы.
+        if ($utility->title === 'nmap') {
+            $analysis = ReportAnalyzer::prioritize(
+                array_merge($analysis, $cveLookupService->findForNmapOutput(explode("\n", $raw)))
+            );
+        }
 
         $reportService->update($this->arBotReportJobData['reportId'], [
             'content' => json_encode(['raw' => $raw, 'analysis' => $analysis]),
