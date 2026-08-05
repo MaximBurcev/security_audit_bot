@@ -80,6 +80,51 @@ TXT;
         $this->assertSame([], $this->analyze($noise));
     }
 
+    public function test_it_reports_a_cookie_without_the_httponly_flag(): void
+    {
+        $result = $this->analyze('+ Cookie XSRF-TOKEN created without the httponly flag');
+
+        $this->assertSame('Небезопасная кука', $result[0]['type']);
+        $this->assertSame('medium', $result[0]['severity']);
+    }
+
+    public function test_it_reports_a_cookie_without_the_secure_flag(): void
+    {
+        $result = $this->analyze('+ Cookie session_id created without the secure flag');
+
+        $this->assertSame('Небезопасная кука', $result[0]['type']);
+    }
+
+    /**
+     * Nikto 2.1.5 проверяет кликджекинг на ответе до редиректа, а заголовки
+     * снимает с конечной страницы, поэтому в одном отчёте уживаются
+     * "header is not present" и "header 'x-frame-options' found".
+     * Верить надо второму, иначе отчёт содержит ложную находку.
+     */
+    public function test_missing_clickjacking_header_is_dropped_when_the_header_is_present(): void
+    {
+        $report = <<<'TXT'
++ The anti-clickjacking X-Frame-Options header is not present.
++ Uncommon header 'x-frame-options' found, with contents: SAMEORIGIN
+TXT;
+
+        $types = array_column($this->analyze($report), 'type');
+
+        $this->assertNotContains('Отсутствует заголовок безопасности', $types);
+    }
+
+    public function test_missing_clickjacking_header_is_kept_when_nothing_refutes_it(): void
+    {
+        $report = <<<'TXT'
++ The anti-clickjacking X-Frame-Options header is not present.
++ Uncommon header 'x-content-type-options' found, with contents: nosniff
+TXT;
+
+        $types = array_column($this->analyze($report), 'type');
+
+        $this->assertContains('Отсутствует заголовок безопасности', $types);
+    }
+
     public function test_every_finding_carries_a_recommendation(): void
     {
         foreach ($this->analyze(self::REPORT) as $finding) {
