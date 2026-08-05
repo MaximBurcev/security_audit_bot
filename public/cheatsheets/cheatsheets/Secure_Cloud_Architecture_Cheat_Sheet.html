@@ -1,0 +1,3946 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Secure_Cloud_Architecture_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="Secure_AI_Model_Ops_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Secure_Code_Review_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Secure Cloud Architecture - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cloud-architecture-security-cheat-sheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Secure Cloud Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ рисков, моделирование угроз и оценка поверхности атаки
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Публичные и приватные компоненты
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Публичные и приватные компоненты">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Безопасное объектное хранилище
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Безопасное объектное хранилище">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iam" class="md-nav__link">
+    <span class="md-ellipsis">
+      Доступ через IAM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подписанные URL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Публичное объектное хранилище
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      VPC и подсети
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VPC и подсети">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vpc_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      VPC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Публичные подсети
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Приватные подсети
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример простой архитектуры
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Границы доверия
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Границы доверия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Изучение различных уровней доверия
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Изучение различных уровней доверия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Пример с отсутствием доверия
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Пример с высоким доверием
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Пример с частичным доверием
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Инструменты безопасности
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Инструменты безопасности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Межсетевой экран веб-приложений
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование и мониторинг
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Журналирование и мониторинг">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мониторинг
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита от DDoS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Модель разделённой ответственности
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модель разделённой ответственности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iaas" class="md-nav__link">
+    <span class="md-ellipsis">
+      IaaS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paas" class="md-nav__link">
+    <span class="md-ellipsis">
+      PaaS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saas" class="md-nav__link">
+    <span class="md-ellipsis">
+      SaaS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Самостоятельно управляемый инструментарий
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Самостоятельно управляемый инструментарий">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Стратегия обновления для самостоятельно управляемых сервисов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение пробелов в безопасности управляемых сервисов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ рисков, моделирование угроз и оценка поверхности атаки
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Публичные и приватные компоненты
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Публичные и приватные компоненты">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Безопасное объектное хранилище
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Безопасное объектное хранилище">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iam" class="md-nav__link">
+    <span class="md-ellipsis">
+      Доступ через IAM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подписанные URL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Публичное объектное хранилище
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      VPC и подсети
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VPC и подсети">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vpc_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      VPC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Публичные подсети
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Приватные подсети
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример простой архитектуры
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Границы доверия
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Границы доверия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Изучение различных уровней доверия
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Изучение различных уровней доверия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Пример с отсутствием доверия
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Пример с высоким доверием
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Пример с частичным доверием
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Инструменты безопасности
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Инструменты безопасности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Межсетевой экран веб-приложений
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование и мониторинг
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Журналирование и мониторинг">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мониторинг
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита от DDoS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Модель разделённой ответственности
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модель разделённой ответственности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iaas" class="md-nav__link">
+    <span class="md-ellipsis">
+      IaaS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paas" class="md-nav__link">
+    <span class="md-ellipsis">
+      PaaS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saas" class="md-nav__link">
+    <span class="md-ellipsis">
+      SaaS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Самостоятельно управляемый инструментарий
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Самостоятельно управляемый инструментарий">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Стратегия обновления для самостоятельно управляемых сервисов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение пробелов в безопасности управляемых сервисов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="cloud-architecture-security-cheat-sheet">Cloud Architecture Security Cheat Sheet<a class="headerlink" href="#cloud-architecture-security-cheat-sheet" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>В данном руководстве рассматриваются распространённые и необходимые паттерны безопасности, которым следует следовать при создании и анализе облачных архитектур. Каждый раздел посвящён конкретному принципу безопасности или архитектурному решению, которое необходимо учитывать. Руководство ориентировано на средние и крупные корпоративные системы, поэтому в нём обсуждаются дополнительные накладные элементы, которые могут быть излишними для небольших организаций.</p>
+<h2 id="_2">Анализ рисков, моделирование угроз и оценка поверхности атаки<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>При разработке любой архитектуры приложения понимание рисков и угроз крайне важно для обеспечения надлежащей безопасности. Ни одна организация не может направить весь свой бюджет или ресурсы исключительно на безопасность, поэтому правильное распределение ресурсов в этой области необходимо.
+Поэтому предприятия должны проводить оценку рисков, мероприятия по моделированию угроз и оценку поверхности атаки для выявления следующего:</p>
+<ul>
+<li>Каким угрозам может подвергнуться приложение</li>
+<li>Вероятность того, что эти угрозы реализуются в виде атак</li>
+<li>Поверхность атаки, через которую эти атаки могут быть направлены</li>
+<li>Бизнес-последствия потери данных или функциональности в результате указанной атаки</li>
+</ul>
+<p>Всё это необходимо для правильного определения масштаба обеспечения безопасности архитектуры. Однако это темы, которые заслуживают более детального рассмотрения. Воспользуйтесь ссылками на ресурсы ниже для более глубокого изучения в рамках обсуждения безопасной архитектуры.</p>
+<ul>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html">Threat Modeling Cheat Sheet</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Attack_Surface_Analysis_Cheat_Sheet.html">Attack Surface Analysis Cheat Sheet</a></li>
+<li><a href="https://www.cisa.gov/sites/default/files/2023-02/22_1201_safecom_guide_to_cybersecurity_risk_assessment_508-r1.pdf">CISA Cyber Risk Assessment</a></li>
+</ul>
+<h2 id="_3">Публичные и приватные компоненты<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="_4">Безопасное объектное хранилище<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>Объектное хранилище, как правило, предоставляет следующие варианты доступа к данным:</p>
+<ul>
+<li>Доступ к ресурсам с использованием встроенных политик управления идентификацией и доступом (IAM)</li>
+<li>Использование криптографически подписанных URL и HTTP-запросов</li>
+<li>Прямой доступ через публичное хранилище</li>
+</ul>
+<h4 id="iam">Доступ через IAM<a class="headerlink" href="#iam" title="Permanent link">&para;</a></h4>
+<p>Этот метод предполагает косвенный доступ через инструментарий — например, управляемый или самостоятельно управляемый сервис, работающий на эфемерной или постоянной инфраструктуре. Эта инфраструктура содержит постоянные учётные данные IAM плоскости управления, которые взаимодействуют с объектным хранилищем от имени пользователя. Метод лучше всего применять, когда в приложении есть другие пользовательские интерфейсы или системы данных, когда важно максимально скрыть систему хранения, или когда информация не должна/не будет видна конечному пользователю (метаданные). Его можно использовать в сочетании с веб-аутентификацией и журналированием для более точного отслеживания и контроля доступа к ресурсам. Основная проблема безопасности при таком подходе — зависимость от разработанного кода или политик, которые могут содержать уязвимости.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Преимущества</th>
+<th style="text-align: center;">Недостатки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Нет прямого доступа к данным</td>
+<td style="text-align: center;">Возможное использование широкой политики IAM</td>
+</tr>
+<tr>
+<td style="text-align: center;">Пользователь не видит объектное хранилище</td>
+<td style="text-align: center;">Утечка учётных данных открывает доступ к API плоскости управления</td>
+</tr>
+<tr>
+<td style="text-align: center;">Идентифицируемый и журналируемый доступ</td>
+<td style="text-align: center;">Учётные данные могут быть захардкожены</td>
+</tr>
+</tbody>
+</table>
+<p>Этот подход приемлем для конфиденциальных пользовательских данных, однако требует строгого соблюдения лучших практик программирования и облачных стандартов для надлежащей защиты данных.</p>
+<h4 id="url">Подписанные URL<a class="headerlink" href="#url" title="Permanent link">&para;</a></h4>
+<p>Подписывание URL для объектного хранилища предполагает использование какого-либо метода статической или динамической генерации URL, которые криптографически гарантируют, что сущность может получить доступ к ресурсу в хранилище. Этот подход лучше всего подходит в случаях, когда необходим или предпочтителен прямой доступ к конкретным файлам пользователя, так как отсутствует накладная нагрузка на передачу файлов. Рекомендуется использовать этот метод только для пользовательских данных, которые не являются особо конфиденциальными. Метод может быть безопасным, однако имеет заметные недостатки. При пользовательской, динамической и инъецируемой генерации подписанных URL возможна инъекция кода, а любой, кто получил URL, может анонимно получить доступ к ресурсу. Разработчики также должны учитывать, нужно ли и когда должен истекать подписанный URL, что повышает сложность подхода.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Преимущества</th>
+<th style="text-align: center;">Недостатки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Доступ только к одному ресурсу</td>
+<td style="text-align: center;">Анонимный доступ</td>
+</tr>
+<tr>
+<td style="text-align: center;">Минимальная видимость объектного хранилища для пользователя</td>
+<td style="text-align: center;">Любой может получить доступ по URL</td>
+</tr>
+<tr>
+<td style="text-align: center;">Эффективная передача файлов</td>
+<td style="text-align: center;">Возможность инъекции при использовании пользовательского кода</td>
+</tr>
+</tbody>
+</table>
+<h4 id="_5">Публичное объектное хранилище<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
+<p><strong>Этот метод не рекомендуется для хранения и распространения ресурсов</strong> и должен использоваться только для публичных, несекретных, общедоступных ресурсов. Такой подход к хранению предоставит злоумышленникам дополнительную возможность для разведки в облачной среде, и любые данные, хранящиеся в этой конфигурации в течение какого-либо времени, следует считать публично доступными (утёкшими в публичный доступ).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Преимущества</th>
+<th style="text-align: center;">Недостатки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Эффективный доступ ко многим ресурсам</td>
+<td style="text-align: center;">Любой может получить доступ / нет приватности</td>
+</tr>
+<tr>
+<td style="text-align: center;">Простой публичный файловый обмен</td>
+<td style="text-align: center;">Неаутентифицированный доступ к объектам</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Видимость всей файловой системы</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Случайная утечка хранимой информации</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vpc">VPC и подсети<a class="headerlink" href="#vpc" title="Permanent link">&para;</a></h3>
+<p>Виртуальные частные облака (VPC) и публичные/приватные сетевые подсети позволяют разбить приложение и его сеть на отдельные сегменты, добавляя уровни безопасности внутри облачной системы. В отличие от других компромиссов между приватным и публичным, зрелая архитектура приложения, скорее всего, будет включать большинство или все эти компоненты. Каждый из них описан ниже.</p>
+<h4 id="vpc_1">VPC<a class="headerlink" href="#vpc_1" title="Permanent link">&para;</a></h4>
+<p>VPC используются для создания сетевых границ внутри приложения, в пределах которых компоненты могут взаимодействовать друг с другом, подобно физической сети в центре обработки данных. VPC состоит из определённого числа подсетей — как публичных, так и приватных. VPC можно использовать для:</p>
+<ul>
+<li>Разделения целых приложений в рамках одной облачной учётной записи.</li>
+<li>Разделения крупных компонентов приложения на отдельные VPC с изолированными сетями.</li>
+<li>Создания разграничений между дублирующимися приложениями, используемыми для разных клиентов или наборов данных.</li>
+</ul>
+<h4 id="_6">Публичные подсети<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<p>Публичные подсети содержат компоненты, которые имеют выход в интернет. Подсеть будет содержать элементы сетевой маршрутизации, позволяющие компонентам внутри подсети напрямую подключаться к интернету. Некоторые варианты использования:</p>
+<ul>
+<li>Публично доступные ресурсы, например фронтенд веб-приложений.</li>
+<li>Точки первичного входа в приложения, например балансировщики нагрузки и маршрутизаторы.</li>
+<li>Точки доступа для разработчиков, например <a href="https://aws-quickstart.github.io/quickstart-linux-bastion/">бастионы</a> (обратите внимание: они могут быть очень небезопасны при неправильном проектировании/развёртывании).</li>
+</ul>
+<h4 id="_7">Приватные подсети<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>Приватные подсети содержат компоненты, которые не должны иметь прямого доступа к интернету. Подсеть, скорее всего, будет содержать сетевую маршрутизацию для подключения к публичным подсетям, чтобы получать интернет-трафик структурированным и защищённым образом. Приватные подсети отлично подходят для:</p>
+<ul>
+<li>Баз данных и хранилищ данных.</li>
+<li>Бэкенд-серверов и связанных файловых систем.</li>
+<li>Всего, что считается слишком конфиденциальным для прямого доступа из интернета.</li>
+</ul>
+<h4 id="_8">Пример простой архитектуры<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<p>Рассмотрим простую диаграмму архитектуры ниже. VPC будет содержать все компоненты приложения, но элементы будут располагаться в конкретной подсети в зависимости от их роли в системе. Обычный процесс взаимодействия с этим приложением может выглядеть следующим образом:</p>
+<ol>
+<li>Доступ к приложению через интернет-шлюз, API-шлюз или иной интернет-ориентированный компонент.</li>
+<li>Этот шлюз подключается к балансировщику нагрузки или веб-серверу в публичной подсети. Оба компонента выполняют публично доступные функции и защищены соответствующим образом.</li>
+<li>Затем эти компоненты взаимодействуют со своими соответствующими бэкенд-аналогами — базой данных или бэкенд-сервером, расположенными в приватном VPC. Эти соединения более ограничены, что предотвращает посторонний доступ к потенциально «мягким» бэкенд-системам.</li>
+</ol>
+<p><img alt="VPC Diagram" src="../assets/Secure_Cloud_Architecture_VPC.png" /></p>
+<p><em>Примечание: На данной диаграмме намеренно опущены элементы маршрутизации и IAM для взаимодействия подсетей — для простоты и независимости от конкретного поставщика услуг.</em></p>
+<p>Эта архитектура предотвращает прямое подключение к интернету менее защищённых бэкенд-компонентов или более рискованных сервисов, таких как базы данных. Она также обеспечивает доступ к общим публичным функциям из интернета, избегая дополнительных накладных расходов на маршрутизацию. Такую архитектуру проще защитить, сосредоточившись на безопасности в точках входа и разделив функциональность, разместив непубличную или конфиденциальную информацию в приватной подсети, где внешним сторонам будет сложнее её получить.</p>
+<h2 id="_9">Границы доверия<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>Границы доверия — это соединения между компонентами системы, в которых компонентам необходимо принять решение об уровне доверия. Иными словами, эта граница представляет собой точку, где встречаются два компонента с потенциально разными уровнями доверия. Эти границы могут варьироваться по масштабу: от степеней доверия, предоставляемых пользователям, взаимодействующим с приложением, до доверия или проверки конкретных утверждений между функциями кода или компонентами облачной архитектуры. Однако, как правило, достаточно доверять каждому компоненту в части корректного и безопасного выполнения своей функции. Таким образом, границы доверия, скорее всего, будут возникать в соединениях между облачными компонентами, а также между приложением и сторонними элементами — такими как конечные пользователи и другие поставщики.</p>
+<p>В качестве примера рассмотрим архитектуру ниже. API-шлюз подключается к вычислительному экземпляру (эфемерному или постоянному), который затем обращается к ресурсу постоянного хранения. Отдельно существует сервер, который может проверять аутентификацию, авторизацию и/или идентичность вызывающей стороны. Это обобщённое представление OAuth, IAM или системы каталогов, управляющей доступом к этим ресурсам. Кроме того, существует эфемерный IAM-сервер, управляющий доступом к хранимым ресурсам (с использованием подхода, аналогичного разделу <a href="#iam-access">Доступ через IAM</a> выше). Как показано пунктирными линиями, границы доверия существуют между каждым вычислительным компонентом, API-шлюзом и сервером аутентификации/идентификации, даже если многие или все элементы могут находиться в одном приложении.</p>
+<p><img alt="Trust Boundaries" src="../assets/Secure_Cloud_Architecture_Trust_Boundaries_1.png" /></p>
+<h3 id="_10">Изучение различных уровней доверия<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>Архитекторы должны выбрать конфигурацию доверия между компонентами, используя количественные факторы, такие как оценка/допустимый уровень риска, скорость развития проекта, а также субъективные цели безопасности. Каждый из приведённых ниже примеров описывает отношения на границах доверия, чтобы лучше объяснить последствия доверия тому или иному ресурсу. Уровень угрозы конкретного ресурса обозначен цветом: от зелёного (безопасный) до красного (опасный) — это показывает, каким ресурсам не следует доверять.</p>
+<h4 id="1">1. Пример с отсутствием доверия<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<p>Как показано на диаграмме ниже, этот пример описывает модель, в которой ни один компонент не доверяет никакому другому компоненту, вне зависимости от критичности или уровня угрозы. Такая конфигурация доверия, скорее всего, будет использоваться для приложений с чрезвычайно высоким риском — там, где хранятся особо личные или важные бизнес-данные, или где приложение в целом имеет крайне высокую бизнес-критичность.</p>
+<p>Обратите внимание, что оба компонента — API-шлюз и вычислительный — обращаются к серверу аутентификации/идентификации. Это означает, что никакие данные, передаваемые между этими компонентами, даже находящимися рядом «внутри» приложения, не считаются доверенными. Вычислительный экземпляр должен затем принять эфемерную идентичность для доступа к хранилищу, поскольку вычислительный экземпляр не является доверенным для конкретного ресурса, даже если пользователь является доверенным для экземпляра.</p>
+<p>Также обратите внимание на отсутствие доверия между сервером аутентификации/идентификации, эфемерным IAM-сервером и каждым компонентом. Хотя это не отражено на диаграмме, это будет иметь дополнительные последствия, такие как более строгие проверки перед аутентификацией и, возможно, бо́льшие накладные расходы на криптографические операции.</p>
+<p><img alt="No Trust Across Boundaries" src="../assets/Secure_Cloud_Architecture_Trust_Boundaries_2.png" /></p>
+<p>Этот подход может быть необходим для приложений в финансовой, военной или критической инфраструктуре. Однако специалистам по безопасности следует быть осторожными при продвижении данной модели, поскольку она будет иметь существенные недостатки с точки зрения производительности и сопровождения.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Преимущества</th>
+<th style="text-align: center;">Недостатки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Высокая степень уверенности в целостности данных</td>
+<td style="text-align: center;">Медленно и неэффективно</td>
+</tr>
+<tr>
+<td style="text-align: center;">Глубокая эшелонированная защита</td>
+<td style="text-align: center;">Сложно</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Вероятно, дороже</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2">2. Пример с высоким доверием<a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
+<p>Рассмотрим противоположный подход, при котором всему доверяют. В этом случае «опасный» пользовательский ввод является доверенным и фактически передаётся напрямую в высококритичный бизнес-компонент. Ресурс аутентификации/идентификации не используется вовсе. В этом случае вероятность успешной атаки на систему выше, поскольку нет никаких средств контроля для её предотвращения. Кроме того, такая конфигурация может считаться расточительной, так как серверы аутентификации/идентификации и эфемерный IAM не выполняют в полной мере свою предназначенную функцию. <em>(Это могут быть общие корпоративные ресурсы, которые не используются в полную силу).</em></p>
+<p><img alt="Complete Trust Across Boundaries" src="../assets/Secure_Cloud_Architecture_Trust_Boundaries_3.png" /></p>
+<p>Такая архитектура маловероятна для всех приложений, кроме самых простых и с минимальным риском. <strong>Не используйте эту конфигурацию границ доверия</strong>, если нет конфиденциального содержимого для защиты или если единственным критерием успеха является эффективность. Доверять пользовательскому вводу никогда не рекомендуется, даже в приложениях с низким риском.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Преимущества</th>
+<th style="text-align: center;">Недостатки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Эффективно</td>
+<td style="text-align: center;">Небезопасно</td>
+</tr>
+<tr>
+<td style="text-align: center;">Просто</td>
+<td style="text-align: center;">Потенциально расточительно</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Высокий риск компрометации</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3">3. Пример с частичным доверием<a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
+<p>Большинство приложений используют именно такую конфигурацию границ доверия. Опираясь на знания из анализа рисков и поверхности атаки, специалисты по безопасности могут обоснованно присваивать доверие компонентам или процессам с низким риском и выполнять проверку только там, где это необходимо. Это предотвращает трату ценных ресурсов безопасности, но также ограничивает сложность и потери эффективности из-за дополнительных накладных расходов на безопасность.</p>
+<p>Обратите внимание, что в этом примере API-шлюз проверяет аутентификацию/идентификацию пользователя, а затем сразу передаёт запрос вычислительному экземпляру. Экземпляру не нужно повторно проводить проверку, и он выполняет свою операцию. Однако, поскольку вычислительный экземпляр работает с недоверенными пользовательскими вводами (обозначены жёлтым — частичное доверие), всё равно необходимо принять эфемерную идентичность для доступа к системе хранения.</p>
+<p><img alt="Some Trust Across Boundaries" src="../assets/Secure_Cloud_Architecture_Trust_Boundaries_4.png" /></p>
+<p>По своей природе этот подход ограничивает как преимущества, так и недостатки обоих предыдущих примеров. Эта модель, скорее всего, будет использоваться в большинстве приложений, если только преимущества приведённых выше примеров не являются необходимыми для удовлетворения бизнес-требований.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Преимущества</th>
+<th style="text-align: center;">Недостатки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Безопасность, основанная на рисках</td>
+<td style="text-align: center;">Известные пробелы в безопасности</td>
+</tr>
+<tr>
+<td style="text-align: center;">Стоимость/эффективность, исходя из критичности</td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<p><em>Примечание: Данная методология доверия отличается от Zero Trust. Для более детального изучения этой темы ознакомьтесь с <a href="https://www.cisa.gov/sites/default/files/2023-04/zero_trust_maturity_model_v2_508.pdf">CISA's Zero Trust Maturity Model</a></em>.</p>
+<h2 id="_11">Инструменты безопасности<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<h3 id="-">Межсетевой экран веб-приложений<a class="headerlink" href="#-" title="Permanent link">&para;</a></h3>
+<p>Межсетевые экраны веб-приложений (WAF) используются для мониторинга или блокировки распространённых атакующих нагрузок (таких как <a href="https://owasp.org/www-community/attacks/xss/">XSS</a> и <a href="https://owasp.org/www-community/attacks/SQL_Injection">SQLi</a>), или для разрешения только определённых типов и шаблонов запросов. Приложения должны использовать их в качестве первой линии обороны, подключая их к точкам входа — балансировщикам нагрузки или API-шлюзам, — чтобы обрабатывать потенциально вредоносный контент до того, как он достигнет кода приложения. Облачные провайдеры предоставляют базовые наборы правил, которые блокируют или отслеживают распространённые вредоносные нагрузки:</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-list.html">AWS Managed Rules</a></li>
+<li><a href="https://cloud.google.com/armor/docs/waf-rules">GCP WAF Rules</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/application-gateway-crs-rulegroups-rules?tabs=owasp32">Azure Core Rule Sets</a></li>
+</ul>
+<p>По своей природе эти наборы правил носят общий характер и не охватят все типы атак, с которыми может столкнуться приложение. Рекомендуется создавать пользовательские правила, соответствующие специфическим потребностям приложения в безопасности, например:</p>
+<ul>
+<li>Фильтрация маршрутов до допустимых конечных точек (блокировка веб-скрапинга)</li>
+<li>Добавление специальной защиты для выбранных технологий и ключевых конечных точек приложения</li>
+<li>Ограничение скорости запросов к чувствительным API</li>
+</ul>
+<h3 id="_12">Журналирование и мониторинг<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p>Журналирование и мониторинг необходимы для по-настоящему безопасного приложения. Разработчики должны точно знать, что происходит в их среде, используя механизмы оповещения, чтобы предупреждать инженеров, когда системы работают не так, как ожидается. Кроме того, в случае инцидента безопасности журналирование должно быть достаточно подробным, чтобы отследить злоумышленника по всему приложению и предоставить специалистам по реагированию достаточно информации для понимания того, какие действия были предприняты против каких ресурсов. Обратите внимание, что надлежащее журналирование и мониторинг могут быть дорогостоящими, и при внедрении журналирования следует обсудить компромиссы между рисками и затратами.</p>
+<h4 id="_13">Журналирование<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h4>
+<p>Для надлежащего журналирования рекомендуется:</p>
+<ul>
+<li>Журналировать все HTTP-вызовы <a href="https://en.wikipedia.org/wiki/OSI_model">уровня 7</a> с заголовками, метаданными вызывающей стороны и ответами<ul>
+<li>Полезные нагрузки могут не журналироваться в зависимости от того, где происходит журналирование (до завершения TLS) и конфиденциальности данных</li>
+</ul>
+</li>
+<li>Журналировать внутренние действия с информацией об акторе и разрешениях</li>
+<li>Передавать идентификаторы трассировки через весь жизненный цикл запроса для отслеживания ошибок или вредоносных действий</li>
+<li>Маскировать или удалять конфиденциальные данные<ul>
+<li>Номера социального страхования (SSN), конфиденциальная медицинская информация и другие персональные данные (PII) не должны храниться в журналах</li>
+</ul>
+</li>
+</ul>
+<p><em>Специалисты в области права и compliance должны определить сроки хранения журналов для конкретного приложения.</em></p>
+<h4 id="_14">Мониторинг<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h4>
+<p>Для надлежащего мониторинга рекомендуется добавить:</p>
+<ul>
+<li>Оповещения об аномалиях:<ul>
+<li>HTTP-ошибки 4xx и 5xx выше определённого процента от нормы</li>
+<li>Использование памяти, хранилища или CPU выше/ниже определённого процента от нормы</li>
+<li>Операции записи/чтения в базу данных выше/ниже определённого процента от нормы</li>
+<li>Количество вызовов бессерверных вычислений выше определённого процента от нормы</li>
+</ul>
+</li>
+<li>Оповещения о неудачных проверках работоспособности</li>
+<li>Оповещения об ошибках развёртывания или цикличном включении/выключении контейнеров</li>
+<li>Оповещения или отключения при превышении лимитов стоимости</li>
+</ul>
+<p>Аномалии по количеству и типу могут сильно варьироваться от приложения к приложению. Для правильного определения понятия аномалии необходим базовый уровень, специфичный для конкретной среды. Поэтому указанные выше проценты должны выбираться на основе этого базового уровня, а также с учётом таких факторов, как риск и пропускная способность команды реагирования.</p>
+<p>WAF также могут иметь подключённые к ним механизмы мониторинга или оповещения для подсчёта вредоносных нагрузок или (в некоторых случаях) обнаружения аномальной активности.</p>
+<h3 id="ddos">Защита от DDoS<a class="headerlink" href="#ddos" title="Permanent link">&para;</a></h3>
+<p>Облачные провайдеры предлагают широкий спектр продуктов защиты от DDoS — от простых до продвинутых, — в зависимости от потребностей приложения. Простая защита от DDoS зачастую может быть реализована с помощью WAF с правилами ограничения скорости и блокировки маршрутов. Более продвинутая защита может потребовать специальных управляемых инструментов, предлагаемых облачным провайдером. Примеры:</p>
+<ul>
+<li><a href="https://aws.amazon.com/shield/">AWS Shield</a></li>
+<li><a href="https://cloud.google.com/armor/docs/managed-protection-overview">GCP Cloud Armor Managed Protection</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/ddos-protection/ddos-protection-overview">Azure DDoS Protection</a></li>
+</ul>
+<p>Решение о включении расширенной защиты от DDoS для конкретного приложения должно основываться на рисках и бизнес-критичности приложения, с учётом смягчающих факторов и стоимости (эти сервисы могут быть весьма недорогими по сравнению с бюджетами крупных компаний).</p>
+<h2 id="_15">Модель разделённой ответственности<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
+<p>Модель разделённой ответственности (Shared Responsibility Model) — это система для облачных провайдеров (CSP) и тех, кто продаёт облачные сервисы, позволяющая правильно определить и разграничить ответственность разработчика и провайдера. Она разбивается на различные уровни контроля, соответствующие различным элементам/слоям технологического стека. Как правило, такие компоненты, как физические вычислительные устройства и пространство центров обработки данных, являются ответственностью CSP. В зависимости от уровня <a href="#self-managed-tooling">управления</a>, разработчик может нести ответственность за весь стек от операционной системы и выше, или только за некоторые вспомогательные функции, код или администрирование.</p>
+<p>Эта модель ответственности обычно классифицируется на три уровня сервиса:</p>
+<ul>
+<li>Инфраструктура как сервис (<a href="#iaas">IaaS</a>)</li>
+<li>Платформа как сервис (<a href="#paas">PaaS</a>)</li>
+<li>Программное обеспечение как сервис (<a href="#saas">SaaS</a>)</li>
+</ul>
+<p><em>Существует множество других классификаций сервисов, но они не перечислены здесь для краткости.</em></p>
+<p>Как следует из каждого названия, уровень ответственности, принимаемой CSP, соответствует уровню предоставляемого ими «сервиса». Каждый уровень имеет свои преимущества и недостатки, которые обсуждаются ниже.</p>
+<h3 id="iaas">IaaS<a class="headerlink" href="#iaas" title="Permanent link">&para;</a></h3>
+<p>В случае IaaS инфраструктура поддерживается CSP, тогда как всё остальное поддерживается разработчиком. Это включает:</p>
+<ul>
+<li>Аутентификацию и авторизацию</li>
+<li>Хранение, доступ и управление данными</li>
+<li>Определённые сетевые задачи (порты, NACL и т.д.)</li>
+<li>Прикладное программное обеспечение</li>
+</ul>
+<p>Эта модель отдаёт приоритет гибкости и конфигурируемости для разработчика, при этом являясь более сложной и, как правило, более дорогостоящей по сравнению с другими моделями сервиса. Она также наиболее близко напоминает локальные (on-premise) модели, популярность которых у крупных компаний снижается. По этой причине перенос определённых приложений в облачный IaaS может быть проще, чем перестройка с использованием более облачно-нативной архитектуры.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Преимущества</th>
+<th style="text-align: center;">Недостатки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Контроль над большинством компонентов</td>
+<td style="text-align: center;">Наивысшая стоимость</td>
+</tr>
+<tr>
+<td style="text-align: center;">Высокий уровень гибкости</td>
+<td style="text-align: center;">Более высокие требования к обслуживанию</td>
+</tr>
+<tr>
+<td style="text-align: center;">Простой переход с локальной инфраструктуры</td>
+<td style="text-align: center;">Высокий уровень сложности</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ответственность почти полностью лежит на разработчике и должна быть обеспечена соответствующим образом</strong>. Всё — от контроля сетевого доступа, уязвимостей операционной системы, уязвимостей приложений, доступа к данным до аутентификации/авторизации — должно учитываться при разработке стратегии безопасности IaaS. Как описано выше, это обеспечивает высокий уровень контроля практически над всем в технологическом стеке, но может быть очень сложным в обслуживании без достаточных ресурсов для таких задач, как обновления версий или миграции при прекращении поддержки. <em>(<a href="#update-strategy-for-self-managed-services">Самостоятельно управляемые обновления безопасности</a> рассматриваются более подробно ниже.)</em></p>
+<h3 id="paas">PaaS<a class="headerlink" href="#paas" title="Permanent link">&para;</a></h3>
+<p>Платформа как сервис занимает промежуточное положение между IaaS и SaaS. Разработчик управляет:</p>
+<ul>
+<li>Аутентификацией и авторизацией приложения</li>
+<li>Программным обеспечением приложения</li>
+<li>Внешним хранением данных</li>
+</ul>
+<p>Она предоставляет удобно упакованные варианты размещения кода и контейнеризации, которые позволяют небольшим командам разработчиков или менее опытным разработчикам приступить к работе над своими приложениями, не обращая внимания на более сложные или излишние вычислительные задачи. Как правило, это дешевле, чем IaaS, при этом сохраняя некоторый контроль над элементами, которые SaaS-система не предоставляет. Однако разработчики могут столкнуться с конкретными ограничениями используемого предложения или проблемами совместимости, поскольку код должен работать с правильным контейнером, фреймворком или версией языка.</p>
+<p>Кроме того, хотя масштабируемость во многом зависит от провайдера и настройки, PaaS обычно обеспечивает более высокую масштабируемость за счёт возможностей контейнеризации и общих, воспроизводимых базовых операционных систем. По сравнению с IaaS, где масштабируемость должна обеспечиваться разработчиком, и SaaS, где производительность очень специфична для платформы.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Преимущества</th>
+<th style="text-align: center;">Недостатки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Проще в освоении и обслуживании</td>
+<td style="text-align: center;">Возможные проблемы совместимости</td>
+</tr>
+<tr>
+<td style="text-align: center;">Лучшая масштабируемость</td>
+<td style="text-align: center;">Ограничения, специфичные для предложения</td>
+</tr>
+</tbody>
+</table>
+<p>Ручная работа по безопасности в PaaS-решениях также менее обширна (по сравнению с IaaS). Аутентификация и авторизация, специфичные для приложения, по-прежнему должны обрабатываться разработчиком, наряду с любым доступом к внешним системам данных. Однако CSP несёт ответственность за защиту контейнеризированных экземпляров, операционных систем, эфемерных файловых систем и определённых сетевых элементов управления.</p>
+<h3 id="saas">SaaS<a class="headerlink" href="#saas" title="Permanent link">&para;</a></h3>
+<p>Модель программного обеспечения как сервиса характеризуется практически готовым продуктом, в котором конечному пользователю нужно лишь настроить или персонализировать небольшие детали для удовлетворения своих потребностей. Пользователь, как правило, управляет:</p>
+<ul>
+<li>Конфигурацией, администрированием и/или кодом в рамках границ продукта</li>
+<li>Некоторым доступом пользователей, например назначением администраторов</li>
+<li>Высокоуровневыми подключениями к другим продуктам через разрешения или интеграции</li>
+</ul>
+<p>Весь технологический стек контролируется провайдером (облачным сервисом или другой программной компанией), и разработчик будет вносить лишь относительно небольшие изменения для удовлетворения нестандартных потребностей. Это ограничивает затраты и трудозатраты на обслуживание, а возникающие проблемы, как правило, можно решить с помощью службы поддержки провайдера, не требуя технических знаний для устранения неполадок во всём технологическом стеке.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Преимущества</th>
+<th style="text-align: center;">Недостатки</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Минимальное обслуживание</td>
+<td style="text-align: center;">Ограничено требованиями провайдера</td>
+</tr>
+<tr>
+<td style="text-align: center;">Недорого</td>
+<td style="text-align: center;">Минимальный контроль</td>
+</tr>
+<tr>
+<td style="text-align: center;">Поддержка клиентов / устранение неполадок</td>
+<td style="text-align: center;">Минимальная прозрачность / надзор</td>
+</tr>
+</tbody>
+</table>
+<p>Безопасность в SaaS одновременно является и наиболее простой, и наиболее сложной из-за описанного выше отсутствия контроля. Разработчику нужно будет управлять лишь небольшим набором функций безопасности: некоторыми элементами управления доступом, отношениями доверия/обмена данными с интеграциями и любыми последствиями для безопасности настроек. Все остальные уровни безопасности контролируются провайдером. Это означает, что любые исправления безопасности будут вне сферы влияния разработчика и, следовательно, могут быть выполнены несвоевременно или с уровнем безопасности, который не соответствует требованиям конечного пользователя (в зависимости от потребностей в безопасности). Однако такие исправления не потребуют участия и ресурсов конечного пользователя, что упрощает их с точки зрения затрат и бремени обслуживания.</p>
+<p><em>Примечание: При поиске SaaS-решений рекомендуется запрашивать аттестационные документы компании и подтверждение соответствия таким стандартам, как <a href="https://www.iso.org/standard/27001">ISO 27001</a>. Ниже приведены ссылки на сайты аттестации каждого из основных CSP для дополнительного ознакомления.</em></p>
+<ul>
+<li><a href="https://cloud.google.com/security/compliance/offerings">GCP</a></li>
+<li><a href="https://aws.amazon.com/compliance/programs/">AWS</a></li>
+<li><a href="https://servicetrust.microsoft.com/ViewPage/HomePageVNext">Azure</a></li>
+</ul>
+<h3 id="_16">Самостоятельно управляемый инструментарий<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
+<p>Ещё один способ более обобщённо описать эту модель разделённой ответственности — распределить облачный инструментарий по спектру «управляемости». Полностью управляемые сервисы оставляют конечному разработчику очень мало задач, помимо некоторых функций программирования или администрирования (SaaS), тогда как самостоятельно управляемые системы требуют значительно бо́льших накладных расходов на обслуживание (IaaS).</p>
+<p>AWS предоставляет отличный пример этого различия в управляемости, показывая, где некоторые из их различных продуктов располагаются на разных точках спектра.</p>
+<p><img alt="Shared Responsibility Model" src="../assets/Secure_Cloud_Architecture_Shared_Responsibility_Model.png" /></p>
+<p><em>Примечание: Сложно точно определить, к какому типу сервиса относится то или иное предложение (например, IaaS или PaaS). Разработчикам следует стремиться понять модель, применимую к конкретному используемому инструменту.</em></p>
+<h4 id="_17">Стратегия обновления для самостоятельно управляемых сервисов<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h4>
+<p>Самостоятельно управляемый инструментарий потребует дополнительных накладных расходов со стороны разработчиков и инженеров поддержки. В зависимости от инструмента потребуются базовые обновления версий, обновления образов, таких как <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html">AMI</a> или <a href="https://cloud.google.com/compute/docs/images">Compute Images</a>, или другое обслуживание на уровне операционной системы. Используйте автоматизацию для регулярного обновления минорных версий или <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-tutorial-update-patch-golden-ami.html">образов</a>, и планируйте время в циклах разработки для обновления устаревших ресурсов.</p>
+<h4 id="_18">Предотвращение пробелов в безопасности управляемых сервисов<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h4>
+<p>Управляемые сервисы предоставят определённый уровень безопасности, например, обновление и защиту базового оборудования, на котором выполняется код приложения. Однако команда разработчиков по-прежнему несёт ответственность за многие аспекты безопасности в системе. Убедитесь, что разработчики понимают, какая безопасность будет их ответственностью в зависимости от выбора инструментов. Скорее всего, следующее будет частично или полностью ответственностью разработчика:</p>
+<ul>
+<li>Аутентификация и авторизация</li>
+<li>Журналирование и мониторинг</li>
+<li>Безопасность кода (<a href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a>)</li>
+<li>Обновление сторонних библиотек</li>
+</ul>
+<p>Обратитесь к документации, предоставленной облачным провайдером, чтобы понять, какие аспекты безопасности являются ответственностью каждой из сторон, в зависимости от выбранного сервиса. Например, в случае бессерверных функций:</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-security.html">AWS Lambda</a></li>
+<li><a href="https://cloud.google.com/functions/docs/securing">GCP Cloud Functions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/architecture/serverless-quest/functions-app-security">Azure Functions</a></li>
+</ul>
+<h2 id="_19">Ссылки<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Secure_Product_Design_Cheat_Sheet.html">Secure Product Design</a></li>
+<li><a href="https://www.cisa.gov/sites/default/files/publications/Cloud%20Security%20Technical%20Reference%20Architecture.pdf">CISA Security Technical Reference Architecture</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

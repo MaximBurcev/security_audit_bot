@@ -1,0 +1,4322 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="Serverless_FaaS_Security_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Software_Supply_Chain_Security_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Session Management - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#session-management-cheat-sheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Session Management
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Свойства идентификатора сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Свойства идентификатора сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Идентификация по имени идентификатора сессии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Энтропия идентификатора сессии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Длина идентификатора сессии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Содержимое (значение) идентификатора сессии
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализация управления сессиями
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Реализация управления сессиями">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встроенные реализации управления сессиями
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используемые и принимаемые механизмы обмена идентификаторами сессий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Безопасность транспортного уровня
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Файлы cookie
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Файлы cookie">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#secure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибут Secure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httponly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибут HttpOnly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samesite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибут SameSite
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибуты Domain и Path
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expires-max-age" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибуты Expires и Max-Age
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#html5-web-storage-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTML5 Web Storage API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HTML5 Web Storage API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-localstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      API localStorage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API localStorage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Область действия
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Продолжительность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Офлайн-доступ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сценарий использования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-sessionstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      API sessionStorage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API sessionStorage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Область действия
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Продолжительность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Офлайн-доступ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сценарий использования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#web-workers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web Workers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Web Workers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сценарий использования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Жизненный цикл идентификатора сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Жизненный цикл идентификатора сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Генерация и проверка идентификатора сессии: разрешительное и строгое управление сессиями
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обращение с идентификатором сессии как с любым другим вводом пользователя
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обновление идентификатора сессии при любом изменении уровня привилегий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Повторная аутентификация после событий риска
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные ресурсы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookie_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Особенности при использовании нескольких файлов cookie
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Истечение срока сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Истечение срока сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Автоматическое истечение срока сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Автоматическое истечение срока сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тайм-аут простоя
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Абсолютный тайм-аут
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тайм-аут обновления
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ручное истечение срока сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ручное истечение срока сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Кнопка выхода
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-clear-site-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Кэширование веб-содержимого и Clear-Site-Data
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Повторная аутентификация после событий риска
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные клиентские средства защиты управления сессиями
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Дополнительные клиентские средства защиты управления сессиями">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Начальный тайм-аут входа
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      Принудительный выход при закрытии окна браузера
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отключение межвкладочных сессий браузера
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      Автоматический выход клиента
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обнаружение атак на сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обнаружение атак на сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обнаружение угадывания и перебора идентификаторов сессий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обнаружение аномалий идентификатора сессии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    <span class="md-ellipsis">
+      Привязка идентификатора сессии к другим свойствам пользователя
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ведение журнала жизненного цикла сессий: мониторинг создания, использования и уничтожения идентификаторов сессий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    <span class="md-ellipsis">
+      Одновременные входы в систему
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#waf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита управления сессиями с помощью WAF
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Свойства идентификатора сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Свойства идентификатора сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Идентификация по имени идентификатора сессии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Энтропия идентификатора сессии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Длина идентификатора сессии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Содержимое (значение) идентификатора сессии
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализация управления сессиями
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Реализация управления сессиями">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встроенные реализации управления сессиями
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используемые и принимаемые механизмы обмена идентификаторами сессий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Безопасность транспортного уровня
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Файлы cookie
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Файлы cookie">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#secure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибут Secure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httponly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибут HttpOnly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samesite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибут SameSite
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибуты Domain и Path
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expires-max-age" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибуты Expires и Max-Age
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#html5-web-storage-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTML5 Web Storage API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HTML5 Web Storage API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-localstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      API localStorage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API localStorage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Область действия
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Продолжительность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Офлайн-доступ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сценарий использования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-sessionstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      API sessionStorage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API sessionStorage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Область действия
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Продолжительность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Офлайн-доступ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сценарий использования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#web-workers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web Workers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Web Workers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сценарий использования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Жизненный цикл идентификатора сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Жизненный цикл идентификатора сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Генерация и проверка идентификатора сессии: разрешительное и строгое управление сессиями
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обращение с идентификатором сессии как с любым другим вводом пользователя
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обновление идентификатора сессии при любом изменении уровня привилегий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Повторная аутентификация после событий риска
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные ресурсы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookie_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Особенности при использовании нескольких файлов cookie
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Истечение срока сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Истечение срока сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Автоматическое истечение срока сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Автоматическое истечение срока сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тайм-аут простоя
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Абсолютный тайм-аут
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тайм-аут обновления
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ручное истечение срока сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ручное истечение срока сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Кнопка выхода
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-clear-site-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Кэширование веб-содержимого и Clear-Site-Data
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Повторная аутентификация после событий риска
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные клиентские средства защиты управления сессиями
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Дополнительные клиентские средства защиты управления сессиями">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Начальный тайм-аут входа
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      Принудительный выход при закрытии окна браузера
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отключение межвкладочных сессий браузера
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      Автоматический выход клиента
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обнаружение атак на сессии
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обнаружение атак на сессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обнаружение угадывания и перебора идентификаторов сессий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обнаружение аномалий идентификатора сессии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    <span class="md-ellipsis">
+      Привязка идентификатора сессии к другим свойствам пользователя
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ведение журнала жизненного цикла сессий: мониторинг создания, использования и уничтожения идентификаторов сессий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    <span class="md-ellipsis">
+      Одновременные входы в систему
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#waf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита управления сессиями с помощью WAF
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="session-management-cheat-sheet">Session Management Cheat Sheet<a class="headerlink" href="#session-management-cheat-sheet" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><strong>Веб-аутентификация, управление сессиями и контроль доступа</strong>:</p>
+<p>Веб-сессия — это последовательность сетевых HTTP-транзакций (запросов и ответов), связанных с одним и тем же пользователем. Современные и сложные веб-приложения требуют сохранения информации или состояния о каждом пользователе в течение нескольких запросов. Поэтому сессии предоставляют возможность устанавливать переменные — например, права доступа и языковые настройки — которые будут применяться ко всем взаимодействиям пользователя с веб-приложением на протяжении всей сессии.</p>
+<p>Веб-приложения могут создавать сессии для отслеживания анонимных пользователей уже с самого первого запроса. Примером может служить сохранение языковых предпочтений пользователя. Кроме того, веб-приложения используют сессии после аутентификации пользователя. Это обеспечивает возможность идентифицировать пользователя в последующих запросах, а также применять элементы управления безопасным доступом, предоставлять авторизованный доступ к личным данным пользователя и повышать удобство использования приложения. Таким образом, современные веб-приложения могут поддерживать сессии как до, так и после аутентификации.</p>
+<p>После установки аутентифицированной сессии идентификатор сессии (или токен) временно равнозначен наиболее сильному методу аутентификации, используемому приложением, — например, имени пользователя и паролю, парольным фразам, одноразовым паролям (OTP), цифровым сертификатам на стороне клиента, смарт-картам или биометрическим данным (например, отпечатку пальца или сетчатке глаза). См. OWASP <a href="Authentication_Cheat_Sheet.html">Authentication Cheat Sheet</a>.</p>
+<p>HTTP является протоколом без сохранения состояния (<a href="https://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>, раздел 5), в котором каждая пара запрос/ответ независима от других веб-взаимодействий. Поэтому для введения концепции сессии необходимо реализовать механизмы управления сессиями, связывающие модули аутентификации и контроля доступа (авторизации), которые обычно присутствуют в веб-приложениях:</p>
+<p><img alt="SessionDiagram" src="../assets/Session_Management_Cheat_Sheet_Diagram.png" /></p>
+<p>Идентификатор сессии или токен связывает учётные данные аутентификации пользователя (в виде пользовательской сессии) с HTTP-трафиком пользователя и соответствующими элементами управления доступом, применяемыми веб-приложением. Сложность этих трёх компонентов (аутентификация, управление сессиями и контроль доступа) в современных веб-приложениях, а также тот факт, что их реализация и связывание лежат на плечах веб-разработчика (поскольку фреймворки веб-разработки не обеспечивают строгих взаимосвязей между этими модулями), делают реализацию безопасного модуля управления сессиями весьма сложной задачей.</p>
+<p>Раскрытие, перехват, предсказание, подбор методом перебора или фиксация идентификатора сессии приведут к атакам по захвату сессии (session hijacking или sidejacking), при которых злоумышленник может полностью имитировать жертву в веб-приложении. Злоумышленники могут проводить два типа атак по захвату сессии: целенаправленные или массовые. При целенаправленной атаке цель злоумышленника — выдать себя за конкретного (или привилегированного) пользователя веб-приложения. При массовой атаке цель злоумышленника — выдать себя за любого действительного или легитимного пользователя веб-приложения (или получить к нему доступ).</p>
+<h2 id="_2">Свойства идентификатора сессии<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Чтобы поддерживать аутентифицированное состояние и отслеживать прогресс пользователей в веб-приложении, приложения предоставляют пользователям <strong>идентификатор сессии</strong> (session ID или токен), который назначается в момент создания сессии и используется совместно пользователем и веб-приложением на протяжении всей сессии (передаётся в каждом HTTP-запросе). Идентификатор сессии представляет собой пару <code>name=value</code>.</p>
+<p>Для реализации безопасных идентификаторов сессии генерация идентификаторов (ID или токенов) должна удовлетворять следующим требованиям.</p>
+<h3 id="_3">Идентификация по имени идентификатора сессии<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>Имя, используемое идентификатором сессии, не должно быть слишком описательным и не должно содержать излишних сведений о назначении и смысле идентификатора.</p>
+<p>Имена идентификаторов сессий, используемые наиболее распространёнными фреймворками веб-разработки, <a href="https://wiki.owasp.org/index.php/Category:OWASP_Cookies_Database">легко поддаются идентификации</a>: например, <code>PHPSESSID</code> (PHP), <code>JSESSIONID</code> (J2EE), <code>CFID</code> и <code>CFTOKEN</code> (ColdFusion), <code>ASP.NET_SessionId</code> (ASP .NET) и т.д. Таким образом, имя идентификатора сессии может раскрыть технологии и языки программирования, используемые в веб-приложении.</p>
+<p>Рекомендуется изменить имя идентификатора сессии, используемое по умолчанию в фреймворке веб-разработки, на обобщённое, например <code>id</code>.</p>
+<h3 id="_4">Энтропия идентификатора сессии<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>Идентификаторы сессий должны иметь не менее <code>64 бит</code> энтропии для предотвращения атак методом перебора сессий. Энтропия означает степень случайности или непредсказуемости значения. Каждый «бит» энтропии удваивает количество возможных исходов, то есть идентификатор сессии с 64 битами энтропии может принимать <code>2^64</code> возможных значений.</p>
+<p>Для генерации идентификаторов сессий необходимо использовать надёжный <a href="https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator">CSPRNG</a> (криптографически стойкий генератор псевдослучайных чисел). Это гарантирует равномерное распределение генерируемых значений среди всех возможных. В противном случае злоумышленники могут использовать методы статистического анализа для выявления закономерностей в создании идентификаторов сессий, что фактически снижает энтропию и позволяет угадывать или предсказывать действительные идентификаторы сессий.</p>
+<p><strong>ПРИМЕЧАНИЕ</strong>:</p>
+<ul>
+<li>Ожидаемое время, необходимое злоумышленнику для перебора действительного идентификатора сессии, зависит от таких факторов, как количество бит энтропии, количество активных сессий, время истечения сессий и скорость угадывания злоумышленником.</li>
+<li>Если веб-приложение генерирует идентификаторы сессий с 64 битами энтропии, злоумышленнику потребуется около 585 лет, чтобы успешно угадать действительный идентификатор сессии, при условии, что злоумышленник может делать 10 000 попыток в секунду при наличии 100 000 одновременно активных сессий в приложении.</li>
+<li>Дополнительный анализ ожидаемого времени для перебора злоумышленником идентификаторов сессий доступен <a href="https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length#estimating-attack-time">здесь</a>.</li>
+</ul>
+<h3 id="_5">Длина идентификатора сессии<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>Как указано в предыдущем разделе <em>Энтропия идентификатора сессии</em>, основным требованием безопасности к идентификаторам сессий является то, что они должны содержать не менее <code>64 бит</code> энтропии для предотвращения атак методом перебора. Хотя длина идентификатора сессии имеет значение, именно энтропия обеспечивает безопасность. Идентификатор сессии должен быть достаточно длинным, чтобы кодировать необходимую энтропию, предотвращая атаки методом перебора, при которых злоумышленник угадывает действительные идентификаторы.</p>
+<p>Различные методы кодирования могут давать разную длину при одинаковом количестве энтропии. Идентификаторы сессий часто представляются в шестнадцатеричном кодировании. При использовании шестнадцатеричного кодирования идентификатор сессии должен быть не менее 16 шестнадцатеричных символов, чтобы обеспечить требуемые 64 бита энтропии. При использовании других кодировок (например, Base64 или <a href="https://docs.microsoft.com/en-us/dotnet/api/system.web.sessionstate.sessionidmanager?redirectedfrom=MSDN&amp;view=netframework-4.7.2">кодировки Microsoft для идентификаторов сессий ASP.NET</a>) может потребоваться иное количество символов для представления минимальных 64 бит энтропии.</p>
+<p>Важно отметить, что если какая-либо часть идентификатора сессии фиксирована или предсказуема, эффективная энтропия снижается, и может потребоваться увеличить длину для компенсации. Например, если половина 16-символьного шестнадцатеричного идентификатора сессии фиксирована, только оставшиеся 8 символов являются случайными, обеспечивая лишь 32 бита энтропии — что недостаточно для надёжной безопасности. Для поддержания безопасности убедитесь, что весь идентификатор сессии генерируется случайным образом и непредсказуемо, или увеличьте общую длину, если части идентификатора не являются случайными.</p>
+<p><strong>ПРИМЕЧАНИЕ</strong>:</p>
+<ul>
+<li>Дополнительная информация о взаимосвязи между длиной идентификатора сессии и его энтропией доступна <a href="https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length#session-id-length-and-entropy-relationship">здесь</a>.</li>
+</ul>
+<h3 id="_6">Содержимое (значение) идентификатора сессии<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>Содержимое (или значение) идентификатора сессии должно быть лишённым смысла, чтобы предотвратить атаки раскрытия информации, при которых злоумышленник способен декодировать содержимое идентификатора и извлечь сведения о пользователе, сессии или внутренней работе веб-приложения.</p>
+<p>Идентификатор сессии должен представлять собой лишь идентификатор на стороне клиента, и его значение никогда не должно содержать конфиденциальную информацию или персональные данные (PII). Подробнее о PII можно прочитать в <a href="https://en.wikipedia.org/wiki/Personally_identifiable_information">Википедии</a> или в этой <a href="https://www.idshield.com/blog/identity-theft/what-pii-and-why-should-i-care/">статье</a>.</p>
+<p>Смысловое содержание и бизнес-логика, связанные с идентификатором сессии, должны храниться на стороне сервера — конкретно в объектах сессии, в базе данных управления сессиями или в репозитории.</p>
+<p>Хранимая информация может включать IP-адрес клиента, User-Agent, электронную почту, имя пользователя, ID пользователя, роль, уровень привилегий, права доступа, языковые предпочтения, ID аккаунта, текущее состояние, время последнего входа, тайм-ауты сессий и другие внутренние детали сессии. Если объекты и свойства сессии содержат конфиденциальную информацию, например номера кредитных карт, необходимо надлежащим образом зашифровать и защитить репозиторий управления сессиями.</p>
+<p>Рекомендуется использовать идентификатор сессии, создаваемый используемым языком или фреймворком. Если вам необходимо создать собственный идентификатор сессии, используйте криптографически стойкий генератор псевдослучайных чисел (CSPRNG) с размером не менее 128 бит и убедитесь, что каждый идентификатор уникален.</p>
+<h2 id="_7">Реализация управления сессиями<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>Реализация управления сессиями определяет механизм обмена, который будет использоваться между пользователем и веб-приложением для совместного использования и непрерывного обмена идентификатором сессии. В HTTP существует несколько механизмов поддержания состояния сессии в веб-приложениях: файлы cookie (стандартный HTTP-заголовок), параметры URL (переписывание URL — <a href="https://www.ietf.org/rfc/rfc2396.txt">RFC2396</a>), аргументы URL в GET-запросах, аргументы тела в POST-запросах (например, скрытые поля форм HTML) или проприетарные HTTP-заголовки.</p>
+<p>Предпочтительный механизм обмена идентификатором сессии должен позволять определять расширенные свойства токена, такие как дата и время истечения токена или детализированные ограничения использования. Именно поэтому файлы cookie (RFC <a href="https://www.ietf.org/rfc/rfc2109.txt">2109</a>, <a href="https://www.ietf.org/rfc/rfc2965.txt">2965</a> и <a href="https://www.ietf.org/rfc/rfc6265.txt">6265</a>) являются одним из наиболее широко используемых механизмов обмена идентификаторами сессий, предлагая расширенные возможности, недоступные в других методах.</p>
+<p>Использование определённых механизмов обмена идентификаторами сессий — например, тех, где идентификатор включается в URL, — может привести к раскрытию идентификатора сессии (в веб-ссылках и журналах, истории и закладках браузера, заголовке Referer или поисковых системах), а также создаёт риски других атак, например манипуляции с идентификатором или <a href="https://www.acrossecurity.com/papers/session_fixation.pdf">атак фиксации сессии</a>.</p>
+<h3 id="_8">Встроенные реализации управления сессиями<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>Фреймворки веб-разработки, такие как J2EE, ASP .NET, PHP и другие, предоставляют собственные функции управления сессиями и соответствующую реализацию. Рекомендуется использовать эти встроенные возможности фреймворков, а не разрабатывать собственные с нуля, поскольку они широко применяются во множестве веб-сред и проверены сообществами по безопасности и разработке веб-приложений.</p>
+<p>Однако следует учитывать, что эти фреймворки также имели уязвимости и слабые места в прошлом, поэтому всегда рекомендуется использовать последнюю доступную версию, потенциально исправляющую все известные уязвимости, а также проверять и изменять конфигурацию по умолчанию для повышения безопасности, следуя рекомендациям, описанным в данном документе.</p>
+<p>Хранилище или репозиторий, используемый механизмом управления сессиями для временного сохранения идентификаторов сессий, должен быть защищённым и предотвращать локальное или удалённое случайное раскрытие или несанкционированный доступ к идентификаторам.</p>
+<h3 id="_9">Используемые и принимаемые механизмы обмена идентификаторами сессий<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>Веб-приложение должно использовать файлы cookie для управления обменом идентификаторами сессий. Если пользователь передаёт идентификатор сессии через другой механизм обмена, например параметр URL, веб-приложение должно отказаться принимать его как часть защитной стратегии против фиксации сессии.</p>
+<p><strong>ПРИМЕЧАНИЕ</strong>:</p>
+<ul>
+<li>Даже если веб-приложение использует файлы cookie в качестве механизма обмена идентификаторами сессий по умолчанию, оно может принимать и другие механизмы обмена.</li>
+<li>Поэтому необходимо тщательно проверить через тестирование все различные механизмы, принимаемые веб-приложением при обработке и управлении идентификаторами сессий, и ограничить принимаемые механизмы отслеживания сессий исключительно файлами cookie.</li>
+<li>В прошлом некоторые веб-приложения использовали параметры URL или даже переключались с файлов cookie на параметры URL (через автоматическое переписывание URL), если выполнялись определённые условия (например, обнаружение веб-клиентов без поддержки или без принятия файлов cookie из соображений конфиденциальности пользователя).</li>
+</ul>
+<h3 id="_10">Безопасность транспортного уровня<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>Для защиты обмена идентификатором сессии от активного перехвата и пассивного раскрытия в сетевом трафике необходимо использовать зашифрованное HTTPS (TLS)-соединение для всей веб-сессии, а не только для процесса аутентификации, когда передаются учётные данные пользователя. Для клиентов с поддержкой <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html">HTTP Strict Transport Security (HSTS)</a> это может быть обеспечено соответствующим механизмом.</p>
+<p>Кроме того, для обеспечения передачи идентификатора сессии только через зашифрованный канал должен использоваться атрибут <code>Secure</code> <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Secure_and_HttpOnly_cookies">файла cookie</a>. Использование зашифрованного канала связи также защищает сессию от некоторых атак фиксации сессии, при которых злоумышленник может перехватывать и изменять трафик для внедрения (или фиксации) идентификатора сессии в браузере жертвы.</p>
+<p>Следующий набор лучших практик ориентирован на защиту идентификатора сессии (в особенности при использовании файлов cookie) и интеграцию HTTPS в веб-приложение:</p>
+<ul>
+<li>Не переключайте данную сессию с HTTP на HTTPS или наоборот, поскольку это раскроет идентификатор сессии в открытом виде через сеть.<ul>
+<li>При перенаправлении на HTTPS убедитесь, что cookie устанавливается или перегенерируется <strong>после</strong> выполнения перенаправления.</li>
+</ul>
+</li>
+<li>Не смешивайте зашифрованное и незашифрованное содержимое (HTML-страницы, изображения, CSS, JavaScript-файлы и т.д.) на одной странице или из одного домена.</li>
+<li>По возможности избегайте предоставления публичного незашифрованного содержимого и приватного зашифрованного содержимого с одного и того же хоста. Если требуется небезопасное содержимое, рассмотрите его размещение на отдельном небезопасном домене.</li>
+<li>Внедрите <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html">HTTP Strict Transport Security (HSTS)</a> для принудительного использования HTTPS-соединений.</li>
+</ul>
+<p>Общее руководство по безопасной реализации TLS см. в OWASP <a href="Transport_Layer_Security_Cheat_Sheet.html">Transport Layer Security Cheat Sheet</a>.</p>
+<p>Важно подчеркнуть, что TLS не защищает от предсказания, перебора, подделки на стороне клиента или фиксации идентификаторов сессий; однако он обеспечивает эффективную защиту от перехвата или кражи идентификаторов сессий злоумышленником посредством атаки «человек посередине».</p>
+<h2 id="cookie">Файлы cookie<a class="headerlink" href="#cookie" title="Permanent link">&para;</a></h2>
+<p>Механизм обмена идентификаторами сессий на основе файлов cookie предоставляет множество функций безопасности в виде атрибутов cookie, которые можно использовать для защиты обмена идентификатором сессии:</p>
+<h3 id="secure">Атрибут Secure<a class="headerlink" href="#secure" title="Permanent link">&para;</a></h3>
+<p>Атрибут <code>Secure</code> файла cookie указывает веб-браузерам передавать cookie только через зашифрованное HTTPS (SSL/TLS)-соединение. Этот механизм защиты сессии обязателен для предотвращения раскрытия идентификатора сессии в ходе атак MitM (человек посередине). Он обеспечивает то, что злоумышленник не сможет просто перехватить идентификатор сессии из трафика веб-браузера.</p>
+<p>Принудительное использование веб-приложением только HTTPS для коммуникации (даже когда порт TCP/80, HTTP, закрыт на хосте веб-приложения) не защищает от раскрытия идентификатора сессии, если атрибут <code>Secure</code> для cookie не установлен — веб-браузер может быть обманут, чтобы раскрыть идентификатор сессии через незашифрованное HTTP-соединение. Злоумышленник может перехватить и подделать трафик пользователя-жертвы и внедрить незашифрованную HTTP-ссылку на веб-приложение, которая заставит браузер передать идентификатор сессии в открытом виде.</p>
+<p>См. также: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Secure_and_HttpOnly_cookies">SecureFlag</a></p>
+<h3 id="httponly">Атрибут HttpOnly<a class="headerlink" href="#httponly" title="Permanent link">&para;</a></h3>
+<p>Атрибут <code>HttpOnly</code> файла cookie запрещает веб-браузерам предоставлять скриптам (например, JavaScript или VBscript) доступ к cookie через объект DOM <code>document.cookie</code>. Эта защита идентификатора сессии обязательна для предотвращения кражи идентификатора сессии в ходе XSS-атак. Однако если XSS-атака сочетается с CSRF-атакой, запросы, отправляемые веб-приложению, будут включать cookie сессии, поскольку браузер всегда включает cookie при отправке запросов. Атрибут <code>HttpOnly</code> защищает только конфиденциальность cookie; злоумышленник не может использовать его в автономном режиме, вне контекста XSS-атаки.</p>
+<p>См. OWASP <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS (Cross Site Scripting) Prevention Cheat Sheet</a>.</p>
+<p>См. также: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Secure_and_HttpOnly_cookies">HttpOnly</a></p>
+<h3 id="samesite">Атрибут SameSite<a class="headerlink" href="#samesite" title="Permanent link">&para;</a></h3>
+<p>SameSite определяет атрибут cookie, предотвращающий отправку браузерами cookie с флагом SameSite в межсайтовых запросах. Основная цель — снизить риск утечки информации между источниками и обеспечить некоторую защиту от атак межсайтовой подделки запросов.</p>
+<p>См. также: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#SameSite_cookies">SameSite</a></p>
+<h3 id="domain-path">Атрибуты Domain и Path<a class="headerlink" href="#domain-path" title="Permanent link">&para;</a></h3>
+<p>Атрибут <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#Directives"><code>Domain</code></a> файла cookie указывает веб-браузерам отправлять cookie только на указанный домен и все его поддомены. Если атрибут не установлен, по умолчанию cookie будет отправляться только на исходный сервер. Атрибут <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#Directives"><code>Path</code></a> файла cookie указывает веб-браузерам отправлять cookie только в указанную директорию или поддиректории (или пути, или ресурсы) в веб-приложении. Если атрибут не установлен, по умолчанию cookie будет отправляться только для директории (или пути) запрошенного ресурса, устанавливающего этот cookie.</p>
+<p>Рекомендуется использовать узкую или ограниченную область действия для этих двух атрибутов. Таким образом, атрибут <code>Domain</code> не должен устанавливаться (ограничивая cookie только исходным сервером), а атрибут <code>Path</code> должен быть установлен настолько строго, насколько это возможно, для пути веб-приложения, использующего идентификатор сессии.</p>
+<p>Установка атрибута <code>Domain</code> на слишком широкое значение, например <code>example.com</code>, позволяет злоумышленнику проводить атаки на идентификаторы сессий между разными хостами и веб-приложениями, принадлежащими одному домену, что известно как атаки с использованием cookie поддоменов. Например, уязвимости в <code>www.example.com</code> могут позволить злоумышленнику получить доступ к идентификаторам сессий с <code>secure.example.com</code>.</p>
+<p>Кроме того, не рекомендуется смешивать веб-приложения с разными уровнями безопасности в одном домене. Уязвимости в одном из веб-приложений позволят злоумышленнику установить идентификатор сессии для другого веб-приложения в том же домене, используя разрешительный атрибут <code>Domain</code> (например, <code>example.com</code>), что является техникой, применяемой в <a href="https://www.acrossecurity.com/papers/session_fixation.pdf">атаках фиксации сессии</a>.</p>
+<p>Хотя атрибут <code>Path</code> позволяет изолировать идентификаторы сессий между разными веб-приложениями, использующими разные пути на одном хосте, настоятельно рекомендуется не запускать разные веб-приложения (особенно с разными уровнями или областями безопасности) на одном хосте. Другие методы могут использоваться этими приложениями для доступа к идентификаторам сессий, например объект <code>document.cookie</code>. Кроме того, любое веб-приложение может устанавливать cookie для любого пути на этом хосте.</p>
+<p>Файлы cookie уязвимы к атакам DNS-спуфинга/захвата/отравления, при которых злоумышленник может манипулировать DNS-разрешением, чтобы заставить веб-браузер раскрыть идентификатор сессии для данного хоста или домена.</p>
+<h3 id="expires-max-age">Атрибуты Expires и Max-Age<a class="headerlink" href="#expires-max-age" title="Permanent link">&para;</a></h3>
+<p>Механизмы управления сессиями на основе файлов cookie могут использовать два типа cookie: непостоянные (или сессионные) и постоянные. Если cookie имеет атрибуты <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#Directives"><code>Max-Age</code></a> (который имеет приоритет над <code>Expires</code>) или <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#Directives"><code>Expires</code></a>, он считается постоянным и будет сохранён на диске веб-браузером до истечения срока действия.</p>
+<p>Как правило, механизмы управления сессиями для отслеживания пользователей после аутентификации используют непостоянные cookie. Это приводит к исчезновению сессии с клиента при закрытии текущего экземпляра веб-браузера. Поэтому настоятельно рекомендуется использовать непостоянные cookie для управления сессиями, чтобы идентификатор сессии не оставался в кэше веб-клиента на длительное время, откуда его может получить злоумышленник.</p>
+<ul>
+<li>Убедитесь, что конфиденциальная информация не скомпрометирована: она должна быть непостоянной, зашифрованной и храниться только в течение необходимого времени.</li>
+<li>Убедитесь, что через манипуляцию с cookie нельзя выполнить несанкционированные действия.</li>
+<li>Убедитесь, что флаг Secure установлен для предотвращения случайной передачи по незащищённому каналу.</li>
+<li>Определите, проверяет ли весь код приложения при всех переходах между состояниями наличие cookie и принудительно ли их использование.</li>
+<li>Убедитесь, что весь cookie зашифрован, если в нём хранятся конфиденциальные данные.</li>
+<li>Определите все cookie, используемые приложением, их имена и причины их необходимости.</li>
+</ul>
+<h2 id="html5-web-storage-api">HTML5 Web Storage API<a class="headerlink" href="#html5-web-storage-api" title="Permanent link">&para;</a></h2>
+<p>Рабочая группа Web Hypertext Application Technology (WHATWG) описывает HTML5 Web Storage API — <code>localStorage</code> и <code>sessionStorage</code> — как механизмы для хранения пар имя-значение на стороне клиента.
+В отличие от HTTP-cookie, содержимое <code>localStorage</code> и <code>sessionStorage</code> не передаётся автоматически в запросах или ответах браузером и используется для хранения данных на стороне клиента.</p>
+<h3 id="api-localstorage">API localStorage<a class="headerlink" href="#api-localstorage" title="Permanent link">&para;</a></h3>
+<h4 id="_11">Область действия<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h4>
+<p>Данные, сохранённые с помощью <code>localStorage</code> API, доступны страницам, загруженным из того же источника, который определяется схемой (<code>https://</code>), хостом (<code>example.com</code>), портом (<code>443</code>) и доменом/областью (<code>example.com</code>).
+Это обеспечивает аналогичный доступ к данным, что и при использовании флага <code>secure</code> для cookie, то есть данные, сохранённые из <code>https</code>, не могут быть получены через <code>http</code>. Из-за возможного одновременного доступа из отдельных окон/потоков данные, сохранённые в <code>localStorage</code>, могут быть подвержены проблемам совместного доступа (например, гонке условий) и должны рассматриваться как неблокирующие (<a href="https://html.spec.whatwg.org/multipage/webstorage.html#the-localstorage-attribute">Спецификация Web Storage API</a>).</p>
+<h4 id="_12">Продолжительность<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h4>
+<p>Данные, сохранённые с помощью <code>localStorage</code> API, сохраняются между сессиями просмотра, увеличивая временной период, в течение которого они могут быть доступны другим пользователям системы.</p>
+<h4 id="-">Офлайн-доступ<a class="headerlink" href="#-" title="Permanent link">&para;</a></h4>
+<p>Стандарты не требуют шифрования данных <code>localStorage</code> при хранении, что означает возможность прямого доступа к этим данным с диска.</p>
+<h4 id="_13">Сценарий использования<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h4>
+<p>WHATWG рекомендует использовать <code>localStorage</code> для данных, к которым необходим доступ из разных окон или вкладок, в течение нескольких сессий, а также когда по соображениям производительности могут потребоваться большие (многомегабайтные) объёмы данных.</p>
+<h3 id="api-sessionstorage">API sessionStorage<a class="headerlink" href="#api-sessionstorage" title="Permanent link">&para;</a></h3>
+<h4 id="_14">Область действия<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h4>
+<p><code>sessionStorage</code> API хранит данные в контексте окна, из которого был вызван, то есть Вкладка 1 не может получить доступ к данным, сохранённым из Вкладки 2.
+Кроме того, как и <code>localStorage</code> API, данные, сохранённые с помощью <code>sessionStorage</code> API, доступны страницам, загруженным из того же источника, который определяется схемой (<code>https://</code>), хостом (<code>example.com</code>), портом (<code>443</code>) и доменом/областью (<code>example.com</code>).
+Это обеспечивает аналогичный доступ к данным, что и при использовании флага <code>secure</code> для cookie, то есть данные, сохранённые из <code>https</code>, не могут быть получены через <code>http</code>.</p>
+<h4 id="_15">Продолжительность<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h4>
+<p><code>sessionStorage</code> API хранит данные только в течение текущей сессии просмотра. После закрытия вкладки эти данные больше не доступны для получения. Это не обязательно предотвращает доступ, если вкладка браузера используется повторно или остаётся открытой. Данные также могут сохраняться в памяти до события сборки мусора.</p>
+<h4 id="-_1">Офлайн-доступ<a class="headerlink" href="#-_1" title="Permanent link">&para;</a></h4>
+<p>Стандарты не требуют шифрования данных <code>sessionStorage</code> при хранении, что означает возможность прямого доступа к этим данным с диска.</p>
+<h4 id="_16">Сценарий использования<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h4>
+<p>WHATWG рекомендует использовать <code>sessionStorage</code> для данных, актуальных для одного экземпляра рабочего процесса, например для сведений о бронировании билета, при этом несколько рабочих процессов могут выполняться параллельно в других вкладках. Привязанность к окну/вкладке предотвратит утечку данных между рабочими процессами в разных вкладках.</p>
+<h3 id="_17">Ссылки<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API">Web Storage APIs</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">LocalStorage API</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage">SessionStorage API</a></li>
+<li><a href="https://html.spec.whatwg.org/multipage/webstorage.html#webstorage">WHATWG Web Storage Spec</a></li>
+</ul>
+<h2 id="web-workers">Web Workers<a class="headerlink" href="#web-workers" title="Permanent link">&para;</a></h2>
+<p>Web Workers запускают JavaScript-код в глобальном контексте, отдельном от контекста текущего окна. Существует канал коммуникации с основным исполняемым окном — <code>MessageChannel</code>.</p>
+<h3 id="_18">Сценарий использования<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
+<p>Web Workers являются альтернативой хранилищу браузера для (сессионных) секретов, когда сохранение данных после обновления страницы не является требованием. Чтобы Web Workers обеспечивали безопасное хранение в браузере, любой код, требующий секрета, должен находиться внутри Web Worker, и секрет никогда не должен передаваться в контекст основного окна.</p>
+<p>Хранение секретов в памяти Web Worker обеспечивает те же гарантии безопасности, что и HttpOnly-cookie: конфиденциальность секрета защищена. Тем не менее XSS-атака может использоваться для отправки сообщений Web Worker с целью выполнения операции, требующей секрета. Web Worker вернёт результат операции в основной поток выполнения.</p>
+<p>Преимущество реализации через Web Worker по сравнению с HttpOnly-cookie заключается в том, что Web Worker позволяет изолированному JavaScript-коду получить доступ к секрету; HttpOnly-cookie недоступен никакому JavaScript. Если клиентский JavaScript-код требует доступа к секрету, реализация на основе Web Worker является единственным вариантом хранения в браузере, сохраняющим конфиденциальность секрета.</p>
+<h2 id="_19">Жизненный цикл идентификатора сессии<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h2>
+<h3 id="_20">Генерация и проверка идентификатора сессии: разрешительное и строгое управление сессиями<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
+<p>Существует два типа механизмов управления сессиями для веб-приложений — разрешительный и строгий — связанных с уязвимостями фиксации сессий. Разрешительный механизм позволяет веб-приложению изначально принимать любое значение идентификатора сессии, установленное пользователем, как действительное, создавая для него новую сессию, тогда как строгий механизм требует, чтобы веб-приложение принимало только те значения идентификатора сессии, которые были ранее сгенерированы самим веб-приложением.</p>
+<p>Токены сессий, по возможности, должны обрабатываться веб-сервером или генерироваться с помощью криптографически стойкого генератора случайных чисел.</p>
+<p>Хотя наиболее распространённым механизмом сегодня является строгий (более безопасный), <a href="https://wiki.php.net/rfc/session-use-strict-mode">PHP по умолчанию использует разрешительный</a>. Разработчики должны убедиться, что веб-приложение не использует разрешительный механизм ни при каких обстоятельствах. Веб-приложения никогда не должны принимать идентификатор сессии, который они никогда не генерировали; при получении такового они должны сгенерировать и предложить пользователю новый действительный идентификатор. Кроме того, такой сценарий должен быть определён как подозрительная активность, и должно быть сгенерировано оповещение.</p>
+<h3 id="_21">Обращение с идентификатором сессии как с любым другим вводом пользователя<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
+<p>Идентификаторы сессий должны считаться ненадёжными, как и любой другой пользовательский ввод, обрабатываемый веб-приложением, и должны тщательно проверяться и верифицироваться. В зависимости от используемого механизма управления сессиями идентификатор сессии будет получен в GET- или POST-параметре, в URL или в HTTP-заголовке (например, в cookie). Если веб-приложения не проверяют и не фильтруют недопустимые значения идентификаторов сессий перед их обработкой, они могут потенциально использоваться для эксплуатации других уязвимостей — например, SQL-инъекции, если идентификаторы сессий хранятся в реляционной базе данных, или постоянного XSS, если идентификаторы сессий хранятся и впоследствии отображаются веб-приложением.</p>
+<h3 id="_22">Обновление идентификатора сессии при любом изменении уровня привилегий<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h3>
+<p>Идентификатор сессии должен обновляться или перегенерироваться веб-приложением при любом изменении уровня привилегий в рамках связанной пользовательской сессии. Наиболее распространённый сценарий, при котором перегенерация идентификатора сессии обязательна, — это процесс аутентификации, когда уровень привилегий пользователя изменяется с неаутентифицированного (или анонимного) на аутентифицированный, хотя в некоторых случаях статус авторизованного ещё не достигнут. К распространённым сценариям относятся: изменение пароля, изменение разрешений или переключение с роли обычного пользователя на роль администратора в веб-приложении. Для всех конфиденциальных страниц веб-приложения любые предыдущие идентификаторы сессий должны игнорироваться; только текущий идентификатор сессии должен назначаться каждому новому запросу, полученному для защищённого ресурса, а старый или предыдущий идентификатор сессии должен уничтожаться.</p>
+<p>Наиболее распространённые фреймворки веб-разработки предоставляют функции и методы сессий для обновления идентификатора сессии, например <code>request.getSession(true)</code> и <code>HttpSession.invalidate()</code> (J2EE), <code>Session.Abandon()</code> и <code>Response.Cookies.Add(new...)</code> (ASP .NET) или <code>session_start()</code> и <code>session_regenerate_id(true)</code> (PHP).</p>
+<p>Перегенерация идентификатора сессии обязательна для предотвращения <a href="https://www.acrossecurity.com/papers/session_fixation.pdf">атак фиксации сессии</a>, при которых злоумышленник устанавливает идентификатор сессии в браузере пользователя-жертвы вместо того, чтобы перехватить существующий идентификатор сессии жертвы, как это происходит при большинстве других атак на сессии, — и это не зависит от использования HTTP или HTTPS. Данная защита снижает влияние других веб-уязвимостей, которые также могут использоваться для проведения атак фиксации сессии, таких как HTTP response splitting или XSS (см. <a href="https://media.blackhat.com/bh-eu-11/Raul_Siles/BlackHat_EU_2011_Siles_SAP_Session-Slides.pdf">здесь</a> и <a href="https://media.blackhat.com/bh-eu-11/Raul_Siles/BlackHat_EU_2011_Siles_SAP_Session-WP.pdf">здесь</a>).</p>
+<p>Дополнительной рекомендацией является использование разных имён идентификатора сессии или токена (или набора идентификаторов сессий) до и после аутентификации, чтобы веб-приложение могло отслеживать анонимных и аутентифицированных пользователей без риска раскрытия или привязки пользовательской сессии между обоими состояниями.</p>
+<h3 id="_23">Повторная аутентификация после событий риска<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h3>
+<p>Веб-приложения должны требовать повторной аутентификации после высокорисковых событий, таких как:</p>
+<ul>
+<li>Изменения критической информации пользователя (например, пароля или адреса электронной почты)</li>
+<li>Попытки входа с новых или подозрительных IP-адресов или устройств</li>
+<li>Процессы восстановления аккаунта (например, сброс пароля или обнаружение скомпрометированного аккаунта)</li>
+</ul>
+<p>Лучшие практики по реализации повторной аутентификации после этих событий см. в разделе <a href="Authentication_Cheat_Sheet.html#reauthentication-after-risk-events">Reauthentication After Risk Events</a> в Authentication Cheat Sheet.</p>
+<h3 id="_24">Дополнительные ресурсы<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://tailscale.com/blog/frequent-reauth-security?lid=5wso20mx4knj">Why Frequent Reauthentication Can Be a UX Pitfall</a> by Tailscale</li>
+</ul>
+<h3 id="cookie_1">Особенности при использовании нескольких файлов cookie<a class="headerlink" href="#cookie_1" title="Permanent link">&para;</a></h3>
+<p>Если веб-приложение использует файлы cookie в качестве механизма обмена идентификаторами сессий и для данной сессии устанавливается несколько cookie, веб-приложение должно проверять все cookie (и обеспечивать соответствие между ними) перед предоставлением доступа к пользовательской сессии.</p>
+<p>Очень распространена ситуация, когда веб-приложения устанавливают пользовательский cookie до аутентификации через HTTP для отслеживания неаутентифицированных (или анонимных) пользователей. После аутентификации пользователя в веб-приложении устанавливается новый защищённый cookie после аутентификации через HTTPS, и устанавливается привязка между обоими cookie и пользовательской сессией. Если веб-приложение не проверяет оба cookie для аутентифицированных сессий, злоумышленник может использовать незащищённый cookie до аутентификации для получения доступа к аутентифицированной пользовательской сессии (см. <a href="https://media.blackhat.com/bh-eu-11/Raul_Siles/BlackHat_EU_2011_Siles_SAP_Session-Slides.pdf">здесь</a> и <a href="https://media.blackhat.com/bh-eu-11/Raul_Siles/BlackHat_EU_2011_Siles_SAP_Session-WP.pdf">здесь</a>).</p>
+<p>Веб-приложениям следует избегать использования одного и того же имени cookie для разных путей или доменных областей в одном веб-приложении, поскольку это увеличивает сложность решения и потенциально создаёт проблемы области видимости.</p>
+<h2 id="_25">Истечение срока сессии<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h2>
+<p>Для минимизации периода времени, в течение которого злоумышленник может проводить атаки на активные сессии и захватывать их, обязательно устанавливать тайм-ауты истечения для каждой сессии, определяющие время, в течение которого сессия будет оставаться активной. Недостаточное истечение срока сессии в веб-приложении увеличивает подверженность другим атакам на основе сессий, поскольку для злоумышленника, способного повторно использовать действительный идентификатор сессии и захватить связанную с ним сессию, она должна быть ещё активна.</p>
+<p>Чем короче интервал сессии, тем меньше времени у злоумышленника на использование действительного идентификатора. Значения тайм-аута истечения сессии должны устанавливаться в соответствии с назначением и характером веб-приложения, балансируя безопасность и удобство использования, чтобы пользователь мог комфортно завершать операции в веб-приложении без частого истечения сессии.</p>
+<p>Значения как тайм-аута простоя, так и абсолютного тайм-аута в значительной степени зависят от того, насколько критичны веб-приложение и его данные. Типичные диапазоны тайм-аута простоя: 2–5 минут для приложений с высокой ценностью и 15–30 минут для приложений с низким риском. Абсолютные тайм-ауты зависят от того, как долго пользователь обычно использует приложение. Если приложение предназначено для использования офисным работником в течение полного рабочего дня, подходящим диапазоном абсолютного тайм-аута может быть от 4 до 8 часов.</p>
+<p>Когда срок действия сессии истекает, веб-приложение должно активно аннулировать сессию на обеих сторонах — клиентской и серверной. Серверная сторона является наиболее важной и обязательной с точки зрения безопасности.</p>
+<p>Для большинства механизмов обмена сессиями клиентские действия по аннулированию идентификатора сессии основаны на очистке значения токена. Например, для аннулирования cookie рекомендуется указать пустое (или недопустимое) значение для идентификатора сессии и установить атрибут <code>Expires</code> (или <code>Max-Age</code>) в прошедшую дату (если используется постоянный cookie): <code>Set-Cookie: id=; Expires=Friday, 17-May-03 18:45:00 GMT</code></p>
+<p>Для закрытия и аннулирования сессии на стороне сервера веб-приложение обязано принимать активные меры при истечении срока сессии или при активном выходе пользователя, используя функции и методы, предоставляемые механизмами управления сессиями, такие как <code>HttpSession.invalidate()</code> (J2EE), <code>Session.Abandon()</code> (ASP .NET) или <code>session_destroy()/unset()</code> (PHP).</p>
+<h3 id="_26">Автоматическое истечение срока сессии<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h3>
+<h4 id="-_2">Тайм-аут простоя<a class="headerlink" href="#-_2" title="Permanent link">&para;</a></h4>
+<p>Все сессии должны реализовывать тайм-аут простоя или бездействия. Этот тайм-аут определяет время, в течение которого сессия будет оставаться активной при отсутствии активности, закрывая и аннулируя сессию по истечении заданного периода простоя с момента последнего HTTP-запроса, полученного веб-приложением для данного идентификатора сессии.</p>
+<p>Тайм-аут простоя ограничивает возможности злоумышленника угадать и использовать действительный идентификатор сессии другого пользователя. Однако если злоумышленнику удалось захватить данную сессию, тайм-аут простоя не ограничивает его действия, поскольку он может периодически генерировать активность в сессии, удерживая её активной на более длительный срок.</p>
+<p>Управление тайм-аутом сессии и её истечение должны принудительно применяться на стороне сервера. Если клиент используется для обеспечения тайм-аута сессии — например, с помощью токена сессии или других параметров клиента для отслеживания временных ссылок (например, количества минут с момента входа) — злоумышленник может манипулировать ими, чтобы продлить длительность сессии.</p>
+<h4 id="-_3">Абсолютный тайм-аут<a class="headerlink" href="#-_3" title="Permanent link">&para;</a></h4>
+<p>Все сессии должны реализовывать абсолютный тайм-аут независимо от активности сессии. Этот тайм-аут определяет максимальное время, в течение которого сессия может быть активной, закрывая и аннулируя её по истечении заданного абсолютного периода с момента первоначального создания данной сессии веб-приложением. После аннулирования сессии пользователь вынужден повторно аутентифицироваться в веб-приложении и установить новую сессию.</p>
+<p>Абсолютная сессия ограничивает время, в течение которого злоумышленник может использовать захваченную сессию и выдавать себя за пользователя-жертву.</p>
+<h4 id="-_4">Тайм-аут обновления<a class="headerlink" href="#-_4" title="Permanent link">&para;</a></h4>
+<p>В качестве альтернативы веб-приложение может реализовать дополнительный тайм-аут обновления, по истечении которого идентификатор сессии автоматически обновляется в середине пользовательской сессии — независимо от активности сессии и, следовательно, от тайм-аута простоя.</p>
+<p>По истечении определённого времени с момента первоначального создания сессии веб-приложение может сгенерировать новый идентификатор для пользовательской сессии и попытаться установить или обновить его на клиенте. Предыдущее значение идентификатора сессии будет ещё действительным в течение некоторого времени, обеспечивая безопасный интервал, до тех пор пока клиент не узнает о новом идентификаторе и не начнёт его использовать. В этот момент, когда клиент переключается на новый идентификатор в рамках текущей сессии, приложение аннулирует предыдущий идентификатор.</p>
+<p>Данный сценарий минимизирует время, в течение которого данное значение идентификатора сессии, потенциально полученное злоумышленником, может быть повторно использовано для захвата пользовательской сессии, даже когда сессия реального пользователя ещё активна. Пользовательская сессия остаётся открытой на легитимном клиенте, хотя связанное с ней значение идентификатора сессии прозрачно обновляется периодически в течение длительности сессии — каждый раз по истечении тайм-аута обновления. Таким образом, тайм-аут обновления дополняет тайм-ауты простоя и абсолютный тайм-аут, особенно когда значение абсолютного тайм-аута значительно растягивается во времени (например, когда требованием приложения является поддержание пользовательских сессий открытыми в течение длительного времени).</p>
+<p>В зависимости от реализации потенциально может возникнуть состояние гонки, при котором злоумышленник с ещё действительным предыдущим идентификатором сессии отправляет запрос раньше пользователя-жертвы сразу после истечения тайм-аута обновления и первым получает значение обновлённого идентификатора. По крайней мере, в этом сценарии пользователь-жертва может обнаружить атаку, поскольку сессия внезапно завершится, так как связанный идентификатор сессии больше не действителен.</p>
+<h3 id="_27">Ручное истечение срока сессии<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h3>
+<p>Веб-приложения должны предоставлять механизмы, позволяющие осведомлённым о безопасности пользователям активно закрывать свою сессию после завершения работы с веб-приложением.</p>
+<h4 id="_28">Кнопка выхода<a class="headerlink" href="#_28" title="Permanent link">&para;</a></h4>
+<p>Веб-приложения должны предоставлять видимую и легкодоступную кнопку выхода (logoff, exit или закрыть сессию), которая доступна в заголовке или меню веб-приложения и достижима с каждого ресурса и страницы веб-приложения, чтобы пользователь мог вручную закрыть сессию в любое время. Как описано в разделе <em>Session_Expiration</em>, веб-приложение должно аннулировать сессию по крайней мере на стороне сервера.</p>
+<p><strong>ПРИМЕЧАНИЕ</strong>: К сожалению, не все веб-приложения предоставляют пользователям возможность закрыть текущую сессию. Таким образом, улучшения на стороне клиента позволяют добросовестным пользователям защитить свои сессии, помогая закрывать их тщательным образом.</p>
+<h3 id="-clear-site-data">Кэширование веб-содержимого и Clear-Site-Data<a class="headerlink" href="#-clear-site-data" title="Permanent link">&para;</a></h3>
+<p>Даже после завершения сессии личные или конфиденциальные данные, которыми обменивались в ходе сессии, могут оставаться доступными через кэш веб-браузера. Для устранения этой проблемы веб-приложения должны использовать ограничительные директивы кэширования для всего HTTP- и HTTPS-трафика. Это включает использование HTTP-заголовков, таких как <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control"><code>Cache-Control</code></a> и <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma"><code>Pragma</code></a>, или эквивалентных тегов <code>&lt;meta&gt;</code> на всех страницах — особенно на тех, которые отображают конфиденциальное содержимое.</p>
+<p>Идентификаторы сессий никогда не должны кэшироваться. Для предотвращения этого настоятельно рекомендуется включать директиву <code>Cache-Control: no-store</code> в ответы, содержащие идентификаторы сессий. В отличие от <code>no-cache</code>, который допускает кэширование, но требует повторной проверки, <code>no-store</code> гарантирует, что ответ (включая заголовки, такие как <code>Set-Cookie</code>) никогда не будет сохранён ни в каком кэше.</p>
+<p>Помимо предотвращения будущего кэширования, приложения должны обеспечивать удаление ранее сохранённых конфиденциальных данных при завершении сессии. Это можно достичь, возвращая заголовок ответа Clear-Site-Data (например, <code>Clear-Site-Data: "cache", "cookies", "storage"</code>) при выходе или завершении сессии. Это даёт браузеру инструкцию удалить кэшированные ресурсы, cookie и другое клиентское хранилище, связанное с источником, обеспечивая полную очистку сессии.</p>
+<blockquote>
+<p><strong>Примечание:</strong> Директива <code>Cache-Control: no-cache="Set-Cookie, Set-Cookie2"</code> иногда предлагается для предотвращения кэширования идентификаторов сессий. Однако этот синтаксис не пользуется широкой поддержкой и может привести к непредвиденному поведению. Вместо этого используйте <code>Cache-Control: no-store</code> для более надёжной защиты. <code>Clear-Site-Data: cache</code> можно использовать для очистки всех сохранённых ответов сайта в кэше браузера, поэтому используйте это осторожно. Обратите внимание, что это не повлияет на общие или промежуточные кэши.
+<strong>Ссылка:</strong> <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">MDN - Cache-Control</a> и <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Clear-Site-Data">MDN - Clear-Site-Data header</a></p>
+</blockquote>
+<h2 id="_29">Повторная аутентификация после событий риска<a class="headerlink" href="#_29" title="Permanent link">&para;</a></h2>
+<p>Для обеспечения целостности сессии и защиты аккаунта приложения должны требовать повторной аутентификации при обнаружении конкретных высокорисковых событий. К ним могут относиться:</p>
+<ul>
+<li>Попытки или завершённые изменения пароля</li>
+<li>Вход с нового или подозрительного IP-адреса или устройства</li>
+<li>Завершение процессов восстановления аккаунта или прохождения проверки (например, сценарии взлома и блокировки)</li>
+</ul>
+<p>Требование повторной аутентификации помогает снизить риски захвата сессии и несанкционированного доступа — особенно при использовании долгоживущих сессий или внешних поставщиков удостоверений.</p>
+<p><strong>Рекомендуемые практики:</strong></p>
+<ul>
+<li>Запрашивать у пользователей первичные учётные данные (например, пароль) или принудительно применять MFA</li>
+<li>Предоставлять чёткие сообщения, объясняющие необходимость повторной аутентификации</li>
+</ul>
+<h2 id="_30">Дополнительные клиентские средства защиты управления сессиями<a class="headerlink" href="#_30" title="Permanent link">&para;</a></h2>
+<p>Веб-приложения могут дополнять ранее описанные средства защиты управления сессиями дополнительными мерами на стороне клиента. Клиентские средства защиты, как правило, в форме проверок и верификаций на JavaScript, не являются пуленепробиваемыми и могут быть легко обойдены опытным злоумышленником, но могут создать ещё один уровень защиты, который злоумышленнику необходимо преодолеть.</p>
+<h3 id="-_5">Начальный тайм-аут входа<a class="headerlink" href="#-_5" title="Permanent link">&para;</a></h3>
+<p>Веб-приложения могут использовать JavaScript-код на странице входа для оценки и измерения времени, прошедшего с момента загрузки страницы и предоставления идентификатора сессии. Если попытка входа осуществляется по истечении определённого времени, клиентский код может уведомить пользователя о том, что максимальное время для входа истекло, и перезагрузить страницу входа, тем самым получая новый идентификатор сессии.</p>
+<p>Этот дополнительный механизм защиты пытается принудить к обновлению идентификатора сессии до аутентификации, избегая сценариев, при которых ранее использованный (или вручную установленный) идентификатор сессии повторно используется следующей жертвой, работающей за тем же компьютером, — например, в атаках фиксации сессии.</p>
+<h3 id="_31">Принудительный выход при закрытии окна браузера<a class="headerlink" href="#_31" title="Permanent link">&para;</a></h3>
+<p>Веб-приложения могут использовать JavaScript-код для перехвата всех событий закрытия вкладок или окон браузера (или даже кнопки «Назад») и принятия соответствующих действий для закрытия текущей сессии перед закрытием браузера, эмулируя ситуацию, при которой пользователь вручную закрыл сессию с помощью кнопки выхода.</p>
+<h3 id="_32">Отключение межвкладочных сессий браузера<a class="headerlink" href="#_32" title="Permanent link">&para;</a></h3>
+<p>Веб-приложения могут использовать JavaScript-код после входа пользователя и установки сессии, чтобы принудить пользователя повторно аутентифицироваться при открытии новой вкладки или окна браузера для того же веб-приложения. Веб-приложение не хочет допускать совместного использования одной и той же сессии несколькими вкладками или окнами браузера. Поэтому приложение пытается запретить браузеру одновременно использовать один и тот же идентификатор сессии между ними.</p>
+<p><strong>ПРИМЕЧАНИЕ</strong>: Этот механизм не может быть реализован, если идентификатор сессии передаётся через файлы cookie, поскольку cookie совместно используются всеми вкладками/окнами браузера.</p>
+<h3 id="_33">Автоматический выход клиента<a class="headerlink" href="#_33" title="Permanent link">&para;</a></h3>
+<p>JavaScript-код может использоваться веб-приложением на всех (или критических) страницах для автоматического выхода клиентских сессий по истечении тайм-аута простоя — например, путём перенаправления пользователя на страницу выхода (тот же ресурс, что используется кнопкой выхода, упомянутой ранее).</p>
+<p>Преимущество расширения серверной функциональности тайм-аута простоя клиентским кодом состоит в том, что пользователь может видеть, что сессия завершилась из-за бездеятельности, или даже может быть заблаговременно уведомлён об истечении сессии через обратный счётчик и предупреждающие сообщения. Этот удобный для пользователя подход помогает избежать потери данных на страницах, требующих ввода большого объёма данных, из-за тихого истечения серверных сессий.</p>
+<h2 id="_34">Обнаружение атак на сессии<a class="headerlink" href="#_34" title="Permanent link">&para;</a></h2>
+<h3 id="_35">Обнаружение угадывания и перебора идентификаторов сессий<a class="headerlink" href="#_35" title="Permanent link">&para;</a></h3>
+<p>Если злоумышленник пытается угадать или перебрать действительный идентификатор сессии, ему необходимо отправить несколько последовательных запросов к целевому веб-приложению с разными идентификаторами сессий с одного (или нескольких) IP-адреса(-ов). Кроме того, если злоумышленник пытается проанализировать предсказуемость идентификатора сессии (например, с помощью статистического анализа), ему необходимо отправить несколько последовательных запросов с одного (или нескольких) IP-адреса(-ов) к целевому веб-приложению для получения новых действительных идентификаторов сессий.</p>
+<p>Веб-приложения должны уметь обнаруживать оба сценария на основе количества попыток получить (или использовать) разные идентификаторы сессий, а также оповещать о нарушителях и/или блокировать их IP-адреса.</p>
+<h3 id="_36">Обнаружение аномалий идентификатора сессии<a class="headerlink" href="#_36" title="Permanent link">&para;</a></h3>
+<p>Веб-приложения должны сосредоточиться на обнаружении аномалий, связанных с идентификатором сессии, например его манипуляции. Проект OWASP <a href="https://owasp.org/www-project-appsensor/">AppSensor Project</a> предоставляет фреймворк и методологию для реализации встроенных возможностей обнаружения вторжений в веб-приложениях, ориентированных на выявление аномалий и неожиданного поведения, в виде точек обнаружения и действий по реагированию. Вместо использования внешних уровней защиты бизнес-логика и продвинутый интеллект иногда доступны только изнутри веб-приложения, где можно установить несколько точек обнаружения, связанных с сессиями, — например, при изменении или удалении существующего cookie, добавлении нового cookie, повторном использовании идентификатора сессии другого пользователя или изменении местоположения пользователя или User-Agent в середине сессии.</p>
+<h3 id="_37">Привязка идентификатора сессии к другим свойствам пользователя<a class="headerlink" href="#_37" title="Permanent link">&para;</a></h3>
+<p>Для обнаружения (и в некоторых сценариях защиты от) нарушений поведения пользователя и захвата сессии настоятельно рекомендуется привязывать идентификатор сессии к другим свойствам пользователя или клиента, таким как IP-адрес клиента, User-Agent или цифровой сертификат на стороне клиента. Если веб-приложение обнаруживает какое-либо изменение или аномалию между этими различными свойствами в середине установленной сессии, это является очень хорошим индикатором попыток манипуляции с сессией и её захвата, и этот простой факт можно использовать для оповещения и/или завершения подозрительной сессии.</p>
+<p>Хотя эти свойства не могут использоваться веб-приложениями для надёжной защиты от атак на сессии, они значительно повышают возможности обнаружения (и защиты) веб-приложения. Однако опытный злоумышленник может обойти эти средства контроля, повторно используя тот же IP-адрес, назначенный пользователю-жертве, путём совместного использования одной и той же сети (очень распространено в средах NAT, например, точках доступа Wi-Fi), или используя тот же исходящий веб-прокси (очень распространено в корпоративных средах), или вручную изменяя User-Agent, чтобы он выглядел точно как у пользователя-жертвы.</p>
+<h3 id="_38">Ведение журнала жизненного цикла сессий: мониторинг создания, использования и уничтожения идентификаторов сессий<a class="headerlink" href="#_38" title="Permanent link">&para;</a></h3>
+<p>Веб-приложения должны расширять свои возможности ведения журналов, включая информацию о полном жизненном цикле сессий. В частности, рекомендуется фиксировать события, связанные с сессиями, — такие как создание, обновление и уничтожение идентификаторов сессий, а также детали их использования в операциях входа и выхода, изменения уровня привилегий в рамках сессии, истечение тайм-аута, недопустимые активности в сессии (при их обнаружении) и критические бизнес-операции в рамках сессии.</p>
+<p>Детали журнала могут включать временну́ю метку, IP-адрес источника, запрошенный целевой веб-ресурс (участвующий в операции сессии), HTTP-заголовки (включая User-Agent и Referer), GET- и POST-параметры, коды и сообщения об ошибках, имя пользователя (или ID пользователя) и идентификатор сессии (cookie, URL, GET, POST...).</p>
+<p>Конфиденциальные данные, например идентификатор сессии, не должны включаться в журналы во избежание локального или удалённого раскрытия журналов сессий или несанкционированного доступа к ним. Однако для корреляции записей журнала с конкретными сессиями необходимо записывать некоторую информацию, специфичную для сессии. Рекомендуется записывать хэш идентификатора сессии с солью вместо самого идентификатора — это позволит выполнять корреляцию журналов для конкретных сессий без раскрытия самого идентификатора.</p>
+<p>В частности, веб-приложения должны тщательно защищать административные интерфейсы, позволяющие управлять всеми текущими активными сессиями. Зачастую они используются сотрудниками службы поддержки для решения проблем, связанных с сессиями, или даже общих проблем путём имитации пользователя и просмотра веб-приложения так, как его видит пользователь.</p>
+<p>Журналы сессий становятся одним из основных источников данных для обнаружения вторжений в веб-приложения и могут также использоваться системами защиты от вторжений для автоматического завершения сессий и/или отключения пользовательских аккаунтов при обнаружении одной или нескольких атак. Если реализованы активные средства защиты, эти действия по защите также должны фиксироваться в журнале.</p>
+<h3 id="_39">Одновременные входы в систему<a class="headerlink" href="#_39" title="Permanent link">&para;</a></h3>
+<p>Это решение веб-приложения — определять, разрешены ли несколько одновременных входов одного и того же пользователя с одного или разных клиентских IP-адресов. Если веб-приложение не хочет разрешать одновременные входы в систему, оно должно принимать эффективные меры после каждого нового события аутентификации, неявно завершая ранее доступную сессию или спрашивая пользователя (через старую, новую или обе сессии), какая сессия должна оставаться активной.</p>
+<p>Рекомендуется добавлять веб-приложениям пользовательские функции, позволяющие в любое время проверять детали активных сессий, отслеживать и оповещать пользователя об одновременных входах, предоставлять пользовательские возможности для удалённого ручного завершения сессий и отслеживать историю активности аккаунта (журнал) путём записи различных деталей клиента, таких как IP-адрес, User-Agent, дата и время входа, время простоя и т.д.</p>
+<h2 id="waf">Защита управления сессиями с помощью WAF<a class="headerlink" href="#waf" title="Permanent link">&para;</a></h2>
+<p>Существуют ситуации, когда исходный код веб-приложения недоступен или не может быть изменён, либо когда изменения, необходимые для реализации множества рекомендаций и лучших практик безопасности, описанных выше, подразумевают полную переработку архитектуры веб-приложения и, следовательно, не могут быть легко реализованы в краткосрочной перспективе.</p>
+<p>В таких сценариях, или для дополнения средств защиты веб-приложения с целью обеспечения максимальной безопасности веб-приложения, рекомендуется использовать внешние средства защиты, такие как Web Application Firewalls (WAF), которые могут снизить угрозы управления сессиями, описанные выше.</p>
+<p>Web Application Firewalls предлагают возможности обнаружения и защиты от атак на основе сессий. С одной стороны, для WAF тривиально принудительно применять атрибуты безопасности для cookie, такие как флаги <code>Secure</code> и <code>HttpOnly</code>, применяя базовые правила перезаписи к заголовку <code>Set-Cookie</code> для всех ответов веб-приложения, устанавливающих новый cookie.</p>
+<p>С другой стороны, могут быть реализованы более продвинутые возможности, позволяющие WAF отслеживать сессии и соответствующие идентификаторы сессий, а также применять всевозможные средства защиты от фиксации сессии (путём обновления идентификатора сессии на стороне клиента при обнаружении изменений привилегий), применять привязанные сессии (путём проверки соотношения между идентификатором сессии и другими свойствами клиента, такими как IP-адрес или User-Agent) или управлять истечением срока сессии (путём принуждения как клиента, так и веб-приложения к завершению сессии).</p>
+<p>Открытый исходный код WAF ModSecurity в сочетании с OWASP <a href="https://owasp.org/www-project-modsecurity-core-rule-set/">Core Rule Set</a> предоставляет возможности для обнаружения и применения атрибутов безопасности cookie, контрмер против атак фиксации сессии и функций отслеживания сессий для обеспечения привязанных сессий.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

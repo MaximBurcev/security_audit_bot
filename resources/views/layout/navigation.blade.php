@@ -7,6 +7,8 @@
                     class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url('/cheatsheets/index.html') }}" target="_blank"
+                                       rel="noopener noreferrer">Шпаргалки OWASP</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('terms') }}">Условия использования</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('personal') }}">Личный кабинет</a></li>
             </ul>

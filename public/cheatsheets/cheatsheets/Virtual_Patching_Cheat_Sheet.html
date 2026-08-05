@@ -1,0 +1,3574 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Virtual_Patching_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="User_Privacy_Protection_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Vulnerability_Disclosure_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Virtual Patching - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Virtual Patching
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Определение: виртуальный патчинг
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Почему бы просто не исправить код
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ценность виртуального патчинга
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Инструменты виртуального патчинга
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Методология виртуального патчинга
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример публичной уязвимости
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап подготовки
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап идентификации
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Этап идентификации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проактивная идентификация
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реактивная идентификация
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап анализа
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап создания виртуального патча
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Этап создания виртуального патча">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ручное создание виртуального патча
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ручное создание виртуального патча">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#allow-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Виртуальные патчи на основе положительной модели безопасности (Allow List) (Рекомендуемое решение)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Виртуальные патчи на основе положительной модели безопасности (Allow List) (Рекомендуемое решение)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modsecurity-allow-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример виртуального патча ModSecurity на основе Allow List
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Виртуальные патчи на основе отрицательной модели безопасности (Block List)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Виртуальные патчи на основе отрицательной модели безопасности (Block List)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modsecurity-block-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример виртуального патча ModSecurity на основе Block List
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что лучше для виртуального патчинга — положительная или отрицательная модель безопасности?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Остерегайтесь виртуальных патчей, специфичных для конкретного эксплойта
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Автоматическое создание виртуального патча
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап внедрения/тестирования
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Этап внедрения/тестирования">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шаги тестирования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап восстановления/последующих действий
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Определение: виртуальный патчинг
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Почему бы просто не исправить код
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ценность виртуального патчинга
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Инструменты виртуального патчинга
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Методология виртуального патчинга
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример публичной уязвимости
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап подготовки
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап идентификации
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Этап идентификации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проактивная идентификация
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реактивная идентификация
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап анализа
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап создания виртуального патча
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Этап создания виртуального патча">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ручное создание виртуального патча
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ручное создание виртуального патча">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#allow-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Виртуальные патчи на основе положительной модели безопасности (Allow List) (Рекомендуемое решение)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Виртуальные патчи на основе положительной модели безопасности (Allow List) (Рекомендуемое решение)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modsecurity-allow-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример виртуального патча ModSecurity на основе Allow List
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Виртуальные патчи на основе отрицательной модели безопасности (Block List)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Виртуальные патчи на основе отрицательной модели безопасности (Block List)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modsecurity-block-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример виртуального патча ModSecurity на основе Block List
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что лучше для виртуального патчинга — положительная или отрицательная модель безопасности?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Остерегайтесь виртуальных патчей, специфичных для конкретного эксплойта
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Автоматическое создание виртуального патча
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап внедрения/тестирования
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Этап внедрения/тестирования">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шаги тестирования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Этап восстановления/последующих действий
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="_1">Руководство по виртуальному патчингу<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">Введение<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Цель данного руководства — предоставить лаконичный фреймворк виртуального патчинга, которому организации могут следовать для своевременного внедрения защитных мер.</p>
+<h2 id="_3">Определение: виртуальный патчинг<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><strong>Уровень применения политик безопасности, который предотвращает и фиксирует попытки эксплуатации известных уязвимостей.</strong></p>
+<p>Виртуальный патч работает так: уровень применения политик безопасности анализирует транзакции и перехватывает атаки в процессе передачи данных, не допуская попадания вредоносного трафика в веб-приложение. Практический результат: несмотря на то что исходный код приложения не был изменён, попытка эксплуатации не приводит к успеху.</p>
+<h2 id="_4">Почему бы просто не исправить код<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>С чисто технической точки зрения наилучшей стратегией устранения уязвимости является исправление исходного кода веб-приложения. С этим согласны как эксперты по безопасности веб-приложений, так и владельцы систем. Однако на практике нередко возникают ситуации, когда обновление исходного кода веб-приложения затруднено:</p>
+<ul>
+<li><strong>Нехватка ресурсов</strong> — разработчики уже задействованы в других проектах.</li>
+<li><strong>Стороннее программное обеспечение</strong> — код не может быть изменён пользователем.</li>
+<li><strong>Аутсорсинг разработки</strong> — внесение изменений потребует нового проекта.</li>
+</ul>
+<p>Важно понимать: <strong>исправление на уровне кода и виртуальный патчинг не являются взаимоисключающими</strong>. Это процессы, выполняемые разными командами (OWASP Builders/разработчики и OWASP Defenders/OpSec), которые могут работать параллельно.</p>
+<h2 id="_5">Ценность виртуального патчинга<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>Два основных результата виртуального патчинга:</p>
+<ul>
+<li><strong>Минимизация времени до исправления</strong> — исправление исходного кода требует времени. Главная цель виртуального патча — как можно скорее внедрить защиту для выявленной уязвимости. Срочность может быть разной: например, если уязвимость обнаружена в ходе проверки кода или тестирования на проникновение, а не в рамках реагирования на инцидент.</li>
+<li><strong>Сокращение поверхности атаки</strong> — акцент на минимизацию вектора атаки. В ряде случаев, например при отсутствии валидации входных данных по белому списку, можно достичь 100% сокращения поверхности атаки. В других случаях, например при отсутствии кодирования вывода для защиты от XSS, удастся лишь ограничить степень риска. Помните: сокращение на 50% за 10 минут лучше, чем 100% сокращение за 48 часов.</li>
+</ul>
+<h2 id="_6">Инструменты виртуального патчинга<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>Обратите внимание: в приведённом определении не упоминается конкретный инструмент — для виртуального патчинга существует ряд различных вариантов:</p>
+<ul>
+<li>Промежуточные устройства, такие как WAF или IPS-устройство</li>
+<li>Плагины веб-сервера, например ModSecurity</li>
+<li>Фильтры прикладного уровня, например ESAPI WAF</li>
+</ul>
+<p>В качестве примеров будут показаны варианты виртуального патчинга с использованием инструмента с открытым исходным кодом <a href="http://www.modsecurity.org">ModSecurity WAF</a>.</p>
+<h2 id="_7">Методология виртуального патчинга<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>Виртуальный патчинг, как и большинство других процессов безопасности, не должен выполняться бессистемно. Вместо этого следует придерживаться последовательного, воспроизводимого процесса, который даст наилучшие результаты. Следующий рабочий процесс виртуального патчинга воспроизводит принятую в отрасли практику реагирования на инциденты в сфере ИТ и состоит из следующих этапов:</p>
+<ol>
+<li>Подготовка.</li>
+<li>Идентификация.</li>
+<li>Анализ.</li>
+<li>Создание виртуального патча.</li>
+<li>Внедрение/тестирование.</li>
+<li>Восстановление/последующие действия.</li>
+</ol>
+<h2 id="_8">Пример публичной уязвимости<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>В качестве примера для остальной части статьи рассмотрим следующую <a href="https://packetstormsecurity.com/files/119217/WordPress-Shopping-Cart-8.1.14-Shell-Upload-SQL-Injection.html">уязвимость SQL injection</a>:</p>
+<div class="highlight"><pre><span></span><code>WordPress Shopping Cart Plugin for WordPress
+/wp-content/plugins/levelfourstorefront/scripts/administration/exportsubscribers.php
+Параметр reqID подвержен SQL injection.
+</code></pre></div>
+<p><strong>Описание</strong>:</p>
+<p>Плагин WordPress Shopping Cart содержит уязвимость, позволяющую злоумышленнику провести SQL injection атаку.</p>
+<p>Проблема заключается в том, что скрипт <code>/wp-content/plugins/levelfourstorefront/scripts/administration/exportsubscribers.php</code> не выполняет надлежащей обработки пользовательского ввода для параметра <code>reqID</code>.</p>
+<p>Это может позволить злоумышленнику внедрять или манипулировать SQL-запросами в базе данных, что ведёт к манипуляции или раскрытию произвольных данных.</p>
+<h2 id="_9">Этап подготовки<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>Важность правильного использования этапа подготовки при виртуальном патчинге сложно переоценить. Необходимо выполнить ряд действий по настройке процессов и фреймворка виртуального патчинга <strong>до</strong> того, как придётся иметь дело с выявленной уязвимостью или, что ещё хуже, реагировать на активное вторжение в веб-приложение. Активный инцидент — не лучшее время для внедрения web application firewall и обсуждения концепции виртуального патча. В реальных инцидентах напряжение высоко, а время имеет решающее значение, поэтому закладывайте основу виртуального патчинга в спокойное время и готовьте всё заранее.</p>
+<p>Вот несколько ключевых пунктов, которые необходимо проработать на этапе подготовки:</p>
+<ul>
+<li><strong>Мониторинг публичных/вендорских уязвимостей</strong> — убедитесь, что вы подписаны на все рассылки вендоров об уязвимостях в используемом коммерческом программном обеспечении. Это гарантирует получение уведомлений в случае выхода информации об уязвимостях и данных о патчах.</li>
+</ul>
+<!-- textlint-disable -->
+<ul>
+<li><strong>Предварительная авторизация виртуального патчинга</strong> — виртуальные патчи необходимо внедрять быстро, поэтому обычные процессы управления изменениями и шаги авторизации для стандартных патчей должны быть ускорены. Поскольку виртуальные патчи не изменяют исходный код, они не требуют такого же объёма регрессионного тестирования, как обычные патчи. Классификация виртуальных патчей в той же группе, что и обновления антивирусных сигнатур или сигнатуры сетевых IDS, помогает ускорить процесс авторизации и минимизировать длительные фазы тестирования.</li>
+</ul>
+<!-- textlint-enable -->
+<ul>
+<li><strong>Заблаговременное развёртывание инструмента виртуального патчинга</strong> — поскольку время критично при реагировании на инциденты, получение разрешений на установку нового программного обеспечения будет неуместно. Например, можно установить ModSecurity WAF в режиме встроенного модуля на серверах Apache или на обратном прокси-сервере Apache. Преимущество такого развёртывания в том, что можно создавать исправления для серверных приложений, не работающих на Apache. Даже если ModSecurity не используется в обычных условиях, лучше держать его наготове для активации при необходимости.</li>
+<li><strong>Усиление журналирования HTTP</strong> — стандартный формат журнала (CLF), используемый большинством веб-серверов, не предоставляет достаточных данных для надлежащего реагирования на инциденты. Необходим доступ к следующим данным HTTP:<ul>
+<li>URI запроса (включая QUERY_STRING)</li>
+<li>Полные заголовки запроса (включая куки)</li>
+<li>Полное тело запроса (POST payload)</li>
+<li>Полные заголовки ответа</li>
+<li>Полное тело ответа</li>
+</ul>
+</li>
+</ul>
+<h2 id="_10">Этап идентификации<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<p>Этап идентификации наступает, когда организация обнаруживает уязвимость в своём веб-приложении. Существует два основных метода выявления уязвимостей: <code>проактивный</code> и <code>реактивный</code>.</p>
+<h3 id="_11">Проактивная идентификация<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>Происходит, когда организация самостоятельно оценивает своё состояние веб-безопасности и выполняет следующие задачи:</p>
+<ul>
+<li><strong>Динамические оценки приложений</strong> — этичные хакеры проводят тесты на проникновение или автоматизированные инструменты оценки запускаются против живого веб-приложения для выявления уязвимостей.</li>
+<li><strong>Проверки исходного кода</strong> — этичные хакеры с помощью ручных/автоматизированных средств анализируют исходный код веб-приложения для выявления недостатков.</li>
+</ul>
+<p>Поскольку веб-приложения с собственным кодом уникальны, такие проактивные задачи идентификации крайне важны — нельзя полагаться на уведомления об уязвимостях от сторонних организаций.</p>
+<h3 id="_12">Реактивная идентификация<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p>Существует три основных реактивных метода выявления уязвимостей:</p>
+<ul>
+<li><strong>Контакт с вендором (например, предварительное предупреждение)</strong> — происходит, когда вендор раскрывает уязвимость в используемом вами коммерческом программном обеспечении для веб-приложений. Пример — <a href="https://www.microsoft.com/en-us/msrc/mapp">Active Protections Program (MAPP)</a> от Microsoft.</li>
+<li><strong>Публичное раскрытие</strong> — публичное раскрытие уязвимости в коммерческом/открытом программном обеспечении для веб-приложений. Уровень угрозы при публичном раскрытии повышается, поскольку об уязвимости узнаёт больше людей.</li>
+<li><strong>Инцидент безопасности</strong> — наиболее срочная ситуация, когда атака активна. В таких случаях устранение должно быть немедленным.</li>
+</ul>
+<h2 id="_13">Этап анализа<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<p>Рекомендуемые шаги для начала этапа анализа:</p>
+<ol>
+<li><strong>Определение применимости виртуального патчинга</strong> — виртуальный патчинг идеально подходит для уязвимостей типа инъекций, но может обеспечивать недостаточное сокращение поверхности атаки для других типов. Необходим тщательный анализ основного недостатка для определения того, обладает ли инструмент виртуального патчинга достаточными возможностями логики обнаружения.</li>
+<li><strong>Использование системы отслеживания ошибок/задач</strong> — внесите информацию об уязвимости в систему отслеживания ошибок для контроля и сбора метрик. Рекомендуется использовать уже имеющиеся системы, например Jira, или специализированный инструмент, например <a href="https://threadfix.it/">ThreadFix</a>.</li>
+<li><strong>Проверка названия уязвимости</strong> — необходимо иметь правильный публичный идентификатор уязвимости (например, имя/номер CVE), указанный в объявлении об уязвимости, результате сканирования и т. д. Если уязвимость выявлена проактивно, а не через публичные объявления, присвойте каждой уязвимости собственный уникальный идентификатор.</li>
+<li><strong>Определение уровня критичности</strong> — всегда важно понимать степень критичности веб-уязвимости. Утечки информации могут обрабатываться иначе, чем проблемы SQL injection.</li>
+<li><strong>Указание затронутых версий программного обеспечения</strong> — необходимо определить, какие версии программного обеспечения перечислены в объявлении, чтобы установить, затрагивают ли они установленные у вас версии.</li>
+<li><strong>Перечисление конфигурации, необходимой для воспроизведения проблемы</strong> — некоторые уязвимости могут проявляться только при определённых настройках конфигурации.</li>
+<li><strong>Перечисление кода Proof of Concept (PoC) или payload-ов, используемых при атаках/тестировании</strong> — многие объявления об уязвимостях сопровождаются кодом эксплойта. При наличии таких данных обязательно загрузите их для анализа. Это пригодится при разработке и тестировании виртуального патча.</li>
+</ol>
+<h2 id="_14">Этап создания виртуального патча<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<p>Процесс создания точного виртуального патча определяется двумя основными принципами:</p>
+<ol>
+<li><strong>Никаких ложных срабатываний</strong> — ни при каких обстоятельствах не блокировать легитимный трафик.</li>
+<li><strong>Никаких ложных пропусков</strong> — не пропускать ни одной атаки, даже если злоумышленник намеренно пытается уклониться от обнаружения.</li>
+</ol>
+<p>Следует стараться минимизировать нарушения обоих правил. Полное соблюдение каждого из них может быть недостижимым, но помните, что виртуальный патчинг — это <strong>снижение рисков</strong>. Владельцы бизнеса должны понимать, что, сокращая время до исправления, вы можете не реализовывать полное устранение уязвимости.</p>
+<h3 id="_15">Ручное создание виртуального патча<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<h4 id="allow-list">Виртуальные патчи на основе положительной модели безопасности (Allow List) (<strong>Рекомендуемое решение</strong>)<a class="headerlink" href="#allow-list" title="Permanent link">&para;</a></h4>
+<p>Положительная модель безопасности (allowlist) — это комплексный механизм безопасности, предоставляющий независимую среду валидации входных данных для приложения. Модель задаёт характеристики допустимых входных данных (набор символов, длина и т. д.) и отклоняет всё, что им не соответствует. Определив правила для каждого параметра на каждой странице приложения, вы создаёте дополнительный слой защиты, независимый от кода.</p>
+<h5 id="modsecurity-allow-list">Пример виртуального патча ModSecurity на основе Allow List<a class="headerlink" href="#modsecurity-allow-list" title="Permanent link">&para;</a></h5>
+<p>Для создания виртуального патча на основе allowlist необходимо знать нормальные ожидаемые значения входных данных. При наличии надлежащего аудит-журнала, настроенного на этапе подготовки, можно проанализировать журналы для определения формата ожидаемых типов входных данных. В данном случае параметр <code>reqID</code> должен содержать только целочисленные символы, поэтому можно использовать следующий виртуальный патч:</p>
+<div class="highlight"><pre><span></span><code>##
+## Проверяем, что получаем ровно 1 параметр с именем &quot;reqID&quot;
+##
+SecRule REQUEST_URI &quot;@contains /wp-content/plugins/levelfourstorefront/scripts/administration/exportsubscribers.php&quot; &quot;chain,id:1,phase:2,t:none,t:Utf8toUnicode,t:urlDecodeUni,t:normalizePathWin,t:lowercase,block,msg:&#39;Input Validation Error for \&#39;reqID\&#39; parameter - Duplicate Parameters Names Seen.&#39;,logdata:&#39;%{matched_var}&#39;&quot;
+  SecRule &amp;ARGS:/reqID/ &quot;!@eq 1&quot;
+
+##
+## Проверяем, что значение reqID содержит только целые числа
+##
+SecRule REQUEST_URI &quot;@contains /wp-content/plugins/levelfourstorefront/scripts/administration/exportsubscribers.php&quot; &quot;chain,id:2,phase:2,t:none,t:Utf8toUnicode,t:urlDecodeUni,t:normalizePathWin,t:lowercase,block,msg:&#39;Input Validation Error for \&#39;reqID\&#39; parameter.&#39;,logdata:&#39;%{args.reqid}&#39;&quot;
+  SecRule ARGS:/reqID/ &quot;!@rx ^[0-9]+$&quot;
+</code></pre></div>
+<p>Этот виртуальный патч проверяет значение параметра <code>reqID</code> на указанной странице и запрещает любые символы, кроме целых чисел, в качестве входных данных.</p>
+<ul>
+<li><strong>Примечание</strong> — убедитесь, что идентификаторы правил назначены правильно и отслеживаются в системе отслеживания ошибок.</li>
+<li><strong>Внимание</strong>: при создании виртуальных патчей существует множество векторов обхода. Обратитесь к <a href="https://owasp.org/www-community/Virtual_Patching_Best_Practices">документу OWASP Best Practices: Virtual Patching</a> для более детального обсуждения методов противодействия обходам.</li>
+</ul>
+<h4 id="block-list">Виртуальные патчи на основе отрицательной модели безопасности (Block List)<a class="headerlink" href="#block-list" title="Permanent link">&para;</a></h4>
+<p>Отрицательная модель безопасности (denylist) основана на наборе правил, обнаруживающих конкретные известные атаки, а не разрешающих только допустимый трафик.</p>
+<h5 id="modsecurity-block-list">Пример виртуального патча ModSecurity на основе Block List<a class="headerlink" href="#modsecurity-block-list" title="Permanent link">&para;</a></h5>
+<p>Вот пример <a href="https://packetstormsecurity.com/files/119217/WordPress-Shopping-Cart-8.1.14-Shell-Upload-SQL-Injection.html">кода PoC</a>, предоставленный публичным уведомлением:</p>
+<div class="highlight"><pre><span></span><code>http://localhost/wordpress/wp-content/plugins/levelfourstorefront/scripts/administration/exportsubscribers.php?reqID=1&#39; or 1=&#39;1
+</code></pre></div>
+<p>Анализируя payload, можно видеть, что злоумышленник вставляет одиночную кавычку и добавляет дополнительную логику SQL-запроса. На основе этих данных можно запретить символ одиночной кавычки следующим образом:</p>
+<div class="highlight"><pre><span></span><code>SecRule REQUEST_URI &quot;@contains /wp-content/plugins/levelfourstorefront/scripts/administration/exportsubscribers.php&quot; &quot;chain,id:1,phase:2,t:none,t:Utf8toUnicode,t:urlDecodeUni,t:normalizePathWin,t:lowercase,block,msg:&#39;Input Validation Error for \&#39;reqID\&#39; parameter.&#39;,logdata:&#39;%{args.reqid}&#39;&quot;
+  SecRule ARGS:/reqID/ &quot;@pm &#39;&quot;
+</code></pre></div>
+<h4 id="_16">Что лучше для виртуального патчинга — положительная или отрицательная модель безопасности?<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h4>
+<p>Виртуальный патч может использовать как положительную, так и отрицательную модель безопасности. Выбор зависит от ситуации и ряда факторов. Например, правила на основе отрицательной модели обычно реализуются быстрее, однако вероятность обхода выше.</p>
+<p>Правила на основе положительной модели обеспечивают лучшую защиту, однако часто требуют ручной работы, поэтому не масштабируются и сложны в поддержке для крупных/динамичных сайтов. Хотя ручное создание правил положительной модели для всего сайта может быть нецелесообразным, её можно применять избирательно при обнаружении уязвимости в конкретном месте.</p>
+<h4 id="_17">Остерегайтесь виртуальных патчей, специфичных для конкретного эксплойта<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h4>
+<p>Следует удерживаться от соблазна пойти по лёгкому пути и быстро создать <strong>виртуальный патч, специфичный для конкретного эксплойта</strong>.</p>
+<p>Например, если авторизованный тест на проникновение выявил XSS-уязвимость на странице с использованием следующего payload атаки в отчёте:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;XSS Test&#39;</span><span class="p">)</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Внедрять виртуальный патч, блокирующий только этот конкретный payload, было бы неразумно. Хотя он и обеспечит некоторую немедленную защиту, его долгосрочная ценность значительно снизится.</p>
+<h3 id="_18">Автоматическое создание виртуального патча<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
+<p>По мере роста числа уязвимостей ручное создание патчей может стать нецелесообразным, и может потребоваться автоматизация. Если уязвимости были выявлены автоматизированными инструментами и доступен XML-отчёт, можно использовать автоматизированные процессы для преобразования данных об уязвимостях в виртуальные патчи для систем защиты.</p>
+<p>Три примера:</p>
+<ul>
+<li><strong>Скрипты OWASP ModSecurity Core Rule Set (CRS)</strong> — OWASP CRS включает скрипты для автоматического преобразования XML-вывода из таких инструментов, как [ZAP, в виртуальные патчи ModSecurity]. Справочник <a href="https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/modsecurity-advanced-topic-of-the-week-automated-virtual-patching-using-owasp-zed-attack-proxy">здесь</a>.</li>
+<li><strong>Виртуальный патчинг ThreadFix</strong> — ThreadFix также включает автоматизированные процессы преобразования импортированных XML-данных об уязвимостях в виртуальные патчи для инструментов безопасности, таких как ModSecurity. Справочник <a href="https://github.com/denimgroup/threadfix/wiki/Waf-Types#mod_security">здесь</a>.</li>
+<li><strong>Прямой импорт на WAF-устройство</strong> — многие коммерческие WAF-продукты могут импортировать XML-данные из инструментов DAST и автоматически корректировать свои профили защиты.</li>
+</ul>
+<h2 id="_19">Этап внедрения/тестирования<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h2>
+<p>Для точного тестирования новых виртуальных патчей может потребоваться использование инструментов, отличных от веб-браузера. Полезные инструменты:</p>
+<ul>
+<li>Веб-браузер.</li>
+<li>Консольные веб-клиенты, такие как Curl и Wget.</li>
+<li>Локальные прокси-серверы, такие как <a href="https://www.zaproxy.org/">ZAP</a>.</li>
+<li><a href="https://web.archive.org/web/20181011065823/http://www.jwall.org/web/audit/viewer.jsp">ModSecurity AuditViewer</a> — позволяет загрузить файл аудит-журнала ModSecurity, манипулировать им и повторно отправить данные на любой веб-сервер.</li>
+</ul>
+<h3 id="_20">Шаги тестирования<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Первоначально внедрите виртуальные патчи в конфигурации «только журналирование», чтобы убедиться, что вы не блокируете нормальный пользовательский трафик (ложные срабатывания).</li>
+<li>Если уязвимость была выявлена конкретным инструментом или командой оценки — запросите повторное тестирование.</li>
+<li>Если повторное тестирование не удаётся из-за обходов, необходимо вернуться к этапу анализа для определения способа лучшего устранения проблемы.</li>
+</ul>
+<h2 id="_21">Этап восстановления/последующих действий<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Обновление данных в системе задач</strong> — несмотря на необходимость ускоренного внедрения виртуальных патчей, их всё равно следует отслеживать в обычных процессах управления патчами. Это означает создание правильных запросов на изменение и т. д., чтобы их существование и функциональность были задокументированы. Обновление системы задач также помогает определять метрики «времени до исправления» для различных типов уязвимостей. Обязательно фиксируйте значения идентификаторов правил виртуальных патчей.</li>
+<li><strong>Периодическая повторная оценка</strong> — следует также проводить периодические повторные оценки для проверки возможности удаления ранее созданных виртуальных патчей в случае обновления кода веб-приложения с реальным исправлением в исходном коде. Многие предпочитают оставлять виртуальные патчи на месте из-за их более эффективных возможностей идентификации/журналирования по сравнению с приложением или БД.</li>
+<li><strong>Запуск отчётов по срабатываниям виртуальных патчей</strong> — запускайте отчёты для определения того, когда и какие виртуальные патчи срабатывали. Это продемонстрирует ценность виртуального патчинга в контексте периодов уязвимости до исправления в исходном коде.</li>
+</ul>
+<h2 id="_22">Ссылки<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://owasp.org/www-community/Virtual_Patching_Best_Practices">OWASP Virtual Patching Best Practices</a>.</li>
+<li><a href="https://wiki.owasp.org/index.php/Category:OWASP_Securing_WebGoat_using_ModSecurity_Project">OWASP Securing WebGoat with ModSecurity</a>.</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

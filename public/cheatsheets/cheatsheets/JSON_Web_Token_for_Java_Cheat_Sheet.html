@@ -1,0 +1,4089 @@
+---
+redirect_from: "/cheatsheets/JSON_Web_Token_Cheat_Sheet_for_Java.html"
+---
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="JAAS_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Java_Security_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>JSON Web Token for Java - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#json-web-token-java" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              JSON Web Token for Java
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Структура токена
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Цель
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения об использовании JWT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проблемы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Проблемы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#none" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритм хеширования None
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Алгоритм хеширования None">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример реализации
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-sidejacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Перехват токена (Token Sidejacking)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Перехват токена (Token Sidejacking)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример реализации
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отсутствие встроенного механизма отзыва токена пользователем
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Отсутствие встроенного механизма отзыва токена пользователем">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример реализации
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Пример реализации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хранилище списка заблокированных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Управление отзывом токенов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Раскрытие информации токена
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Раскрытие информации токена">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример реализации
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Пример реализации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шифрование токена
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Создание / Валидация токена
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хранение токена на стороне клиента
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Хранение токена на стороне клиента">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример реализации
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Слабый секрет токена
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Слабый секрет токена">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные материалы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Структура токена
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Цель
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения об использовании JWT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проблемы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Проблемы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#none" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритм хеширования None
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Алгоритм хеширования None">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример реализации
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-sidejacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Перехват токена (Token Sidejacking)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Перехват токена (Token Sidejacking)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример реализации
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отсутствие встроенного механизма отзыва токена пользователем
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Отсутствие встроенного механизма отзыва токена пользователем">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример реализации
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Пример реализации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хранилище списка заблокированных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Управление отзывом токенов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Раскрытие информации токена
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Раскрытие информации токена">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример реализации
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Пример реализации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шифрование токена
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Создание / Валидация токена
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хранение токена на стороне клиента
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Хранение токена на стороне клиента">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример реализации
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Слабый секрет токена
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Слабый секрет токена">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Симптом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как предотвратить
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные материалы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="json-web-token-java">Шпаргалка по JSON Web Token для Java<a class="headerlink" href="#json-web-token-java" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Многие приложения используют <strong>JSON Web Tokens</strong> (JWT) для того, чтобы клиент мог подтвердить свою идентичность при последующих обменах данными после аутентификации.</p>
+<p>Из <a href="https://jwt.io/introduction">JWT.IO</a>:</p>
+<blockquote>
+<p>JSON Web Token (JWT) — открытый стандарт (RFC 7519), определяющий компактный и самодостаточный способ безопасной передачи информации между участниками в виде JSON-объекта. Эта информация может быть верифицирована и признана достоверной, поскольку является цифровой подписью. JWT могут быть подписаны с использованием секрета (с алгоритмом HMAC) или пары открытого/закрытого ключей RSA.</p>
+</blockquote>
+<p>JWT используются для передачи информации об идентичности и характеристиках (утверждениях) клиента. Эта информация подписывается сервером, чтобы гарантировать её неизменность после отправки клиенту. Это не позволяет злоумышленнику изменить идентичность или характеристики — например, изменить роль с обычного пользователя на администратора или изменить логин клиента.</p>
+<p>Токен создаётся в процессе аутентификации (выпускается при успешной аутентификации) и проверяется сервером перед любой обработкой. Приложения используют токен, чтобы клиент мог предъявить серверу своеобразное «удостоверение личности». Сервер может безопасно проверить валидность и целостность токена. Такой подход является stateless и переносимым — он работает с различными клиентскими и серверными технологиями, а также по различным транспортным каналам, хотя наиболее часто используется HTTP.</p>
+<h2 id="_2">Структура токена<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Пример структуры токена взят с <a href="https://jwt.io/#debugger">JWT.IO</a>:</p>
+<p><code>[Base64(HEADER)].[Base64(PAYLOAD)].[Base64(SIGNATURE)]</code></p>
+<div class="highlight"><pre><span></span><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.
+TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
+</code></pre></div>
+<p>Часть 1: <strong>Header</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;alg&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;HS256&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;typ&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;JWT&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Часть 2: <strong>Payload</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;sub&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1234567890&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;admin&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Часть 3: <strong>Signature</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nx">HMACSHA256</span><span class="p">(</span><span class="w"> </span><span class="nx">base64UrlEncode</span><span class="p">(</span><span class="nx">header</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;.&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">base64UrlEncode</span><span class="p">(</span><span class="nx">payload</span><span class="p">),</span><span class="w"> </span><span class="nx">KEY</span><span class="w"> </span><span class="p">)</span>
+</code></pre></div>
+<h2 id="_3">Цель<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Данная шпаргалка содержит советы по предотвращению типичных проблем безопасности при использовании JSON Web Tokens (JWT) с Java.</p>
+<p>Советы, приведённые в этой статье, являются частью Java-проекта, созданного для демонстрации правильного способа создания и валидации JSON Web Tokens.</p>
+<p>Java-проект можно найти <a href="https://github.com/righettod/poc-jwt">здесь</a>; он использует официальную <a href="https://jwt.io/#libraries">библиотеку JWT</a>.</p>
+<p>В остальной части статьи термин <strong>токен</strong> относится к <strong>JSON Web Tokens</strong> (JWT).</p>
+<h2 id="jwt">Соображения об использовании JWT<a class="headerlink" href="#jwt" title="Permanent link">&para;</a></h2>
+<p>Хотя JWT «прост» в использовании и позволяет предоставлять сервисы (преимущественно в стиле REST) без сохранения состояния, он не является решением, подходящим для всех приложений, поскольку имеет ряд нюансов — например, вопрос хранения токена (рассматривается в этой шпаргалке) и другие.</p>
+<p>Если вашему приложению не нужно быть полностью stateless, можно рассмотреть использование традиционной системы сессий, предоставляемой всеми web-фреймворками, и следовать советам из специализированной <a href="Session_Management_Cheat_Sheet.html">шпаргалки по управлению сессиями</a>. Однако для stateless-приложений при правильной реализации JWT является хорошим кандидатом.</p>
+<h2 id="_4">Проблемы<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h3 id="none">Алгоритм хеширования None<a class="headerlink" href="#none" title="Permanent link">&para;</a></h3>
+<h4 id="_5">Симптом<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
+<p>Эта атака, описанная <a href="https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/">здесь</a>, происходит когда злоумышленник изменяет токен и меняет алгоритм хеширования на <em>none</em>, указывая тем самым, что целостность токена уже была проверена. Как объяснено по ссылке выше, <em>некоторые библиотеки обрабатывали токены, подписанные алгоритмом none, как валидные токены с проверенной подписью</em>, поэтому злоумышленник может изменить утверждения токена и изменённый токен по-прежнему будет доверенным для приложения.</p>
+<h4 id="_6">Как предотвратить<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<p>Прежде всего, используйте JWT-библиотеку, не подверженную этой уязвимости.</p>
+<p>Далее, при валидации токена явно требуйте использования ожидаемого алгоритма.</p>
+<h4 id="_7">Пример реализации<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="c1">// HMAC ключ — запрет сериализации и хранения в виде String в памяти JVM</span>
+<span class="kd">private</span><span class="w"> </span><span class="kd">transient</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">keyHMAC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+
+<span class="p">...</span>
+
+<span class="c1">// Создание контекста верификации токена с явным указанием</span>
+<span class="c1">// использования алгоритма хеширования HMAC-256</span>
+<span class="n">JWTVerifier</span><span class="w"> </span><span class="n">verifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JWT</span><span class="p">.</span><span class="na">require</span><span class="p">(</span><span class="n">Algorithm</span><span class="p">.</span><span class="na">HMAC256</span><span class="p">(</span><span class="n">keyHMAC</span><span class="p">)).</span><span class="na">build</span><span class="p">();</span>
+
+<span class="c1">// Верификация токена; если проверка не прошла — выбрасывается исключение</span>
+<span class="n">DecodedJWT</span><span class="w"> </span><span class="n">decodedToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">verifier</span><span class="p">.</span><span class="na">verify</span><span class="p">(</span><span class="n">token</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="token-sidejacking">Перехват токена (Token Sidejacking)<a class="headerlink" href="#token-sidejacking" title="Permanent link">&para;</a></h3>
+<h4 id="_8">Симптом<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<p>Эта атака происходит когда токен был перехвачен или похищен злоумышленником, и он использует его для получения доступа к системе под видом целевого пользователя.</p>
+<h4 id="_9">Как предотвратить<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<p>Один из способов предотвращения — добавить «контекст пользователя» к токену. Контекст пользователя должен включать:</p>
+<ul>
+<li>Случайную строку, сгенерированную на этапе аутентификации. Эта строка отправляется клиенту в виде защищённого cookie (со следующими флагами: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Secure_and_HttpOnly_cookies">HttpOnly + Secure</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#SameSite_cookies">SameSite</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Max-Age</a> и <a href="https://googlechrome.github.io/samples/cookie-prefixes/">префиксы cookie</a>). Избегайте установки заголовка <em>expires</em>, чтобы cookie удалялся при закрытии браузера. Устанавливайте <em>Max-Age</em> равным времени жизни JWT или меньше — но никогда больше.</li>
+<li>SHA256-хеш случайной строки хранится в токене (вместо исходного значения), чтобы предотвратить возможность чтения случайной строки через XSS и установки ожидаемого cookie злоумышленником.</li>
+</ul>
+<p>Избегайте использования IP-адресов в качестве части контекста. IP-адреса могут изменяться в течение одной сессии по законным причинам — например, когда пользователь получает доступ к приложению с мобильного устройства и переключается между провайдерами. Кроме того, отслеживание IP может вызывать вопросы, связанные с <a href="https://gdpr.eu/">соответствием GDPR</a> в ЕС.</p>
+<p>При валидации токена, если полученный токен не содержит правильного контекста (например, если он воспроизводится злоумышленником), он должен быть отклонён.</p>
+<h4 id="_10">Пример реализации<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h4>
+<p>Код создания токена после успешной аутентификации.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// HMAC ключ — запрет сериализации и хранения в виде String в памяти JVM</span>
+<span class="kd">private</span><span class="w"> </span><span class="kd">transient</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">keyHMAC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+<span class="c1">// Генератор случайных данных</span>
+<span class="kd">private</span><span class="w"> </span><span class="n">SecureRandom</span><span class="w"> </span><span class="n">secureRandom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SecureRandom</span><span class="p">();</span>
+
+<span class="p">...</span>
+
+<span class="c1">// Генерация случайной строки, составляющей отпечаток для данного пользователя</span>
+<span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">randomFgp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">50</span><span class="o">]</span><span class="p">;</span>
+<span class="n">secureRandom</span><span class="p">.</span><span class="na">nextBytes</span><span class="p">(</span><span class="n">randomFgp</span><span class="p">);</span>
+<span class="n">String</span><span class="w"> </span><span class="n">userFingerprint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DatatypeConverter</span><span class="p">.</span><span class="na">printHexBinary</span><span class="p">(</span><span class="n">randomFgp</span><span class="p">);</span>
+
+<span class="c1">// Добавление отпечатка в защищённый cookie — добавление cookie вручную, поскольку</span>
+<span class="c1">// атрибут SameSite не поддерживается классом javax.servlet.http.Cookie</span>
+<span class="n">String</span><span class="w"> </span><span class="n">fingerprintCookie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;__Secure-Fgp=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">userFingerprint</span>
+<span class="w">                           </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;; SameSite=Strict; HttpOnly; Secure&quot;</span><span class="p">;</span>
+<span class="n">response</span><span class="p">.</span><span class="na">addHeader</span><span class="p">(</span><span class="s">&quot;Set-Cookie&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fingerprintCookie</span><span class="p">);</span>
+
+<span class="c1">// Вычисление SHA256-хеша отпечатка для хранения</span>
+<span class="c1">// хеша отпечатка (вместо исходного значения) в токене,</span>
+<span class="c1">// чтобы XSS не мог прочитать отпечаток и</span>
+<span class="c1">// самостоятельно установить ожидаемый cookie</span>
+<span class="n">MessageDigest</span><span class="w"> </span><span class="n">digest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MessageDigest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">&quot;SHA-256&quot;</span><span class="p">);</span>
+<span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">userFingerprintDigest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">digest</span><span class="p">.</span><span class="na">digest</span><span class="p">(</span><span class="n">userFingerprint</span><span class="p">.</span><span class="na">getBytes</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">));</span>
+<span class="n">String</span><span class="w"> </span><span class="n">userFingerprintHash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DatatypeConverter</span><span class="p">.</span><span class="na">printHexBinary</span><span class="p">(</span><span class="n">userFingerprintDigest</span><span class="p">);</span>
+
+<span class="c1">// Создание токена со сроком действия 15 минут и информацией о контексте клиента (отпечатке)</span>
+<span class="n">Calendar</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Calendar</span><span class="p">.</span><span class="na">getInstance</span><span class="p">();</span>
+<span class="n">Date</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="na">getTime</span><span class="p">();</span>
+<span class="n">c</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">Calendar</span><span class="p">.</span><span class="na">MINUTE</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">);</span>
+<span class="n">Date</span><span class="w"> </span><span class="n">expirationDate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="na">getTime</span><span class="p">();</span>
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">headerClaims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">headerClaims</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;typ&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;JWT&quot;</span><span class="p">);</span>
+<span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JWT</span><span class="p">.</span><span class="na">create</span><span class="p">().</span><span class="na">withSubject</span><span class="p">(</span><span class="n">login</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="na">withExpiresAt</span><span class="p">(</span><span class="n">expirationDate</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="na">withIssuer</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">issuerID</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="na">withIssuedAt</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="na">withNotBefore</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="na">withClaim</span><span class="p">(</span><span class="s">&quot;userFingerprint&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">userFingerprintHash</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="na">withHeader</span><span class="p">(</span><span class="n">headerClaims</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="na">sign</span><span class="p">(</span><span class="n">Algorithm</span><span class="p">.</span><span class="na">HMAC256</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">keyHMAC</span><span class="p">));</span>
+</code></pre></div>
+<p>Код валидации токена.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// HMAC ключ — запрет сериализации и хранения в виде String в памяти JVM</span>
+<span class="kd">private</span><span class="w"> </span><span class="kd">transient</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">keyHMAC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+
+<span class="p">...</span>
+
+<span class="c1">// Получение отпечатка пользователя из специального cookie</span>
+<span class="n">String</span><span class="w"> </span><span class="n">userFingerprint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getCookies</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getCookies</span><span class="p">().</span><span class="na">length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Cookie</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cookies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Arrays</span><span class="p">.</span><span class="na">stream</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getCookies</span><span class="p">()).</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">toList</span><span class="p">());</span>
+<span class="w"> </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Cookie</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cookie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cookies</span><span class="p">.</span><span class="na">stream</span><span class="p">().</span><span class="na">filter</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;__Secure-Fgp&quot;</span>
+<span class="w">                                            </span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="na">getName</span><span class="p">())).</span><span class="na">findFirst</span><span class="p">();</span>
+<span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cookie</span><span class="p">.</span><span class="na">isPresent</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">userFingerprint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cookie</span><span class="p">.</span><span class="na">get</span><span class="p">().</span><span class="na">getValue</span><span class="p">();</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Вычисление SHA256-хеша отпечатка из cookie для сравнения</span>
+<span class="c1">// с хешем отпечатка, хранящимся в токене</span>
+<span class="n">MessageDigest</span><span class="w"> </span><span class="n">digest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MessageDigest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">&quot;SHA-256&quot;</span><span class="p">);</span>
+<span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">userFingerprintDigest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">digest</span><span class="p">.</span><span class="na">digest</span><span class="p">(</span><span class="n">userFingerprint</span><span class="p">.</span><span class="na">getBytes</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">));</span>
+<span class="n">String</span><span class="w"> </span><span class="n">userFingerprintHash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DatatypeConverter</span><span class="p">.</span><span class="na">printHexBinary</span><span class="p">(</span><span class="n">userFingerprintDigest</span><span class="p">);</span>
+
+<span class="c1">// Создание контекста верификации токена</span>
+<span class="n">JWTVerifier</span><span class="w"> </span><span class="n">verifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JWT</span><span class="p">.</span><span class="na">require</span><span class="p">(</span><span class="n">Algorithm</span><span class="p">.</span><span class="na">HMAC256</span><span class="p">(</span><span class="n">keyHMAC</span><span class="p">))</span>
+<span class="w">                              </span><span class="p">.</span><span class="na">withIssuer</span><span class="p">(</span><span class="n">issuerID</span><span class="p">)</span>
+<span class="w">                              </span><span class="p">.</span><span class="na">withClaim</span><span class="p">(</span><span class="s">&quot;userFingerprint&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">userFingerprintHash</span><span class="p">)</span>
+<span class="w">                              </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+
+<span class="c1">// Верификация токена; если проверка не прошла — выбрасывается исключение</span>
+<span class="n">DecodedJWT</span><span class="w"> </span><span class="n">decodedToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">verifier</span><span class="p">.</span><span class="na">verify</span><span class="p">(</span><span class="n">token</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="_11">Отсутствие встроенного механизма отзыва токена пользователем<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<h4 id="_12">Симптом<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h4>
+<p>Эта проблема присуща JWT, поскольку токен становится недействительным только при истечении срока действия. Пользователь не имеет встроенного инструмента для явного отзыва валидности токена. Это означает, что если токен похищен, пользователь не может отозвать его, заблокировав тем самым злоумышленника.</p>
+<h4 id="_13">Как предотвратить<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h4>
+<p>Поскольку JWT являются stateless, сервер(ы), обслуживающий(е) запросы клиентов, не поддерживает(ют) сессию. Следовательно, нет сессии для инвалидации на стороне сервера. Хорошо реализованное решение Token Sidejacking (как описано выше) должно устранить необходимость ведения списка запрещённых токенов на стороне сервера. Это обусловлено тем, что защищённый cookie, используемый в Token Sidejacking, можно считать столь же безопасным, как идентификатор сессии в традиционной системе сессий, и если не перехвачены одновременно и cookie, и JWT, JWT становится бесполезным. Таким образом, «выход из системы» можно «имитировать», удалив JWT из session storage. Если пользователь закрывает браузер, и cookie, и sessionStorage автоматически очищаются.</p>
+<p>Другой способ защиты — реализация списка запрещённых токенов, который будет использоваться для имитации функции «выхода из системы», существующей в традиционных системах управления сессиями.</p>
+<p>Список запрещённых токенов будет хранить дайджест (SHA-256, закодированный в HEX) токена с датой отзыва. Эта запись должна существовать как минимум до истечения срока действия токена.</p>
+<p>Когда пользователь хочет «выйти из системы», он вызывает специальный сервис, который добавляет предоставленный токен в список запрещённых, что немедленно инвалидирует токен для дальнейшего использования в приложении.</p>
+<h4 id="_14">Пример реализации<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h4>
+<h5 id="_15">Хранилище списка заблокированных<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h5>
+<p>В качестве централизованного хранилища списка запрещённых токенов будет использована таблица базы данных следующей структуры.</p>
+<div class="highlight"><pre><span></span><code><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">exists</span><span class="w"> </span><span class="n">revoked_token</span><span class="p">(</span><span class="n">jwt_token_digest</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">,</span>
+<span class="n">revocation_date</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="n">now</span><span class="p">());</span>
+</code></pre></div>
+<h5 id="_16">Управление отзывом токенов<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h5>
+<p>Код, отвечающий за добавление токена в список запрещённых и проверку статуса отзыва токена.</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm">* Обработка отзыва токена (выхода из системы).</span>
+<span class="cm">* Используется БД для возможности проверки отозванных токенов</span>
+<span class="cm">* несколькими экземплярами и централизованной очистки на уровне БД.</span>
+<span class="cm">*/</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">TokenRevoker</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w"> </span><span class="cm">/** Подключение к БД */</span>
+<span class="w"> </span><span class="nd">@Resource</span><span class="p">(</span><span class="s">&quot;jdbc/storeDS&quot;</span><span class="p">)</span>
+<span class="w"> </span><span class="kd">private</span><span class="w"> </span><span class="n">DataSource</span><span class="w"> </span><span class="n">storeDS</span><span class="p">;</span>
+
+<span class="w"> </span><span class="cm">/**</span>
+<span class="cm">  * Проверяет наличие дайджеста зашифрованного токена в HEX</span>
+<span class="cm">  * в таблице отзыва</span>
+<span class="cm">  *</span>
+<span class="cm">  * @param jwtInHex Токен, закодированный в HEX</span>
+<span class="cm">  * @return Флаг наличия</span>
+<span class="cm">  * @throws Exception При возникновении проблем при взаимодействии с БД</span>
+<span class="cm">  */</span>
+<span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">isTokenRevoked</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">jwtInHex</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="kt">boolean</span><span class="w"> </span><span class="n">tokenIsPresent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">     </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">jwtInHex</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">jwtInHex</span><span class="p">.</span><span class="na">trim</span><span class="p">().</span><span class="na">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="c1">// Декодирование зашифрованного токена</span>
+<span class="w">         </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">cipheredToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DatatypeConverter</span><span class="p">.</span><span class="na">parseHexBinary</span><span class="p">(</span><span class="n">jwtInHex</span><span class="p">);</span>
+
+<span class="w">         </span><span class="c1">// Вычисление SHA256 зашифрованного токена</span>
+<span class="w">         </span><span class="n">MessageDigest</span><span class="w"> </span><span class="n">digest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MessageDigest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">&quot;SHA-256&quot;</span><span class="p">);</span>
+<span class="w">         </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">cipheredTokenDigest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">digest</span><span class="p">.</span><span class="na">digest</span><span class="p">(</span><span class="n">cipheredToken</span><span class="p">);</span>
+<span class="w">         </span><span class="n">String</span><span class="w"> </span><span class="n">jwtTokenDigestInHex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DatatypeConverter</span><span class="p">.</span><span class="na">printHexBinary</span><span class="p">(</span><span class="n">cipheredTokenDigest</span><span class="p">);</span>
+
+<span class="w">         </span><span class="c1">// Поиск дайджеста токена в HEX в БД</span>
+<span class="w">         </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">Connection</span><span class="w"> </span><span class="n">con</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">storeDS</span><span class="p">.</span><span class="na">getConnection</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="n">String</span><span class="w"> </span><span class="n">query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;select jwt_token_digest from revoked_token where jwt_token_digest = ?&quot;</span><span class="p">;</span>
+<span class="w">             </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">PreparedStatement</span><span class="w"> </span><span class="n">pStatement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">con</span><span class="p">.</span><span class="na">prepareStatement</span><span class="p">(</span><span class="n">query</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                 </span><span class="n">pStatement</span><span class="p">.</span><span class="na">setString</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">jwtTokenDigestInHex</span><span class="p">);</span>
+<span class="w">                 </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">ResultSet</span><span class="w"> </span><span class="n">rSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pStatement</span><span class="p">.</span><span class="na">executeQuery</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                     </span><span class="n">tokenIsPresent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rSet</span><span class="p">.</span><span class="na">next</span><span class="p">();</span>
+<span class="w">                 </span><span class="p">}</span>
+<span class="w">             </span><span class="p">}</span>
+<span class="w">         </span><span class="p">}</span>
+<span class="w">     </span><span class="p">}</span>
+
+<span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="n">tokenIsPresent</span><span class="p">;</span>
+<span class="w"> </span><span class="p">}</span>
+
+
+<span class="w"> </span><span class="cm">/**</span>
+<span class="cm">  * Добавляет дайджест зашифрованного токена в HEX в таблицу отозванных токенов</span>
+<span class="cm">  *</span>
+<span class="cm">  * @param jwtInHex Токен, закодированный в HEX</span>
+<span class="cm">  * @throws Exception При возникновении проблем при взаимодействии с БД</span>
+<span class="cm">  */</span>
+<span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">revokeToken</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">jwtInHex</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">jwtInHex</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">jwtInHex</span><span class="p">.</span><span class="na">trim</span><span class="p">().</span><span class="na">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="c1">// Декодирование зашифрованного токена</span>
+<span class="w">         </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">cipheredToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DatatypeConverter</span><span class="p">.</span><span class="na">parseHexBinary</span><span class="p">(</span><span class="n">jwtInHex</span><span class="p">);</span>
+
+<span class="w">         </span><span class="c1">// Вычисление SHA256 зашифрованного токена</span>
+<span class="w">         </span><span class="n">MessageDigest</span><span class="w"> </span><span class="n">digest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MessageDigest</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="s">&quot;SHA-256&quot;</span><span class="p">);</span>
+<span class="w">         </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">cipheredTokenDigest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">digest</span><span class="p">.</span><span class="na">digest</span><span class="p">(</span><span class="n">cipheredToken</span><span class="p">);</span>
+<span class="w">         </span><span class="n">String</span><span class="w"> </span><span class="n">jwtTokenDigestInHex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DatatypeConverter</span><span class="p">.</span><span class="na">printHexBinary</span><span class="p">(</span><span class="n">cipheredTokenDigest</span><span class="p">);</span>
+
+<span class="w">         </span><span class="c1">// Проверка наличия дайджеста токена в HEX в БД и добавление при отсутствии</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="na">isTokenRevoked</span><span class="p">(</span><span class="n">jwtInHex</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">Connection</span><span class="w"> </span><span class="n">con</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">storeDS</span><span class="p">.</span><span class="na">getConnection</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                 </span><span class="n">String</span><span class="w"> </span><span class="n">query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;insert into revoked_token(jwt_token_digest) values(?)&quot;</span><span class="p">;</span>
+<span class="w">                 </span><span class="kt">int</span><span class="w"> </span><span class="n">insertedRecordCount</span><span class="p">;</span>
+<span class="w">                 </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">PreparedStatement</span><span class="w"> </span><span class="n">pStatement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">con</span><span class="p">.</span><span class="na">prepareStatement</span><span class="p">(</span><span class="n">query</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                     </span><span class="n">pStatement</span><span class="p">.</span><span class="na">setString</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">jwtTokenDigestInHex</span><span class="p">);</span>
+<span class="w">                     </span><span class="n">insertedRecordCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pStatement</span><span class="p">.</span><span class="na">executeUpdate</span><span class="p">();</span>
+<span class="w">                 </span><span class="p">}</span>
+<span class="w">                 </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">insertedRecordCount</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                     </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IllegalStateException</span><span class="p">(</span><span class="s">&quot;Number of inserted record is invalid,&quot;</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                     </span><span class="s">&quot; 1 expected but is &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">insertedRecordCount</span><span class="p">);</span>
+<span class="w">                 </span><span class="p">}</span>
+<span class="w">             </span><span class="p">}</span>
+<span class="w">         </span><span class="p">}</span>
+
+<span class="w">     </span><span class="p">}</span>
+<span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<h3 id="_17">Раскрытие информации токена<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<h4 id="_18">Симптом<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h4>
+<p>Эта атака происходит когда злоумышленник получает доступ к токену (или набору токенов) и извлекает хранящуюся в нём информацию (содержимое JWT кодируется в base64, но по умолчанию не шифруется), чтобы получить сведения о системе. Информация может включать, например, роли безопасности, формат логина и т.д.</p>
+<h4 id="_19">Как предотвратить<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h4>
+<p>Один из способов защиты от этой атаки — шифрование токена с использованием, например, симметричного алгоритма.</p>
+<p>Также важно защитить зашифрованные данные от атак, таких как <a href="https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/02-Testing_for_Padding_Oracle.html">Padding Oracle</a> или любых других атак с использованием криптоанализа.</p>
+<p>Для достижения всех этих целей используется алгоритм <em>AES-<a href="https://en.wikipedia.org/wiki/Galois/Counter_Mode">GCM</a></em>, обеспечивающий <em>аутентифицированное шифрование со связанными данными</em>.</p>
+<p>Подробнее <a href="https://github.com/google/tink/blob/master/docs/PRIMITIVES.md#deterministic-authenticated-encryption-with-associated-data">здесь</a>:</p>
+<div class="highlight"><pre><span></span><code>AEAD primitive (Authenticated Encryption with Associated Data) provides functionality of symmetric
+authenticated encryption.
+
+Implementations of this primitive are secure against adaptive chosen ciphertext attacks.
+
+When encrypting a plaintext one can optionally provide associated data that should be authenticated
+but not encrypted.
+
+That is, the encryption with associated data ensures authenticity (ie. who the sender is) and
+integrity (ie. data has not been tampered with) of that data, but not its secrecy.
+
+See RFC5116: https://tools.ietf.org/html/rfc5116
+</code></pre></div>
+<p><strong>Примечание:</strong></p>
+<p>Здесь шифрование добавляется главным образом для сокрытия внутренней информации, но очень важно помнить, что первичная защита JWT от подделки — это подпись. Поэтому подпись токена и её верификация должны присутствовать всегда.</p>
+<h4 id="_20">Пример реализации<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h4>
+<h5 id="_21">Шифрование токена<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h5>
+<p>Код, управляющий шифрованием. Для выполнения операций шифрования используется специализированная криптографическая библиотека <a href="https://github.com/google/tink">Google Tink</a>, чтобы применять встроенные лучшие практики, предоставляемые этой библиотекой.</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * Управление шифрованием и дешифрованием токена с использованием AES-GCM.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @see &quot;https://github.com/google/tink/blob/master/docs/JAVA-HOWTO.md&quot;</span>
+<span class="cm"> */</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">TokenCipher</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * Конструктор — регистрация конфигурации AEAD</span>
+<span class="cm">     *</span>
+<span class="cm">     * @throws Exception При возникновении проблем во время регистрации конфигурации AEAD</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">TokenCipher</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">AeadConfig</span><span class="p">.</span><span class="na">register</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * Шифрование JWT</span>
+<span class="cm">     *</span>
+<span class="cm">     * @param jwt          Токен для шифрования</span>
+<span class="cm">     * @param keysetHandle Указатель на дескриптор набора ключей</span>
+<span class="cm">     * @return Зашифрованная версия токена, закодированная в HEX</span>
+<span class="cm">     * @throws Exception При возникновении проблем во время операции шифрования токена</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">cipherToken</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">jwt</span><span class="p">,</span><span class="w"> </span><span class="n">KeysetHandle</span><span class="w"> </span><span class="n">keysetHandle</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Проверка параметров</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">jwt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">jwt</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">keysetHandle</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IllegalArgumentException</span><span class="p">(</span><span class="s">&quot;Both parameters must be specified!&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Получение примитива</span>
+<span class="w">        </span><span class="n">Aead</span><span class="w"> </span><span class="n">aead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AeadFactory</span><span class="p">.</span><span class="na">getPrimitive</span><span class="p">(</span><span class="n">keysetHandle</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Шифрование токена</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">cipheredToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aead</span><span class="p">.</span><span class="na">encrypt</span><span class="p">(</span><span class="n">jwt</span><span class="p">.</span><span class="na">getBytes</span><span class="p">(),</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">DatatypeConverter</span><span class="p">.</span><span class="na">printHexBinary</span><span class="p">(</span><span class="n">cipheredToken</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * Дешифрование JWT</span>
+<span class="cm">     *</span>
+<span class="cm">     * @param jwtInHex     Токен для дешифрования, закодированный в HEX</span>
+<span class="cm">     * @param keysetHandle Указатель на дескриптор набора ключей</span>
+<span class="cm">     * @return Токен в открытом виде</span>
+<span class="cm">     * @throws Exception При возникновении проблем во время операции дешифрования токена</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">decipherToken</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">jwtInHex</span><span class="p">,</span><span class="w"> </span><span class="n">KeysetHandle</span><span class="w"> </span><span class="n">keysetHandle</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Проверка параметров</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">jwtInHex</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">jwtInHex</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">keysetHandle</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IllegalArgumentException</span><span class="p">(</span><span class="s">&quot;Both parameters must be specified !&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Декодирование зашифрованного токена</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">cipheredToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DatatypeConverter</span><span class="p">.</span><span class="na">parseHexBinary</span><span class="p">(</span><span class="n">jwtInHex</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Получение примитива</span>
+<span class="w">        </span><span class="n">Aead</span><span class="w"> </span><span class="n">aead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AeadFactory</span><span class="p">.</span><span class="na">getPrimitive</span><span class="p">(</span><span class="n">keysetHandle</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Дешифрование токена</span>
+<span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">decipheredToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aead</span><span class="p">.</span><span class="na">decrypt</span><span class="p">(</span><span class="n">cipheredToken</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="p">(</span><span class="n">decipheredToken</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h5 id="_22">Создание / Валидация токена<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h5>
+<p>Используйте обработчик шифрования токена при создании и валидации токена.</p>
+<p>Загрузка ключей (ключ шифрования был сгенерирован и сохранён с использованием <a href="https://github.com/google/tink/blob/master/docs/JAVA-HOWTO.md#generating-new-keysets">Google Tink</a>) и настройка шифра.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Загрузка ключей из текстовых/json конфигурационных файлов во избежание хранения ключей в виде String в памяти JVM</span>
+<span class="kd">private</span><span class="w"> </span><span class="kd">transient</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">keyHMAC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Files</span><span class="p">.</span><span class="na">readAllBytes</span><span class="p">(</span><span class="n">Paths</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;src&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;conf&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;key-hmac.txt&quot;</span><span class="p">));</span>
+<span class="kd">private</span><span class="w"> </span><span class="kd">transient</span><span class="w"> </span><span class="n">KeysetHandle</span><span class="w"> </span><span class="n">keyCiphering</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CleartextKeysetHandle</span><span class="p">.</span><span class="na">read</span><span class="p">(</span><span class="n">JsonKeysetReader</span><span class="p">.</span><span class="na">withFile</span><span class="p">(</span>
+<span class="n">Paths</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;src&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;conf&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;key-ciphering.json&quot;</span><span class="p">).</span><span class="na">toFile</span><span class="p">()));</span>
+
+<span class="p">...</span>
+
+<span class="c1">// Инициализация обработчика шифрования токенов</span>
+<span class="n">TokenCipher</span><span class="w"> </span><span class="n">tokenCipher</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TokenCipher</span><span class="p">();</span>
+</code></pre></div>
+<p>Создание токена.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Генерация JWT токена с использованием JWT API...</span>
+<span class="c1">// Шифрование токена (строковое JSON представление)</span>
+<span class="n">String</span><span class="w"> </span><span class="n">cipheredToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tokenCipher</span><span class="p">.</span><span class="na">cipherToken</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">keyCiphering</span><span class="p">);</span>
+<span class="c1">// Отправка зашифрованного токена в HEX клиенту в HTTP-ответе...</span>
+</code></pre></div>
+<p>Валидация токена.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Получение зашифрованного токена в HEX из HTTP-запроса...</span>
+<span class="c1">// Дешифрование токена</span>
+<span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tokenCipher</span><span class="p">.</span><span class="na">decipherToken</span><span class="p">(</span><span class="n">cipheredToken</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">keyCiphering</span><span class="p">);</span>
+<span class="c1">// Верификация токена с использованием JWT API...</span>
+<span class="c1">// Проверка доступа...</span>
+</code></pre></div>
+<h3 id="_23">Хранение токена на стороне клиента<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h3>
+<h4 id="_24">Симптом<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h4>
+<p>Это происходит когда приложение хранит токен способом, демонстрирующим следующее поведение:</p>
+<ul>
+<li>Автоматически отправляется браузером (хранение в <em>Cookie</em>).</li>
+<li>Сохраняется при перезапуске браузера (использование контейнера браузера <em>localStorage</em>).</li>
+<li>Доступен в случае <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS</a>-уязвимости (Cookie доступен для JavaScript-кода или токен хранится в local/session storage браузера).</li>
+</ul>
+<h4 id="_25">Как предотвратить<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Хранить токен в контейнере браузера <em>sessionStorage</em> или использовать JavaScript <em>замыкания</em> с <em>приватными</em> переменными.</li>
+<li>Добавлять его как HTTP-заголовок <em>Bearer</em> <code>Authentication</code> через JavaScript при вызове сервисов.</li>
+<li>Добавлять информацию об <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html#token-sidejacking">отпечатке</a> в токен.</li>
+</ol>
+<p>Хранение токена в контейнере браузера <em>sessionStorage</em> подвергает его риску кражи через XSS-атаку. Однако отпечатки, добавленные к токену, предотвращают повторное использование похищенного токена злоумышленником на его машине. Для максимального сужения поверхности атаки добавьте в браузер <a href="https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html">Content Security Policy</a>, чтобы ужесточить контекст выполнения.</p>
+<p>Однако <em>sessionStorage</em> не всегда удобен из-за ограниченной области видимости (одна вкладка), и метод хранения токенов должен соблюдать баланс между <em>безопасностью</em> и <em>удобством использования</em>.</p>
+<p><em>LocalStorage</em> лучше <em>sessionStorage</em> с точки зрения удобства, поскольку позволяет сессии сохраняться между перезапусками браузера и между вкладками, но необходимо применять строгие меры безопасности:</p>
+<ul>
+<li>Токены, хранящиеся в <em>localStorage</em>, должны иметь <em>короткое время истечения</em> (например, <em>тайм-аут бездействия 15–30 минут, абсолютный тайм-аут 8 часов</em>).</li>
+<li>Реализуйте механизмы <em>ротации токенов</em> и <em>refresh токенов</em> для минимизации рисков.</li>
+</ul>
+<p>Если требуется <em>сохранение сессии между вкладками</em> при использовании <em>sessionStorage</em>, рассмотрите применение <em>BroadcastChannel API</em> или <em>Single Sign-On (SSO)</em> для автоматической повторной аутентификации пользователей при открытии новых вкладок.</p>
+<p>Альтернативой хранению токена в браузерном <em>sessionStorage</em> или <em>localStorage</em> является использование приватных переменных JavaScript или замыканий. В этом случае все web-запросы маршрутизируются через JavaScript-модуль, инкапсулирующий токен в приватной переменной, недоступной извне модуля.</p>
+<p><em>Примечание:</em></p>
+<ul>
+<li>Оставшийся случай — когда злоумышленник использует контекст браузера пользователя как прокси для обращения к целевому приложению через легитимного пользователя. Content Security Policy может предотвратить взаимодействие с неожидаемыми доменами.</li>
+<li>Также можно реализовать сервис аутентификации таким образом, чтобы токен выпускался в виде защищённого cookie. Однако в этом случае необходимо реализовать защиту от атак <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html">Cross-Site Request Forgery</a>.</li>
+</ul>
+<h4 id="_26">Пример реализации<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h4>
+<p>JavaScript-код для хранения токена после аутентификации.</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/* Обработка запроса JWT токена и локального хранилища */</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">authenticate</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">login</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#login&quot;</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">postData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;login=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">login</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;&amp;password=test&quot;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nx">$</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/services/authenticate&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">postData</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;Authentication successful!&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="p">...</span>
+<span class="w">            </span><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s2">&quot;token&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">token</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="p">...</span>
+<span class="w">            </span><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="s2">&quot;token&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">jqXHR</span><span class="p">,</span><span class="w"> </span><span class="nx">textStatus</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">        </span><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="s2">&quot;token&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>JavaScript-код для добавления токена в HTTP-заголовок аутентификации <em>Bearer</em> при вызове сервиса, например сервиса валидации токена.</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/* Обработка запроса на валидацию JWT токена */</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">validateToken</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s2">&quot;token&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">token</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">undefined</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">token</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#infoZone&quot;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">();</span>
+<span class="w">        </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#infoZone&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;alert alert-warning&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#infoZone&quot;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="s2">&quot;Obtain a JWT token first :)&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+<span class="w">        </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/services/validate&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">beforeSend</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">xhr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s2">&quot;Authorization&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;bearer &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">token</span><span class="p">);</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">success</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="p">...</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">jqXHR</span><span class="p">,</span><span class="w"> </span><span class="nx">textStatus</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="p">...</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>JavaScript-код для реализации замыканий с приватными переменными:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">myFetchModule</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Защита оригинального &#39;fetch&#39; от перезаписи через XSS</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">fetch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">fetch</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">authOrigins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;https://yourorigin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;http://localhost&quot;</span><span class="p">];</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">setToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">value</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">fetch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">resource</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="nx">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Request</span><span class="p">(</span><span class="nx">resource</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">);</span>
+<span class="w">        </span><span class="nx">destOrigin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">URL</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="p">).</span><span class="nx">origin</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">token</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">authOrigins</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">destOrigin</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;Authorization&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">token</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="nx">req</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">...</span>
+
+<span class="c1">// использование:</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">myFetch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">myFetchModule</span><span class="p">()</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">login</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">fetch</span><span class="p">(</span><span class="s2">&quot;/api/login&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">200</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+<span class="w">          </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="k">throw</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">statusText</span><span class="p">)</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">      </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nx">myFetch</span><span class="p">.</span><span class="nx">setToken</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">token</span><span class="p">)</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Token received and stored.&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="p">})</span>
+<span class="w">      </span><span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="p">...</span>
+
+<span class="c1">// после входа в систему, последующие API-вызовы:</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">makeRequest</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">myFetch</span><span class="p">.</span><span class="nx">fetch</span><span class="p">(</span><span class="s2">&quot;/api/hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;MyHeader&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;foobar&quot;</span><span class="p">}})</span>
+<span class="w">        </span><span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">200</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">text</span><span class="p">()</span>
+<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">throw</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">statusText</span><span class="p">)</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">responseText</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;helloResponse&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">responseText</span><span class="p">))</span>
+<span class="w">        </span><span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="_27">Слабый секрет токена<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h3>
+<h4 id="_28">Симптом<a class="headerlink" href="#_28" title="Permanent link">&para;</a></h4>
+<p>Когда токен защищён алгоритмом на основе HMAC, безопасность токена полностью зависит от надёжности секрета, используемого с HMAC. Если злоумышленник может получить действительный JWT, он может провести офлайн-атаку и попытаться взломать секрет с помощью инструментов, таких как <a href="https://github.com/magnumripper/JohnTheRipper">John the Ripper</a> или <a href="https://github.com/hashcat/hashcat">Hashcat</a>.</p>
+<p>В случае успеха злоумышленник сможет изменить токен и повторно подписать его полученным ключом. Это может позволить ему повысить привилегии, скомпрометировать аккаунты других пользователей или выполнить другие действия в зависимости от содержимого JWT.</p>
+<p>Существует ряд <a href="https://www.notsosecure.com/crafting-way-json-web-tokens/">руководств</a>, подробно описывающих этот процесс.</p>
+<h4 id="_29">Как предотвратить<a class="headerlink" href="#_29" title="Permanent link">&para;</a></h4>
+<p>Простейший способ предотвратить эту атаку — убедиться, что секрет для подписи JWT является надёжным и уникальным, чтобы затруднить его взлом злоумышленником. Поскольку этот секрет никогда не нужно вводить вручную, он должен содержать не менее 64 символов и генерироваться с использованием <a href="Cryptographic_Storage_Cheat_Sheet.html#secure-random-number-generation">безопасного источника случайности</a>.</p>
+<p>В качестве альтернативы рассмотрите использование токенов, подписанных с помощью RSA, вместо использования HMAC и секретного ключа.</p>
+<h4 id="_30">Дополнительные материалы<a class="headerlink" href="#_30" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="https://github.com/ticarpi/jwt_tool/wiki">{JWT}.{Attack}.Playbook</a> — проект, документирующий известные атаки, потенциальные уязвимости безопасности и неправильные конфигурации JSON Web Tokens.</li>
+<li><a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-jwt-bcp/">JWT Best Practices Internet Draft</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

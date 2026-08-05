@@ -1,0 +1,3566 @@
+---
+redirect_from: "/cheatsheets/Ruby_on_Rails_Cheatsheet.html"
+---
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Ruby_on_Rails_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="REST_Security_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="SAML_Security_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Ruby on Rails - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ruby-on-rails-cheat-sheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Ruby on Rails
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Разделы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Разделы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Внедрение команд
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql-" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL-инъекция
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Межсайтовый скриптинг (XSS)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сессии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Аутентификация
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Аутентификация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Аутентификация по токену
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Небезопасные прямые ссылки на объекты или принудительный просмотр
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#csrf" class="md-nav__link">
+    <span class="md-ellipsis">
+      CSRF (Межсайтовая подделка запросов)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Перенаправления и переходы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Динамические пути рендеринга
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Совместное использование ресурсов из разных источников (CORS)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Заголовки, связанные с безопасностью
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ошибки бизнес-логики
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поверхность атаки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Чувствительные файлы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шифрование
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rails" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обновление Rails и процесс обновления зависимостей
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Инструменты
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Связанные статьи и ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Разделы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Разделы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Внедрение команд
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql-" class="md-nav__link">
+    <span class="md-ellipsis">
+      SQL-инъекция
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Межсайтовый скриптинг (XSS)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сессии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Аутентификация
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Аутентификация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Аутентификация по токену
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Небезопасные прямые ссылки на объекты или принудительный просмотр
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#csrf" class="md-nav__link">
+    <span class="md-ellipsis">
+      CSRF (Межсайтовая подделка запросов)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Перенаправления и переходы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Динамические пути рендеринга
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Совместное использование ресурсов из разных источников (CORS)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Заголовки, связанные с безопасностью
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ошибки бизнес-логики
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поверхность атаки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Чувствительные файлы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шифрование
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rails" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обновление Rails и процесс обновления зависимостей
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Инструменты
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Связанные статьи и ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="ruby-on-rails-cheat-sheet">Ruby on Rails Cheat Sheet<a class="headerlink" href="#ruby-on-rails-cheat-sheet" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Данная <em>Шпаргалка</em> предназначена для предоставления разработчикам основных советов по безопасности Ruby on Rails. Она дополняет и развивает положения, изложенные в <a href="https://guides.rubyonrails.org/security.html">руководстве по безопасности Rails</a> от основной команды Rails.</p>
+<p>Фреймворк Rails избавляет разработчиков от значительного объёма рутинной работы и предоставляет средства для быстрого и удобного решения сложных задач. Начинающим разработчикам, незнакомым с внутренним устройством Rails, скорее всего необходим базовый набор рекомендаций для защиты фундаментальных аспектов их приложений. Именно этой цели служит данный документ.</p>
+<h2 id="_2">Разделы<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="_3">Внедрение команд<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>Ruby предоставляет функцию "eval", которая динамически формирует новый код Ruby из строк. Также существует ряд способов вызова системных команд.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;ruby code here&quot;</span><span class="p">)</span>
+<span class="nb">system</span><span class="p">(</span><span class="s2">&quot;os command here&quot;</span><span class="p">)</span>
+<span class="sb">`ls -al /`</span><span class="w"> </span><span class="c1"># (обратные кавычки содержат команду ОС)</span>
+<span class="nb">exec</span><span class="p">(</span><span class="s2">&quot;os command here&quot;</span><span class="p">)</span>
+<span class="n">spawn</span><span class="p">(</span><span class="s2">&quot;os command here&quot;</span><span class="p">)</span>
+<span class="nb">open</span><span class="p">(</span><span class="s2">&quot;| os command here&quot;</span><span class="p">)</span>
+<span class="no">Process</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;os command here&quot;</span><span class="p">)</span>
+<span class="no">Process</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">&quot;os command here&quot;</span><span class="p">)</span>
+<span class="no">IO</span><span class="o">.</span><span class="n">binread</span><span class="p">(</span><span class="s2">&quot;| os command here&quot;</span><span class="p">)</span>
+<span class="no">IO</span><span class="o">.</span><span class="n">binwrite</span><span class="p">(</span><span class="s2">&quot;| os command here&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+<span class="no">IO</span><span class="o">.</span><span class="n">foreach</span><span class="p">(</span><span class="s2">&quot;| os command here&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="no">IO</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s2">&quot;os command here&quot;</span><span class="p">)</span>
+<span class="no">IO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;| os command here&quot;</span><span class="p">)</span>
+<span class="no">IO</span><span class="o">.</span><span class="n">readlines</span><span class="p">(</span><span class="s2">&quot;| os command here&quot;</span><span class="p">)</span>
+<span class="no">IO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;| os command here&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Несмотря на всю полезность этих команд, при их использовании в Rails-приложениях необходимо проявлять крайнюю осторожность. Как правило, это просто плохая практика. В случае необходимости следует использовать список разрешённых значений и максимально тщательно валидировать любые входные данные.</p>
+<p>Руководства <a href="https://guides.rubyonrails.org/security.html#command-line-injection">Rails</a> и <a href="https://owasp.org/www-community/attacks/Command_Injection">OWASP</a> содержат дополнительную информацию о внедрении команд.</p>
+<h3 id="sql-">SQL-инъекция<a class="headerlink" href="#sql-" title="Permanent link">&para;</a></h3>
+<p>Ruby on Rails часто используется с ORM под названием ActiveRecord, хотя фреймворк достаточно гибок и может работать с другими источниками данных. Как правило, в простых Rails-приложениях для запроса данных используются методы моделей Rails. Во многих случаях защита от SQL-инъекций работает «из коробки». Тем не менее возможно написание кода, допускающего SQL-инъекции.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>
+<span class="vi">@projects</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Project</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;name like &#39;&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;&#39;&quot;</span><span class="p">);</span>
+</code></pre></div>
+<p>Данное выражение уязвимо для инъекций, поскольку параметр name не экранируется.</p>
+<p>Вот правильный способ построения подобного запроса:</p>
+<div class="highlight"><pre><span></span><code><span class="vi">@projects</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Project</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;name like ?&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;%</span><span class="si">#{</span><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="o">.</span><span class="n">sanitize_sql_like</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span><span class="p">)</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Следует избегать построения SQL-запросов на основе пользовательских данных. Более реалистичные и подробные примеры можно найти здесь: <a href="https://rails-sqli.org">rails-sqli.org</a>. OWASP содержит обширную информацию о <a href="https://owasp.org/www-community/attacks/SQL_Injection">SQL-инъекциях</a>.</p>
+<h3 id="xss">Межсайтовый скриптинг (XSS)<a class="headerlink" href="#xss" title="Permanent link">&para;</a></h3>
+<p>По умолчанию защита от XSS является поведением по умолчанию. При отображении строковых данных в представлениях они экранируются перед отправкой в браузер. Это существенная защита, однако нередко разработчики её обходят — например, для реализации форматированного ввода текста. Если требуется передать переменные во фронтенд с сохранением HTML-тегов, может возникнуть соблазн сделать следующее в файле .erb (разметка Ruby):</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Неправильно! Не делайте этого!</span>
+<span class="o">&lt;</span><span class="sx">%= raw @product.name %&gt;</span>
+
+<span class="sx"># Неправильно! Не делайте этого!</span>
+<span class="sx">&lt;%=</span><span class="o">=</span><span class="w"> </span><span class="vi">@product</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="sx">%&gt;</span>
+
+<span class="sx"># Неправильно! Не делайте этого!</span>
+<span class="sx">&lt;%= @product.name.html_safe %&gt;</span>
+</code></pre></div>
+<p>К сожалению, любое поле, использующее <code>raw</code>, <code>html_safe</code> или аналогичные методы, является потенциальной целью XSS-атаки. Следует отметить, что существуют и широко распространённые заблуждения относительно <code>html_safe()</code>.</p>
+<p><a href="https://stackoverflow.com/questions/4251284/raw-vs-html-safe-vs-h-to-unescape-html">Эта статья</a> подробно описывает лежащий в основе механизм SafeBuffer. Другие теги, изменяющие способ подготовки строк к выводу, могут порождать аналогичные проблемы.</p>
+<p>Метод <code>html_safe</code> класса String носит несколько вводящее в заблуждение название. Он означает, что мы достоверно знаем: содержимое строки безопасно для включения в HTML без экранирования. <strong>Сам по себе этот метод небезопасен!</strong></p>
+<p>Если необходимо принимать HTML-контент от пользователей, рассмотрите использование языка разметки для форматированного текста в приложении (например: Markdown и textile) и запретите HTML-теги. Это помогает гарантировать, что принимаемые входные данные не содержат потенциально вредоносного HTML.</p>
+<p>Если ограничить пользователей от ввода HTML невозможно, рассмотрите внедрение политики безопасности контента (Content Security Policy) для запрета выполнения JavaScript. Наконец, рассмотрите использование метода <code>#sanitize</code>, позволяющего перечислить допустимые теги. Будьте осторожны: этот метод неоднократно оказывался уязвимым и никогда не станет исчерпывающим решением.</p>
+<p>Часто упускаемый из виду вектор XSS-атаки в старых версиях Rails — значение атрибута <code>href</code> ссылки:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;%=</span><span class="w"> </span><span class="n">link_to</span><span class="w"> </span><span class="s2">&quot;Personal Website&quot;</span><span class="p">,</span><span class="w"> </span><span class="vi">@user</span><span class="o">.</span><span class="n">website</span><span class="w"> </span><span class="o">%&gt;</span>
+</code></pre></div>
+<p>Если <code>@user.website</code> содержит ссылку, начинающуюся с <code>javascript:</code>, содержимое выполнится при клике пользователя на сгенерированную ссылку:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;javascript:alert(&#39;Haxored&#39;)&quot;</span><span class="p">&gt;</span>Personal Website<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>В новых версиях Rails подобные ссылки экранируются более надёжно.</p>
+<div class="highlight"><pre><span></span><code><span class="n">link_to</span><span class="w"> </span><span class="s2">&quot;Personal Website&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;javascript:alert(1);&#39;</span><span class="o">.</span><span class="n">html_safe</span><span class="p">()</span>
+<span class="c1"># Сгенерирует:</span>
+<span class="c1"># &quot;&lt;a href=&quot;javascript:alert(1);&quot;&gt;Personal Website&lt;/a&gt;&quot;</span>
+</code></pre></div>
+<p>Использование <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">Content Security Policy</a> — ещё одна мера безопасности для запрета выполнения ссылок, начинающихся с <code>javascript:</code>.</p>
+<p><a href="https://github.com/presidentbeef/brakeman">Сканер Brakeman</a> помогает обнаруживать XSS-проблемы в Rails-приложениях.</p>
+<p>OWASP предоставляет более общую информацию о XSS на странице верхнего уровня: <a href="https://owasp.org/www-community/attacks/xss/">Cross-site Scripting (XSS)</a>.</p>
+<h3 id="_4">Сессии<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>По умолчанию Ruby on Rails использует хранилище сессий на основе Cookie. Это означает, что если ничего не изменить, сессия не будет истекать на сервере. Следовательно, некоторые стандартные приложения могут быть уязвимы для атак воспроизведения. Это также означает, что конфиденциальная информация не должна никогда помещаться в сессию.</p>
+<p>Лучшей практикой является использование хранилища сессий на основе базы данных, что в Rails реализуется очень просто:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Project</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">session_store</span><span class="w"> </span><span class="ss">:active_record_store</span>
+</code></pre></div>
+<p>Существует <a href="Session_Management_Cheat_Sheet.html">Шпаргалка по управлению сессиями</a>.</p>
+<h3 id="_5">Аутентификация<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>Как и в случае с любыми чувствительными данными, начните защиту аутентификации с включения TLS в конфигурации:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># config/environments/production.rb</span>
+<span class="c1"># Принудительный HTTPS для всего приложения, Strict-Transport-Security,</span>
+<span class="c1"># и безопасные куки</span>
+<span class="n">config</span><span class="o">.</span><span class="n">force_ssl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kp">true</span>
+</code></pre></div>
+<p>Раскомментируйте строку 3, как показано выше, в вашей конфигурации.</p>
+<p>В целом Rails не предоставляет встроенной аутентификации. Однако большинство разработчиков, работающих с Rails, используют такие библиотеки, как Devise или AuthLogic.</p>
+<p>Для включения аутентификации можно использовать gem Devise.</p>
+<p>Установите его:</p>
+<div class="highlight"><pre><span></span><code>gem<span class="w"> </span><span class="s1">&#39;devise&#39;</span>
+</code></pre></div>
+<p>Затем установите его для модели пользователя:</p>
+<div class="highlight"><pre><span></span><code>rails<span class="w"> </span>generate<span class="w"> </span>devise:install
+</code></pre></div>
+<p>Далее укажите в маршрутах, какие ресурсы (маршруты) требуют аутентифицированного доступа:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="n">authenticate</span><span class="w"> </span><span class="ss">:user</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="n">resources</span><span class="w"> </span><span class="ss">:something</span><span class="w"> </span><span class="k">do</span><span class="w">  </span><span class="c1"># эти ресурсы требуют аутентификации</span>
+<span class="w">      </span><span class="o">...</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
+
+<span class="w">  </span><span class="n">devise_for</span><span class="w"> </span><span class="ss">:users</span><span class="w"> </span><span class="c1"># маршруты регистрации/входа/выхода</span>
+
+<span class="w">  </span><span class="n">root</span><span class="w"> </span><span class="ss">to</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;static#home&#39;</span><span class="w"> </span><span class="c1"># аутентификация не требуется</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Для обеспечения сложности паролей можно использовать <a href="https://github.com/bitzesty/devise_zxcvbn">zxcvbn gem</a>. Настройте модель пользователя с его использованием:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">User</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">ApplicationRecord</span>
+<span class="w">  </span><span class="n">devise</span><span class="w"> </span><span class="ss">:database_authenticatable</span><span class="p">,</span>
+<span class="w">    </span><span class="c1"># другие функции devise, затем</span>
+<span class="w">    </span><span class="ss">:zxcvbnable</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>И настройте требуемую сложность пароля:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># в config/initializers/devise.rb</span>
+<span class="no">Devise</span><span class="o">.</span><span class="n">setup</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">config</span><span class="o">|</span>
+<span class="w">  </span><span class="c1"># оценка zxcvbn для devise</span>
+<span class="w">  </span><span class="n">config</span><span class="o">.</span><span class="n">min_password_score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="c1"># оценка сложности здесь.</span>
+<span class="w">  </span><span class="o">...</span>
+</code></pre></div>
+<p>Вы можете попробовать <a href="https://github.com/qutorial/revise">этот PoC</a> для более подробного изучения.</p>
+<p>Далее, <a href="https://github.com/omniauth/omniauth">omniauth gem</a> позволяет использовать множество стратегий аутентификации. С его помощью можно настроить безопасную аутентификацию через Facebook, LDAP и многих других провайдеров. Подробнее читайте <a href="https://github.com/omniauth/omniauth#integrating-omniauth-into-your-application">здесь</a>.</p>
+<h4 id="_6">Аутентификация по токену<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<p>Devise обычно использует Cookies для аутентификации.</p>
+<p>В случае если желательна аутентификация по токену, её можно реализовать с помощью gem <a href="https://github.com/lynndylanhurley/devise_token_auth">devise_token_auth</a>.</p>
+<p>Он поддерживает множество технологий фронтенда, например angular2-token.</p>
+<p>Этот gem настраивается аналогично самому gem Devise. Он также требует omniauth в качестве зависимости.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># аутентификация на основе токенов</span>
+gem<span class="w"> </span><span class="s1">&#39;devise_token_auth&#39;</span>
+gem<span class="w"> </span><span class="s1">&#39;omniauth&#39;</span>
+</code></pre></div>
+<p>Затем определяется маршрут:</p>
+<div class="highlight"><pre><span></span><code><span class="n">mount_devise_token_auth_for</span><span class="w"> </span><span class="s1">&#39;User&#39;</span><span class="p">,</span><span class="w"> </span><span class="ss">at</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;auth&#39;</span>
+</code></pre></div>
+<p>И модель User изменяется соответствующим образом.</p>
+<p>Эти действия можно выполнить одной командой:</p>
+<div class="highlight"><pre><span></span><code>rails<span class="w"> </span>g<span class="w"> </span>devise_token_auth:install<span class="w"> </span><span class="o">[</span>USER_CLASS<span class="o">]</span><span class="w"> </span><span class="o">[</span>MOUNT_PATH<span class="o">]</span>
+</code></pre></div>
+<p>В зависимости от вашего случая использования может потребоваться отредактировать сгенерированную миграцию, чтобы исключить ненужные поля и/или дублирование полей.</p>
+<p>Примечание: при использовании только аутентификации по токену в контроллерах больше нет необходимости в защите от <a href="https://owasp.org/www-community/attacks/csrf">CSRF</a>. Если на некоторых путях используется аутентификация на основе Cookie, на них по-прежнему необходима защита от подделки!</p>
+<p>Существует <a href="Authentication_Cheat_Sheet.html">Шпаргалка по аутентификации</a>.</p>
+<h3 id="_7">Небезопасные прямые ссылки на объекты или принудительный просмотр<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p>По умолчанию Rails-приложения используют RESTful структуру URI. Это означает, что пути зачастую интуитивно понятны и предсказуемы. Для защиты от попыток пользователя получить доступ к данным другого пользователя или изменить их важно явно контролировать действия. В стандартном Rails-приложении такая защита отсутствует «из коробки». Её можно реализовать вручную на уровне контроллера.</p>
+<p>Также возможно, и, вероятно, рекомендуется, рассмотреть библиотеки управления доступом на основе ресурсов, такие как <a href="https://github.com/CanCanCommunity/cancancan">cancancan</a> (замена cancan) или <a href="https://github.com/elabs/pundit">pundit</a>. Это гарантирует, что все операции с объектами базы данных авторизованы бизнес-логикой приложения.</p>
+<p>Более общая информация об этом классе уязвимостей находится на <a href="https://wiki.owasp.org/index.php/Top_10_2010-A4-Insecure_Direct_Object_References">странице OWASP Top 10</a>.</p>
+<h3 id="csrf">CSRF (Межсайтовая подделка запросов)<a class="headerlink" href="#csrf" title="Permanent link">&para;</a></h3>
+<p>Ruby on Rails имеет специальную встроенную поддержку CSRF-токенов. Для её включения или проверки того, что она включена, найдите базовый <code>ApplicationController</code> и найдите директиву следующего вида:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ApplicationController</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+<span class="w">  </span><span class="n">protect_from_forgery</span>
+</code></pre></div>
+<p>Обратите внимание, что синтаксис этого типа управления включает способ добавления исключений. Исключения могут быть полезны для API или по другим причинам — но должны быть проверены и намеренно включены. В приведённом ниже примере Rails ProjectController не будет обеспечивать защиту от <a href="https://owasp.org/www-community/attacks/csrf">CSRF</a> для метода show.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ProjectController</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">ApplicationController</span>
+<span class="w">  </span><span class="n">protect_from_forgery</span><span class="w"> </span><span class="ss">except</span><span class="p">:</span><span class="w"> </span><span class="ss">:show</span>
+</code></pre></div>
+<p>Также следует отметить, что по умолчанию Rails не обеспечивает защиту от CSRF для HTTP-запросов <code>GET</code>.</p>
+<p><strong>Примечание:</strong> если вы используете только аутентификацию по токену, в контроллерах нет необходимости защищаться от CSRF подобным образом. Если аутентификация на основе Cookie используется на некоторых путях, то защита по-прежнему обязательна для них.</p>
+<p>На OWASP есть страница верхнего уровня для <a href="https://owasp.org/www-community/attacks/csrf">Cross-Site Request Forgery (CSRF)</a>.</p>
+<h3 id="_8">Перенаправления и переходы<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>Веб-приложениям нередко требуется возможность динамически перенаправлять пользователей на основе данных, предоставленных клиентом. Динамическое перенаправление обычно предполагает, что клиент включает URL в параметр запроса к приложению. Получив запрос, приложение перенаправляет пользователя на URL, указанный в запросе.</p>
+<p>Например:</p>
+<p><code>http://www.example.com/redirect?url=http://www.example_commerce_site.com/checkout</code></p>
+<p>Приведённый запрос перенаправит пользователя на <code>http://www.example.com/checkout</code>. Угроза безопасности, связанная с этой функциональностью, заключается в использовании доверенного бренда организации для фишинга пользователей и перенаправления их на вредоносный сайт, в нашем примере — <code>badhacker.com</code>.</p>
+<p>Пример:</p>
+<p><code>http://www.example.com/redirect?url=http://badhacker.com</code></p>
+<p>Самой базовой, но ограничительной защитой является использование опции <code>:only_path</code>. При установке значения true она по существу удаляет любую информацию о хосте. Однако опция <code>:only_path</code> должна быть частью первого аргумента. Если первый аргумент не является хэш-таблицей, передать эту опцию невозможно. При отсутствии пользовательского хелпера или списка разрешённых значений один из возможных подходов выглядит следующим образом:</p>
+<div class="highlight"><pre><span></span><code><span class="k">begin</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">URI</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:url</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+<span class="w">    </span><span class="n">redirect_to</span><span class="w"> </span><span class="n">path</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">rescue</span><span class="w"> </span><span class="no">URI</span><span class="o">::</span><span class="no">InvalidURIError</span>
+<span class="w">  </span><span class="n">redirect_to</span><span class="w"> </span><span class="s1">&#39;/&#39;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Если необходимо сопоставлять пользовательский ввод со списком одобренных сайтов или TLD с помощью регулярных выражений, имеет смысл использовать библиотеку, например <code>URI.parse()</code>, для получения хоста, а затем сопоставлять значение хоста с шаблонами регулярных выражений. Эти регулярные выражения должны, как минимум, содержать якоря, иначе вероятность обхода злоумышленником процедуры валидации возрастает.</p>
+<p>Пример:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">require</span><span class="w"> </span><span class="s1">&#39;uri&#39;</span>
+<span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">URI</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">params</span><span class="o">[</span><span class="ss">:url</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">host</span>
+<span class="c1"># это может быть уязвимо для javascript://trusted.com/%0Aalert(0)</span>
+<span class="c1"># поэтому проверяйте также .scheme и .port</span>
+<span class="n">validation_routine</span><span class="p">(</span><span class="n">host</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">host</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validation_routine</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+<span class="w">  </span><span class="c1"># Процедура валидации, где используются \A и \z в качестве якорей, *не* ^ и $</span>
+<span class="w">  </span><span class="c1"># можно также сопоставить значение хоста со списком разрешённых значений</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Также слепое перенаправление на параметр пользовательского ввода может привести к XSS.</p>
+<p>Пример кода:</p>
+<div class="highlight"><pre><span></span><code><span class="n">redirect_to</span><span class="w"> </span><span class="n">params</span><span class="o">[</span><span class="ss">:to</span><span class="o">]</span>
+</code></pre></div>
+<p>Даст следующий URL:</p>
+<p><code>http://example.com/redirect?to[status]=200&amp;to[protocol]=javascript:alert(0)//</code></p>
+<p>Очевидным способом устранения данного типа уязвимости является ограничение до конкретных доменов верхнего уровня (TLD), статическое определение конкретных сайтов или сопоставление ключа с его значением.</p>
+<p>Пример кода:</p>
+<div class="highlight"><pre><span></span><code><span class="no">ACCEPTABLE_URLS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="s1">&#39;our_app_1&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;https://www.example_commerce_site.com/checkout&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">&#39;our_app_2&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">&quot;https://www.example_user_site.com/change_settings&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Даст следующий URL:</p>
+<p><code>http://www.example.com/redirect?url=our_app_1</code></p>
+<p>Код обработки перенаправления:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">redirect</span>
+<span class="w">  </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">ACCEPTABLE_URLS</span><span class="o">[</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">params</span><span class="o">[</span><span class="ss">:url</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">]</span>
+<span class="w">  </span><span class="n">redirect_to</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">url</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Существует более общий ресурс OWASP о <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">невалидированных перенаправлениях и переходах</a>.</p>
+<h3 id="_9">Динамические пути рендеринга<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>В Rails действия контроллера и представления могут динамически определять, какое представление или частичный шаблон отрисовать, вызывая метод <code>render</code>. Если пользовательские данные используются в имени шаблона или для его определения, злоумышленник может заставить приложение отрисовать произвольное представление, например административную страницу.</p>
+<p>Следует проявлять осторожность при использовании пользовательского ввода для определения отрисовываемого представления. По возможности избегайте использования пользовательского ввода в имени или пути к представлению.</p>
+<h3 id="cors">Совместное использование ресурсов из разных источников (CORS)<a class="headerlink" href="#cors" title="Permanent link">&para;</a></h3>
+<p>Иногда возникает необходимость совместного использования ресурсов с другим доменом. Например, функция загрузки файлов, отправляющая данные через AJAX-запрос на другой домен. В таких случаях должны соблюдаться правила одного источника, которым следуют веб-браузеры. Современные браузеры, соответствующие стандартам HTML5, допускают это, но для этого необходимо принять ряд мер предосторожности.</p>
+<p>При использовании нестандартных HTTP-конструкций, например нетипичного заголовка Content-Type, применяется следующее:</p>
+<p>Принимающий сайт должен перечислять только те домены, которым разрешено делать подобные запросы, а также устанавливать заголовок <code>Access-Control-Allow-Origin</code> как в ответе на запрос <code>OPTIONS</code>, так и в ответе на запрос <code>POST</code>. Это связано с тем, что сначала отправляется запрос OPTIONS для определения того, допускает ли удалённый или принимающий сайт запрашивающий домен. Затем отправляется второй запрос — <code>POST</code>. И снова заголовок должен быть установлен, чтобы транзакция считалась успешной.</p>
+<p>При использовании стандартных HTTP-конструкций:</p>
+<p><em>Запрос отправляется, и браузер при получении ответа проверяет заголовки ответа для определения того, может ли и должен ли ответ быть обработан.</em></p>
+<p>Список разрешённых значений в Rails:</p>
+<p><strong>Gemfile:</strong></p>
+<div class="highlight"><pre><span></span><code>gem<span class="w"> </span><span class="s1">&#39;rack-cors&#39;</span>,<span class="w"> </span>:require<span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="s1">&#39;rack/cors&#39;</span>
+</code></pre></div>
+<p><strong>config/application.rb:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="nn">Sample</span>
+<span class="w">  </span><span class="k">class</span><span class="w"> </span><span class="nc">Application</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+<span class="w">    </span><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span><span class="w"> </span><span class="no">Rack</span><span class="o">::</span><span class="no">Cors</span><span class="w"> </span><span class="k">do</span>
+<span class="w">      </span><span class="n">allow</span><span class="w"> </span><span class="k">do</span>
+<span class="w">        </span><span class="n">origins</span><span class="w"> </span><span class="s1">&#39;someserver.example.com&#39;</span>
+<span class="w">        </span><span class="n">resource</span><span class="w"> </span><span class="sr">%r{/users/\d+.json}</span><span class="p">,</span>
+<span class="w">        </span><span class="ss">:headers</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="o">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Accept&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Content-Type&#39;</span><span class="o">]</span><span class="p">,</span>
+<span class="w">        </span><span class="ss">:methods</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="o">[</span><span class="ss">:post</span><span class="p">,</span><span class="w"> </span><span class="ss">:get</span><span class="o">]</span>
+<span class="w">      </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="_10">Заголовки, связанные с безопасностью<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>Для установки значения заголовка просто обратитесь к объекту response.headers как к хэшу внутри вашего контроллера (часто в before/after_filter).</p>
+<div class="highlight"><pre><span></span><code><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="o">[</span><span class="s1">&#39;X-header-name&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;value&#39;</span>
+</code></pre></div>
+<p>Rails предоставляет функциональность <code>default_headers</code>, которая будет автоматически применять указанные значения. Это работает для большинства заголовков практически во всех случаях.</p>
+<div class="highlight"><pre><span></span><code><span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Response</span><span class="o">.</span><span class="n">default_headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="s1">&#39;X-Frame-Options&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;SAMEORIGIN&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">&#39;X-Content-Type-Options&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;nosniff&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">&#39;X-XSS-Protection&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;0&#39;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><a href="https://owasp.org/www-project-secure-headers/#headers-link">Strict transport security</a> — особый случай, он устанавливается в файле среды (например, <code>production.rb</code>)</p>
+<div class="highlight"><pre><span></span><code><span class="n">config</span><span class="o">.</span><span class="n">force_ssl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kp">true</span>
+</code></pre></div>
+<p>Для тех, кто не использует последние версии, существует библиотека (<a href="https://github.com/twitter/secureheaders">secure_headers</a>) с аналогичным поведением и предоставляемой абстракцией политики безопасности контента. Она автоматически применяет логику на основе user agent для формирования краткого набора заголовков.</p>
+<h3 id="-">Ошибки бизнес-логики<a class="headerlink" href="#-" title="Permanent link">&para;</a></h3>
+<p>Любое приложение на любой технологии может содержать ошибки бизнес-логики, приводящие к уязвимостям безопасности. Ошибки бизнес-логики сложно или невозможно обнаружить с помощью автоматизированных инструментов. Лучшими способами предотвращения ошибок безопасности в бизнес-логике являются проверка кода, парное программирование и написание юнит-тестов.</p>
+<h3 id="_11">Поверхность атаки<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>В целом Rails избегает уязвимостей типа открытого перенаправления и обхода путей благодаря файлу /config/routes.rb, который определяет, какие URL должны быть доступны и какими контроллерами обрабатываться. Файл маршрутов — отличное место для оценки масштабов поверхности атаки.</p>
+<p>Пример может выглядеть следующим образом:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># это пример того, чего НЕ нужно делать</span>
+<span class="n">match</span><span class="w"> </span><span class="s1">&#39;:controller(/:action(/:id(.:format)))&#39;</span>
+</code></pre></div>
+<p>В данном случае этот маршрут позволяет вызывать любой публичный метод любого контроллера как действие. Как разработчик, вы должны убедиться, что пользователи могут достигать только предусмотренных методов контроллера и именно предусмотренным способом.</p>
+<h3 id="_12">Чувствительные файлы<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p>Многие Rails-приложения являются открытым исходным кодом и размещены в публично доступных репозиториях. Независимо от того, так ли это или код хранится в корпоративной системе контроля версий, существуют определённые файлы, которые должны быть либо исключены, либо тщательно управляемы.</p>
+<div class="highlight"><pre><span></span><code>/config/database.yml                 -  Может содержать учётные данные для production.
+/config/initializers/secret_token.rb -  Содержит секрет для хэширования куки сессии.
+/db/seeds.rb                         -  Может содержать начальные данные, включая начального администратора.
+/db/development.sqlite3              -  Может содержать реальные данные.
+</code></pre></div>
+<h3 id="_13">Шифрование<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p>Rails использует шифрование ОС. В целом, всегда плохая идея — писать собственное шифрование.</p>
+<p>Devise по умолчанию использует bcrypt для хэширования паролей, что является подходящим решением.</p>
+<p>Как правило, следующая конфигурация задаёт 10 итераций для production: <code>/config/initializers/devise.rb</code></p>
+<div class="highlight"><pre><span></span><code><span class="n">config</span><span class="o">.</span><span class="n">stretches</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">test?</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+</code></pre></div>
+<h2 id="rails">Обновление Rails и процесс обновления зависимостей<a class="headerlink" href="#rails" title="Permanent link">&para;</a></h2>
+<p>В начале 2013 года в фреймворке Rails был выявлен ряд критических уязвимостей. Организации, отставшие от актуальных версий, испытывали больше трудностей с обновлением и сталкивались с более сложными решениями, включая необходимость патчить исходный код самого фреймворка.</p>
+<p>Дополнительная проблема Ruby-приложений в целом заключается в том, что большинство библиотек (gems) не подписаны их авторами. Построить Rails-проект с библиотеками из доверенных источников буквально невозможно. Хорошей практикой может быть аудит используемых gems.</p>
+<p>В целом важно иметь процесс обновления зависимостей. Примерный процесс может определять три механизма инициирования обновления:</p>
+<ul>
+<li>Каждый месяц/квартал зависимости обновляются в целом.</li>
+<li>Каждую неделю учитываются важные уязвимости безопасности, что потенциально инициирует обновление.</li>
+<li>В ИСКЛЮЧИТЕЛЬНЫХ случаях могут потребоваться экстренные обновления.</li>
+</ul>
+<h2 id="_14">Инструменты<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<p>Используйте <a href="https://brakemanscanner.org/">brakeman</a> — инструмент анализа кода с открытым исходным кодом для Rails-приложений — для выявления многих потенциальных проблем. Он не обязательно даст исчерпывающие результаты проверки безопасности, но поможет найти легко обнаруживаемые проблемы. Отличный способ увидеть потенциальные проблемы в Rails — изучить документацию brakeman по типам предупреждений.</p>
+<p>Более новой альтернативой является <a href="https://github.com/Bearer/bearer">bearer</a> — инструмент анализа безопасности и конфиденциальности кода с открытым исходным кодом для Ruby и JavaScript/TypeScript, позволяющий выявлять широкий спектр потенциальных проблем из OWASP Top 10. Он предоставляет множество параметров конфигурации и легко интегрируется в CI/CD-конвейер.</p>
+<p>Существуют появляющиеся инструменты для отслеживания проблем безопасности в наборах зависимостей, например автоматическое сканирование от <a href="https://github.blog/2017-11-16-introducing-security-alerts-on-github/">GitHub</a> и <a href="https://docs.gitlab.com/ee/user/application_security/dependency_scanning/">GitLab</a>.</p>
+<p>Ещё одной областью инструментария является инструмент тестирования безопасности <a href="http://gauntlt.org">Gauntlt</a>, построенный на cucumber и использующий синтаксис gherkin для определения файлов атак.</p>
+<p>Запущенный в мае 2013 года и очень схожий со сканером brakeman, <a href="https://github.com/thesp0nge/dawnscanner">dawnscanner</a> — rubygem-статический анализатор проблем безопасности для веб-приложений Rails, Sinatra и Padrino. Версия 1.6.6 содержит более 235 проверок безопасности CVE, специфичных для Ruby.</p>
+<h2 id="_15">Связанные статьи и ссылки<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://guides.rubyonrails.org/security.html">Официальное руководство по безопасности Rails</a></li>
+<li><a href="https://owasp.org/www-pdf-archive/Rails_Security_2.pdf">Руководство по безопасности Ruby on Rails от OWASP</a></li>
+<li><a href="http://code.google.com/p/ruby-security/wiki/Guide">Руководство проверяющего безопасность Ruby</a></li>
+<li><a href="https://groups.google.com/forum/?fromgroups#!forum/rubyonrails-security">Список рассылки по безопасности Ruby on Rails</a></li>
+<li><a href="https://codeclimate.com/blog/rails-insecure-defaults/">Небезопасные настройки по умолчанию в Rails</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

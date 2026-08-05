@@ -1,0 +1,3560 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="Transport_Layer_Protection_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Transport Layer Security - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#transport-layer-security-cheat-sheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Transport Layer Security
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Введение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ssl-vs-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSL vs TLS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конфигурация сервера
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Конфигурация сервера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поддерживайте только надёжные протоколы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поддерживайте только надёжные шифры
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Задайте подходящие группы Диффи-Хеллмана
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отключите сжатие
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обновляйте криптографические библиотеки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тестируйте конфигурацию сервера
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сертификаты
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Сертификаты">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте надёжные ключи и защищайте их
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте надёжные алгоритмы криптографического хеширования
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте корректные доменные имена
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildcard-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тщательно оценивайте использование wildcard-сертификатов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте подходящий удостоверяющий центр для вашей пользовательской базы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caa-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте CAA-записи для ограничения перечня CA, уполномоченных выпускать сертификаты
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Учитывайте тип проверки сертификата
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Приложение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Приложение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте TLS для всех страниц
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Не смешивайте TLS и не-TLS контент
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте флаг куки «Secure»
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращайте кеширование конфиденциальных данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-strict-transport-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте HTTP Strict Transport Security
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Клиентские сертификаты и взаимный TLS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-key-pinning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Прикрепление открытого ключа (Public Key Pinning)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Связанные статьи
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Введение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ssl-vs-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSL vs TLS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конфигурация сервера
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Конфигурация сервера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поддерживайте только надёжные протоколы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поддерживайте только надёжные шифры
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Задайте подходящие группы Диффи-Хеллмана
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отключите сжатие
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обновляйте криптографические библиотеки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тестируйте конфигурацию сервера
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сертификаты
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Сертификаты">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте надёжные ключи и защищайте их
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте надёжные алгоритмы криптографического хеширования
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте корректные доменные имена
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildcard-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тщательно оценивайте использование wildcard-сертификатов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте подходящий удостоверяющий центр для вашей пользовательской базы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caa-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте CAA-записи для ограничения перечня CA, уполномоченных выпускать сертификаты
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Учитывайте тип проверки сертификата
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Приложение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Приложение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте TLS для всех страниц
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Не смешивайте TLS и не-TLS контент
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте флаг куки «Secure»
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращайте кеширование конфиденциальных данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-strict-transport-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте HTTP Strict Transport Security
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Клиентские сертификаты и взаимный TLS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-key-pinning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Прикрепление открытого ключа (Public Key Pinning)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Связанные статьи
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="transport-layer-security-cheat-sheet">Transport Layer Security Cheat Sheet<a class="headerlink" href="#transport-layer-security-cheat-sheet" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Данная шпаргалка содержит рекомендации по реализации защиты транспортного уровня для приложений с использованием Transport Layer Security (TLS). Основное внимание уделяется защите клиентов, подключающихся к веб-приложению через HTTPS, хотя большая часть рекомендаций применима и к другим сценариям использования TLS. При правильной реализации TLS обеспечивает ряд преимуществ в области безопасности:</p>
+<ul>
+<li><strong>Конфиденциальность</strong>: Защита от перехвата содержимого трафика злоумышленником.</li>
+<li><strong>Целостность</strong>: Защита от модификации трафика, например от повторного воспроизведения злоумышленником запросов на сервере.</li>
+<li><strong><a href="Authentication_Cheat_Sheet.html">Аутентификация</a></strong>: Позволяет клиенту удостовериться, что он подключён к легитимному серверу. Обратите внимание, что личность клиента не проверяется, если не используются <a href="#client-certificates-and-mutual-tls">клиентские сертификаты</a>.</li>
+</ul>
+<h3 id="ssl-vs-tls">SSL vs TLS<a class="headerlink" href="#ssl-vs-tls" title="Permanent link">&para;</a></h3>
+<p>Secure Socket Layer (SSL) — это исходный протокол, который использовался для шифрования HTTP-трафика в виде HTTPS. Было выпущено две публичных версии SSL — версии 2 и 3. Обе имеют серьёзные криптографические уязвимости и не должны применяться.</p>
+<p>По <a href="https://tim.dierks.org/2014/05/security-standards-and-name-changes-in.html">различным причинам</a> следующая версия протокола (фактически SSL 3.1) получила название Transport Layer Security (TLS) версии 1.0. Впоследствии были выпущены версии TLS 1.1, 1.2 и 1.3.</p>
+<p>Термины «SSL», «SSL/TLS» и «TLS» часто используются как взаимозаменяемые, и во многих случаях «SSL» употребляется применительно к более современному протоколу TLS. В данной шпаргалке используется термин «TLS», за исключением случаев, когда речь идёт о устаревших протоколах.</p>
+<h2 id="_2">Конфигурация сервера<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="_3">Поддерживайте только надёжные протоколы<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>Веб-приложения общего назначения должны по умолчанию использовать <strong>TLS 1.3</strong> (с поддержкой TLS 1.2 при необходимости), а все остальные протоколы должны быть отключены.</p>
+<p>В специфических и редких ситуациях, когда веб-сервер вынужден работать с устаревшими клиентами, зависящими от старых небезопасных браузеров (например, Internet Explorer 10), включение TLS 1.0 может быть единственным вариантом. Однако такой подход следует применять с осторожностью и, как правило, не рекомендуется из соображений безопасности. Кроме того, следует включить <a href="https://tools.ietf.org/html/rfc7507">расширение «TLS_FALLBACK_SCSV»</a>, чтобы предотвратить атаки на понижение версии протокола для более новых клиентов.</p>
+<p>Обратите внимание, что стандарт PCI DSS <a href="https://www.pcisecuritystandards.org/documents/Migrating-from-SSL-Early-TLS-Info-Supp-v1_1.pdf">запрещает использование устаревших протоколов, таких как TLS 1.0</a>.</p>
+<h3 id="_4">Поддерживайте только надёжные шифры<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>TLS поддерживает большое количество различных шифров (или наборов шифров), обеспечивающих разный уровень безопасности. По возможности следует включать только шифры GCM. Однако если необходима поддержка устаревших клиентов, могут потребоваться другие шифры. Как минимум, следующие типы шифров всегда должны быть отключены:</p>
+<ul>
+<li>Null-шифры</li>
+<li>Анонимные шифры</li>
+<li>EXPORT-шифры</li>
+</ul>
+<p>Фонд Mozilla предоставляет <a href="https://ssl-config.mozilla.org/">удобный генератор безопасных конфигураций</a> для веб-, баз данных и почтовых серверов. Этот инструмент позволяет администраторам сайтов выбрать используемое программное обеспечение и получить файл конфигурации, оптимально сочетающий безопасность и совместимость для широкого диапазона версий браузеров и серверного программного обеспечения.</p>
+<h3 id="-">Задайте подходящие группы Диффи-Хеллмана<a class="headerlink" href="#-" title="Permanent link">&para;</a></h3>
+<p>В версиях протокола, предшествующих TLS 1.3, процедура генерации параметров Диффи-Хеллмана для временного обмена ключами по схеме Диффи-Хеллмана (обозначается строками «DHE» или «EDH» в названии набора шифров) имела практические проблемы. Например, клиент не участвовал в выборе серверных параметров — он мог лишь безоговорочно принять их или отклонить, а случайная генерация параметров нередко приводила к атакам типа «отказ в обслуживании» (CVE-2022-40735, CVE-2002-20001).</p>
+<p>TLS 1.3 ограничивает параметры групп Диффи-Хеллмана известными группами через расширение <code>supported_groups</code>. Доступные группы Диффи-Хеллмана: <code>ffdhe2048</code>, <code>ffdhe3072</code>, <code>ffdhe4096</code>, <code>ffdhe6144</code>, <code>ffdhe8192</code>, как указано в <a href="https://www.rfc-editor.org/rfc/rfc7919">RFC7919</a>.</p>
+<p>По умолчанию openssl 3.0 включает все перечисленные группы. Для их изменения убедитесь, что в файле <code>openssl.cnf</code> заданы правильные параметры группы Диффи-Хеллмана. Например:</p>
+<div class="highlight"><pre><span></span><code>openssl_conf = openssl_init
+[openssl_init]
+ssl_conf = ssl_module
+[ssl_module]
+system_default = tls_system_default
+[tls_system_default]
+Groups = x25519:prime256v1:x448:ffdhe2048:ffdhe3072
+</code></pre></div>
+<p>Конфигурация для Apache выглядит следующим образом:</p>
+<div class="highlight"><pre><span></span><code>SSLOpenSSLConfCmd Groups x25519:secp256r1:ffdhe3072
+</code></pre></div>
+<p>Те же группы в NGINX задаются так:</p>
+<div class="highlight"><pre><span></span><code>ssl_ecdh_curve x25519:secp256r1:ffdhe3072;
+</code></pre></div>
+<p>Для TLS 1.2 и более ранних версий рекомендуется не задавать параметры Диффи-Хеллмана.</p>
+<h3 id="_5">Отключите сжатие<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>Сжатие TLS должно быть отключено для защиты от уязвимости (получившей название <a href="https://threatpost.com/crime-attack-uses-compression-ratio-tls-requests-side-channel-hijack-secure-sessions-091312/77006/">CRIME</a>), которая потенциально позволяет злоумышленнику восстановить конфиденциальную информацию, например сессионные куки.</p>
+<h3 id="_6">Обновляйте криптографические библиотеки<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>Помимо уязвимостей в самих протоколах SSL и TLS, в библиотеках SSL и TLS исторически было обнаружено большое количество уязвимостей, самой известной из которых является <a href="https://heartbleed.com">Heartbleed</a>. Поэтому важно своевременно устанавливать последние патчи безопасности для этих библиотек.</p>
+<h3 id="_7">Тестируйте конфигурацию сервера<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p>После усиления защиты сервера конфигурацию необходимо протестировать. Дополнительная информация содержится в <a href="https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/01-Testing_for_Weak_Transport_Layer_Security">главе Руководства OWASP по тестированию, посвящённой тестированию SSL/TLS</a>.</p>
+<p>Существует ряд онлайн-инструментов для быстрой проверки конфигурации сервера:</p>
+<ul>
+<li><a href="https://www.ssllabs.com/ssltest">SSL Labs Server Test</a></li>
+<li><a href="https://cryptcheck.fr/">CryptCheck</a></li>
+<li><a href="https://www.hardenize.com/">Hardenize</a></li>
+<li><a href="https://www.immuniweb.com/ssl/">ImmuniWeb</a></li>
+<li><a href="https://observatory.mozilla.org">Observatory by Mozilla</a></li>
+<li><a href="https://scanigma.com">Scanigma</a></li>
+<li><a href="https://stellastra.com/tls-cipher-suite-check">Stellastra</a></li>
+<li><a href="https://purpleteam-labs.com/">OWASP PurpleTeam</a> <code>cloud</code></li>
+</ul>
+<p>Кроме того, доступен ряд офлайн-инструментов:</p>
+<ul>
+<li><a href="https://wiki.owasp.org/index.php/O-Saft">O-Saft - OWASP SSL advanced forensic tool</a></li>
+<li><a href="https://github.com/mozilla/cipherscan">CipherScan</a></li>
+<li><a href="https://gitlab.com/coroner/cryptolyzer">CryptoLyzer</a></li>
+<li><a href="https://github.com/rbsec/sslscan">SSLScan - Fast SSL Scanner</a></li>
+<li><a href="https://github.com/nabla-c0d3/sslyze">SSLyze</a></li>
+<li><a href="https://testssl.sh">testssl.sh - Testing any TLS/SSL encryption</a></li>
+<li><a href="https://github.com/prbinu/tls-scan">tls-scan</a></li>
+<li><a href="https://purpleteam-labs.com/">OWASP PurpleTeam</a> <code>local</code></li>
+</ul>
+<h2 id="_8">Сертификаты<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<h3 id="_9">Используйте надёжные ключи и защищайте их<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>Закрытый ключ, используемый для генерации ключа шифрования, должен быть достаточно стойким на весь предполагаемый срок службы закрытого ключа и соответствующего сертификата. Текущая лучшая практика — выбирать размер ключа не менее 2048 бит. Дополнительная информация о сроках службы ключей и сравнительной стойкости ключей доступна <a href="http://www.keylength.com/en/compare/">здесь</a> и в документе <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf">NIST SP 800-57</a>.</p>
+<p>Закрытый ключ также должен быть защищён от несанкционированного доступа с помощью разрешений файловой системы и других технических и административных средств контроля.</p>
+<h3 id="_10">Используйте надёжные алгоритмы криптографического хеширования<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>Сертификаты должны использовать SHA-256 в качестве алгоритма хеширования, а не устаревшие алгоритмы MD5 и SHA-1. Последние имеют ряд криптографических уязвимостей и не являются доверенными для современных браузеров.</p>
+<h3 id="_11">Используйте корректные доменные имена<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>Доменное имя (или субъект) сертификата должно совпадать с полным доменным именем сервера, предъявляющего сертификат. Исторически оно хранилось в атрибуте <code>commonName</code> (CN) сертификата. Однако современные версии Chrome игнорируют атрибут CN и требуют, чтобы FQDN присутствовал в атрибуте <code>subjectAlternativeName</code> (SAN). Для совместимости сертификаты должны содержать основной FQDN в CN и полный список FQDN в SAN.</p>
+<p>Кроме того, при создании сертификата следует учитывать следующее:</p>
+<ul>
+<li>Рассмотрите, нужно ли включать поддомен «www».</li>
+<li>Не включайте неполные имена хостов.</li>
+<li>Не включайте IP-адреса.</li>
+<li>Не включайте внутренние доменные имена во внешние сертификаты.<ul>
+<li>Если сервер доступен как по внутренним, так и по внешним FQDN, настройте для него несколько сертификатов.</li>
+</ul>
+</li>
+</ul>
+<h3 id="wildcard-">Тщательно оценивайте использование wildcard-сертификатов<a class="headerlink" href="#wildcard-" title="Permanent link">&para;</a></h3>
+<p>Wildcard-сертификаты могут быть удобны, однако они нарушают <a href="https://wiki.owasp.org/index.php/Least_privilege">принцип наименьших привилегий</a>, поскольку один сертификат действителен для всех поддоменов домена (например, *.example.org). Когда несколько систем совместно используют wildcard-сертификат, вероятность компрометации закрытого ключа этого сертификата возрастает, так как ключ может присутствовать в нескольких системах. Кроме того, ценность такого ключа значительно повышается, делая его более привлекательной целью для злоумышленников.</p>
+<p>Вопросы, связанные с использованием wildcard-сертификатов, достаточно сложны, и в интернете существуют <a href="https://blog.sean-wright.com/wildcard-certs-not-quite-the-star/">различные</a> другие <a href="https://gist.github.com/joepie91/7e5cad8c0726fd6a5e90360a754fc568">обсуждения</a> на эту тему.</p>
+<p>При оценке рисков использования wildcard-сертификатов следует принимать во внимание следующее:</p>
+<ul>
+<li>Используйте wildcard-сертификаты только при реальной необходимости, а не ради удобства.<ul>
+<li>Рассмотрите использование <a href="https://en.wikipedia.org/wiki/Automated_Certificate_Management_Environment">ACME</a>, чтобы системы могли автоматически запрашивать и обновлять собственные сертификаты.</li>
+</ul>
+</li>
+<li>Никогда не используйте wildcard-сертификат для систем с разными уровнями доверия.<ul>
+<li>Два VPN-шлюза могут использовать общий wildcard-сертификат.</li>
+<li>Несколько экземпляров веб-приложения могут совместно использовать сертификат.</li>
+<li>VPN-шлюз и публичный веб-сервер <strong>не должны</strong> совместно использовать wildcard-сертификат.</li>
+<li>Публичный веб-сервер и внутренний сервер <strong>не должны</strong> совместно использовать wildcard-сертификат.</li>
+</ul>
+</li>
+<li>Рассмотрите использование обратного прокси-сервера, выполняющего терминирование TLS, чтобы закрытый ключ wildcard присутствовал только в одной системе.</li>
+<li>Следует вести список всех систем, использующих один и тот же сертификат, чтобы иметь возможность обновить их все при истечении срока действия или компрометации сертификата.</li>
+<li>Ограничивайте область действия wildcard-сертификата, выпуская его для поддомена (например, <code>*.foo.example.org</code>) или для отдельного домена.</li>
+</ul>
+<h3 id="_12">Используйте подходящий удостоверяющий центр для вашей пользовательской базы<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p>Чтобы пользователи доверяли сертификатам, они должны быть подписаны доверенным удостоверяющим центром (CA). Для приложений, доступных через интернет, это должен быть один из широко известных CA, которым автоматически доверяют операционные системы и браузеры.</p>
+<p>CA <a href="https://letsencrypt.org">LetsEncrypt</a> предоставляет бесплатные SSL-сертификаты с проверкой домена, которым доверяют все основные браузеры. В связи с этим стоит взвесить, есть ли реальные преимущества в приобретении сертификата у платного CA.</p>
+<p>Для внутренних приложений можно использовать внутренний CA. Это означает, что FQDN сертификата не будет раскрыт (ни внешнему CA, ни публично в списках Certificate Transparency). Однако сертификат будет считаться доверенным только для пользователей, которые импортировали и добавили в доверенные сертификат внутреннего CA, использованного для их подписания.</p>
+<h3 id="caa-ca">Используйте CAA-записи для ограничения перечня CA, уполномоченных выпускать сертификаты<a class="headerlink" href="#caa-ca" title="Permanent link">&para;</a></h3>
+<p>DNS-записи Certification Authority Authorization (CAA) позволяют определить, какие CA имеют право выпускать сертификаты для домена. Запись содержит список CA, и любой CA, не включённый в этот список, должен отказать в выпуске сертификата для данного домена. Это помогает предотвратить получение злоумышленником несанкционированных сертификатов для домена через менее надёжный CA. При применении ко всем поддоменам CAA-записи также полезны с административной точки зрения: они ограничивают перечень CA, которыми могут пользоваться администраторы или разработчики, и препятствуют несанкционированному получению wildcard-сертификатов.</p>
+<h3 id="_13">Учитывайте тип проверки сертификата<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p>Сертификаты бывают разных типов проверки. Проверка (validation) — это процесс, с помощью которого удостоверяющий центр (CA) убеждается, что вы вправе получить данный сертификат. Это и есть авторизация. <a href="https://cabforum.org/working-groups/server/baseline-requirements/documents/">CA/Browser Forum</a> — организация, объединяющая CA, производителей браузеров и других заинтересованных в веб-безопасности сторон. Она устанавливает правила, которым должны следовать CA в зависимости от типа проверки. Базовый тип называется Domain Validated (DV). Все публично выпускаемые сертификаты должны проходить проверку домена. Этот процесс включает практическое подтверждение контроля над именем или конечной точкой, запрошенной в сертификате. Как правило, это происходит через запрос-ответ в DNS, на официальный адрес электронной почты или на конечную точку, которая получит сертификат.</p>
+<p>Сертификаты с Organization Validated (OV) включают информацию об организации-заявителе в субъекте сертификата. Например: C = GB, ST = Manchester, <strong>O = Sectigo Limited</strong>, CN = sectigo.com. Процедура получения OV-сертификата требует официального взаимодействия с организацией-заявителем таким способом, который убеждает CA, что они действительно общаются с нужной компанией.</p>
+<p>Сертификаты с Extended Validation (EV) обеспечивают ещё более высокий уровень верификации, включая все проверки DV и OV. Фактически это разница между «Этот сайт действительно принадлежит Example Company Inc.» и «Этот домен действительно является example.org». <a href="https://cabforum.org/working-groups/server/extended-validation/guidelines/">Актуальные рекомендации по Extended Validation</a></p>
+<p>Исторически такие сертификаты отображались в браузере иначе — часто с названием компании или зелёным значком либо фоном в адресной строке. Однако начиная с 2019 года ни один крупный браузер не отображает статус EV таким образом, поскольку разработчики считают, что EV-сертификаты не обеспечивают дополнительной защиты. (<a href="https://groups.google.com/a/chromium.org/forum/m/#!msg/security-dev/h1bTcoTpfeI/jUTk1z7VAAAJ">Chromium</a> — распространяется на Chrome, Edge, Brave и Opera. <a href="https://groups.google.com/forum/m/?fromgroups&amp;hl=en#!topic/firefox-dev/6wAg_PpnlY4">Firefox</a> <a href="https://cabforum.org/2018/06/06/minutes-of-the-f2f-44-meeting-in-london-england-6-7-june-2018/#apple-root-program-update">Safari</a>)</p>
+<p>Поскольку все браузеры и стеки TLS не делают различий между сертификатами DV, OV и EV, с точки зрения безопасности они равнозначны. Злоумышленнику достаточно получить практический контроль над доменом, чтобы выпустить поддельный сертификат. Дополнительные усилия по получению OV- или EV-сертификата никак не ограничивают масштаб инцидента. Более того, подобные действия, скорее всего, повлекут обнаружение. Дополнительные трудности с получением OV- и EV-сертификатов могут создавать риски для доступности, и их применение следует оценивать с учётом этого.</p>
+<h2 id="_14">Приложение<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<h3 id="tls">Используйте TLS для всех страниц<a class="headerlink" href="#tls" title="Permanent link">&para;</a></h3>
+<p>TLS должен использоваться для всех страниц, а не только для тех, что считаются чувствительными, — например, страницы входа. Если есть страницы, не требующие использования TLS, злоумышленник может воспользоваться ими для перехвата конфиденциальной информации (например, токенов сессии) или для внедрения вредоносного JavaScript в ответы с целью проведения других атак против пользователя.</p>
+<p>Для публично доступных приложений может быть уместным настроить веб-сервер для прослушивания незашифрованных HTTP-соединений на порту 80 с немедленным перенаправлением через постоянный редирект (HTTP 301) — для удобства пользователей, вручную вводящих доменное имя. Это следует дополнить заголовком <a href="#use-http-strict-transport-security">HTTP Strict Transport Security (HSTS)</a>, чтобы в дальнейшем пользователи не могли обратиться к сайту по HTTP.</p>
+<p>Конечные точки только для API должны полностью отключить HTTP и поддерживать исключительно зашифрованные соединения. Если это невозможно, API-конечные точки должны отклонять запросы, поступающие по незашифрованным HTTP-соединениям, а не перенаправлять их.</p>
+<h3 id="tls-tls">Не смешивайте TLS и не-TLS контент<a class="headerlink" href="#tls-tls" title="Permanent link">&para;</a></h3>
+<p>Страница, доступная по TLS, не должна включать ресурсы (например, файлы JavaScript или CSS), загружаемые по незашифрованному HTTP. Эти незашифрованные ресурсы могут позволить злоумышленнику перехватить сессионные куки или внедрить вредоносный код в страницу. Современные браузеры также блокируют попытки загрузки активного контента по незашифрованному HTTP на защищённых страницах.</p>
+<h3 id="secure">Используйте флаг куки «Secure»<a class="headerlink" href="#secure" title="Permanent link">&para;</a></h3>
+<p>Все куки должны быть помечены атрибутом «<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Secure_and_HttpOnly_cookies">Secure</a>», который указывает браузеру передавать их только по зашифрованным HTTPS-соединениям — во избежание перехвата по незашифрованному HTTP-соединению. Это важно, даже если веб-сайт не прослушивает HTTP (порт 80), поскольку злоумышленник, выполняющий активную атаку «человек посередине», может предъявить пользователю поддельный веб-сервер на порту 80 для кражи его куки.</p>
+<h3 id="_15">Предотвращайте кеширование конфиденциальных данных<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<p>Хотя TLS обеспечивает защиту данных в процессе передачи, он не защищает данные после того, как они поступили в запрашивающую систему. Таким образом, эта информация может быть сохранена в кеше браузера пользователя или перехватывающими прокси-серверами, настроенными на выполнение дешифрования TLS.</p>
+<p>Если конфиденциальные данные возвращаются в ответах, для указания браузеру и прокси-серверам не кешировать информацию следует использовать HTTP-заголовки, чтобы предотвратить её хранение или передачу другим пользователям. Это достигается установкой следующих HTTP-заголовков в ответе:</p>
+<div class="highlight"><pre><span></span><code>Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+</code></pre></div>
+<h3 id="http-strict-transport-security">Используйте HTTP Strict Transport Security<a class="headerlink" href="#http-strict-transport-security" title="Permanent link">&para;</a></h3>
+<p>HTTP Strict Transport Security (HSTS) предписывает браузеру пользователя всегда запрашивать сайт по HTTPS и также предотвращает обход предупреждений о сертификате. Дополнительная информация о реализации HSTS содержится в <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html">шпаргалке HTTP Strict Transport Security</a>.</p>
+<h3 id="tls_1">Клиентские сертификаты и взаимный TLS<a class="headerlink" href="#tls_1" title="Permanent link">&para;</a></h3>
+<p>В типичной конфигурации TLS сертификат на сервере позволяет клиенту верифицировать идентичность сервера и обеспечивает зашифрованное соединение между ними. Однако данный подход имеет два основных недостатка:</p>
+<ul>
+<li>У сервера нет механизма для проверки идентичности клиента.</li>
+<li>Злоумышленник, получив действительный сертификат для домена, может перехватить соединение. Такой перехват нередко используется компаниями для инспекции TLS-трафика путём установки доверенного сертификата CA на клиентских системах.</li>
+</ul>
+<p>Клиентские сертификаты, являющиеся основой взаимного TLS (mTLS), устраняют эти проблемы. В mTLS и клиент, и сервер аутентифицируют друг друга с помощью TLS. Клиент подтверждает свою идентичность серверу с помощью собственного сертификата. Это не только обеспечивает надёжную аутентификацию клиента, но и предотвращает расшифровку TLS-трафика промежуточной стороной — даже если у неё есть доверенный сертификат CA на клиентской системе.</p>
+<p>Сложности и особенности применения</p>
+<p>Клиентские сертификаты редко используются в публичных системах из-за ряда трудностей:</p>
+<ul>
+<li>Выпуск клиентских сертификатов и управление ими связаны со значительными административными издержками.</li>
+<li>Нетехнические пользователи могут испытывать затруднения при установке клиентских сертификатов.</li>
+<li>Практика TLS-дешифрования в организациях может привести к сбою аутентификации по клиентскому сертификату — ключевому компоненту mTLS.</li>
+</ul>
+<p>Несмотря на эти трудности, клиентские сертификаты и mTLS следует рассматривать для высокозначимых приложений или API, особенно там, где пользователи обладают достаточной технической квалификацией или входят в одну организацию.</p>
+<h3 id="public-key-pinning">Прикрепление открытого ключа (Public Key Pinning)<a class="headerlink" href="#public-key-pinning" title="Permanent link">&para;</a></h3>
+<p>Прикрепление открытого ключа позволяет убедиться не только в том, что сертификат сервера действителен и является доверенным, но и в том, что он соответствует ожидаемому для данного сервера сертификату. Это обеспечивает защиту от злоумышленника, способного получить действительный сертификат — путём использования уязвимости в процессе проверки, компрометации доверенного удостоверяющего центра или наличия административного доступа к клиенту.</p>
+<p>Прикрепление открытого ключа было добавлено в браузеры в стандарте HTTP Public Key Pinning (HPKP). Однако из-за ряда проблем оно было впоследствии признано устаревшим и больше не рекомендуется и не <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Public-Key-Pins">поддерживается современными браузерами</a>.</p>
+<p>Тем не менее прикрепление открытого ключа по-прежнему может обеспечивать преимущества в области безопасности для мобильных приложений, настольных клиентов и межсерверного взаимодействия. Это подробнее рассматривается в <a href="Pinning_Cheat_Sheet.html">шпаргалке по Pinning</a>.</p>
+<h2 id="_16">Связанные статьи<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h2>
+<ul>
+<li>OWASP - <a href="https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/01-Testing_for_Weak_Transport_Layer_Security">Testing for Weak TLS</a></li>
+<li>OWASP - <a href="https://github.com/OWASP/ASVS/blob/v4.0.1/4.0/en/0x17-V9-Communications.md">Application Security Verification Standard (ASVS) - Communication Security Verification Requirements (V9)</a></li>
+<li>Mozilla - <a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_configurations">Mozilla Recommended Configurations</a></li>
+<li>NIST - <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-52r2.pdf">SP 800-52 Rev. 2 Guidelines for the Selection, Configuration, and Use of Transport Layer Security (TLS) Implementations</a></li>
+<li>NIST - <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf">NIST SP 800-57 Recommendation for Key Management, Revision 5</a></li>
+<li>NIST - <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-95.pdf">SP 800-95 Guide to Secure Web Services</a></li>
+<li>IETF - <a href="https://tools.ietf.org/html/rfc5280">RFC 5280 Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a></li>
+<li>IETF - <a href="https://tools.ietf.org/html/rfc2246">RFC 2246 The Transport Layer Security (TLS) Protocol Version 1.0 (JAN 1999)</a></li>
+<li>IETF - <a href="https://tools.ietf.org/html/rfc4346">RFC 4346 The Transport Layer Security (TLS) Protocol Version 1.1 (APR 2006)</a></li>
+<li>IETF - <a href="https://tools.ietf.org/html/rfc5246">RFC 5246 The Transport Layer Security (TLS) Protocol Version 1.2 (AUG 2008)</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

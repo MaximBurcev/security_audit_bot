@@ -1,0 +1,3819 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/C-Based_Toolchain_Hardening_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="CI_CD_Security_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>C-Based Toolchain Hardening - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#c" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              C-Based Toolchain Hardening
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мудрость
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конфигурация
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Конфигурация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конфигурации сборки
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Конфигурации сборки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отладочные сборки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выпускные сборки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тестовые сборки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autotools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Autotools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#makefile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Makefile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Интеграция
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Препроцессор
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Препроцессор">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конфигурации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assert" class="md-nav__link">
+    <span class="md-ellipsis">
+      ASSERT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные макросы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компилятор и компоновщик
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Компилятор и компоновщик">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление защиты дистрибутива
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gccbinutils" class="md-nav__link">
+    <span class="md-ellipsis">
+      GCC/Binutils
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clangxcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clang/Xcode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visual-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Studio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подавление предупреждений
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Время выполнения
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Время выполнения">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Xcode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Xcode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мудрость
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конфигурация
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Конфигурация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конфигурации сборки
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Конфигурации сборки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отладочные сборки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выпускные сборки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Тестовые сборки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autotools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Autotools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#makefile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Makefile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Интеграция
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Препроцессор
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Препроцессор">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конфигурации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assert" class="md-nav__link">
+    <span class="md-ellipsis">
+      ASSERT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные макросы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компилятор и компоновщик
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Компилятор и компоновщик">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление защиты дистрибутива
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gccbinutils" class="md-nav__link">
+    <span class="md-ellipsis">
+      GCC/Binutils
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clangxcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clang/Xcode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visual-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Studio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подавление предупреждений
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Время выполнения
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Время выполнения">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Xcode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Xcode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="c">Шпаргалка по усилению защиты инструментальной цепочки на основе C<a class="headerlink" href="#c" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Усиление защиты инструментальной цепочки на основе C — это комплекс настроек проекта, который поможет создавать надёжный и безопасный код при использовании языков C, C++ и Objective C в различных средах разработки. В данной статье рассматриваются инструментальные цепочки Microsoft и GCC для языков C, C++ и Objective C. Она проведёт вас через шаги, необходимые для создания исполняемых файлов с более надёжной защитой и усиленной интеграцией с доступными средствами безопасности платформы. Правильная настройка инструментальной цепочки также позволяет получить ряд преимуществ в процессе разработки, включая расширенные предупреждения, статический анализ и самодиагностирующийся код.</p>
+<p>При усилении защиты инструментальной цепочки необходимо рассмотреть четыре области: конфигурацию, препроцессор, компилятор и компоновщик. Практически все эти области упускаются из виду или игнорируются при настройке проекта. Это явление носит повсеместный характер и затрагивает почти все проекты, включая автоматически настраиваемые, основанные на makefile, Eclipse, Visual Studio и Xcode. Важно устранять пробелы на этапе конфигурации и сборки, поскольку на некоторых платформах <a href="https://sourceware.org/ml/binutils/2012-03/msg00309.html">добавить защиту к уже распространённому исполняемому файлу</a> крайне сложно или вовсе невозможно.</p>
+<p>Эта статья носит предписывающий характер и не будет вдаваться в семантические споры или предположения о поведении. Некоторая информация, например мотивация комитета C/C++ и происхождение <a href="https://groups.google.com/a/isocpp.org/forum/?fromgroups=#!topic/std-discussion/ak8e1mzBhGs"><code>program diagnostics</code>, <code>NDEBUG</code>, <code>assert</code> и <code>abort()</code></a>, по-видимому, утеряна, как сказание из «Властелина колец». Поэтому статья определяет семантику (например, философию конфигураций сборки «debug» и «release»), устанавливает поведение (например, что должен делать assert в конфигурациях «debug» и «release») и формулирует позицию. Если приведённый подход покажется вам слишком жёстким, вы можете скорректировать его по своему усмотрению.</p>
+<p>Защищённая инструментальная цепочка — не панацея. Это лишь один из элементов общей стратегии инженерного процесса, способствующей успеху. Она дополняет существующие процессы, такие как статический анализ, динамический анализ, безопасное кодирование, негативные тест-наборы и т.д. Такие инструменты, как Valgrind и Helgrind, по-прежнему будут необходимы, а проект всё равно потребует продуманных проектных решений и архитектуры.</p>
+<p>Проект OWASP <a href="https://code.google.com/p/owasp-esapi-cplusplus/source">ESAPI C++</a> использует собственные наработки. Многие примеры из этой статьи взяты непосредственно из проекта ESAPI C++.</p>
+<p>Наконец, для тех, кто предпочитает краткое изложение материала, доступна шпаргалка. Пожалуйста, посетите <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html">шпаргалку по усилению защиты инструментальной цепочки на основе C</a> для сокращённой версии.</p>
+<h2 id="_2">Мудрость<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Код <strong>обязан</strong> быть корректным. Он <strong>должен</strong> быть безопасным. Он <strong>может</strong> быть эффективным.</p>
+<p><a href="https://en.wikipedia.org/wiki/Jon_Bentley">Д-р Джон Бентли</a>: <em>«Если код не обязан быть корректным, я сделаю его настолько быстрым, насколько вам угодно»</em>.</p>
+<p><a href="https://en.wikipedia.org/wiki/Gary_McGraw">Д-р Гэри МакГроу</a>: <em>«Не следует полагаться исключительно на функции и средства безопасности при создании защищённого программного обеспечения, поскольку безопасность является эмерджентным свойством всей системы в целом и зависит от правильного построения и интеграции всех её частей»</em>.</p>
+<h2 id="_3">Конфигурация<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Конфигурация — это первая возможность настроить проект на успех. Необходимо не только настроить проект для достижения целей надёжности и безопасности, но и правильно настроить интегрированные библиотеки. Как правило, у вас есть три варианта. Во-первых, можно использовать утилиты автоматической настройки, если вы работаете в Linux или Unix. Во-вторых, можно написать makefile вручную — этот подход преобладает в Linux, macOS и Unix, но применим и к Windows. Наконец, можно воспользоваться интегрированной средой разработки (IDE).</p>
+<h3 id="_4">Конфигурации сборки<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>На данном этапе следует сосредоточиться на настройке двух сборок: Debug (отладочная) и Release (выпускная). Debug используется для разработки и включает полную инструментацию. Release настраивается для производственной среды. Различие между двумя конфигурациями обычно заключается в <em>уровне оптимизации</em> и <em>уровне отладки</em>. Третья конфигурация — Test (тестовая) — как правило, является особым случаем Release.</p>
+<p>Настройки отладочной и выпускной сборок обычно диаметрально противоположны. Конфигурации Debug не имеют оптимизаций и содержат полную отладочную информацию, тогда как конфигурации Release включают оптимизации и минимальную или умеренную отладочную информацию. Кроме того, отладочный код содержит полные проверки assert и дополнительную интеграцию с библиотеками, такими как mudflaps и malloc guards, например <code>dmalloc</code>.</p>
+<p>Конфигурация Test зачастую представляет собой конфигурацию Release, которая открывает доступ ко всем интерфейсам для тестирования и собирает тестовое окружение. Например, все функции-члены (класс C++) и все интерфейсы (библиотека или разделяемый объект) должны быть доступны для тестирования. Многие приверженцы объектно-ориентированного программирования выступают против тестирования приватных интерфейсов, однако здесь речь идёт не об объектно-ориентированности. Речь идёт (<em>q.v.</em>) о создании надёжного и безопасного программного обеспечения.</p>
+<p>В <a href="https://gcc.gnu.org/gcc-4.8/changes.html">GCC 4.8</a> была введена оптимизация <code>-Og</code>. Обратите внимание, что это лишь оптимизация, и для неё по-прежнему требуется обычный уровень отладки с помощью <code>-g</code>.</p>
+<h4 id="_5">Отладочные сборки<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
+<p>Отладочные сборки — это среда, в которой разработчики проводят большую часть времени при диагностике проблем, поэтому данная сборка должна концентрировать силы и инструменты, являясь своего рода «множителем силы». Хотя многие этого не осознают, отладочный код ценится выше выпускного, поскольку он снабжён дополнительной инструментацией. Отладочная инструментация заставляет программу стать практически «самодиагностирующейся» и помогает обнаруживать ошибки, такие как неверные параметры, неудачные вызовы API и проблемы с памятью.</p>
+<p>Самодиагностирующийся код сокращает время на устранение неисправностей и отладку. Чем меньше времени вы проводите под отладчиком, тем больше времени остаётся на разработку и реализацию новых функций. Если код сдаётся без отладочной инструментации, его следует исправить, добавив инструментацию, или отклонить.</p>
+<p>Для GCC оптимизации и создание отладочных символов управляются двумя ключами: <code>-O</code> и <code>-g</code>. Для минимальной отладочной сессии следует включить в <code>CFLAGS</code> и <code>CXXFLAGS</code> следующее:</p>
+<div class="highlight"><pre><span></span><code>-O0 -g3 -ggdb
+</code></pre></div>
+<p><code>-O0</code> отключает оптимизации, а <code>-g3</code> обеспечивает максимальный объём отладочной информации. Может потребоваться использовать <code>-O1</code>, чтобы выполнялся некоторый анализ. В противном случае отладочная сборка будет лишена ряда предупреждений, отсутствующих в выпускных сборках. <code>-g3</code> обеспечивает максимальный объём отладочной информации для сессии отладки, включая символьные константы и <code>#define</code>. <code>-ggdb</code> добавляет расширения для помощи в сессии отладки под GDB. Для полноты картины: Ян Крахтовил указал в приватном письме, что <code>-ggdb</code> в настоящее время не имеет никакого эффекта.</p>
+<p>Выпускные сборки также должны рассматривать конфигурационную пару <code>-mfunction-return=thunk</code> и <code>-mindirect-branch=thunk</code>. Это исправление «Retpoline» — косвенная ветвь, предназначенная для противодействия уязвимостям спекулятивного исполнения CPU, таким как Spectre и Meltdown. CPU не может предсказать, какой код выполнить спекулятивно, поскольку это косвенная (а не прямая) ветвь. Это дополнительный уровень косвенности, подобный вызову указателя через указатель.</p>
+<p>Отладочная сборка также должна определять <code>DEBUG</code> и обеспечивать, что <code>NDEBUG</code> не определён. <code>NDEBUG</code> устраняет «программную диагностику» и имеет нежелательные поведение и побочные эффекты, которые подробнее рассмотрены ниже. Определения должны присутствовать для всего кода, а не только для программы. Это нужно для всего кода (вашей программы и включённых библиотек), потому что вам необходимо знать, как они дают сбои (помните: отчёт об ошибке получаете вы, а не сторонняя библиотека).</p>
+<p>Кроме того, следует использовать другие соответствующие флаги, например <code>-fno-omit-frame-pointer</code>. Наличие указателя кадра облегчает декодирование трассировок стека. Поскольку отладочные сборки не поставляются пользователям, в исполняемом файле допустимо оставлять символы. Программы с отладочной информацией не снижают производительность. Например, см. <a href="https://gcc.gnu.org/ml/gcc-help/2005-03/msg00032.html">How does the gcc -g option affect performance?</a></p>
+<p>Наконец, убедитесь, что проект включает дополнительные диагностические библиотеки, такие как <code>dmalloc</code> и <a href="https://github.com/google/sanitizers/tree/master/hwaddress-sanitizer">Address Sanitizer</a>. Сравнение некоторых инструментов проверки памяти можно найти в <a href="https://github.com/google/sanitizers/wiki/AddressSanitizerComparisonOfMemoryTools">Comparison Of Memory Tools</a>. Если вы не включаете дополнительную диагностику в отладочные сборки, начните это делать — не страшно обнаружить ошибки, которые вы не искали.</p>
+<h4 id="_6">Выпускные сборки<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<p>Выпускные сборки — это то, что получает ваш пользователь. Они предназначены для работы на производственном оборудовании и серверах и должны быть надёжными, безопасными и эффективными. Стабильная выпускная сборка — результат кропотливой работы в процессе разработки.</p>
+<p>Для выпускных сборок следует включить в <code>CFLAGS</code> и <code>CXXFLAGS</code> следующее:</p>
+<div class="highlight"><pre><span></span><code>-On -g2
+</code></pre></div>
+<p><code>-O</code><em><code>n</code></em> устанавливает оптимизации по скорости или по размеру (например, <code>-Os</code> или <code>-O2</code>), а <code>-g2</code> обеспечивает создание отладочной информации.</p>
+<p>Отладочная информация должна быть удалена из исполняемого файла, но сохранена на случай символизации отчёта об аварийном завершении из поля. Хотя это и нежелательно, отладочная информация может быть оставлена без снижения производительности. Подробности см. в <em><a href="https://gcc.gnu.org/ml/gcc-help/2005-03/msg00032.html">How does the gcc -g option affect performance?</a></em>.</p>
+<p>Выпускные сборки также должны определять <code>NDEBUG</code> и обеспечивать, что <code>DEBUG</code> не определён. Время отладки и диагностики прошло, поэтому пользователи получают производственный код с максимальными оптимизациями, без «программной диагностики» и с другими улучшениями эффективности. Если вы не можете выполнить оптимизацию или производите чрезмерное логирование, это обычно означает, что программа не готова к производственной среде.</p>
+<p>Если вы полагались на <code>assert</code> с последующим <code>abort()</code>, то злоупотребляли «программной диагностикой», которой нет места в производственном коде. Если вам нужен дамп памяти, создайте его явно, чтобы пользователям не приходилось беспокоиться о секретах и другой чувствительной информации, записываемой в файловую систему и отправляемой в открытом виде по электронной почте.</p>
+<p>Для Windows следует использовать <code>/Od</code> для отладочных сборок и <code>/Ox</code>, <code>/O2</code> или <code>/Os</code> для выпускных сборок. Подробности см. в <a href="https://docs.microsoft.com/en-us/cpp/build/reference/o-options-optimize-code">/O Options (Optimize Code)</a> от Microsoft.</p>
+<h4 id="_7">Тестовые сборки<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>Тестовые сборки служат для эвристической проверки с помощью позитивных и негативных тест-наборов. В тестовой конфигурации тестируются все интерфейсы, чтобы убедиться, что они соответствуют спецификации и ожиданиям. «Ожидания» субъективны, но они должны включать отсутствие сбоев и нарушения памяти даже при негативных тестах.</p>
+<p>Поскольку тестируются все интерфейсы (а не только публичные), <code>CFLAGS</code> и <code>CXXFLAGS</code> должны включать:</p>
+<div class="highlight"><pre><span></span><code>-Dprotected=public -Dprivate=public
+</code></pre></div>
+<p>Также следует изменить <code>__attribute__</code> <code>((visibility</code> <code>("hidden")))</code> на <code>__attribute__</code> <code>((visibility</code> <code>("default")))</code>.</p>
+<p>Позитивные тесты обычно не вызывают затруднений. Гораздо интереснее негативные тесты: следует сосредоточиться на попытках заставить программу дать сбой, чтобы убедиться, что она делает это корректно. Помните, что злоумышленник не будет вежлив, пытаясь нарушить работу программы, и именно ваш проект получит отчёт об ошибке или попадёт на <a href="https://nmap.org/mailman/listinfo/fulldisclosure">Full Disclosure</a> или <a href="https://www.securityfocus.com/archive">Bugtraq</a> — а не <code>&lt;некая библиотека&gt;</code>, которую вы включили.</p>
+<h3 id="autotools">Autotools<a class="headerlink" href="#autotools" title="Permanent link">&para;</a></h3>
+<p>Инструменты автоматической настройки широко распространены во многих системах на базе Linux и Unix. К ним относятся <em>Autoconf</em>, <em>Automake</em>, <em>config</em> и <em>Configure</em>. Они совместно создают файлы проекта из скриптов и шаблонных файлов. После завершения процесса проект должен быть настроен и готов к сборке с помощью <code>make</code>.</p>
+<p>При использовании инструментов автоматической настройки стоит упомянуть несколько файлов, заслуживающих внимания. Они являются частью цепочки Autotools и включают <code>m4</code>, а также различные файлы <code>*.in</code>, <code>*.ac</code> (Autoconf) и <code>*.am</code> (Automake). Иногда вам придётся открывать их или результирующие makefile, чтобы скорректировать «стандартную» конфигурацию.</p>
+<p>У инструментов конфигурации командной строки в цепочке есть три недостатка: (1) они часто игнорируют запросы пользователя, (2) они не могут создавать конфигурации, и (3) безопасность зачастую не является их целью.</p>
+<p>Чтобы продемонстрировать первую проблему, настройте проект следующим образом: <code>configure</code> <code>CFLAGS="-Wall</code> <code>-fPIE"</code> <code>CXXFLAGS="-Wall</code> <code>-fPIE"</code> <code>LDFLAGS="-pie"</code>. Скорее всего, вы обнаружите, что Autotools проигнорировал ваш запрос, то есть команда ниже не даст ожидаемых результатов. В качестве обходного пути вам придётся открыть скрипт <code>m4</code>, <code>makefile.in</code> или <code>makefile.am</code> и исправить конфигурацию.</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>configure<span class="w"> </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">&quot;-Wall -Wextra -Wconversion -fPIE -Wno-unused-parameter</span>
+<span class="s2">    -Wformat=2 -Wformat-security -fstack-protector-all -Wstrict-overflow&quot;</span>
+<span class="w">    </span><span class="nv">LDFLAGS</span><span class="o">=</span><span class="s2">&quot;-pie -z,noexecstack -z,noexecheap -z,relro -z,now&quot;</span>
+</code></pre></div>
+<p>Что касается второго пункта, вас ждёт разочарование: <a href="https://lists.gnu.org/archive/html/automake/2012-12/msg00019.html">Automake не поддерживает концепцию конфигураций</a>. Это не полностью вина Autoconf или Automake — в основе проблемы лежит <em>Make</em> и его неспособность обнаруживать изменения. В частности, <em>Make</em> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/make.html">проверяет только временны́е метки изменений зависимостей и целей</a> и не отслеживает такие переменные, как <code>CFLAGS</code> и <code>CXXFLAGS</code>. В результате вы не получите ожидаемого результата, когда выполните <code>make</code> <code>debug</code>, а затем <code>make</code> <code>test</code> или <code>make</code> <code>release</code>.</p>
+<p>Наконец, такие инструменты, как Autoconf и Automake, упускают многие возможности повышения безопасности и поставляются в небезопасной конфигурации по умолчанию. Существует ряд ключей компилятора и флагов компоновщика, улучшающих защитные возможности программы, однако они не включены «из коробки». Инструменты вроде Autoconf, которые призваны решать эту задачу, зачастую ориентируются на наименьший общий знаменатель.</p>
+<p>Недавняя дискуссия в списке рассылки Automake наглядно иллюстрирует проблему: <em><a href="https://lists.gnu.org/archive/html/autoconf/2012-12/msg00038.html">Enabling compiler warning flags</a></em>. Попытки улучшить конфигурации по умолчанию встретили сопротивление, и никаких мер принято не было. Противники, как правило, апеллируют к тому, что «<code>&lt;некое полезное предупреждение&gt;</code> также генерирует ложные срабатывания» или «<code>&lt;некая малоизвестная платформа&gt;</code> не поддерживает <code>&lt;установленную функцию безопасности&gt;</code>». Примечательно, что Дэвид Уилер, автор <em><a href="https://dwheeler.com/secure-programs/">Secure Programming for Linux and Unix HOWTO</a></em>, был одним из тех, кто пытался улучшить ситуацию.</p>
+<h3 id="makefile">Makefile<a class="headerlink" href="#makefile" title="Permanent link">&para;</a></h3>
+<p>Make — один из древнейших инструментов сборки, датируемый 1970-ми годами. Он доступен в Linux, macOS и Unix, поэтому вы будете часто сталкиваться с проектами, использующими его. К сожалению, Make имеет ряд недостатков (<em><a href="https://embeddedartistry.com/blog/2017/04/10/recursive-make-considered-harmful/">Recursive Make Considered Harmful</a></em> и <em><a href="https://www.conifersystems.com/whitepapers/gnu-make/">What's Wrong With GNU make?</a></em>), которые могут доставлять неудобства. Несмотря на проблемы с Make, ESAPI C++ использует его преимущественно по трём причинам: во-первых, он повсеместно распространён; во-вторых, им проще управлять, чем семейством Autotools; и в-третьих, использование <code>libtool</code> было исключено.</p>
+<p>Рассмотрим ситуацию, когда вы: (1) вводите <code>make</code> <code>debug</code>, а затем <code>make</code> <code>release</code>. Каждая сборка потребует разных <code>CFLAGS</code> из-за оптимизаций и уровня поддержки отладки. В makefile вы извлечёте соответствующую цель и установите <code>CFLAGS</code> и <code>CXXFLAGS</code> примерно так (взято из <a href="https://code.google.com/archive/p/owasp-esapi-cplusplus/source/default/source">makefile ESAPI C++</a>):</p>
+<div class="highlight"><pre><span></span><code>## makefile
+DEBUG_GOALS = $(filter $(MAKECMDGOALS), debug)
+ifneq ($(DEBUG_GOALS),)
+    WANT_DEBUG := 1
+    WANT_TEST := 0
+    WANT_RELEASE := 0
+endif
+…
+
+ifeq ($(WANT_DEBUG),1)
+    ESAPI_CFLAGS += -DDEBUG=1 -UNDEBUG -g3 -ggdb -O0
+    ESAPI_CXXFLAGS += -DDEBUG=1 -UNDEBUG -g3 -ggdb -O0
+endif
+
+ifeq ($(WANT_RELEASE),1)
+    ESAPI_CFLAGS += -DNDEBUG=1 -UDEBUG -g -O2
+    ESAPI_CXXFLAGS += -DNDEBUG=1 -UDEBUG -g -O2
+endif
+
+ifeq ($(WANT_TEST),1)
+    ESAPI_CFLAGS += -DESAPI_NO_ASSERT=1 -g2 -ggdb -O2 -Dprivate=public
+                                                      -Dprotected=public
+    ESAPI_CXXFLAGS += -DESAPI_NO_ASSERT=1 -g2 -ggdb -O2 -Dprivate=public
+                                                        -Dprotected=public
+endif
+…
+
+## Объединяем флаги ESAPI с флагами, предоставленными пользователем. Выполняем дополнительный шаг,
+## чтобы пользовательские флаги следовали за нашими — это даёт им приоритет.
+override CFLAGS := $(ESAPI_CFLAGS) $(CFLAGS)
+override CXXFLAGS := $(ESAPI_CXXFLAGS) $(CXXFLAGS)
+override LDFLAGS := $(ESAPI_LDFLAGS) $(LDFLAGS)
+…
+</code></pre></div>
+<p>Make сначала соберёт программу в конфигурации debug для сессии под отладчиком, используя правило, похожее на следующее:</p>
+<div class="highlight"><pre><span></span><code>%.cpp:%.o:
+        $(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $&lt; -o $@
+</code></pre></div>
+<p>Когда вы захотите выпускную сборку, Make ничего не сделает, поскольку будет считать всё актуальным, несмотря на то что <code>CFLAGS</code> и <code>CXXFLAGS</code> изменились. В результате ваша программа окажется в отладочной конфигурации и рискует получить <code>SIGABRT</code> во время выполнения, потому что отладочная инструментация присутствует (помните, <code>assert</code> вызывает <code>abort()</code>, когда <code>NDEBUG</code> <strong>не</strong> определён). По сути, вы сами устроили себе DoS из-за <code>make</code>.</p>
+<p>Кроме того, многие проекты не учитывают параметры командной строки пользователя. ESAPI C++ делает всё возможное для учёта флагов пользователя с помощью <code>override</code>, как показано выше, но другие проекты так не делают. Например, рассмотрим проект, который должен быть собран с включённым Position Independent Executable (PIE или ASLR) и предотвращением выполнения данных (DEP). Игнорирование настроек пользователя в сочетании с небезопасными настройками по умолчанию (и отсутствием их получения при автонастройке) означает, что программа, собранная следующим образом, скорее всего, не будет иметь ни одной из этих защит:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">&quot;-fPIE&quot;</span><span class="w"> </span><span class="nv">CXXFLAGS</span><span class="o">=</span><span class="s2">&quot;-fPIE&quot;</span><span class="w"> </span><span class="nv">LDFLAGS</span><span class="o">=</span><span class="s2">&quot;-pie -z,noexecstack, -z,noexecheap&quot;</span>
+</code></pre></div>
+<p>Такие защиты, как ASLR и DEP, особенно важны в Linux, поскольку <a href="https://linux.die.net/man/5/elf">выполнение данных — а не его предотвращение — является нормой</a>.</p>
+<h3 id="_8">Интеграция<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>Интеграция на уровне проекта открывает возможности для усиления защиты программы или библиотеки с использованием предметно-специфических знаний. Например, если платформа поддерживает Position Independent Executables (PIE или ASLR) и предотвращение выполнения данных (DEP), следует интегрироваться с ними. Последствия бездействия могут привести к эксплуатации уязвимостей. В качестве примера можно привести 0-day уязвимости KingCope для MySQL в декабре 2012 года (CVE-2012-5579 и CVE-2012-5612, среди прочих). Интеграция с безопасностью платформы нейтрализовала бы ряд из этих уязвимостей.</p>
+<p>Также есть возможность включить полезные библиотеки, не нужные для поддержки бизнес-логики. Например, если вы работаете на платформе с <a href="https://dmalloc.com">DMalloc</a> или <a href="https://github.com/google/sanitizers/tree/master/hwaddress-sanitizer">Address Sanitizer</a>, их, вероятно, стоит использовать в отладочных сборках.</p>
+<p>Для Ubuntu DMalloc доступен из менеджера пакетов и устанавливается командой <code>sudo apt install libdmalloc5</code>. Для платформ Apple он доступен как параметр схемы. Address Sanitizer доступен в <a href="https://gcc.gnu.org/gcc-4.8/changes.html">GCC 4.8 и выше</a> для многих платформ.</p>
+<p>Кроме того, интеграция на уровне проекта — это возможность усилить защиту сторонних библиотек, которые вы решили включить. Поскольку вы включили их, именно вы и ваши пользователи несёте за них ответственность. Если вы или ваши пользователи проходят аудит <code>SP800-53</code>, сторонние библиотеки будут в его области видимости, поскольку цепочка поставок включена в него (конкретно, пункт SA-12 «Защита цепочки поставок»). Аудиты не ограничиваются организациями федеральной сферы США — финансовые учреждения также проводят проверки. Классический пример нарушения этого руководства — <a href="https://nvd.nist.gov/vuln/detail/CVE-2012-1525">CVE-2012-1525</a>, вызванный <a href="https://www.agarri.fr/blog/index.html">включением Adobe дефектной библиотеки Sablotron</a>.</p>
+<p>Другой пример — включение OpenSSL. Известно, что (1) <a href="https://www.schneier.com/academic/paperfiles/paper-ssl-revised.pdf">SSLv2 небезопасен</a>, (2) <a href="https://blog.qualys.com/ssllabs/2014/10/15/ssl-3-is-dead-killed-by-the-poodle-attack">SSLv3 небезопасен</a> и (3) <a href="https://arstechnica.com/security/2012/09/crime-hijacks-https-sessions/">сжатие небезопасно</a> (среди прочего). Предположим также, что вы не используете аппаратное обеспечение и движки и разрешаете только статическую компоновку. С учётом этих знаний и требований вы настроите библиотеку OpenSSL следующим образом:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>Configure<span class="w"> </span>darwin64-x86_64-cc<span class="w"> </span>-no-hw<span class="w"> </span>-no-engine<span class="w"> </span>-no-comp<span class="w"> </span>-no-shared
+<span class="w">    </span>-no-dso<span class="w"> </span>-no-ssl2<span class="w"> </span>-no-ssl3<span class="w"> </span>--openssldir<span class="o">=</span>…
+</code></pre></div>
+<p><em>Важное замечание</em>: возможно, вам понадобятся движки, особенно на микроархитектурах Ivy Bridge (процессоры Intel Core i5 и i7 3-го поколения). Чтобы OpenSSL использовал генератор случайных чисел процессора (через инструкцию <code>rdrand</code>), потребуется вызвать функцию <code>ENGINE_load_rdrand()</code> OpenSSL, а затем <code>ENGINE_set_default</code> с <code>ENGINE_METHOD_RAND</code>. Подробности см. в <a href="https://wiki.openssl.org/index.php/Random_Numbers">OpenSSL's Random Numbers</a>.</p>
+<p>Если вы выполните настройку без этих ключей, у вас, вероятно, окажется уязвимый код/библиотеки, и вы рискуете не пройти аудит. Если программа является удалённым сервером, следующая команда покажет, активно ли сжатие на канале:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;GET / HTTP1.0&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>s_client<span class="w"> </span>-connect<span class="w"> </span>&lt;nowiki&gt;example.com:443&lt;/nowiki&gt;
+</code></pre></div>
+<p><code>nm</code> или <code>openssl</code> <code>s_client</code> покажет, что сжатие включено в клиенте. Фактически, любой символ в рамках препроцессорного макроса <code>OPENSSL_NO_COMP</code> подтвердит это, поскольку <code>-no-comp</code> преобразуется в <code>define</code> в <code>CFLAGS</code>.</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>nm<span class="w"> </span>/usr/local/ssl/iphoneos/lib/libcrypto.a<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>egrep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;(COMP_CTX_new|COMP_CTX_free)&quot;</span>
+<span class="m">0000000000000110</span><span class="w"> </span>T<span class="w"> </span>COMP_CTX_free
+<span class="m">0000000000000000</span><span class="w"> </span>T<span class="w"> </span>COMP_CTX_new
+</code></pre></div>
+<p>Ещё более вопиющим является ответ, который даётся аудиторам, когда те прямо спрашивают о конфигурациях и протоколах: «мы не используем слабые/повреждённые/скомпрометированные шифры» или «мы следуем лучшим практикам». Использование сжатия говорит аудитору о том, что вы применяете уязвимые протоколы в небезопасной конфигурации и не следуете лучшим практикам. Это, скорее всего, вызовет подозрения и побудит аудитора углубиться в проверку других аспектов.</p>
+<h2 id="_9">Препроцессор<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>Препроцессор играет ключевую роль в настройке проекта на успех. Комитет C предоставил один макрос — <code>NDEBUG</code>, — который можно использовать для создания ряда конфигураций и управления инженерными процессами. К сожалению, комитет также оставил многие связанные аспекты на усмотрение разработчиков, что привело к злоупотреблению встроенными средствами. Этот раздел поможет вам правильно настроить проекты для интеграции с другими проектами и обеспечить надёжность и безопасность.</p>
+<p>При усилении защиты препроцессора нужно рассмотреть три темы. Первая — чётко определённые конфигурации, дающие предсказуемое поведение; вторая — полезное поведение assert; третья — правильное использование макросов при интеграции кода поставщиков и сторонних библиотек.</p>
+<h3 id="_10">Конфигурации<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>Чтобы избежать двусмысленности, следует выделить две конфигурации: Release и Debug. Release — для производственного кода на работающих серверах, его поведение запрашивается через макрос C/C++ <code>NDEBUG</code>. Это единственный макрос, принимаемый во внимание комитетами C и C++ и Posix. Диаметральная противоположность Release — Debug. Хотя есть весомый аргумент в пользу <code>!defined(NDEBUG)</code>, для конфигурации следует иметь явный макрос, и им должен быть <code>DEBUG</code>. Это связано с тем, что поставщики и сторонние библиотеки используют макрос <code>DEBUG</code> (или аналогичный) для своей конфигурации. Например, ядро Mach от Carnegie Mellon использует <code>DEBUG</code>, CRT Microsoft использует <a href="https://www.microsoft.com/en-us/download/details.aspx?id=55979"><code>_DEBUG</code></a>, а Wind River Workbench использует <code>DEBUG_MODE</code>.</p>
+<p>Помимо <code>NDEBUG</code> (Release) и <code>DEBUG</code> (Debug), существуют ещё два крайних случая: определены оба или не определён ни один. Определение обоих должно быть ошибкой, а отсутствие обоих должно по умолчанию давать конфигурацию Release. Ниже приведён фрагмент из <a href="https://code.google.com/archive/p/owasp-esapi-cplusplus/source/default/source">ESAPI C++ EsapiCommon.h</a> — конфигурационного файла, используемого всеми исходными файлами:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Только одно из двух, но не оба одновременно</span>
+<span class="cp">##if (defined(DEBUG) || defined(_DEBUG)) &amp;&amp; (defined(NDEBUG)</span>
+<span class="w">                                           </span><span class="o">||</span><span class="w"> </span><span class="n">defined</span><span class="p">(</span><span class="n">_NDEBUG</span><span class="p">))</span>
+<span class="cp">## error Определены и DEBUG, и NDEBUG одновременно.</span>
+<span class="cp">##endif</span>
+
+<span class="c1">// Переходим в режим debug только когда явно запрошено.</span>
+<span class="c1">// NDEBUG или {ничего} дают</span>
+<span class="c1">// конфигурацию release (меньше сюрпризов во время выполнения).</span>
+<span class="cp">##if defined(DEBUG) || defined(_DEBUG)</span>
+<span class="cp">## define ESAPI_BUILD_DEBUG 1</span>
+<span class="cp">##else</span>
+<span class="cp">## define ESAPI_BUILD_RELEASE 1</span>
+<span class="cp">##endif</span>
+</code></pre></div>
+<p>Когда действует <code>DEBUG</code>, ваш код должен получать полную отладочную инструментацию, включая полноценную работу assertions.</p>
+<h3 id="assert">ASSERT<a class="headerlink" href="#assert" title="Permanent link">&para;</a></h3>
+<p>Проверки assert помогут создать самодиагностирующийся код, позволяя быстро и легко обнаружить точку первоначального сбоя. Проверки assert следует использовать во всей программе, включая валидацию параметров, проверку возвращаемых значений и состояния программы. Вызов <code>assert</code> будет незаметно охранять ваш код на протяжении всего его существования. Он всегда будет там, даже когда вы не отлаживаете конкретный компонент модуля. При хорошем покрытии кода вы будете меньше времени тратить на отладку и больше — на разработку, поскольку программы будут отлаживать себя сами.</p>
+<p>Чтобы эффективно использовать assert, проверяйте всё. Это включает параметры при входе в функцию, возвращаемые значения вызовов функций и любое состояние программы. Везде, где вы ставите оператор <code>if</code> для валидации или проверки, должен быть assert. Везде, где есть <code>assert</code> для валидации или проверки, должен быть оператор <code>if</code>. Они идут рука об руку.</p>
+<p>Если вы всё ещё используете <code>printf</code>, у вас есть возможность для улучшения. За время, потраченное на написание оператора <code>printf</code> или <code>NSLog</code>, вы могли бы написать <code>assert</code>. В отличие от <code>printf</code> или <code>NSLog</code>, которые часто удаляются, когда становятся ненужными, <code>assert</code> остаётся активным навсегда. Помните: всё это направлено на быстрое обнаружение точки первоначального сбоя, чтобы вы могли тратить время на другие дела.</p>
+<p>С использованием assert есть одна проблема — <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/assert.html">Posix предписывает <code>assert</code> вызывать <code>abort()</code></a>, если <code>NDEBUG</code> <strong>не</strong> определён. При отладке <code>NDEBUG</code> никогда не определяется, поскольку вам нужна «программная диагностика» (цитата из описания Posix). Такое поведение делает <code>assert</code> и сопровождающий его <code>abort()</code> совершенно бесполезными для разработки. Результат «программной диагностики», вызывающей <code>abort()</code> согласно стандарту C/C++, — невостребованность: разработчики просто не используют их. Это крайне вредно для сообщества разработчиков, поскольку самодиагностирующиеся программы могут помочь устранить множество проблем стабильности.</p>
+<p>Поскольку самодиагностирующиеся программы столь мощны, вам придётся создать собственный assert и обработчик сигналов с улучшенным поведением. Ваш assert заменит поведение автоматического прерывания на поведение автоматической отладки. Функция автоматической отладки обеспечит запуск отладчика при обнаружении проблемы, и вы быстро и легко найдёте точку первоначального сбоя.</p>
+<p>ESAPI C++ предоставляет собственный assert с описанным выше поведением. В приведённом ниже коде <code>ASSERT</code> генерирует <code>SIGTRAP</code> когда активен, или вычисляется как <code>void</code> в остальных случаях.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Отладочный assert для щедрого использования по всему коду.</span>
+<span class="c1">// Этот assert срабатывает и продолжает выполнение,</span>
+<span class="c1">// а не вызывает abort(). Полезен при проверке негативных</span>
+<span class="c1">// тест-кейсов из командной строки.</span>
+<span class="cp">##if (defined(ESAPI_BUILD_DEBUG) &amp;&amp; defined(ESAPI_OS_STARNIX))</span>
+<span class="cp">##  define ESAPI_ASSERT1(exp) {                                    \</span>
+<span class="cp">    if(!(exp)) {                                                  \</span>
+<span class="cp">        std::ostringstream oss;                                     \</span>
+<span class="cp">        oss &lt;&lt; &quot;Assertion failed: &quot; &lt;&lt; (char*)(__FILE__) &lt;&lt; &quot;(&quot;     \</span>
+<span class="cp">            &lt;&lt; (int)__LINE__ &lt;&lt; &quot;): &quot; &lt;&lt; (char*)(__func__)          \</span>
+<span class="cp">            &lt;&lt; std::endl;                                           \</span>
+<span class="cp">        std::cerr &lt;&lt; oss.str();                                     \</span>
+<span class="cp">        raise(SIGTRAP);                                             \</span>
+<span class="cp">    }                                                             \</span>
+<span class="cp">    }</span>
+<span class="cp">##  define ESAPI_ASSERT2(exp, msg) {                               \</span>
+<span class="cp">    if(!(exp)) {                                                  \</span>
+<span class="cp">        std::ostringstream oss;                                     \</span>
+<span class="cp">        oss &lt;&lt; &quot;Assertion failed: &quot; &lt;&lt; (char*)(__FILE__) &lt;&lt; &quot;(&quot;     \</span>
+<span class="cp">            &lt;&lt; (int)__LINE__ &lt;&lt; &quot;): &quot; &lt;&lt; (char*)(__func__)          \</span>
+<span class="cp">            &lt;&lt; &quot;: \&quot;&quot; &lt;&lt; (msg) &lt;&lt; &quot;\&quot;&quot; &lt;&lt; std::endl;                \</span>
+<span class="cp">        std::cerr &lt;&lt; oss.str();                                     \</span>
+<span class="cp">        raise(SIGTRAP);                                             \</span>
+<span class="cp">    }                                                             \</span>
+<span class="cp">    }</span>
+<span class="cp">##elif (defined(ESAPI_BUILD_DEBUG) &amp;&amp; defined(ESAPI_OS_WINDOWS))</span>
+<span class="cp">##  define ESAPI_ASSERT1(exp)      assert(exp)</span>
+<span class="cp">##  define ESAPI_ASSERT2(exp, msg) assert(exp)</span>
+<span class="cp">##else</span>
+<span class="cp">##  define ESAPI_ASSERT1(exp)      ((void)(exp))</span>
+<span class="cp">##  define ESAPI_ASSERT2(exp, msg) ((void)(exp))</span>
+<span class="cp">##endif</span>
+
+<span class="cp">##if !defined(ASSERT)</span>
+<span class="cp">##  define ASSERT(exp)     ESAPI_ASSERT1(exp)</span>
+<span class="cp">##endif</span>
+</code></pre></div>
+<p>При запуске программы обработчик <code>SIGTRAP</code> будет установлен, если он не был предоставлен другим компонентом:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">DebugTrapHandler</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="n">DebugTrapHandler</span><span class="p">()</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">sigaction</span><span class="w"> </span><span class="n">new_handler</span><span class="p">,</span><span class="w"> </span><span class="n">old_handler</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">do</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sigaction</span><span class="w"> </span><span class="p">(</span><span class="n">SIGTRAP</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">old_handler</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="c1">// Ошибка</span>
+
+<span class="w">            </span><span class="c1">// Не перекрываем чужой обработчик</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">old_handler</span><span class="p">.</span><span class="n">sa_handler</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">new_handler</span><span class="p">.</span><span class="n">sa_handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">DebugTrapHandler</span><span class="o">::</span><span class="n">NullHandler</span><span class="p">;</span>
+<span class="w">            </span><span class="n">new_handler</span><span class="p">.</span><span class="n">sa_flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sigemptyset</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">new_handler</span><span class="p">.</span><span class="n">sa_mask</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="c1">// Ошибка</span>
+
+<span class="w">            </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sigaction</span><span class="w"> </span><span class="p">(</span><span class="n">SIGTRAP</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">new_handler</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="c1">// Ошибка</span>
+
+<span class="w">          </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">NullHandler</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="cm">/*неиспользуемый*/</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="c1">// Задаём относительно низкий приоритет, чтобы запускаться до других CTOR</span>
+<span class="w">    </span><span class="c1">// http://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Attributes.html#C_002b_002b-Attributes</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">DebugTrapHandler</span><span class="w"> </span><span class="n">g_dummyHandler</span><span class="w"> </span><span class="n">__attribute__</span><span class="w"> </span><span class="p">((</span><span class="n">init_priority</span><span class="w"> </span><span class="p">(</span><span class="mi">110</span><span class="p">)));</span>
+</code></pre></div>
+<p>На платформе Windows для установки нового обработчика следует вызвать <code>_set_invalid_parameter_handler</code> (и, возможно, <code>set_unexpected</code> или <code>set_terminate</code>).</p>
+<p>Работающие серверы с производственным кодом всегда должны определять <code>NDEBUG</code> (т.е. конфигурацию Release), что означает отсутствие assert и автоматических прерываний. Автоматическое прерывание — недопустимое поведение, и любой, кто его требует, полностью злоупотребляет функциональностью «программной диагностики». Если программа хочет дамп ядра, она должна создать его явно, чтобы пользователям не приходилось беспокоиться о записи секретов и другой конфиденциальной информации в файловую систему и её отправке по электронной почте в открытом виде.</p>
+<p>Для дополнительного чтения об эффективном использовании assert рекомендуется обратиться к одной из книг Джона Роббинса, например <em><a href="https://www.amazon.com/dp/0735608865">Debugging Applications</a></em>. Джон — легендарный охотник за ошибками в мире Windows, и он покажет вам, как делать практически всё: от отладки простой программы до поиска ошибок в многопоточных программах.</p>
+<h3 id="_11">Дополнительные макросы<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>Дополнительные макросы включают любые макросы, необходимые для корректной и безопасной интеграции. Они охватывают интеграцию программы с платформой (например, MFC или Cocoa/CocoaTouch) и библиотеками (например, Crypto++ или OpenSSL). Это может быть непросто, поскольку требует глубокого знания своей платформы и всех включённых библиотек и фреймворков. Приведённый ниже список иллюстрирует уровень детализации, необходимый при интеграции.</p>
+<p>Хотя Boost отсутствует в списке, у него, по всей видимости, нет рекомендаций, дополнительной отладочной диагностики и руководства по усилению защиты. Подробности см. в <em><a href="https://stackoverflow.com/questions/14927033/boost-hardening-guide-preprocessor-macros">BOOST Hardening Guide (Preprocessor Macros)</a></em>. Кроме того, Тим Дэй указывает на <em><a href="https://lists.boost.org/Archives/boost/2008/12/145749.php">[boost.build] should we not define _SECURE_SCL=0 by default for all msvc toolsets</a></em> — недавнюю дискуссию, связанную с усилением защиты (или его отсутствием).</p>
+<p>В дополнение к тому, что следует определить: определение некоторых макросов и отмена определения других должны вызывать ошибку, связанную с безопасностью. Например, <code>-U_FORTIFY_SOURCES</code> в Linux и <code>_CRT_SECURE_NO_WARNINGS=1</code>, <code>_SCL_SECURE_NO_WARNINGS</code>, <code>_ATL_SECURE_NO_WARNINGS</code> или <code>STRSAFE_NO_DEPRECATE</code> в Windows.</p>
+<p><img alt="AdditionalPlatformLibraryMacrosTable" src="../assets/C-Based_Toolchain_Hardening_AdditionalPlatformLibraryMacrosTable.png" /></p>
+<p>а) Будьте осторожны с <code>_GLIBCXX_DEBUG</code> при использовании предварительно скомпилированных библиотек, таких как Boost из дистрибутива. Существуют несовместимости ABI, и результатом, вероятно, будет аварийное завершение. Вам придётся скомпилировать Boost с <code>_GLIBCXX_DEBUG</code> или отказаться от <code>_GLIBCXX_DEBUG</code>.</p>
+<p>б) Подробности см. в <a href="https://gcc.gnu.org/onlinedocs/libstdc++/manual/concept_checking.html">Главе 5, Диагностика</a> руководства libstdc++.</p>
+<p>в) Безопасное удаление SQLite обнуляет память при уничтожении. Определяйте по необходимости и всегда определяйте в US Federal, поскольку обнуление требуется для FIPS 140-2, Уровень 1.</p>
+<p>г) <em>N</em> по умолчанию равно 0644, то есть у всех есть какой-то доступ.</p>
+<p>д) Принудительно помещает временные таблицы в память (никаких незашифрованных данных на диске).</p>
+<h2 id="_12">Компилятор и компоновщик<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<p>Разработчики компиляторов предоставляют богатый набор предупреждений на основе анализа кода в процессе компиляции. Как GCC, так и Visual Studio обладают возможностями статического анализа для раннего обнаружения ошибок в процессе разработки. Встроенных возможностей статического анализа GCC и Visual Studio обычно достаточно для обеспечения корректного использования API и выявления ряда ошибок, таких как использование неинициализированной переменной или сравнение отрицательного знакового целого и положительного беззнакового целого.</p>
+<p>В качестве конкретного примера (для тех, кто не знаком с правилами продвижения типов в C/C++): предупреждение будет выдано, если знаковое целое продвигается до беззнакового и затем сравнивается, поскольку побочным эффектом является то, что <code>-1 &gt; 1</code> после продвижения! GCC и Visual Studio в настоящее время не могут, например, выявлять SQL-инъекции и другое использование заражённых данных. Для этого вам понадобится инструмент, выполняющий анализ потока данных или анализ заражения.</p>
+<p>Некоторые представители сообщества разработчиков сопротивляются статическому анализу или оспаривают его результаты. Например, когда статический анализ предупредил, что <code>sys_prctl</code> ядра Linux сравнивает беззнаковое значение с числом, меньшим нуля, Джеспер Юл предложил патч для исправления кода. Линус Торвальдс взвился: «Нет, так не делается… GCC — это дрянь» (имея в виду компиляцию с предупреждениями). Полное обсуждение см. в <em><a href="https://groups.google.com/g/fa.linux.kernel/c/jjk_K4HOemQ/">[PATCH] Don't compare unsigned variable for &lt;0 in sys_prctl()</a></em> в списке рассылки ядра Linux.</p>
+<p>В следующих разделах описаны шаги для трёх платформ. Первая — типичный GNU Linux дистрибутив с GCC и Binutils, вторая — Clang и Xcode, третья — современные платформы Windows.</p>
+<h3 id="_13">Усиление защиты дистрибутива<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p>Прежде чем перейти к обсуждению GCC и Binutils, стоит отметить, что некоторые из описанных ниже средств защиты уже присутствуют в дистрибутиве. К сожалению, это результат коллективного решения, поэтому включённое обычно является лишь слабой вариацией доступного (таким образом, каждый оказывается чуть-чуть недоволен). Для тех, кто обеспокоен исключительно производительностью: вас может удивить, что вы уже несёте небольшие накладные расходы, даже не подозревая об этом.</p>
+<p>Дистрибутивы Linux и BSD часто применяют некоторое усиление защиты без вмешательства пользователя через <em><a href="https://gcc.gnu.org/onlinedocs/gcc/Spec-Files.html">GCC Spec Files</a></em>. Для Debian, Ubuntu, Linux Mint и родственных систем см. <em><a href="https://wiki.debian.org/Hardening">Debian Hardening</a></em>. Для систем Red Hat и Fedora см. <em><a href="https://lists.fedoraproject.org/pipermail/devel-announce/2011-August/000821.html">New hardened build support (coming) in F16</a></em>. Пользователям Gentoo стоит посетить <em><a href="https://wiki.gentoo.org/wiki/Project:Hardened">Hardened Gentoo</a></em>.</p>
+<p>Посмотреть настройки, используемые дистрибутивом, можно с помощью <code>gcc</code> <code>-dumpspecs</code>. В примере ниже из Linux Mint 12 по умолчанию используется <code>-fstack-protector</code> (но не -fstack-protector-all):</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>gcc<span class="w"> </span>-dumpspecs
+…
+*link_ssp:<span class="w"> </span>%<span class="o">{</span>fstack-protector:<span class="o">}</span>
+
+*ssp_default:<span class="w"> </span>%<span class="o">{</span>!fno-stack-protector:%<span class="o">{</span>!fstack-protector-all:
+<span class="w">              </span>%<span class="o">{</span>!ffreestanding:%<span class="o">{</span>!nostdlib:-fstack-protector<span class="o">}}}}</span>
+…
+</code></pre></div>
+<p>«SSP» в примере выше расшифровывается как Stack Smashing Protector (защита от разбивания стека). SSP — это переработанная реализация разработки Хироаки Этоха для IBM Pro Police Stack Detector. Подробности см. в патче Хироаки Этоха <em><a href="https://gcc.gnu.org/ml/gcc-patches/2001-06/msg01753.html">gcc stack-smashing protector</a></em> и статье IBM <em><a href="https://pdfs.semanticscholar.org/9d92/fa9eaa6ca12888d303deffe8bc392b85c09f.pdf">GCC extension for protecting applications from stack-smashing attacks</a></em>.</p>
+<h3 id="gccbinutils">GCC/Binutils<a class="headerlink" href="#gccbinutils" title="Permanent link">&para;</a></h3>
+<p>GCC (коллекция компиляторов) и Binutils (ассемблеры, компоновщики и другие инструменты) — это отдельные проекты, работающие вместе для создания окончательного исполняемого файла. Как компилятор, так и компоновщик предлагают параметры для написания более безопасного кода. Компоновщик создаст код, использующий функции безопасности платформы, предоставляемые ядром и PaX, такие как стеки и кучи без исполнения (NX) и Position Independent Executable (PIE).</p>
+<p>Таблица ниже предлагает набор параметров компилятора для сборки программы. Предупреждения статического анализа помогают выявлять ошибки на ранних этапах, тогда как параметры компоновщика усиливают защиту исполняемого файла во время выполнения. В таблице «GCC» следует понимать как «современные дистрибутивы». Хотя команда GCC считает 4.2 устаревшей версией, вы всё ещё можете встретить её на платформах Apple и BSD из-за изменений в лицензировании GPL около 2007 года. Для получения подробностей об использовании см. <em><a href="https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html">GCC Option Summary</a></em>, <em><a href="https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html">Options to Request or Suppress Warnings</a></em> и <em><a href="https://sourceware.org/binutils/docs-2.21/ld/Options.html">Binutils (LD) Command Line Options</a></em>.</p>
+<p>Особого упоминания заслуживают флаги <code>-fno-strict-overflow</code> и <code>-fwrapv</code>ₐ. Они обеспечивают, что компилятор не удаляет операторы, приводящие к переполнению или переполнению с обёрткой. Если ваша программа корректно работает только с этими флагами, она, вероятно, нарушает правила C/C++ о переполнении и является незаконной. Если программа является незаконной из-за переполнения или обёртки, следует рассмотреть использование <a href="https://code.google.com/archive/p/safe-iop/">safe-iop</a> для C или <a href="https://archive.codeplex.com/?p=safeint">SafeInt</a> Дэвида ЛеБлана для C++.</p>
+<p>Для проекта, скомпилированного и скомпонованного с усиленными настройками, некоторые из этих настроек можно проверить с помощью инструмента <a href="https://www.trapkit.de/tools/checksec.html">Checksec</a>, написанного Тобиасом Кляйном. Скрипт <code>checksec.sh</code> предназначен для проверки стандартных функций безопасности Linux OS и PaX, используемых приложением. Подробности см. на странице <a href="https://www.trapkit.de/tools/checksec.html">Trapkit</a>.</p>
+<p>Таблица предупреждений GCC для C:</p>
+<p><img alt="GCCCWarningOptionsTable" src="../assets/C-Based_Toolchain_Hardening_GCCCWarningOptionsTable.png" /></p>
+<ul>
+<li><a href="https://github.com/google/sanitizers">AddressSanitizer</a></li>
+<li><a href="https://github.com/google/sanitizers/wiki/ThreadSanitizerCppManual">ThreadSanitizer</a></li>
+</ul>
+<p>а) В отличие от Clang и -Weverything, GCC не предоставляет переключатель для действительно включения всех предупреждений.
+б) -fstack-protector защищает функции с объектами высокого риска, такими как C-строки, тогда как -fstack-protector-all защищает все объекты.</p>
+<p>Дополнительные предупреждения C++, которые можно использовать, перечислены в Таблице 3. Дополнительные параметры и подробности см. в <em><a href="https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Dialect-Options.html">GCC's Options Controlling C++ Dialect</a></em>.</p>
+<p>Таблица предупреждений GCC для C++:</p>
+<p><img alt="GCCCPPWarningOptionsTable" src="../assets/C-Based_Toolchain_Hardening_GCCCPPWarningOptionsTable.png" /></p>
+<p><a href="https://www.aristeia.com/books.html">Книга Effective C++, второе издание</a>.</p>
+<p>И дополнительные предупреждения Objective C, которые часто полезны. Дополнительные параметры и подробности см. в <em><a href="https://gcc.gnu.org/onlinedocs/gcc-4.6.0/gcc/Objective_002dC-and-Objective_002dC_002b_002b-Dialect-Options.html">Options Controlling Objective-C and Objective-C++ Dialects</a></em>.</p>
+<p>Таблица предупреждений GCC для Objective C:</p>
+<p><img alt="GCCObjectiveCWarningOptionsTable" src="../assets/C-Based_Toolchain_Hardening_GCCObjectiveCWarningOptionsTable.png" /></p>
+<p>Использование агрессивных предупреждений создаёт лишний шум. Это компромисс — можно узнавать о потенциальных проблемах ценой просеивания некоторого «мусора». Следующие флаги помогут сократить ложные срабатывания системы предупреждений:</p>
+<ul>
+<li><code>-Wno-unused-parameter</code> (GCC)</li>
+<li><code>-Wno-type-limits</code> (GCC 4.3)</li>
+<li><code>-Wno-tautological-compare</code> (Clang)</li>
+</ul>
+<p>Наконец, ниже показан простой пример makefile на основе версии. Он отличается от makefile на основе функций, создаваемого Autotools (который проверяет наличие конкретной функции и затем определяет символ или настраивает файл шаблона). Не все платформы используют все параметры и флаги. Для решения этой проблемы можно выбрать одну из двух стратегий. Первая — поставлять с ослабленной позицией, ориентируясь на наименьший общий знаменатель, или вторая — поставлять со всем включённым. Во втором случае те, у кого данная функция недоступна, отредактируют makefile под свою установку.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">CXX</span><span class="o">=</span>g++
+<span class="nv">EGREP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>egrep
+…
+
+<span class="nv">GCC_COMPILER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span>-v<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">$(</span>EGREP<span class="k">)</span><span class="w"> </span>-i<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;^gcc version&#39;</span><span class="k">)</span>
+<span class="nv">GCC41_OR_LATER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span>-v<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">$(</span>EGREP<span class="k">)</span><span class="w"> </span>-i<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;^gcc version (4\.[1-9]|[5-9])&#39;</span><span class="k">)</span>
+…
+
+<span class="nv">GNU_LD210_OR_LATER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span><span class="k">$(</span>LD<span class="k">)</span><span class="w"> </span>-v<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">$(</span>EGREP<span class="k">)</span><span class="w"> </span>-i<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;^gnu ld .* (2\.1[0-9]|2\.[2-9])&#39;</span><span class="k">)</span>
+<span class="nv">GNU_LD214_OR_LATER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span><span class="k">$(</span>LD<span class="k">)</span><span class="w"> </span>-v<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">$(</span>EGREP<span class="k">)</span><span class="w"> </span>-i<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;^gnu ld .* (2\.1[4-9]|2\.[2-9])&#39;</span><span class="k">)</span>
+…
+
+ifeq<span class="w"> </span><span class="o">(</span><span class="k">$(</span>GCC_COMPILER<span class="k">)</span>,1<span class="o">)</span>
+<span class="w">    </span><span class="nv">MY_CC_FLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-Wall<span class="w"> </span>-Wextra<span class="w"> </span>-Wconversion
+<span class="w">    </span><span class="nv">MY_CC_FLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-Wformat<span class="o">=</span><span class="m">2</span><span class="w"> </span>-Wformat-security
+<span class="w">    </span><span class="nv">MY_CC_FLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-Wno-unused-parameter
+endif
+
+ifeq<span class="w"> </span><span class="o">(</span><span class="k">$(</span>GCC41_OR_LATER<span class="k">)</span>,1<span class="o">)</span>
+<span class="w">    </span><span class="nv">MY_CC_FLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-fstack-protector-all
+endif
+
+ifeq<span class="w"> </span><span class="o">(</span><span class="k">$(</span>GCC42_OR_LATER<span class="k">)</span>,1<span class="o">)</span>
+<span class="w">    </span><span class="nv">MY_CC_FLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-Wstrict-overflow
+endif
+
+ifeq<span class="w"> </span><span class="o">(</span><span class="k">$(</span>GCC43_OR_LATER<span class="k">)</span>,1<span class="o">)</span>
+<span class="w">    </span><span class="nv">MY_CC_FLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-Wtrampolines
+endif
+
+ifeq<span class="w"> </span><span class="o">(</span><span class="k">$(</span>GNU_LD210_OR_LATER<span class="k">)</span>,1<span class="o">)</span>
+<span class="w">    </span><span class="nv">MY_LD_FLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-z,nodlopen<span class="w"> </span>-z,nodump
+endif
+
+ifeq<span class="w"> </span><span class="o">(</span><span class="k">$(</span>GNU_LD214_OR_LATER<span class="k">)</span>,1<span class="o">)</span>
+<span class="w">    </span><span class="nv">MY_LD_FLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-z,noexecstack<span class="w"> </span>-z,noexecheap
+endif
+
+ifeq<span class="w"> </span><span class="o">(</span><span class="k">$(</span>GNU_LD215_OR_LATER<span class="k">)</span>,1<span class="o">)</span>
+<span class="w">    </span><span class="nv">MY_LD_FLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-z,relro<span class="w"> </span>-z,now
+endif
+
+ifeq<span class="w"> </span><span class="o">(</span><span class="k">$(</span>GNU_LD216_OR_LATER<span class="k">)</span>,1<span class="o">)</span>
+<span class="w">    </span><span class="nv">MY_CC_FLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-fPIE
+<span class="w">    </span><span class="nv">MY_LD_FLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-pie
+endif
+
+<span class="c1">## Используем &#39;override&#39; для учёта командной строки пользователя</span>
+override<span class="w"> </span>CFLAGS<span class="w"> </span>:<span class="o">=</span><span class="w"> </span><span class="k">$(</span>MY_CC_FLAGS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span>
+override<span class="w"> </span>CXXFLAGS<span class="w"> </span>:<span class="o">=</span><span class="w"> </span><span class="k">$(</span>MY_CC_FLAGS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span>
+override<span class="w"> </span>LDFLAGS<span class="w"> </span>:<span class="o">=</span><span class="w"> </span><span class="k">$(</span>MY_LD_FLAGS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>LDFLAGS<span class="k">)</span>
+…
+</code></pre></div>
+<h3 id="clangxcode">Clang/Xcode<a class="headerlink" href="#clangxcode" title="Permanent link">&para;</a></h3>
+<p><a href="https://clang.llvm.org">Clang</a> и <a href="https://llvm.org">LLVM</a> активно развиваются с тех пор, как Apple лишилась компилятора GPL в 2007 году (из-за тивоизации, которая привела к GPLv3). С тех пор к проекту присоединились ряд разработчиков и Google. Хотя Clang принимает большинство (все?) флагов и ключей GCC/Binutils, проект поддерживает ряд собственных параметров, включая статический анализатор. Кроме того, Clang относительно легко собрать с дополнительной диагностикой, например <a href="https://embed.cs.utah.edu/ioc/">Integer Overflow Checker (IOC)</a> доктора Джона Регера и Пэн Ли.</p>
+<p>IOC чрезвычайно полезен и обнаружил ошибки во многих проектах: ядре Linux (<code>include/linux/bitops.h</code>, до сих пор не исправлено), SQLite, PHP, Firefox (многие до сих пор не исправлены), LLVM и Python. Будущие версии Clang (Clang 3.3 и выше) позволят включить эти проверки «из коробки» с помощью <code>-fsanitize=integer</code> и <code>-fsanitize=shift</code>.</p>
+<p>Параметры Clang можно найти в <a href="https://clang.llvm.org/docs/UsersManual.html">Clang Compiler User's Manual</a>. Clang включает параметр для включения всех предупреждений — <code>-Weverything</code>. Используйте его с осторожностью, но регулярно: вы получите много шума и проблем, которые упустили. Например, добавьте <code>-Weverything</code> для производственных сборок и сделайте несинтетические проблемы воротами качества. В Xcode просто добавьте <code>-Weverything</code> в <code>CFLAGS</code> и <code>CXXFLAGS</code>.</p>
+<p>Помимо предупреждений компилятора, можно выполнить статический анализ и дополнительные проверки безопасности. Информацию о возможностях статического анализа Clang можно найти в <a href="https://clang-analyzer.llvm.org">Clang Static Analyzer</a>. На рисунке 1 ниже показаны некоторые проверки безопасности, используемые Xcode.</p>
+<p><img alt="XCode1" src="../assets/C-Based_Toolchain_Hardening_XCode1.png" /></p>
+<h3 id="visual-studio">Visual Studio<a class="headerlink" href="#visual-studio" title="Permanent link">&para;</a></h3>
+<p>Visual Studio предлагает удобную интегрированную среду разработки (IDE) для управления решениями и их настройками. Раздел «Параметры Visual Studio» обсуждает параметры, которые следует использовать в Visual Studio, а раздел «Свойства проекта» демонстрирует их включение в проект решения.</p>
+<p>В таблице ниже перечислены ключи компилятора и компоновщика, которые следует использовать в Visual Studio. Подробное обсуждение см. в книге Ховарда и ЛеБлана Writing Secure Code (Microsoft Press) или в <em><a href="https://docs.microsoft.com/en-us/archive/msdn-magazine/2008/march/security-briefs-protecting-your-code-with-visual-c-defenses">Protecting Your Code with Visual C++ Defenses</a></em> в Security Briefs Майкла Ховарда. В таблице «Visual Studio» относится практически ко всем версиям среды разработки, включая Visual Studio 5.0 и 6.0.</p>
+<p>Для проекта, скомпилированного и скомпонованного с усиленными настройками, эти настройки можно проверить с помощью BinScope. BinScope — это инструмент верификации от Microsoft, который анализирует двоичные файлы, чтобы убедиться, что они собраны в соответствии с требованиями и рекомендациями Microsoft Security Development Lifecycle (SDLC). Подробности см. на странице загрузки <em><a href="https://www.microsoft.com/en-us/download/details.aspx?id=44995">BinScope Binary Analyzer</a></em>.</p>
+<p><img alt="VStudioWarningOptionsTable" src="../assets/C-Based_Toolchain_Hardening_VStudioWarningOptionsTable.png" /></p>
+<p>а) См. обсуждение этого ключа Джоном Стёрдженом в <em><a href="https://devblogs.microsoft.com/cppblog/off-by-default-compiler-warnings-in-visual-c/">Off By Default Compiler Warnings in Visual C++</a></em>.</p>
+<p>а) При использовании /GS существует ряд обстоятельств, влияющих на включение защитного куки. Например, защита не используется, если в кадре стека нет буфера, оптимизации отключены или функция объявлена как naked или содержит встроенную ассемблерную вставку.</p>
+<p>б) <code>#pragma</code> <code>strict_gs_check(on)</code> следует использовать умеренно, но рекомендуется в ситуациях высокого риска, например когда исходный файл выполняет разбор входных данных из интернета.</p>
+<h3 id="_14">Подавление предупреждений<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<p>Из приведённых выше таблиц видно, что включено много предупреждений для выявления возможных ошибок программирования. Потенциальные ошибки выявляются компилятором, который хранит много контекстной информации в процессе анализа кода. Иногда вы будете получать ложные предупреждения, потому что компилятор недостаточно умён. Это понятно и даже хорошо (как бы вы отнеслись к тому, что программа пишет сама себя?). Иногда вам придётся учиться работать с системой предупреждений компилятора, чтобы их подавлять. Обратите внимание на то, что не было сказано: отключать предупреждения.</p>
+<p>Подавление предупреждений успокаивает компилятор при ложных срабатываниях, чтобы вы могли сосредоточиться на реальных проблемах (отделяя зёрна от плевел). В этом разделе даются некоторые подсказки и указываются потенциальные «минные поля». Первый случай — неиспользуемый параметр (например, <code>argc</code> или <code>argv</code>). Подавление предупреждений о неиспользуемых параметрах особенно полезно при программировании на C++ и интерфейсном программировании, где параметры часто остаются неиспользованными. Для этого предупреждения просто определите макрос «UNUSED» и оберните параметр:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">##define UNUSED_PARAMETER(x) ((void)x)</span>
+<span class="err">…</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">UNUSED_PARAMETER</span><span class="p">(</span><span class="n">argc</span><span class="p">);</span>
+<span class="w">    </span><span class="n">UNUSED_PARAMETER</span><span class="p">(</span><span class="n">argv</span><span class="p">);</span>
+<span class="w">    </span><span class="err">…</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Потенциальное «минное поле» находится рядом со сравнением беззнаковых и знаковых значений, и <code>-Wconversion</code> поймает это для вас. Это связано с тем, что правила продвижения типов C/C++ предписывают продвигать знаковое значение до беззнакового и затем сравнивать. А это означает, что <code>-1</code> <code>&gt;</code> <code>1</code> после продвижения! Чтобы исправить это, нельзя слепо приводить типы — необходимо сначала проверить диапазон значения:</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetX</span><span class="p">();</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetY</span><span class="p">();</span>
+
+<span class="n">ASSERT</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span>
+<span class="w">    </span><span class="n">throw</span><span class="w"> </span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;WTF??? X отрицательный.&quot;</span><span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;x больше y&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="k">else</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;x не больше y&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+</code></pre></div>
+<p>Обратите внимание: приведённый выше код самодиагностируется — вам не нужно устанавливать точку останова, чтобы проверить, есть ли проблема с <code>x</code>. Просто запустите программу и ждите, пока она сообщит вам о проблеме. Если проблема есть, программа запустит отладчик (и, что важно, не вызовет бесполезный <code>abort()</code>, как предписывает Posix). Это намного лучше, чем <code>printf</code>, который удаляется, когда больше не нужен, или засоряет вывод.</p>
+<p>Другая проблема преобразования, с которой вы столкнётесь, — это преобразование между типами, и <code>-Wconversion</code> также поможет вам с ней. Следующий код всегда имеет возможность дать сбой и должен «загораться как рождественская ёлка»:</p>
+<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span>
+<span class="err">…</span>
+
+<span class="n">addr</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">htons</span><span class="p">(</span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]));</span>
+</code></pre></div>
+<p>Следующий код, вероятно, подойдёт вам гораздо лучше. Обратите внимание, что <code>atoi</code> и аналогичные функции не используются, потому что они могут давать сбой незаметно. Кроме того, код инструментирован, поэтому вам не нужно тратить много времени на отладку потенциальных проблем:</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">cstr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetPortString</span><span class="p">();</span>
+
+<span class="n">ASSERT</span><span class="p">(</span><span class="n">cstr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">cstr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">))</span>
+<span class="w">    </span><span class="n">throw</span><span class="w"> </span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;WTF??? Строка порта недействительна.&quot;</span><span class="p">);</span>
+
+<span class="n">istringstream</span><span class="w"> </span><span class="nf">iss</span><span class="p">(</span><span class="n">cstr</span><span class="p">);</span>
+<span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="n">iss</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+
+<span class="n">ASSERT</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">iss</span><span class="p">.</span><span class="n">fail</span><span class="p">()));</span>
+<span class="k">if</span><span class="p">(</span><span class="n">iss</span><span class="p">.</span><span class="n">fail</span><span class="p">())</span>
+<span class="w">    </span><span class="n">throw</span><span class="w"> </span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;WTF??? Не удалось прочитать порт.&quot;</span><span class="p">);</span>
+
+<span class="c1">// Должен ли это быть порт выше зарезервированного диапазона ([0-1024] в Unix)?</span>
+<span class="n">ASSERT</span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span>
+<span class="w">    </span><span class="n">throw</span><span class="w"> </span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;WTF??? Порт слишком мал&quot;</span><span class="p">);</span>
+
+<span class="n">ASSERT</span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">()));</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">static_cast</span><span class="o">&lt;</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">())))</span>
+<span class="w">    </span><span class="n">throw</span><span class="w"> </span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;WTF??? Порт слишком велик&quot;</span><span class="p">);</span>
+
+<span class="c1">// OK, можно использовать порт</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+<span class="err">…</span>
+</code></pre></div>
+<p>Снова обратите внимание: приведённый выше код самодиагностируется — вам не нужно устанавливать точку останова, чтобы проверить, есть ли проблема с <code>port</code>. Этот код продолжит проверять условия спустя годы после написания (при условии, что вы напишете код для чтения файла конфигурации на ранних этапах проекта). Нет необходимости удалять <code>ASSERT</code>, как в случае с <code>printf</code>, поскольку они являются молчаливыми хранителями.</p>
+<p>Ещё одна полезная техника подавления — не игнорировать возвращаемые значения. Это не только полезно для подавления предупреждения, но и необходимо для корректного кода. Например, <code>snprintf</code> сообщит вам об усечениях через своё возвращаемое значение. Не следует делать их молчаливыми усечениями, игнорируя предупреждение или приводя к <code>void</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kt">char</span><span class="w"> </span><span class="n">path</span><span class="p">[</span><span class="n">PATH_MAX</span><span class="p">];</span>
+<span class="err">…</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">snprintf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">path</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;%s/%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">GetDirectory</span><span class="p">(),</span><span class="w"> </span><span class="n">GetObjectName</span><span class="p">());</span>
+<span class="n">ASSERT</span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span>
+<span class="n">ASSERT</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">path</span><span class="p">)));</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+<span class="w">    </span><span class="n">throw</span><span class="w"> </span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;WTF??? Не удалось сформировать полное имя объекта&quot;</span><span class="p">);</span>
+
+<span class="c1">// OK, можно использовать path</span>
+<span class="err">…</span>
+</code></pre></div>
+<p>Эта проблема носит повсеместный характер и затрагивает не только рядовые пользовательские программы. Проекты, претендующие на высокоинтегритетный код, такие как SELinux, страдают от молчаливых усечений. Следующий фрагмент взят из одобренного патча SELinux, несмотря на то что был сделан комментарий о молчаливых усечениях в функции <code>security_compute_create_name</code> из <code>compute_create.c</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="mi">12</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">security_compute_create_raw</span><span class="p">(</span><span class="n">security_context_t</span><span class="w"> </span><span class="n">scon</span><span class="p">,</span>
+<span class="mi">13</span><span class="w">                                  </span><span class="n">security_context_t</span><span class="w"> </span><span class="n">tcon</span><span class="p">,</span>
+<span class="mi">14</span><span class="w">                                  </span><span class="n">security_class_t</span><span class="w">   </span><span class="n">tclass</span><span class="p">,</span>
+<span class="mi">15</span><span class="w">                                  </span><span class="n">security_context_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">newcon</span><span class="p">)</span>
+<span class="mi">16</span><span class="w">  </span><span class="p">{</span>
+<span class="mi">17</span><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">path</span><span class="p">[</span><span class="n">PATH_MAX</span><span class="p">];</span>
+<span class="mi">18</span><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">;</span>
+<span class="mi">19</span><span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<span class="mi">20</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="mi">21</span>
+<span class="mi">22</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">selinux_mnt</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="mi">23</span><span class="w">      </span><span class="n">errno</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENOENT</span><span class="p">;</span>
+<span class="mi">24</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="mi">25</span><span class="w">    </span><span class="p">}</span>
+<span class="mi">26</span>
+<span class="mi">27</span><span class="w">    </span><span class="n">snprintf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%s/create&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">selinux_mnt</span><span class="p">);</span>
+<span class="mi">28</span><span class="w">    </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDWR</span><span class="p">);</span>
+</code></pre></div>
+<p>В отличие от других примеров, приведённый выше код не диагностирует себя сам, и вам придётся устанавливать точки останова и трассировать вызовы, чтобы определить точку первоначального сбоя. (И код выше рискует тем, что усечённый файл не существует или не находится под контролем злоумышленника, слепо выполняя <code>open</code>).</p>
+<h2 id="_15">Время выполнения<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
+<p>Предыдущие разделы были сосредоточены на настройке проекта на успех. В этом разделе рассматриваются дополнительные подсказки для работы с повышенной диагностикой и защитой. Не все платформы одинаковы — в GNU Linux крайне сложно или вовсе невозможно <a href="https://sourceware.org/ml/binutils/2012-03/msg00309.html">добавить защиту к программе после компиляции и статической компоновки</a>, тогда как Windows позволяет усилить защиту после сборки путём загрузки. Помните: цель — быстро найти точку первоначального сбоя, чтобы повысить надёжность и безопасность кода.</p>
+<h3 id="xcode">Xcode<a class="headerlink" href="#xcode" title="Permanent link">&para;</a></h3>
+<p>Xcode предлагает дополнительную <a href="https://developer.apple.com/documentation/code_diagnostics">Code Diagnostics</a> для выявления ошибок памяти и проблем использования объектов. Схемы можно управлять через пункт меню <em>Products</em>, подменю <em>Scheme</em>, затем <em>Edit</em>. В редакторе перейдите на вкладку <em>Diagnostics</em>. На рисунке ниже включены четыре дополнительных инструмента для цикла отладки: Scribble guards, Edge guards, Malloc guards и Zombies.</p>
+<p><img alt="XCode2" src="../assets/C-Based_Toolchain_Hardening_XCode2.png" /></p>
+<p>Есть одно предостережение при использовании некоторых защит: Apple предоставляет их только для симулятора, но не для реального устройства. В прошлом защиты были доступны как для устройств, так и для симуляторов.</p>
+<h4 id="windows">Windows<a class="headerlink" href="#windows" title="Permanent link">&para;</a></h4>
+<p>Visual Studio предлагает ряд отладочных инструментов для использования в процессе разработки. Эти инструменты называются <a href="https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/diagnosing-errors-with-managed-debugging-assistants">Managed Debugging Assistants (MDAs)</a>. MDAs можно найти в меню <em>Debug</em>, подменю <em>Exceptions</em>. MDAs позволяют настраивать опыт отладки, например фильтруя исключения, при которых должен срабатывать отладчик. Для получения дополнительных сведений см. <em><a href="https://docs.microsoft.com/en-us/archive/msdn-magazine/2006/may/let-the-clr-find-bugs-for-you-with-managed-debugging-assistants">Let The CLR Find Bugs For You With Managed Debugging Assistants</a></em> Стивена Тоуба.</p>
+<p><img alt="Windows1" src="../assets/C-Based_Toolchain_Hardening_Windows1.png" /></p>
+<p>Наконец, для усиления защиты во время выполнения Microsoft предоставляет <strong>Windows Defender Exploit Guard</strong> и <strong>Process Mitigation Management Tool</strong>.
+<a href="https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-defender-exploit-guard/exploit-protection">Windows Defender Exploit Guard</a> заменяет EMET и предлагает расширенные функции защиты от эксплойтов.</p>
+<p>Кроме того, <a href="https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-defender-exploit-guard/customize-exploit-protection">Process Mitigation Management Tool</a> (модуль <code>ProcessMitigations</code>) позволяет администраторам настраивать политики снижения рисков эксплойтов через PowerShell и групповую политику.</p>
+<p><img alt="Windows2" src="exploit-protection-guard.png" /></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

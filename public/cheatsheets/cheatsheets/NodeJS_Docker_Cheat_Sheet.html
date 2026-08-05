@@ -1,0 +1,3514 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/NodeJS_Docker_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="Network_Segmentation_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Nodejs_Security_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>NodeJS Docker - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#nodejs-docker-cheat-sheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              NodeJS Docker
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      1) Используйте явные и детерминированные теги базового Docker образа
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1) Используйте явные и детерминированные теги базового Docker образа">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      FROM node
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-nodelts-alpine" class="md-nav__link">
+    <span class="md-ellipsis">
+      FROM node:lts-alpine
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-production-nodejs-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      2) Устанавливайте только production зависимости в Node.js Docker образе
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-nodejs-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      3) Оптимизируйте инструментарий Node.js для production
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      4) Не запускайте контейнеры от имени root
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-nodejs-docker-" class="md-nav__link">
+    <span class="md-ellipsis">
+      5) Правильно обрабатывайте события для безопасного завершения Node.js Docker веб-приложения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-graceful-nodejs-" class="md-nav__link">
+    <span class="md-ellipsis">
+      6) Graceful завершение для ваших Node.js веб-приложений
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-nodejs-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      7) Находите и устраняйте уязвимости безопасности в вашем Node.js docker образе
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      8) Используйте многоэтапные сборки
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8) Используйте многоэтапные сборки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение утечки конфиденциальной информации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodejs-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение в многоэтапные сборки для Node.js Docker образов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-nodejs-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      9) Исключайте ненужные файлы из ваших Node.js Docker образов
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      10) Монтирование секретов в Docker образ при сборке
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      1) Используйте явные и детерминированные теги базового Docker образа
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1) Используйте явные и детерминированные теги базового Docker образа">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      FROM node
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-nodelts-alpine" class="md-nav__link">
+    <span class="md-ellipsis">
+      FROM node:lts-alpine
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-production-nodejs-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      2) Устанавливайте только production зависимости в Node.js Docker образе
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-nodejs-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      3) Оптимизируйте инструментарий Node.js для production
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      4) Не запускайте контейнеры от имени root
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-nodejs-docker-" class="md-nav__link">
+    <span class="md-ellipsis">
+      5) Правильно обрабатывайте события для безопасного завершения Node.js Docker веб-приложения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-graceful-nodejs-" class="md-nav__link">
+    <span class="md-ellipsis">
+      6) Graceful завершение для ваших Node.js веб-приложений
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-nodejs-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      7) Находите и устраняйте уязвимости безопасности в вашем Node.js docker образе
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      8) Используйте многоэтапные сборки
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8) Используйте многоэтапные сборки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение утечки конфиденциальной информации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodejs-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение в многоэтапные сборки для Node.js Docker образов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-nodejs-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      9) Исключайте ненужные файлы из ваших Node.js Docker образов
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      10) Монтирование секретов в Docker образ при сборке
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="nodejs-docker-cheat-sheet">Node.js Docker Cheat Sheet<a class="headerlink" href="#nodejs-docker-cheat-sheet" title="Permanent link">&para;</a></h1>
+<p>Следующая шпаргалка содержит рекомендации производственного уровня по созданию оптимизированных и <a href="https://snyk.io/blog/10-best-practices-to-containerize-nodejs-web-applications-with-docker/">безопасных Node.js Docker</a> образов. Она будет полезна независимо от того, какое Node.js приложение вы собираетесь собирать. Эта статья будет для вас актуальна если:</p>
+<ul>
+<li>вы хотите создать фронтенд приложение, используя возможности серверного рендеринга (SSR) Node.js для React.</li>
+<li>вы ищете советы по правильной сборке Docker образа Node.js для ваших микросервисов на базе Fastify, NestJS или других фреймворков.</li>
+</ul>
+<h2 id="1-docker">1) Используйте явные и детерминированные теги базового Docker образа<a class="headerlink" href="#1-docker" title="Permanent link">&para;</a></h2>
+<p>Может показаться очевидным решением строить образ на основе Docker образа <code>node</code>, но что именно вы получаете при сборке? На Docker образы всегда ссылаются по тегам, и если тег не указан, используется тег по умолчанию — <code>:latest</code>.</p>
+<p>Таким образом, указав в Dockerfile следующее, вы каждый раз будете собирать последнюю версию Docker образа, опубликованную <strong>рабочей группой Node.js Docker</strong>:</p>
+<h3 id="from-node">FROM node<a class="headerlink" href="#from-node" title="Permanent link">&para;</a></h3>
+<p>Недостатки сборки на основе образа <code>node</code> по умолчанию следующие:</p>
+<ol>
+<li>Сборки Docker образов непоследовательны. Так же, как мы используем <code>lockfiles</code> для детерминированного поведения <a href="https://cheatsheetseries.owasp.org/cheatsheets/NPM_Security_Cheat_Sheet.html#2-enforce-the-lockfile"><code>npm ci</code></a> при каждой установке npm пакетов, мы хотели бы получать детерминированные сборки Docker образов. Если мы строим образ от node — что фактически означает тег <code>node:latest</code> — то каждая сборка будет подтягивать заново собранный Docker образ <code>node</code>. Мы не хотим допускать такого недетерминированного поведения.</li>
+<li>Docker образ node основан на полноценной операционной системе, насыщенной библиотеками и инструментами, которые могут и не потребоваться для работы вашего Node.js веб-приложения. Это имеет два недостатка. Во-первых, больший образ означает больший размер загрузки, что помимо увеличения требований к хранилищу, приводит к большему времени загрузки и пересборки образа. Во-вторых, это означает потенциальное добавление в образ уязвимостей безопасности, которые могут присутствовать во всех этих библиотеках и инструментах.</li>
+</ol>
+<p>Фактически, Docker образ <code>node</code> довольно большой и содержит сотни уязвимостей безопасности различных типов и степеней критичности. Если вы его используете, то по умолчанию ваша отправная точка — это 642 уязвимости безопасности и сотни мегабайт данных образа, загружаемых при каждом pull и build.</p>
+<p>Рекомендации по сборке лучших Docker образов:</p>
+<ol>
+<li>Используйте небольшие Docker образы — это уменьшит программный след в Docker образе, сокращая потенциальные векторы уязвимостей, а также ускорит процесс сборки образа благодаря меньшему размеру.</li>
+<li>Используйте digest Docker образа — статический SHA256 хеш образа. Это гарантирует детерминированные сборки Docker образа от базового образа.</li>
+</ol>
+<p>Исходя из этого, убедимся, что мы используем версию Node.js с долгосрочной поддержкой (LTS) и минимальный тип образа <code>alpine</code> для наименьшего размера и программного следа:</p>
+<h3 id="from-nodelts-alpine">FROM node:lts-alpine<a class="headerlink" href="#from-nodelts-alpine" title="Permanent link">&para;</a></h3>
+<p>Тем не менее, эта директива базового образа по-прежнему будет подтягивать новые сборки этого тега. Мы можем найти хеш <code>SHA256</code> на <a href="https://hub.docker.com/layers/node/library/node/lts-alpine/images/sha256-51e341881c2b77e52778921c685e711a186a71b8c6f62ff2edfc6b6950225a2f?context=explore">Docker Hub для этого тега Node.js</a>, либо выполнив следующую команду после локального скачивания образа и найдя поле <code>Digest</code> в выводе:</p>
+<div class="highlight"><pre><span></span><code>$ docker pull node:lts-alpine
+lts-alpine: Pulling from library/node
+0a6724ff3fcd: Already exists
+9383f33fa9f3: Already exists
+b6ae88d676fe: Already exists
+565e01e00588: Already exists
+Digest: sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
+Status: Downloaded newer image for node:lts-alpine
+docker.io/library/node:lts-alpine
+</code></pre></div>
+<p>Другой способ найти хеш <code>SHA256</code> — выполнить следующую команду:</p>
+<div class="highlight"><pre><span></span><code>$ docker images --digests
+REPOSITORY                     TAG              DIGEST                                                                    IMAGE ID       CREATED             SIZE
+node                           lts-alpine       sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a   51d926a5599d   2 weeks ago         116MB
+</code></pre></div>
+<p>Теперь можно обновить Dockerfile для этого Node.js Docker образа следующим образом:</p>
+<div class="highlight"><pre><span></span><code>FROM node@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN npm ci
+CMD &quot;npm&quot; &quot;start&quot;
+</code></pre></div>
+<p>Однако приведённый выше Dockerfile содержит только имя Docker образа Node.js без тега образа, что создаёт неоднозначность относительно того, какой именно тег используется — это нечитаемо, сложно в обслуживании и не способствует хорошему опыту разработчика.</p>
+<p>Исправим это, обновив Dockerfile и указав полный тег базового образа для версии Node.js, соответствующей этому хешу <code>SHA256</code>:</p>
+<div class="highlight"><pre><span></span><code>FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN npm ci
+CMD &quot;npm&quot; &quot;start&quot;
+</code></pre></div>
+<h2 id="2-production-nodejs-docker">2) Устанавливайте только production зависимости в Node.js Docker образе<a class="headerlink" href="#2-production-nodejs-docker" title="Permanent link">&para;</a></h2>
+<p>Следующая директива Dockerfile устанавливает все зависимости в контейнер, включая <code>devDependencies</code>, которые не нужны для работы приложения. Это добавляет ненужный риск безопасности от пакетов, используемых как зависимости разработки, а также неоправданно увеличивает размер образа.</p>
+<p><strong><code>RUN npm ci</code></strong></p>
+<p>Обеспечьте детерминированные сборки с помощью <code>npm ci</code>. Это предотвращает неожиданности в процессе непрерывной интеграции (CI), так как команда прерывается при любых отклонениях от lockfile.</p>
+<p>При сборке Docker образа для production мы хотим убедиться, что устанавливаем только production зависимости детерминированным образом, что приводит нас к следующей рекомендации по установке npm зависимостей в образе контейнера:</p>
+<p><strong><code>RUN npm ci --omit=dev</code></strong></p>
+<p>Обновлённое содержимое Dockerfile на этом этапе выглядит следующим образом:</p>
+<div class="highlight"><pre><span></span><code>FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN npm ci --omit=dev
+CMD &quot;npm&quot; &quot;start&quot;
+</code></pre></div>
+<h2 id="3-nodejs-production">3) Оптимизируйте инструментарий Node.js для production<a class="headerlink" href="#3-nodejs-production" title="Permanent link">&para;</a></h2>
+<p>При сборке Docker образа Node.js для production необходимо убедиться, что все фреймворки и библиотеки используют оптимальные настройки производительности и безопасности.</p>
+<p>Это приводит нас к добавлению следующей директивы Dockerfile:</p>
+<p><strong><code>ENV NODE_ENV production</code></strong></p>
+<p>На первый взгляд это выглядит избыточным, так как мы уже указали только production зависимости на этапе <code>npm ci</code> — так зачем это нужно?</p>
+<p>Разработчики в основном связывают переменную окружения <code>NODE_ENV=production</code> с установкой зависимостей, связанных с production, однако эта настройка имеет и другие эффекты, о которых нам нужно знать.</p>
+<p>Некоторые фреймворки и библиотеки могут включать оптимизированную конфигурацию для production только в том случае, если переменная окружения <code>NODE_ENV</code> установлена в <code>production</code>. Независимо от нашего мнения о том, является ли это хорошей или плохой практикой для фреймворков, важно об этом знать.</p>
+<p>Например, <a href="https://expressjs.com/en/advanced/best-practice-performance.html#set-node_env-to-production">документация Express</a> подчёркивает важность установки этой переменной окружения для включения оптимизаций производительности и безопасности:</p>
+<p>Влияние переменной <code>NODE_ENV</code> на производительность может быть очень значительным.</p>
+<p>Многие другие библиотеки, на которые вы полагаетесь, также могут ожидать, что эта переменная установлена, поэтому мы должны задать её в нашем Dockerfile.</p>
+<p>Обновлённый Dockerfile теперь должен выглядеть следующим образом со встроенной настройкой переменной окружения <code>NODE_ENV</code>:</p>
+<div class="highlight"><pre><span></span><code>FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
+ENV NODE_ENV production
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN npm ci --omit=dev
+CMD &quot;npm&quot; &quot;start&quot;
+</code></pre></div>
+<h2 id="4-root">4) Не запускайте контейнеры от имени root<a class="headerlink" href="#4-root" title="Permanent link">&para;</a></h2>
+<p>Принцип наименьших привилегий — давно существующий контроль безопасности со времён ранних версий Unix, и мы всегда должны следовать ему при запуске контейнеризованных Node.js веб-приложений.</p>
+<p>Оценка угроз довольно проста — если злоумышленник сможет скомпрометировать веб-приложение способом, позволяющим <a href="https://owasp.org/www-community/attacks/Command_Injection">внедрение команд</a> или <a href="https://owasp.org/www-community/attacks/Path_Traversal">обход пути к директории</a>, то они будут выполнены от имени пользователя, которому принадлежит процесс приложения. Если этим процессом окажется root, злоумышленник сможет делать практически всё в контейнере, включая [попытку побега из контейнера или <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/05-Authorization_Testing/03-Testing_for_Privilege_Escalation">эскалацию привилегий</a>. Зачем нам рисковать? Правильно, незачем.</p>
+<p>Повторяйте за мной: <strong>"хорошие друзья не позволяют запускать контейнеры от имени root!"</strong></p>
+<p>Официальный Docker образ <code>node</code>, а также его варианты, такие как <code>alpine</code>, включают непривилегированного пользователя с таким же именем: <code>node</code>. Однако недостаточно просто запустить процесс от имени <code>node</code>. Например, следующего может быть недостаточно для нормальной работы приложения:</p>
+<div class="highlight"><pre><span></span><code>USER node
+CMD &quot;npm&quot; &quot;start&quot;
+</code></pre></div>
+<p>Причина в том, что директива <code>USER</code> в Dockerfile лишь гарантирует, что процесс принадлежит пользователю <code>node</code>. Но как насчёт всех файлов, скопированных ранее инструкцией <code>COPY</code>? Они принадлежат root. Именно так Docker работает по умолчанию.</p>
+<p>Полный и правильный способ снижения привилегий выглядит следующим образом, с учётом всех актуальных практик Dockerfile на данный момент:</p>
+<div class="highlight"><pre><span></span><code>FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
+ENV NODE_ENV production
+WORKDIR /usr/src/app
+COPY --chown=node:node . /usr/src/app
+RUN npm ci --omit=dev
+USER node
+CMD &quot;npm&quot; &quot;start&quot;
+</code></pre></div>
+<h2 id="5-nodejs-docker-">5) Правильно обрабатывайте события для безопасного завершения Node.js Docker веб-приложения<a class="headerlink" href="#5-nodejs-docker-" title="Permanent link">&para;</a></h2>
+<p>Одна из наиболее распространённых ошибок, которую я вижу в статьях о контейнеризации Node.js приложений в Docker, — это способ запуска процесса. Все следующие варианты и их производные являются плохими паттернами, которых следует избегать:</p>
+<ul>
+<li><code>CMD "npm" "start"</code></li>
+<li><code>CMD ["yarn", "start"]</code></li>
+<li><code>CMD "node" "server.js"</code></li>
+<li><code>CMD "start-app.sh"</code></li>
+</ul>
+<p>Давайте разберёмся! Я расскажу вам о различиях между ними и объясню, почему все они являются паттернами, которых следует избегать.</p>
+<p>Следующие соображения являются ключевыми для понимания контекста правильного запуска и завершения Node.js Docker приложений:</p>
+<ol>
+<li>Оркестровый движок, например Docker Swarm, Kubernetes или даже сам Docker engine, должен иметь возможность отправлять сигналы процессу в контейнере. В основном это сигналы завершения приложения, такие как <code>SIGTERM</code> и <code>SIGKILL</code>.</li>
+<li>Процесс может запускаться косвенно, и в этом случае не всегда гарантировано, что он получит эти сигналы.</li>
+<li>Ядро Linux обрабатывает процессы, запущенные с идентификатором процесса 1 (PID), иначе, чем любые другие идентификаторы процессов.</li>
+</ol>
+<p>Вооружившись этими знаниями, давайте начнём исследовать способы запуска процесса для контейнера, начав с примера из собираемого нами Dockerfile:</p>
+<p><strong><code>CMD "npm" "start"</code></strong></p>
+<p>Здесь есть два подводных камня. Во-первых, мы косвенно запускаем node приложение, напрямую вызывая npm клиент. Кто может гарантировать, что npm CLI перенаправляет все события в node runtime? На самом деле нет, и мы можем легко это проверить.</p>
+<p>Убедитесь, что в вашем Node.js приложении установлен обработчик события для сигнала <code>SIGHUP</code>, который выводит в консоль сообщение каждый раз при получении события. Простой пример кода выглядит так:</p>
+<div class="highlight"><pre><span></span><code>function handle(signal) {
+   console.log(`*^!@4=&gt; Received event: ${signal}`)
+}
+process.on(&#39;SIGHUP&#39;, handle)
+</code></pre></div>
+<p>Затем запустите контейнер, и когда он поднимется, отправьте ему сигнал <code>SIGHUP</code> через <code>docker</code> CLI со специальным флагом командной строки <code>--signal</code>:</p>
+<p><strong><code>$ docker kill --signal=SIGHUP elastic_archimedes</code></strong></p>
+<p>Ничего не произошло, верно? Это потому, что npm клиент не пересылает никакие сигналы порождённому им node процессу.</p>
+<p>Второй подводный камень связан с различными способами указания директивы <code>CMD</code> в Dockerfile. Существует два способа, и они не равнозначны:</p>
+<ol>
+<li>shellform нотация, при которой контейнер порождает интерпретатор shell, который оборачивает процесс. В таких случаях shell может не пересылать сигналы должным образом вашему процессу.</li>
+<li>execform нотация, при которой процесс запускается напрямую без оборачивания в shell. Она задаётся с использованием нотации JSON массива, например: <code>CMD ["npm", "start"]</code>. Все сигналы, отправленные контейнеру, напрямую передаются процессу.</li>
+</ol>
+<p>Исходя из этих знаний, мы хотим улучшить директиву выполнения процесса в нашем Dockerfile следующим образом:</p>
+<p><strong><code>CMD ["node", "server.js"]</code></strong></p>
+<p>Теперь мы запускаем node процесс напрямую, гарантируя, что он получает все отправленные ему сигналы, не будучи обёрнут в интерпретатор shell.</p>
+<p>Однако это вводит ещё один подводный камень.</p>
+<p>Когда процессы запускаются с PID 1, они фактически берут на себя часть обязанностей системы инициализации (init), которая обычно отвечает за инициализацию операционной системы и процессов. Ядро обрабатывает PID 1 иначе, чем другие идентификаторы процессов. Это особое обращение со стороны ядра означает, что обработка сигнала <code>SIGTERM</code> для запущенного процесса не вызовет запасное поведение по умолчанию в виде завершения процесса, если обработчик для него не установлен явно.</p>
+<p>Процитируем <a href="https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#handling-kernel-signals">рекомендацию рабочей группы Node.js Docker</a> по этому поводу: "Node.js не был разработан для запуска с PID 1, что приводит к неожиданному поведению внутри Docker. Например, процесс Node.js, запущенный с PID 1, не будет реагировать на SIGINT (CTRL-C) и аналогичные сигналы".</p>
+<p>Таким образом, следует использовать инструмент, который будет действовать как процесс init: запускаться с PID 1, затем порождать наше Node.js приложение как отдельный процесс, гарантируя при этом проксирование всех сигналов этому Node.js процессу. По возможности мы хотим использовать минимальный инструментарий для этого, чтобы не добавлять уязвимостей безопасности в наш образ контейнера.</p>
+<p>Одним из таких инструментов является <a href="https://engineeringblog.yelp.com/2016/01/dumb-init-an-init-for-docker.html">dumb-init</a>, который статически слинкован и имеет небольшой размер. Вот как его настроить:</p>
+<div class="highlight"><pre><span></span><code>RUN apk add dumb-init
+CMD [&quot;dumb-init&quot;, &quot;node&quot;, &quot;server.js&quot;]
+</code></pre></div>
+<p>Это приводит нас к следующему актуальному Dockerfile. Обратите внимание, что мы разместили установку пакета <code>dumb-init</code> сразу после объявления образа, чтобы воспользоваться кешированием слоёв Docker:</p>
+<div class="highlight"><pre><span></span><code>FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
+RUN apk add dumb-init
+ENV NODE_ENV production
+WORKDIR /usr/src/app
+COPY --chown=node:node . .
+RUN npm ci --omit=dev
+USER node
+CMD [&quot;dumb-init&quot;, &quot;node&quot;, &quot;server.js&quot;]
+</code></pre></div>
+<p>Полезно знать: команды <code>docker kill</code> и <code>docker stop</code> отправляют сигналы только процессу контейнера с PID 1. Если вы используете shell скрипт для запуска вашего Node.js приложения, учтите, что экземпляр shell — например, <code>/bin/sh</code> — не пересылает сигналы дочерним процессам, то есть ваше приложение никогда не получит <code>SIGTERM</code>.</p>
+<h2 id="6-graceful-nodejs-">6) Graceful завершение для ваших Node.js веб-приложений<a class="headerlink" href="#6-graceful-nodejs-" title="Permanent link">&para;</a></h2>
+<p>Раз мы уже обсуждаем сигналы процессов для завершения приложений, убедимся, что мы завершаем их правильно и корректно, не нарушая работу пользователей.</p>
+<p>Когда Node.js приложение получает сигнал прерывания, известный как <code>SIGINT</code>, или <code>CTRL+C</code>, это вызывает резкое завершение процесса — если, конечно, не установлены обработчики событий для иного поведения. Это означает, что клиенты, подключённые к веб-приложению, будут немедленно отключены. Представьте теперь сотни контейнеров Node.js, оркестрируемых Kubernetes, которые поднимаются и опускаются по мере необходимости для масштабирования или обработки ошибок. Не самый лучший пользовательский опыт.</p>
+<p>Вы можете легко смоделировать эту проблему. Вот пример стандартного Fastify веб-приложения со встроенной задержкой ответа в 60 секунд для одного из эндпоинтов:</p>
+<div class="highlight"><pre><span></span><code>fastify.get(&#39;/delayed&#39;, async (request, reply) =&gt; {
+ const SECONDS_DELAY = 60000
+ await new Promise(resolve =&gt; {
+     setTimeout(() =&gt; resolve(), SECONDS_DELAY)
+ })
+ return { hello: &#39;delayed world&#39; }
+})
+
+const start = async () =&gt; {
+ try {
+   await fastify.listen(PORT, HOST)
+   console.log(`*^!@4=&gt; Process id: ${process.pid}`)
+ } catch (err) {
+   fastify.log.error(err)
+   process.exit(1)
+ }
+}
+
+start()
+</code></pre></div>
+<p>Запустите это приложение и после его старта отправьте простой HTTP запрос к этому эндпоинту:</p>
+<p><code>$ time curl https://localhost:3000/delayed</code></p>
+<p>Нажмите <code>CTRL+C</code> в консоли запущенного Node.js и вы увидите, что curl запрос завершился резко. Это моделирует тот же опыт, который получат ваши пользователи при остановке контейнеров.</p>
+<p>Для обеспечения лучшего опыта мы можем сделать следующее:</p>
+<ol>
+<li>Установить обработчик событий для различных сигналов завершения, таких как <code>SIGINT</code> и <code>SIGTERM</code>.</li>
+<li>Обработчик ожидает завершения операций очистки, таких как соединения с базой данных, текущие HTTP запросы и другое.</li>
+<li>Затем обработчик завершает Node.js процесс.</li>
+</ol>
+<p>Конкретно в Fastify мы можем заставить наш обработчик вызвать <a href="https://www.fastify.io/docs/latest/Server/">fastify.close()</a>, который возвращает промис, который мы будем ожидать, а Fastify также позаботится об ответе на каждое новое соединение кодом HTTP статуса 503, сигнализируя о том, что приложение недоступно.</p>
+<p>Добавим наш обработчик событий:</p>
+<div class="highlight"><pre><span></span><code>async function closeGracefully(signal) {
+   console.log(`*^!@4=&gt; Received signal to terminate: ${signal}`)
+
+   await fastify.close()
+   // await db.close() if we have a db connection in this app
+   // await other things we should cleanup nicely
+   process.exit()
+}
+process.on(&#39;SIGINT&#39;, closeGracefully)
+process.on(&#39;SIGTERM&#39;, closeGracefully)
+</code></pre></div>
+<p>Признаём, что это больше относится к общим вопросам веб-приложений, чем к Dockerfile, однако в оркестрированных средах это ещё более важно.</p>
+<h2 id="7-nodejs-docker">7) Находите и устраняйте уязвимости безопасности в вашем Node.js docker образе<a class="headerlink" href="#7-nodejs-docker" title="Permanent link">&para;</a></h2>
+<p>Смотрите <a href="https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html#rule-9-use-static-analysis-tools">Docker Security Cheat Sheet - Use static analysis tools</a></p>
+<h2 id="8">8) Используйте многоэтапные сборки<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<p>Многоэтапные сборки — отличный способ перейти от простого, но потенциально ненадёжного Dockerfile к разделённым этапам сборки Docker образа, что позволяет избежать утечки конфиденциальной информации. Кроме того, мы можем использовать больший базовый Docker образ для установки зависимостей, компиляции нативных npm модулей при необходимости, а затем скопировать все эти артефакты в небольшой production базовый образ, как в нашем примере с alpine.</p>
+<h3 id="_1">Предотвращение утечки конфиденциальной информации<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p>Сценарий утечки конфиденциальной информации здесь встречается чаще, чем вы думаете.</p>
+<p>Если вы собираете Docker образы в рабочих проектах, велика вероятность, что вы также поддерживаете приватные npm пакеты. В таком случае вам, вероятно, нужно было найти способ передать секретный <code>NPM_TOKEN</code> в npm install.</p>
+<p>Вот пример того, о чём я говорю:</p>
+<div class="highlight"><pre><span></span><code>FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
+RUN apk add dumb-init
+ENV NODE_ENV production
+ENV NPM_TOKEN 1234
+WORKDIR /usr/src/app
+COPY --chown=node:node . .
+#RUN npm ci --omit=dev
+RUN echo &quot;//registry.npmjs.org/:_authToken=$NPM_TOKEN&quot; &gt; .npmrc &amp;&amp; \
+   npm ci --omit=dev
+USER node
+CMD [&quot;dumb-init&quot;, &quot;node&quot;, &quot;server.js&quot;]
+</code></pre></div>
+<p>Однако при таком подходе файл <code>.npmrc</code> с секретным npm токеном остаётся внутри Docker образа. Можно попытаться улучшить это, удалив его впоследствии, например так:</p>
+<div class="highlight"><pre><span></span><code>RUN echo &quot;//registry.npmjs.org/:_authToken=$NPM_TOKEN&quot; &gt; .npmrc &amp;&amp; \
+   npm ci --omit=dev
+RUN rm -rf .npmrc
+</code></pre></div>
+<p>Однако теперь файл <code>.npmrc</code> доступен в другом слое Docker образа. Если этот Docker образ публичен или кто-то получит к нему доступ, ваш токен будет скомпрометирован. Лучшим вариантом улучшения будет следующее:</p>
+<div class="highlight"><pre><span></span><code>RUN echo &quot;//registry.npmjs.org/:_authToken=$NPM_TOKEN&quot; &gt; .npmrc &amp;&amp; \
+   npm ci --omit=dev; \
+   rm -rf .npmrc
+</code></pre></div>
+<p>Проблема теперь в том, что сам Dockerfile должен рассматриваться как секретный актив, поскольку он содержит внутри секретный npm токен.</p>
+<p>К счастью, Docker поддерживает возможность передачи аргументов в процесс сборки:</p>
+<div class="highlight"><pre><span></span><code>ARG NPM_TOKEN
+RUN echo &quot;//registry.npmjs.org/:_authToken=$NPM_TOKEN&quot; &gt; .npmrc &amp;&amp; \
+   npm ci --omit=dev; \
+   rm -rf .npmrc
+</code></pre></div>
+<p>Затем собираем его следующим образом:</p>
+<p><strong><code>$ docker build . -t nodejs-tutorial --build-arg NPM_TOKEN=1234</code></strong></p>
+<p>Знаю, вы думали, что на этом всё готово, но, к сожалению, нет 🙂</p>
+<p>Вот как бывает с безопасностью — иногда очевидные вещи оказываются очередным подводным камнем.</p>
+<p>В чём же проблема теперь? Аргументы сборки, переданные таким образом в Docker, сохраняются в журнале истории. Убедимся сами. Выполним команду:</p>
+<p><strong><code>$ docker history nodejs-tutorial</code></strong></p>
+<p>которая выводит следующее:</p>
+<div class="highlight"><pre><span></span><code>IMAGE          CREATED              CREATED BY                                      SIZE      COMMENT
+b4c2c78acaba   About a minute ago   CMD [&quot;dumb-init&quot; &quot;node&quot; &quot;server.js&quot;]            0B        buildkit.dockerfile.v0
+&lt;missing&gt;      About a minute ago   USER node                                       0B        buildkit.dockerfile.v0
+&lt;missing&gt;      About a minute ago   RUN |1 NPM_TOKEN=1234 /bin/sh -c echo &quot;//reg…   5.71MB    buildkit.dockerfile.v0
+&lt;missing&gt;      About a minute ago   ARG NPM_TOKEN                                   0B        buildkit.dockerfile.v0
+&lt;missing&gt;      About a minute ago   COPY . . # buildkit                             15.3kB    buildkit.dockerfile.v0
+&lt;missing&gt;      About a minute ago   WORKDIR /usr/src/app                            0B        buildkit.dockerfile.v0
+&lt;missing&gt;      About a minute ago   ENV NODE_ENV=production                         0B        buildkit.dockerfile.v0
+&lt;missing&gt;      About a minute ago   RUN /bin/sh -c apk add dumb-init # buildkit     1.65MB    buildkit.dockerfile.v0
+</code></pre></div>
+<p>Видите секретный npm токен там? Вот о чём я и говорю.</p>
+<p>Есть отличный способ управления секретами для образа контейнера, но сейчас самое время представить многоэтапные сборки как способ решения этой проблемы, а также показать, как мы можем создавать минимальные образы.</p>
+<h3 id="nodejs-docker">Введение в многоэтапные сборки для Node.js Docker образов<a class="headerlink" href="#nodejs-docker" title="Permanent link">&para;</a></h3>
+<p>Следуя принципу разделения ответственностей из разработки программного обеспечения, мы применим те же идеи для сборки наших Node.js Docker образов. У нас будет один образ, используемый для сборки всего необходимого для запуска Node.js приложения — в мире Node.js это означает установку npm пакетов и компиляцию нативных npm модулей при необходимости. Это будет наш первый этап.</p>
+<p>Второй Docker образ, представляющий второй этап сборки Docker, будет production Docker образом. Этот второй и последний этап — образ, который мы фактически оптимизируем и публикуем в реестр, если он у нас есть. Первый образ, который мы будем называть образом <code>build</code>, отбрасывается и остаётся как висячий (dangling) образ на Docker хосте, выполнившем сборку, до его очистки.</p>
+<p>Вот обновление нашего Dockerfile с учётом прогресса на данный момент, разделённое на два этапа:</p>
+<div class="highlight"><pre><span></span><code># --------------&gt; The build image
+FROM node:latest AS build
+ARG NPM_TOKEN
+WORKDIR /usr/src/app
+COPY package*.json /usr/src/app/
+RUN echo &quot;//registry.npmjs.org/:_authToken=$NPM_TOKEN&quot; &gt; .npmrc &amp;&amp; \
+   npm ci --omit=dev &amp;&amp; \
+   rm -f .npmrc
+
+# --------------&gt; The production image
+FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
+RUN apk add dumb-init
+ENV NODE_ENV production
+USER node
+WORKDIR /usr/src/app
+COPY --chown=node:node --from=build /usr/src/app/node_modules /usr/src/app/node_modules
+COPY --chown=node:node . /usr/src/app
+CMD [&quot;dumb-init&quot;, &quot;node&quot;, &quot;server.js&quot;]
+</code></pre></div>
+<p>Как видите, я выбрал больший образ для этапа <code>build</code>, так как мне может понадобиться инструментарий, такой как <code>gcc</code> (GNU Compiler Collection), для компиляции нативных npm пакетов или других нужд.</p>
+<p>На втором этапе есть специальная нотация для директивы <code>COPY</code>, которая копирует папку <code>node_modules/</code> из сборочного Docker образа в этот новый production базовый образ.</p>
+<p>Кроме того, обратите внимание: видите ли вы <code>NPM_TOKEN</code>, переданный как аргумент сборки в промежуточный Docker образ <code>build</code>? Его больше нет в выводе команды <code>docker history nodejs-tutorial</code>, потому что он не существует в нашем production docker образе.</p>
+<h2 id="9-nodejs-docker">9) Исключайте ненужные файлы из ваших Node.js Docker образов<a class="headerlink" href="#9-nodejs-docker" title="Permanent link">&para;</a></h2>
+<p>У вас есть файл <code>.gitignore</code>, чтобы не засорять git репозиторий ненужными и потенциально конфиденциальными файлами, верно? То же самое применимо к Docker образам.</p>
+<p>Docker имеет <code>.dockerignore</code>, который гарантирует, что файлы, соответствующие glob паттернам внутри него, не будут отправлены Docker daemon. Вот список файлов, чтобы дать вам представление о том, что вы, возможно, помещаете в свой Docker образ и что нам желательно исключить:</p>
+<div class="highlight"><pre><span></span><code>.dockerignore
+node_modules
+npm-debug.log
+Dockerfile
+.git
+.gitignore
+</code></pre></div>
+<p>Как видите, исключение <code>node_modules/</code> действительно важно, поскольку в противном случае упрощённая версия Dockerfile, с которой мы начали, привела бы к копированию локальной папки <code>node_modules/</code> в контейнер как есть.</p>
+<div class="highlight"><pre><span></span><code>FROM node@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN npm ci
+CMD &quot;npm&quot; &quot;start&quot;
+</code></pre></div>
+<p>На самом деле, наличие файла <code>.dockerignore</code> ещё более важно при использовании многоэтапных сборок Docker. Для освежения памяти, вот как выглядит 2-й этап сборки Docker:</p>
+<div class="highlight"><pre><span></span><code># --------------&gt; The production image
+FROM node:lts-alpine
+RUN apk add dumb-init
+ENV NODE_ENV production
+USER node
+WORKDIR /usr/src/app
+COPY --chown=node:node --from=build /usr/src/app/node_modules /usr/src/app/node_modules
+COPY --chown=node:node . /usr/src/app
+CMD [&quot;dumb-init&quot;, &quot;node&quot;, &quot;server.js&quot;]
+</code></pre></div>
+<p>Важность наличия <code>.dockerignore</code> заключается в том, что при выполнении <code>COPY . /usr/src/app</code> на 2-м этапе Dockerfile мы также копируем в Docker образ локальную папку node_modules/. Это категорически недопустимо, так как мы можем скопировать изменённый исходный код внутри <code>node_modules/</code>.</p>
+<p>Помимо этого, используя подстановку <code>COPY .</code>, мы также можем копировать в Docker образ конфиденциальные файлы, содержащие учётные данные или локальную конфигурацию.</p>
+<p>Ключевые выводы относительно файла <code>.dockerignore</code>:</p>
+<ul>
+<li>Исключает потенциально изменённые копии <code>node_modules/</code> в Docker образе.</li>
+<li>Защищает от раскрытия секретов, например содержимого файлов <code>.env</code> или <code>aws.json</code> с учётными данными, которые могут попасть в Node.js Docker образ.</li>
+<li>Ускоряет сборки Docker, игнорируя файлы, которые иначе привели бы к инвалидации кеша. Например, изменение лог-файла или локального файла конфигурации среды — всё это привело бы к инвалидации кеша Docker образа на том слое, где происходит копирование локальной директории.</li>
+</ul>
+<h2 id="10-docker">10) Монтирование секретов в Docker образ при сборке<a class="headerlink" href="#10-docker" title="Permanent link">&para;</a></h2>
+<p>Важно отметить, что файл <code>.dockerignore</code> работает по принципу "всё или ничего" и не может быть включён или выключен для отдельных этапов сборки в многоэтапной сборке Docker.</p>
+<p>Почему это важно? В идеале нам нужен файл <code>.npmrc</code> на этапе сборки, поскольку он может включать секретный npm токен для доступа к приватным npm пакетам. Возможно, в нём также задана конкретная конфигурация прокси или реестра для скачивания пакетов.</p>
+<p>Это означает, что имеет смысл делать файл <code>.npmrc</code> доступным на этапе <code>build</code> — однако на втором этапе для production образа он нам не нужен совсем, и мы также не хотим его там видеть, так как он может содержать конфиденциальную информацию, например секретный npm токен.</p>
+<p>Один из способов обойти это ограничение <code>.dockerignore</code> — монтировать локальную файловую систему, которая будет доступна на этапе сборки, однако есть способ получше.</p>
+<p>Docker поддерживает относительно новую возможность, называемую Docker secrets, которая идеально подходит для нашего случая с <code>.npmrc</code>. Вот как это работает:</p>
+<ul>
+<li>При запуске команды <code>docker build</code> мы укажем аргументы командной строки, определяющие новый идентификатор секрета и ссылающиеся на файл как источник секрета.</li>
+<li>В Dockerfile мы добавим флаги к директиве <code>RUN</code> для установки production npm, которая монтирует файл, на который ссылается идентификатор секрета, в целевое расположение — локальный файл <code>.npmrc</code>, где он нам нужен.</li>
+<li>Файл <code>.npmrc</code> монтируется как секрет и никогда не копируется в Docker образ.</li>
+<li>Наконец, не забудем добавить файл <code>.npmrc</code> в содержимое файла <code>.dockerignore</code>, чтобы он не попал в образ ни на этапе сборки, ни на production этапе.</li>
+</ul>
+<p>Посмотрим, как всё это работает вместе. Сначала обновлённый файл <code>.dockerignore</code>:</p>
+<div class="highlight"><pre><span></span><code>.dockerignore
+node_modules
+npm-debug.log
+Dockerfile
+.git
+.gitignore
+.npmrc
+</code></pre></div>
+<p>Затем полный Dockerfile с обновлённой директивой RUN для установки npm пакетов с указанием точки монтирования <code>.npmrc</code>:</p>
+<div class="highlight"><pre><span></span><code># --------------&gt; The build image
+FROM node:latest AS build
+WORKDIR /usr/src/app
+COPY package*.json /usr/src/app/
+RUN --mount=type=secret,mode=0644,id=npmrc,target=/usr/src/app/.npmrc npm ci --omit=dev
+
+# --------------&gt; The production image
+FROM node:lts-alpine
+RUN apk add dumb-init
+ENV NODE_ENV production
+USER node
+WORKDIR /usr/src/app
+COPY --chown=node:node --from=build /usr/src/app/node_modules /usr/src/app/node_modules
+COPY --chown=node:node . /usr/src/app
+CMD [&quot;dumb-init&quot;, &quot;node&quot;, &quot;server.js&quot;]
+</code></pre></div>
+<p>И наконец, команда для сборки Node.js Docker образа:</p>
+<div class="highlight"><pre><span></span><code>docker build . -t nodejs-tutorial --secret id=npmrc,src=.npmrc
+</code></pre></div>
+<p><strong>Примечание:</strong> Secrets — это новая функция Docker, и если вы используете более старую версию, вам может потребоваться включить Buildkit следующим образом:</p>
+<div class="highlight"><pre><span></span><code>DOCKER_BUILDKIT=1 docker build . -t nodejs-tutorial --build-arg NPM_TOKEN=1234 --secret id=npmrc,src=.npmrc
+</code></pre></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

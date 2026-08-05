@@ -1,0 +1,3730 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="Dependency_Graph_SBOM_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Django_REST_Framework_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Deserialization - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deserialization
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что такое десериализация
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекомендации по безопасной десериализации объектов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендации по безопасной десериализации объектов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#php" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clear-box-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ с доступом к коду (Clear-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opaque-box-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ без доступа к коду (Opaque-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear-box-review_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ с доступом к коду (Clear-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clear-box-review_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ с доступом к коду (Clear-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opaque-box-review_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ без доступа к коду (Opaque-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение утечки данных и подмены доверенных полей
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение десериализации доменных объектов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javaioobjectinputstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление защиты java.io.ObjectInputStream
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javaioobjectinputstream_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление всех использований java.io.ObjectInputStream с помощью агента
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Другие библиотеки и форматы десериализации
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#net-csharp" class="md-nav__link">
+    <span class="md-ellipsis">
+      .Net CSharp
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=".Net CSharp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clear-box-review_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ с доступом к коду (Clear-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opaque-box-review_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ без доступа к коду (Opaque-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Общие меры предосторожности
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#net-rce" class="md-nav__link">
+    <span class="md-ellipsis">
+      Известные .NET RCE гаджеты
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Языконезависимые методы безопасной десериализации
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Языконезависимые методы безопасной десериализации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование альтернативных форматов данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Десериализация только подписанных данных
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Инструменты и библиотеки защиты
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Инструменты обнаружения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что такое десериализация
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекомендации по безопасной десериализации объектов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендации по безопасной десериализации объектов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#php" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clear-box-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ с доступом к коду (Clear-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opaque-box-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ без доступа к коду (Opaque-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear-box-review_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ с доступом к коду (Clear-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clear-box-review_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ с доступом к коду (Clear-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opaque-box-review_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ без доступа к коду (Opaque-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение утечки данных и подмены доверенных полей
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение десериализации доменных объектов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javaioobjectinputstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление защиты java.io.ObjectInputStream
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javaioobjectinputstream_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление всех использований java.io.ObjectInputStream с помощью агента
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Другие библиотеки и форматы десериализации
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#net-csharp" class="md-nav__link">
+    <span class="md-ellipsis">
+      .Net CSharp
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=".Net CSharp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clear-box-review_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ с доступом к коду (Clear-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opaque-box-review_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Анализ без доступа к коду (Opaque-box Review)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Общие меры предосторожности
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#net-rce" class="md-nav__link">
+    <span class="md-ellipsis">
+      Известные .NET RCE гаджеты
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Языконезависимые методы безопасной десериализации
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Языконезависимые методы безопасной десериализации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование альтернативных форматов данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Десериализация только подписанных данных
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Инструменты и библиотеки защиты
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Инструменты обнаружения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="_1">Шпаргалка по десериализации<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">Введение<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Эта статья сосредоточена на предоставлении чётких и практических рекомендаций по безопасной десериализации недоверенных данных в ваших приложениях.</p>
+<h2 id="_3">Что такое десериализация<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><strong>Сериализация</strong> — это процесс преобразования некоторого объекта в формат данных, который можно восстановить позже. Люди часто сериализуют объекты для сохранения на хранение или для отправки в составе сообщений.</p>
+<p><strong>Десериализация</strong> — это обратный процесс: принятие данных в некотором формате и воссоздание из них объекта. Сегодня наиболее популярным форматом данных для сериализации является JSON. До него таковым был XML.</p>
+<p>Однако многие языки программирования имеют нативные способы сериализации объектов. Эти нативные форматы обычно предлагают больше возможностей, чем JSON или XML, включая настройку процесса сериализации.</p>
+<p>К сожалению, возможности этих нативных механизмов десериализации иногда могут быть использованы в злонамеренных целях при работе с недоверенными данными. Атаки на десериализаторы могут позволить отказ в обслуживании, обход контроля доступа или атаки с удалённым выполнением кода (RCE).</p>
+<h2 id="_4">Рекомендации по безопасной десериализации объектов<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>Следующие рекомендации, специфичные для языков программирования, перечисляют безопасные методологии десериализации данных, которым нельзя доверять.</p>
+<h3 id="php">PHP<a class="headerlink" href="#php" title="Permanent link">&para;</a></h3>
+<h4 id="clear-box-review">Анализ с доступом к коду (Clear-box Review)<a class="headerlink" href="#clear-box-review" title="Permanent link">&para;</a></h4>
+<p>Проверяйте использование функции <a href="https://www.php.net/manual/en/function.unserialize.php"><code>unserialize()</code></a> и анализируйте, как принимаются внешние параметры. Используйте безопасный, стандартный формат обмена данными, такой как JSON (через <code>json_decode()</code> и <code>json_encode()</code>), если нужно передавать сериализованные данные пользователю.</p>
+<h3 id="python">Python<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
+<h4 id="opaque-box-review">Анализ без доступа к коду (Opaque-box Review)<a class="headerlink" href="#opaque-box-review" title="Permanent link">&para;</a></h4>
+<p>Если данные трафика содержат символ точки <code>.</code> в конце, весьма вероятно, что данные были отправлены в сериализованном виде. Это справедливо только если данные не закодированы в схемах Base64 или Hexadecimal. Если данные закодированы, лучше проверить наличие сериализации, взглянув на начальные символы значения параметра. Например, если данные закодированы в Base64, они, скорее всего, начинаются с <code>gASV</code>.</p>
+<h4 id="clear-box-review_1">Анализ с доступом к коду (Clear-box Review)<a class="headerlink" href="#clear-box-review_1" title="Permanent link">&para;</a></h4>
+<p>Следующие API в Python будут уязвимы к атаке на сериализацию. Ищите в коде следующие паттерны.</p>
+<ol>
+<li>Использование <code>pickle/c_pickle/_pickle</code> с <code>load/loads</code>:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; cos.system(S&#39;dir&#39;)tR. &quot;&quot;&quot;</span>
+<span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+<ol start="2">
+<li>Использование <code>PyYAML</code> с <code>load</code>:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">yaml</span>
+<span class="n">document</span> <span class="o">=</span> <span class="s2">&quot;!!python/object/apply:os.system [&#39;ipconfig&#39;]&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">document</span><span class="p">))</span>
+</code></pre></div>
+<ol start="3">
+<li>Использование <code>jsonpickle</code> с методами <code>encode</code> или <code>store</code>.</li>
+</ol>
+<h3 id="java">Java<a class="headerlink" href="#java" title="Permanent link">&para;</a></h3>
+<p>Все следующие техники подходят для предотвращения атак на десериализацию <a href="https://docs.oracle.com/javase/7/docs/api/java/io/Serializable.html">Java Serializable формата</a>.</p>
+<p>Рекомендации по реализации:</p>
+<ul>
+<li>В коде переопределяйте метод <code>ObjectInputStream#resolveClass()</code> для предотвращения десериализации произвольных классов. Это безопасное поведение можно обернуть в библиотеку, например <a href="https://github.com/ikkisoft/SerialKiller">SerialKiller</a>.</li>
+<li>Используйте безопасную замену для универсального метода <code>readObject()</code>, как показано здесь. Обратите внимание, что это решает атаки типа "<a href="https://en.wikipedia.org/wiki/Billion_laughs_attack">billion laughs</a>" путём проверки длины входных данных и количества десериализованных объектов.</li>
+</ul>
+<h4 id="clear-box-review_2">Анализ с доступом к коду (Clear-box Review)<a class="headerlink" href="#clear-box-review_2" title="Permanent link">&para;</a></h4>
+<p>Следите за следующими использованиями Java API на предмет потенциальных уязвимостей сериализации.</p>
+<ol>
+<li>
+<p><code>XMLdecoder</code> с внешними пользовательскими параметрами</p>
+</li>
+<li>
+<p><code>XStream</code> с методом <code>fromXML</code> (версия xstream &lt;= v1.4.6 уязвима к проблеме сериализации)</p>
+</li>
+<li>
+<p><code>ObjectInputStream</code> с <code>readObject</code></p>
+</li>
+<li>
+<p>Использование <code>readObject</code>, <code>readObjectNoData</code>, <code>readResolve</code> или <code>readExternal</code></p>
+</li>
+<li>
+<p><code>ObjectInputStream.readUnshared</code></p>
+</li>
+<li>
+<p><code>Serializable</code></p>
+</li>
+</ol>
+<h4 id="opaque-box-review_1">Анализ без доступа к коду (Opaque-box Review)<a class="headerlink" href="#opaque-box-review_1" title="Permanent link">&para;</a></h4>
+<p>Если захваченные данные трафика включают следующие паттерны, это может указывать на то, что данные были отправлены в потоках Java-сериализации:</p>
+<ul>
+<li><code>AC ED 00 05</code> в шестнадцатеричном формате</li>
+<li><code>rO0</code> в Base64</li>
+<li>Заголовок <code>Content-type</code> HTTP-ответа установлен на <code>application/x-java-serialized-object</code></li>
+</ul>
+<h4 id="_5">Предотвращение утечки данных и подмены доверенных полей<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
+<p>Если есть члены данных объекта, которые никогда не должны контролироваться конечными пользователями при десериализации или раскрываться пользователям при сериализации, их следует объявить с <a href="https://docs.oracle.com/javase/7/docs/platform/serialization/spec/serial-arch.html#7231">ключевым словом <code>transient</code></a> (раздел <em>Protecting Sensitive Information</em>).</p>
+<p>Для класса, определённого как Serializable, чувствительная переменная должна быть объявлена как <code>private transient</code>.</p>
+<p>Например, для класса <code>myAccount</code> переменные 'profit' и 'margin' объявлены как transient, чтобы предотвратить их сериализацию.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">myAccount</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Serializable</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">transient</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">profit</span><span class="p">;</span><span class="w"> </span><span class="c1">// объявлено transient</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">transient</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">margin</span><span class="p">;</span><span class="w"> </span><span class="c1">// объявлено transient</span>
+<span class="w">    </span><span class="p">....</span>
+</code></pre></div>
+<h4 id="_6">Предотвращение десериализации доменных объектов<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<p>Некоторые объекты приложения могут быть вынуждены реализовывать <code>Serializable</code> из-за своей иерархии. Чтобы гарантировать невозможность десериализации объектов вашего приложения, следует объявить метод <code>readObject()</code> (с модификатором <code>final</code>), который всегда выбрасывает исключение:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">readObject</span><span class="p">(</span><span class="n">ObjectInputStream</span><span class="w"> </span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">io</span><span class="p">.</span><span class="na">IOException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">io</span><span class="p">.</span><span class="na">IOException</span><span class="p">(</span><span class="s">&quot;Cannot be deserialized&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="javaioobjectinputstream">Усиление защиты java.io.ObjectInputStream<a class="headerlink" href="#javaioobjectinputstream" title="Permanent link">&para;</a></h4>
+<p>Класс <code>java.io.ObjectInputStream</code> используется для десериализации объектов. Его поведение можно усилить, создав подкласс. Это лучшее решение если:</p>
+<ul>
+<li>вы можете изменить код, выполняющий десериализацию;</li>
+<li>вы знаете, какие классы ожидаете десериализовать.</li>
+</ul>
+<p>Общая идея — переопределить <a href="http://docs.oracle.com/javase/7/docs/api/java/io/ObjectInputStream.html#resolveClass(java.io.ObjectStreamClass)"><code>ObjectInputStream.html#resolveClass()</code></a> для ограничения допустимых для десериализации классов.</p>
+<p>Поскольку этот вызов происходит до вызова <code>readObject()</code>, вы можете быть уверены, что никакая активность десериализации не произойдёт, если тип не является одним из разрешённых.</p>
+<p>Простой пример показан ниже, где класс <code>LookAheadObjectInputStream</code> гарантированно <strong>не</strong> десериализует никакой тип, кроме класса <code>Bicycle</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">LookAheadObjectInputStream</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">ObjectInputStream</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">LookAheadObjectInputStream</span><span class="p">(</span><span class="n">InputStream</span><span class="w"> </span><span class="n">inputStream</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">super</span><span class="p">(</span><span class="n">inputStream</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    * Десериализовать только экземпляры ожидаемого класса Bicycle</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="n">Class</span><span class="o">&lt;?&gt;</span><span class="w"> </span><span class="n">resolveClass</span><span class="p">(</span><span class="n">ObjectStreamClass</span><span class="w"> </span><span class="n">desc</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">ClassNotFoundException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">desc</span><span class="p">.</span><span class="na">getName</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="n">Bicycle</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getName</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InvalidClassException</span><span class="p">(</span><span class="s">&quot;Unauthorized deserialization attempt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">desc</span><span class="p">.</span><span class="na">getName</span><span class="p">());</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kd">super</span><span class="p">.</span><span class="na">resolveClass</span><span class="p">(</span><span class="n">desc</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Более полные реализации этого подхода были предложены различными членами сообщества:</p>
+<ul>
+<li><a href="https://github.com/ikkisoft/SerialKiller">NibbleSec</a> - библиотека, позволяющая создавать списки классов, разрешённых для десериализации</li>
+<li><a href="https://www.ibm.com/developerworks/library/se-lookahead/">IBM</a> - оригинальная защита, написанная за годы до того, как были предусмотрены наиболее разрушительные сценарии эксплуатации.</li>
+<li><a href="https://commons.apache.org/proper/commons-io/javadocs/api-2.5/org/apache/commons/io/serialization/ValidatingObjectInputStream.html">Apache Commons IO classes</a></li>
+</ul>
+<h4 id="javaioobjectinputstream_1">Усиление всех использований java.io.ObjectInputStream с помощью агента<a class="headerlink" href="#javaioobjectinputstream_1" title="Permanent link">&para;</a></h4>
+<p>Как упоминалось выше, класс <code>java.io.ObjectInputStream</code> используется для десериализации объектов. Его поведение можно усилить, создав подкласс. Однако если вы не владеете кодом или не можете ждать патча, использование агента для внедрения защиты в <code>java.io.ObjectInputStream</code> является лучшим решением.</p>
+<p>Глобальное изменение <code>ObjectInputStream</code> безопасно только для блокировки известных вредоносных типов, поскольку невозможно знать для всех приложений, какие классы ожидаются для десериализации. К счастью, для защиты от всех известных векторов атак сегодня в список запрещённых нужно добавить очень мало классов.</p>
+<p>Неизбежно будут обнаружены новые классы "гаджетов", которые можно злоупотребить. Однако сегодня огромное количество уязвимого программного обеспечения нуждается в исправлении. В некоторых случаях "исправление" уязвимости может включать перепроектирование систем обмена сообщениями и нарушение обратной совместимости, когда разработчики переходят к отказу от приёма сериализованных объектов.</p>
+<p>Чтобы включить эти агенты, добавьте новый параметр JVM:</p>
+<div class="highlight"><pre><span></span><code>-javaagent:name-of-agent.jar
+</code></pre></div>
+<p>Агенты с таким подходом выпущены различными членами сообщества:</p>
+<ul>
+<li><a href="https://github.com/Contrast-Security-OSS/contrast-rO0">rO0 by Contrast Security</a></li>
+</ul>
+<p>Похожий, но менее масштабируемый подход — вручную патчить и бутстрапить ObjectInputStream вашей JVM. Руководство по этому подходу доступно <a href="https://github.com/wsargent/paranoid-java-serialization">здесь</a>.</p>
+<h4 id="_7">Другие библиотеки и форматы десериализации<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>Хотя приведённые выше рекомендации сосредоточены на <a href="https://docs.oracle.com/javase/7/docs/api/java/io/Serializable.html">Java Serializable формате</a>, существует ряд других библиотек, использующих другие форматы для десериализации. Многие из этих библиотек могут иметь аналогичные проблемы безопасности при неправильной настройке. В этом разделе перечислены некоторые из этих библиотек и рекомендуемые параметры конфигурации для предотвращения проблем безопасности при десериализации недоверенных данных:</p>
+<p><strong>Безопасны при конфигурации по умолчанию:</strong></p>
+<p>Следующие библиотеки можно использовать безопасно при конфигурации по умолчанию:</p>
+<ul>
+<li><strong><a href="https://github.com/alibaba/fastjson2">fastjson2</a></strong> (JSON) - можно использовать безопасно, пока не включена опция <a href="https://github.com/alibaba/fastjson2/wiki/fastjson2_autotype_cn"><strong>autotype</strong></a></li>
+<li><strong><a href="https://github.com/FasterXML/jackson-databind">jackson-databind</a></strong> (JSON) - можно использовать безопасно, пока не используется полиморфизм (<a href="https://cowtowncoder.medium.com/on-jackson-cves-dont-panic-here-is-what-you-need-to-know-54cd0d6e8062">см. статью</a>)</li>
+<li><strong><a href="https://github.com/EsotericSoftware/kryo">Kryo v5.0.0+</a></strong> (пользовательский формат) - можно использовать безопасно, пока регистрация классов не отключена (<a href="https://github.com/EsotericSoftware/kryo#optional-registration">см. документацию</a> и <a href="https://github.com/EsotericSoftware/kryo/issues/929">эту проблему</a>)</li>
+<li><strong><a href="https://github.com/EsotericSoftware/yamlbeans">YamlBeans v1.16+</a></strong> (YAML) - можно использовать безопасно, пока не используется класс <strong>UnsafeYamlConfig</strong> (см. <a href="https://github.com/EsotericSoftware/yamlbeans/commit/b1122588e7610ae4e0d516c50d08c94ee87946e6">этот коммит</a>)<ul>
+<li><em>ПРИМЕЧАНИЕ: поскольку эти версии недоступны в Maven Central, существует <a href="https://github.com/Contrast-Security-OSS/yamlbeans">форк</a>, который можно использовать вместо.</em></li>
+</ul>
+</li>
+<li><strong><a href="https://x-stream.github.io/">XStream v1.4.17+</a></strong> (JSON и XML) - можно использовать безопасно, пока allowlist и другие средства контроля безопасности не ослаблены (<a href="https://x-stream.github.io/security.html">см. документацию</a>)</li>
+</ul>
+<p><strong>Требуют настройки перед безопасным использованием:</strong></p>
+<p>Следующие библиотеки требуют установки параметров конфигурации перед безопасным использованием:</p>
+<ul>
+<li><strong><a href="https://github.com/alibaba/fastjson">fastjson v1.2.68+</a></strong> (JSON) - нельзя использовать безопасно без включения опции <a href="https://github.com/alibaba/fastjson/wiki/fastjson_safemode_en"><strong>safemode</strong></a>, которая отключает десериализацию любого класса (<a href="https://github.com/alibaba/fastjson/wiki/enable_autotype">см. документацию</a>). Предыдущие версии небезопасны.</li>
+<li><strong><a href="https://github.com/jdereg/json-io">json-io</a></strong> (JSON) - нельзя использовать безопасно, поскольку использование свойства <strong>@type</strong> в JSON позволяет десериализацию любого класса. Можно использовать безопасно только в следующих ситуациях:<ul>
+<li>В <a href="https://github.com/jdereg/json-io/blob/master/user-guide.md#non-typed-usage">нетипизированном режиме</a> с настройкой <strong>JsonReader.USE_MAPS</strong>, которая отключает десериализацию общих объектов</li>
+<li><a href="https://github.com/jdereg/json-io/blob/master/user-guide.md#customization-technique-4-custom-serializer">С пользовательским десериализатором</a>, контролирующим, какие классы десериализуются</li>
+</ul>
+</li>
+<li><strong><a href="https://github.com/EsotericSoftware/kryo">Kryo &lt; v5.0.0</a></strong> (пользовательский формат) - нельзя использовать безопасно без включения регистрации классов, которая отключает десериализацию любого класса (<a href="https://github.com/EsotericSoftware/kryo#optional-registration">см. документацию</a> и <a href="https://github.com/EsotericSoftware/kryo/issues/929">эту проблему</a>)<ul>
+<li><em>ПРИМЕЧАНИЕ: существуют другие обёртки вокруг Kryo, например <a href="https://github.com/twitter/chill">Chill</a>, в которых регистрация классов также может не требоваться по умолчанию, независимо от базовой версии Kryo</em></li>
+</ul>
+</li>
+<li><strong><a href="https://bitbucket.org/snakeyaml/snakeyaml/src">SnakeYAML</a></strong> (YAML) - нельзя использовать безопасно без использования класса <strong>org.yaml.snakeyaml.constructor.SafeConstructor</strong>, который отключает десериализацию любого класса (<a href="https://bitbucket.org/snakeyaml/snakeyaml/wiki/CVE-2022-1471">см. документацию</a>)</li>
+</ul>
+<p><strong>Нельзя использовать безопасно:</strong></p>
+<p>Следующие библиотеки либо больше не поддерживаются, либо не могут безопасно использоваться с недоверенными входными данными:</p>
+<ul>
+<li><strong><a href="https://github.com/castor-data-binding/castor">Castor</a></strong> (XML) - похоже, заброшен, без коммитов с 2016 года</li>
+<li><strong><a href="https://github.com/alibaba/fastjson">fastjson &lt; v1.2.68</a></strong> (JSON) - эти версии допускают десериализацию любого класса (<a href="https://github.com/alibaba/fastjson/wiki/enable_autotype">см. документацию</a>)</li>
+<li><strong><a href="https://docs.oracle.com/javase/8/docs/api/java/beans/XMLDecoder.html">XMLDecoder в JDK</a></strong> (XML) - <em>"почти невозможно безопасно десериализовать объекты Java в этом формате из недоверенных входных данных"</em> ("Red Hat Defensive Coding Guide", <a href="https://redhat-crypto.gitlab.io/defensive-coding-guide/#sect-Defensive_Coding-Tasks-Serialization-XML">конец раздела 2.6.5</a>)</li>
+<li><strong><a href="https://x-stream.github.io/">XStream &lt; v1.4.17</a></strong> (JSON и XML) - эти версии допускают десериализацию любого класса (см. <a href="https://x-stream.github.io/security.html#explicit">документацию</a>)</li>
+<li><strong><a href="https://github.com/EsotericSoftware/yamlbeans">YamlBeans &lt; v1.16</a></strong> (YAML) - эти версии допускают десериализацию любого класса (см. <a href="https://github.com/Contrast-Security-OSS/yamlbeans/blob/main/SECURITY.md">этот документ</a>)</li>
+</ul>
+<h3 id="net-csharp">.Net CSharp<a class="headerlink" href="#net-csharp" title="Permanent link">&para;</a></h3>
+<h4 id="clear-box-review_3">Анализ с доступом к коду (Clear-box Review)<a class="headerlink" href="#clear-box-review_3" title="Permanent link">&para;</a></h4>
+<p>Ищите в исходном коде следующие термины:</p>
+<ol>
+<li><code>TypeNameHandling</code></li>
+<li><code>JavaScriptTypeResolver</code></li>
+</ol>
+<p>Ищите сериализаторы, где тип задаётся переменной, контролируемой пользователем.</p>
+<h4 id="opaque-box-review_2">Анализ без доступа к коду (Opaque-box Review)<a class="headerlink" href="#opaque-box-review_2" title="Permanent link">&para;</a></h4>
+<p>Ищите содержимое, закодированное в Base64, начинающееся с:</p>
+<div class="highlight"><pre><span></span><code>AAEAAAD/////
+</code></pre></div>
+<p>Ищите содержимое со следующим текстом:</p>
+<ol>
+<li><code>TypeObject</code></li>
+<li><code>$type:</code></li>
+</ol>
+<h4 id="_8">Общие меры предосторожности<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<p>Microsoft заявила, что тип <code>BinaryFormatter</code> опасен и не может быть защищён. Поэтому его не следует использовать. Полные сведения в <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/binaryformatter-security-guide">руководстве по безопасности BinaryFormatter</a>.</p>
+<p>Не позволяйте потоку данных определять тип объекта, в который будет выполняться десериализация потока. Это можно предотвратить, например, используя <code>DataContractSerializer</code> или <code>XmlSerializer</code>, если это возможно.</p>
+<p>Если используется <code>JSON.Net</code>, убедитесь, что <code>TypeNameHandling</code> установлен только в <code>None</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">TypeNameHandling</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TypeNameHandling</span><span class="p">.</span><span class="n">None</span>
+</code></pre></div>
+<p>Если используется <code>JavaScriptSerializer</code>, не используйте его с <code>JavaScriptTypeResolver</code>.</p>
+<p>Если необходимо десериализовывать потоки данных, определяющие свой тип, ограничьте допустимые типы. Следует учитывать, что это всё ещё рискованно, поскольку многие нативные типы .Net потенциально опасны сами по себе. Например:</p>
+<div class="highlight"><pre><span></span><code><span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">FileInfo</span>
+</code></pre></div>
+<p>Объекты <code>FileInfo</code>, ссылающиеся на файлы, реально существующие на сервере, при десериализации могут изменять их свойства, например, устанавливать права только для чтения, создавая потенциальную атаку типа "отказ в обслуживании".</p>
+<p>Даже если вы ограничили типы для десериализации, помните, что у некоторых типов есть рискованные свойства. Например, <code>System.ComponentModel.DataAnnotations.ValidationException</code> имеет свойство <code>Value</code> типа <code>Object</code>. Если этот тип разрешён для десериализации, злоумышленник может установить свойство <code>Value</code> для любого типа объекта.</p>
+<p>Злоумышленников следует предотвращать от управления типом, который будет создан. Если это возможно, даже <code>DataContractSerializer</code> или <code>XmlSerializer</code> могут быть обойдены, например:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Действие ниже опасно, если злоумышленник может изменить данные в базе данных</span>
+<span class="kt">var</span><span class="w"> </span><span class="n">typename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetTransactionTypeFromDatabase</span><span class="p">();</span>
+
+<span class="kt">var</span><span class="w"> </span><span class="n">serializer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DataContractJsonSerializer</span><span class="p">(</span><span class="n">Type</span><span class="p">.</span><span class="n">GetType</span><span class="p">(</span><span class="n">typename</span><span class="p">));</span>
+
+<span class="kt">var</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">serializer</span><span class="p">.</span><span class="n">ReadObject</span><span class="p">(</span><span class="n">ms</span><span class="p">);</span>
+</code></pre></div>
+<p>Выполнение может произойти в рамках определённых типов .Net во время десериализации. Создание такого контроля, как показано ниже, неэффективно.</p>
+<div class="highlight"><pre><span></span><code><span class="kt">var</span><span class="w"> </span><span class="n">suspectObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">myBinaryFormatter</span><span class="p">.</span><span class="n">Deserialize</span><span class="p">(</span><span class="n">untrustedData</span><span class="p">);</span>
+
+<span class="c1">//Проверка ниже слишком поздна! Выполнение уже могло произойти.</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">suspectObject</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">SomeDangerousObjectType</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">//генерировать предупреждения и утилизировать suspectObject</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Для <code>JSON.Net</code> можно создать более безопасную форму контроля allowlist с использованием пользовательского <code>SerializationBinder</code>.</p>
+<p>Старайтесь быть в курсе известных небезопасных .Net гаджетов десериализации и уделяйте особое внимание тому, где такие типы могут создаваться вашими процессами десериализации. <strong>Десериализатор может создавать экземпляры только тех типов, о которых он знает</strong>.</p>
+<p>Старайтесь держать любой код, который может создавать потенциальные гаджеты, отдельно от любого кода, имеющего интернет-соединение. Например, <code>System.Windows.Data.ObjectDataProvider</code>, используемый в WPF-приложениях, является известным гаджетом, допускающим произвольный вызов методов. Было бы рискованно иметь ссылку на эту сборку в проекте REST-сервиса, выполняющего десериализацию недоверенных данных.</p>
+<h4 id="net-rce">Известные .NET RCE гаджеты<a class="headerlink" href="#net-rce" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>System.Configuration.Install.AssemblyInstaller</code></li>
+<li><code>System.Activities.Presentation.WorkflowDesigner</code></li>
+<li><code>System.Windows.ResourceDictionary</code></li>
+<li><code>System.Windows.Data.ObjectDataProvider</code></li>
+<li><code>System.Windows.Forms.BindingSource</code></li>
+<li><code>Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeSettingsProvider</code></li>
+<li><code>System.Data.DataViewManager, System.Xml.XmlDocument/XmlDataDocument</code></li>
+<li><code>System.Management.Automation.PSObject</code></li>
+</ul>
+<h2 id="_9">Языконезависимые методы безопасной десериализации<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<h3 id="_10">Использование альтернативных форматов данных<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>Значительное снижение риска достигается за счёт отказа от нативных форматов (де)сериализации. Переход на чистый формат данных, такой как JSON или XML, уменьшает вероятность того, что пользовательская логика десериализации будет использована в злонамеренных целях.</p>
+<p>Многие приложения полагаются на <a href="https://en.wikipedia.org/wiki/Data_transfer_object">шаблон объекта передачи данных</a>, который предполагает создание отдельного домена объектов с явной целью передачи данных. Конечно, приложение всё равно может допустить ошибки безопасности после разбора чистого объекта данных.</p>
+<h3 id="_11">Десериализация только подписанных данных<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>Если приложение знает заранее, какие сообщения нужно обработать, оно может подписывать их как часть процесса сериализации. Затем приложение может не десериализовывать сообщения, не имеющие аутентифицированной подписи.</p>
+<h2 id="_12">Инструменты и библиотеки защиты<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/ikkisoft/SerialKiller">Библиотека безопасной десериализации Java</a></li>
+<li><a href="https://github.com/cschneider4711/SWAT">SWAT - инструмент создания allowlist</a></li>
+<li><a href="https://github.com/kantega/notsoserial">NotSoSerial</a></li>
+</ul>
+<h2 id="_13">Инструменты обнаружения<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/GrrrDog/Java-Deserialization-Cheat-Sheet">Шпаргалка по Java-десериализации для пентестеров</a></li>
+<li><a href="https://github.com/frohoff/ysoserial">Proof-of-concept инструмент для генерации пейлоадов, эксплуатирующих небезопасную Java-десериализацию</a></li>
+<li><a href="https://github.com/brianwrf/hackUtils">Наборы инструментов Java де-сериализации</a></li>
+<li><a href="https://github.com/frohoff/ysoserial">Инструмент Java де-сериализации</a></li>
+<li><a href="https://github.com/pwntester/ysoserial.net">Генератор .Net пейлоадов</a></li>
+<li><a href="https://github.com/federicodotta/Java-Deserialization-Scanner/releases">Расширение Burp Suite</a></li>
+<li><a href="https://github.com/ikkisoft/SerialKiller">Библиотека безопасной десериализации Java</a></li>
+<li><a href="https://github.com/mbechler/serianalyzer">Serianalyzer — статический анализатор байткода для десериализации</a></li>
+<li><a href="https://github.com/mbechler/marshalsec">Генератор пейлоадов</a></li>
+<li><a href="https://github.com/modzero/modjoda">Тестировщик уязвимостей Java-десериализации для Android</a></li>
+<li>Расширения Burp Suite<ul>
+<li><a href="https://github.com/NetSPI/JavaSerialKiller">JavaSerialKiller</a></li>
+<li><a href="https://github.com/federicodotta/Java-Deserialization-Scanner">Java Deserialization Scanner</a></li>
+<li><a href="https://github.com/summitt/burp-ysoserial">Burp-ysoserial</a></li>
+<li><a href="https://github.com/DirectDefense/SuperSerial">SuperSerial</a></li>
+<li><a href="https://github.com/DirectDefense/SuperSerial-Active">SuperSerial-Active</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="_14">Ссылки<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/GrrrDog/Java-Deserialization-Cheat-Sheet">Java-Deserialization-Cheat-Sheet</a></li>
+<li><a href="https://owasp.org/www-community/vulnerabilities/Deserialization_of_untrusted_data">Десериализация недоверенных данных</a></li>
+<li><a href="../assets/Deserialization_Cheat_Sheet_GOD16Deserialization.pdf">Java Deserialization Attacks - German OWASP Day 2016</a></li>
+<li><a href="http://www.slideshare.net/frohoff1/appseccali-2015-marshalling-pickles">AppSecCali 2015 - Marshalling Pickles</a></li>
+<li><a href="http://foxglovesecurity.com/2015/11/06/what-do-weblogic-websphere-jboss-jenkins-opennms-and-your-application-have-in-common-this-vulnerability/#websphere">FoxGlove Security - Vulnerability Announcement</a></li>
+<li><a href="https://github.com/GrrrDog/Java-Deserialization-Cheat-Sheet">Шпаргалка по Java-десериализации для пентестеров</a></li>
+<li><a href="https://github.com/frohoff/ysoserial">Proof-of-concept инструмент для генерации пейлоадов, эксплуатирующих небезопасную Java-десериализацию</a></li>
+<li><a href="https://github.com/brianwrf/hackUtils">Наборы инструментов Java де-сериализации</a></li>
+<li><a href="https://github.com/frohoff/ysoserial">Инструмент Java де-сериализации</a></li>
+<li><a href="https://github.com/federicodotta/Java-Deserialization-Scanner/releases">Расширение Burp Suite</a></li>
+<li><a href="https://github.com/ikkisoft/SerialKiller">Библиотека безопасной десериализации Java</a></li>
+<li><a href="https://github.com/mbechler/serianalyzer">Serianalyzer — статический анализатор байткода для десериализации</a></li>
+<li><a href="https://github.com/mbechler/marshalsec">Генератор пейлоадов</a></li>
+<li><a href="https://github.com/modzero/modjoda">Тестировщик уязвимостей Java-десериализации для Android</a></li>
+<li>Расширения Burp Suite<ul>
+<li><a href="https://github.com/NetSPI/JavaSerialKiller">JavaSerialKiller</a></li>
+<li><a href="https://github.com/federicodotta/Java-Deserialization-Scanner">Java Deserialization Scanner</a></li>
+<li><a href="https://github.com/summitt/burp-ysoserial">Burp-ysoserial</a></li>
+<li><a href="https://github.com/DirectDefense/SuperSerial">SuperSerial</a></li>
+<li><a href="https://github.com/DirectDefense/SuperSerial-Active">SuperSerial-Active</a></li>
+</ul>
+</li>
+<li>.Net<ul>
+<li><a href="https://www.youtube.com/watch?v=qDoBlLwREYk">Alvaro Muñoz: .NET Serialization: обнаружение и защита уязвимых конечных точек</a></li>
+<li><a href="https://www.youtube.com/watch?v=Xfbu-pQ1tIc">James Forshaw - Black Hat USA 2012 - Are You My Type? Breaking .net Sandboxes Through Serialization</a></li>
+<li><a href="https://www.youtube.com/watch?v=oxlD8VWWHE8">Jonathan Birch BlueHat v17 - Dangerous Contents - Securing .Net Deserialization</a></li>
+<li><a href="https://www.youtube.com/watch?v=NqHsaVhlxAQ">Alvaro Muñoz &amp; Oleksandr Mirosh - Friday the 13th: Attacking JSON - AppSecUSA 2017</a></li>
+</ul>
+</li>
+<li>Python<ul>
+<li><a href="https://macrosec.tech/index.php/2021/06/29/exploiting-insecuredeserialization-bugs-found-in-the-wild-python-pickles.">Эксплуатация уязвимостей небезопасной десериализации в Python Pickles</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

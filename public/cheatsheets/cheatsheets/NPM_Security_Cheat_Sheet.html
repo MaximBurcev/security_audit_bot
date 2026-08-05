@@ -1,0 +1,3508 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/NPM_Security_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="NoSQL_Security_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="OAuth2_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>NPM Security - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#npm" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              NPM Security
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-npm" class="md-nav__link">
+    <span class="md-ellipsis">
+      1) Избегайте публикации секретов в реестр npm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lockfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      2) Соблюдайте lockfile
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-run-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      3) Минимизируйте поверхность атаки, игнорируя run-scripts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3) Минимизируйте поверхность атаки, игнорируя run-scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#allowlist-lifecycle-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование allowlist для lifecycle-скриптов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-npm-" class="md-nav__link">
+    <span class="md-ellipsis">
+      4) Оценивайте состояние npm-проекта
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4) Оценивайте состояние npm-проекта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#npm-outdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      Команда npm outdated
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npm-doctor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Команда npm doctor
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5) Проводите аудит уязвимостей в зависимостях с открытым исходным кодом
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6) Управление артефактами и защита цепочки поставок
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6) Управление артефактами и защита цепочки поставок">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#npm-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте локальный npm-прокси
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Управление и этапы верификации
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      7) Ответственно раскрывайте уязвимости безопасности
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-2fa" class="md-nav__link">
+    <span class="md-ellipsis">
+      8) Включите 2FA
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные ресурсы по безопасности
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-npm" class="md-nav__link">
+    <span class="md-ellipsis">
+      9) Используйте токены авторов npm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-typosquatting-slopsquatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      10) Понимание атак typosquatting и slopsquatting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10) Понимание атак typosquatting и slopsquatting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typosquatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атаки typosquatting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slopsquatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атаки slopsquatting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      11) Используйте доверенных публикаторов для безопасной публикации пакетов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11) Используйте доверенных публикаторов для безопасной публикации пакетов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trusted-publishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как работает trusted publishing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Автоматическая генерация подтверждений происхождения
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Итоговые рекомендации
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-npm" class="md-nav__link">
+    <span class="md-ellipsis">
+      1) Избегайте публикации секретов в реестр npm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lockfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      2) Соблюдайте lockfile
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-run-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      3) Минимизируйте поверхность атаки, игнорируя run-scripts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3) Минимизируйте поверхность атаки, игнорируя run-scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#allowlist-lifecycle-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование allowlist для lifecycle-скриптов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-npm-" class="md-nav__link">
+    <span class="md-ellipsis">
+      4) Оценивайте состояние npm-проекта
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4) Оценивайте состояние npm-проекта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#npm-outdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      Команда npm outdated
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npm-doctor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Команда npm doctor
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5) Проводите аудит уязвимостей в зависимостях с открытым исходным кодом
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6) Управление артефактами и защита цепочки поставок
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6) Управление артефактами и защита цепочки поставок">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#npm-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте локальный npm-прокси
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Управление и этапы верификации
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      7) Ответственно раскрывайте уязвимости безопасности
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-2fa" class="md-nav__link">
+    <span class="md-ellipsis">
+      8) Включите 2FA
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные ресурсы по безопасности
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-npm" class="md-nav__link">
+    <span class="md-ellipsis">
+      9) Используйте токены авторов npm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-typosquatting-slopsquatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      10) Понимание атак typosquatting и slopsquatting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10) Понимание атак typosquatting и slopsquatting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typosquatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атаки typosquatting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slopsquatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атаки slopsquatting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      11) Используйте доверенных публикаторов для безопасной публикации пакетов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11) Используйте доверенных публикаторов для безопасной публикации пакетов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trusted-publishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как работает trusted publishing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Автоматическая генерация подтверждений происхождения
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Итоговые рекомендации
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="npm">Лучшие практики безопасности NPM<a class="headerlink" href="#npm" title="Permanent link">&para;</a></h1>
+<p>Следующая шпаргалка охватывает несколько лучших практик безопасности и советов по повышению производительности при работе с npm, полезных для разработчиков JavaScript и Node.js. Этот список изначально основан на статье <a href="https://snyk.io/blog/ten-npm-security-best-practices/">10 лучших практик безопасности npm</a> из блога Snyk.</p>
+<h2 id="1-npm">1) Избегайте публикации секретов в реестр npm<a class="headerlink" href="#1-npm" title="Permanent link">&para;</a></h2>
+<p>Независимо от того, используете ли вы API-ключи, пароли или другие секреты, они очень легко могут попасть в систему контроля версий или даже в опубликованный пакет в публичном реестре npm. Секреты могут находиться в вашем рабочем каталоге в специальных файлах, например <code>.env</code>, который следует добавить в <code>.gitignore</code>, чтобы не фиксировать его в SCM. Но что происходит, когда вы публикуете пакет npm из каталога проекта?</p>
+<p>npm CLI упаковывает проект в tar-архив (tarball), чтобы отправить его в реестр. Следующие критерии определяют, какие файлы и каталоги добавляются в tarball:</p>
+<ul>
+<li>Если присутствует файл <code>.gitignore</code> или <code>.npmignore</code>, его содержимое используется как шаблон игнорирования при подготовке пакета к публикации.</li>
+<li>Если оба файла существуют, в реестр публикуется всё, что не указано в <code>.npmignore</code>. Это условие является распространённым источником путаницы и может привести к утечке секретов.</li>
+</ul>
+<p>Разработчики могут обновить <code>.gitignore</code>, но забыть обновить <code>.npmignore</code>, что может привести к тому, что потенциально чувствительный файл не попадёт в систему контроля версий, но всё равно будет включён в npm-пакет.</p>
+<p>Ещё одной хорошей практикой является использование свойства <code>files</code> в package.json, которое работает как allowlist и определяет массив файлов, включаемых в создаваемый и устанавливаемый пакет (тогда как файл игнорирования работает как denylist). Свойство <code>files</code> и файл игнорирования могут использоваться вместе, чтобы явно определить, какие файлы должны быть включены, а какие исключены из пакета. При совместном использовании свойство <code>files</code> в package.json имеет приоритет над файлом игнорирования.</p>
+<p>При публикации пакета npm CLI подробно отображает создаваемый архив. Для дополнительной осторожности добавьте аргумент <code>--dry-run</code> к команде публикации, чтобы сначала проверить, как создаётся tarball, не публикуя его фактически в реестр.</p>
+<p>Подробности об отзыве токенов доступа см. в официальной документации: <a href="https://docs.npmjs.com/revoking-access-tokens">Revocation access tokens</a>.</p>
+<h2 id="2-lockfile">2) Соблюдайте lockfile<a class="headerlink" href="#2-lockfile" title="Permanent link">&para;</a></h2>
+<p>Мы с радостью встретили появление lockfile-файлов для пакетов, которые обеспечили: детерминированные установки в разных средах и согласованные ожидания относительно зависимостей при командной работе. Жизнь прекрасна! Или так казалось... что было бы, если бы я внёс изменение в файл <code>package.json</code> проекта, но забыл зафиксировать lockfile вместе с ним?</p>
+<p>Yarn и npm ведут себя одинаково при установке зависимостей. При обнаружении несоответствия между <code>package.json</code> проекта и lockfile они компенсируют это изменение, устанавливая версии, указанные в <code>package.json</code>, а не те, что записаны в lockfile.</p>
+<p>Такая ситуация может быть опасна для сборочных и производственных сред, так как могут быть загружены непредусмотренные версии пакетов, что делает использование lockfile бессмысленным.</p>
+<p>К счастью, есть способ указать Yarn и npm строго придерживаться указанного набора зависимостей и их версий, ссылаясь на lockfile. При любом несоответствии установка будет прервана. Используйте следующие команды:</p>
+<ul>
+<li>Если вы используете Yarn, запустите <code>yarn install --frozen-lockfile</code>.</li>
+<li>Если вы используете npm, запустите <code>npm ci</code>.</li>
+</ul>
+<h2 id="3-run-scripts">3) Минимизируйте поверхность атаки, игнорируя run-scripts<a class="headerlink" href="#3-run-scripts" title="Permanent link">&para;</a></h2>
+<p>npm CLI работает со скриптами запуска пакетов. Если вы когда-либо запускали <code>npm start</code> или <code>npm test</code>, вы тоже использовали скрипты запуска пакетов. npm CLI опирается на скрипты, которые пакет может объявить, и позволяет пакетам определять скрипты для запуска в определённые точки входа во время установки пакета в проекте. Например, некоторые из этих <a href="https://docs.npmjs.com/misc/scripts">хуков скриптов</a> могут быть скриптами <code>postinstall</code>, которые выполняет устанавливаемый пакет для выполнения служебных задач.</p>
+<p>С помощью этой возможности злоумышленники могут создавать или изменять пакеты для выполнения вредоносных действий, запуская произвольные команды при установке пакета. Несколько случаев, когда это уже происходило: известный <a href="https://snyk.io/vuln/npm:eslint-scope:20180712">инцидент с eslint-scope</a>, который собирал npm-токены, и <a href="https://snyk.io/vuln/npm:crossenv:20170802">инцидент с crossenv</a> вместе с 36 другими пакетами, использовавшими typosquatting-атаку на реестр npm.</p>
+<p>Применяйте следующие лучшие практики безопасности npm для минимизации поверхности атаки вредоносных модулей:</p>
+<ul>
+<li>Всегда проверяйте и анализируйте сторонние модули, которые вы устанавливаете, чтобы убедиться в их надёжности и достоверности.</li>
+<li>Не спешите с обновлением до новых версий; дайте новым версиям пакетов немного времени до того, как начнёте их использовать.</li>
+<li>Перед обновлением обязательно просмотрите changelog и примечания к выпуску для обновляемой версии.</li>
+<li>При установке пакетов добавляйте суффикс <code>--ignore-scripts</code>, чтобы отключить выполнение скриптов сторонними пакетами.</li>
+<li>Рассмотрите возможность добавления <code>ignore-scripts</code> в файл <code>.npmrc</code> вашего проекта или в глобальную конфигурацию npm.</li>
+</ul>
+<h3 id="allowlist-lifecycle-">Использование allowlist для lifecycle-скриптов<a class="headerlink" href="#allowlist-lifecycle-" title="Permanent link">&para;</a></h3>
+<p>Отключение lifecycle-скриптов по умолчанию путём добавления <code>ignore-script</code> в файл <code>.npmrc</code> является наиболее безопасным вариантом. Если вы используете пакеты, которые зависят от lifecycle-скриптов по законным причинам, можно использовать плагин <a href="https://github.com/LavaMoat/LavaMoat/tree/main/packages/allow-scripts"><code>@lavamoat/allow-scripts</code></a> для создания <em>allowlist</em> пакетов, которым разрешено запускать lifecycle-скрипты.</p>
+<p>Вот как будет выглядеть allowlist в файле <code>package.json</code> для проекта, использующего популярный пакет обработки изображений <a href="https://www.npmjs.com/package/sharp">sharp</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;lavamoat&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;allowScripts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;sharp&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="4-npm-">4) Оценивайте состояние npm-проекта<a class="headerlink" href="#4-npm-" title="Permanent link">&para;</a></h2>
+<h3 id="npm-outdated">Команда npm outdated<a class="headerlink" href="#npm-outdated" title="Permanent link">&para;</a></h3>
+<p>Постоянно обновлять зависимости до последних версий — не обязательно хорошая практика, если это делается без изучения примечаний к выпуску, изменений кода и тщательного тестирования новых обновлений. Тем не менее отставание в обновлениях и отказ от них вовсе или длительная задержка с обновлением — тоже источник проблем.</p>
+<p>npm CLI может предоставить информацию об актуальности используемых вами зависимостей с точки зрения их семантической версии. Запустив <code>npm outdated</code>, вы увидите, какие пакеты устарели. Зависимости, выделенные жёлтым, соответствуют семантической версии, указанной в манифесте package.json, а выделенные красным означают, что доступно обновление. Кроме того, вывод показывает последнюю версию каждой зависимости.</p>
+<h3 id="npm-doctor">Команда npm doctor<a class="headerlink" href="#npm-doctor" title="Permanent link">&para;</a></h3>
+<p>Как среди разнообразия менеджеров пакетов Node.js, так и при наличии разных версий Node.js на вашем компьютере, как убедиться в том, что установка npm работает корректно? Независимо от того, работаете ли вы с npm CLI в среде разработки или в CI, важно убедиться, что всё функционирует должным образом.</p>
+<p>Вызовите доктора! npm CLI включает инструмент диагностики окружения для корректной работы npm. Запустите <code>npm doctor</code> для проверки вашей конфигурации npm:</p>
+<ul>
+<li>Проверяет доступность официального реестра npm и отображает текущий настроенный реестр.</li>
+<li>Проверяет доступность Git.</li>
+<li>Просматривает установленные версии npm и Node.js.</li>
+<li>Выполняет проверку прав доступа для различных папок, таких как локальный и глобальный <code>node_modules</code>, а также папки, используемой для кэша пакетов.</li>
+<li>Проверяет локальный кэш npm-модулей на корректность контрольных сумм.</li>
+</ul>
+<h2 id="5">5) Проводите аудит уязвимостей в зависимостях с открытым исходным кодом<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>Экосистема npm является крупнейшим репозиторием библиотек приложений среди всех других языковых экосистем. Реестр и находящиеся в нём библиотеки являются основой для разработчиков JavaScript, позволяя им использовать чужие наработки и включать их в свой код. Вместе с тем растущее использование библиотек с открытым исходным кодом в приложениях влечёт за собой повышенный риск внесения уязвимостей безопасности.</p>
+<p>Многие популярные npm-пакеты оказались уязвимыми и могут представлять значительный риск без надлежащего аудита безопасности зависимостей вашего проекта. Примеры: npm-пакеты <a href="https://snyk.io/vuln/npm:request:20160119">request</a>, <a href="https://snyk.io/vuln/search?q=superagent&amp;type=npm">superagent</a>, <a href="https://snyk.io/vuln/search?q=mongoose&amp;type=npm">mongoose</a> и даже пакеты, связанные с безопасностью, такие как <a href="https://snyk.io/vuln/npm:jsonwebtoken:20150331">jsonwebtoken</a> и <a href="https://snyk.io/vuln/search?q=validator&amp;type=npm">validator</a>.</p>
+<p>Безопасность не заканчивается сканированием на уязвимости при установке пакета — её необходимо встроить в рабочий процесс разработчиков, чтобы она эффективно применялась на протяжении всего жизненного цикла разработки программного обеспечения, и вести непрерывный мониторинг при развёртывании кода:</p>
+<ul>
+<li>Сканируйте на уязвимости безопасности в <a href="https://owasp.org/www-community/Component_Analysis">сторонних проектах с открытым исходным кодом</a></li>
+<li>Отслеживайте снимки манифестов вашего проекта, чтобы получать оповещения при появлении новых CVE, влияющих на них: <a href="https://owasp.org/www-project-dependency-track/">OWASP Dependency-Track</a></li>
+</ul>
+<h2 id="6">6) Управление артефактами и защита цепочки поставок<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<h3 id="npm-">Используйте локальный npm-прокси<a class="headerlink" href="#npm-" title="Permanent link">&para;</a></h3>
+<p>Реестр npm — крупнейшая коллекция пакетов для всех JavaScript-разработчиков, а также основное место хранения большинства проектов с открытым исходным кодом для веб-разработчиков. Однако иногда могут возникнуть различные требования с точки зрения безопасности, развёртывания или производительности. В таких случаях npm позволяет переключиться на другой реестр:</p>
+<p>При запуске <code>npm install</code> автоматически устанавливается связь с главным реестром для разрешения всех зависимостей. Если вы хотите использовать другой реестр, это тоже просто:</p>
+<ul>
+<li>Установите <code>npm set registry</code> для настройки реестра по умолчанию.</li>
+<li>Используйте аргумент <code>--registry</code> для одного конкретного реестра.</li>
+</ul>
+<p><a href="https://verdaccio.org/">Verdaccio</a> — это простой лёгкий частный реестр без необходимости настройки, установить его так же просто: <code>$ npm install --global verdaccio</code>.</p>
+<p>Размещать собственный реестр никогда не было так просто! Рассмотрим наиболее важные возможности этого инструмента:</p>
+<ul>
+<li>Поддерживает формат реестра npm, включая функции приватных пакетов, поддержку областей видимости (scope), управление доступом к пакетам и аутентифицированных пользователей в веб-интерфейсе.</li>
+<li>Предоставляет возможности для взаимодействия с удалёнными реестрами и маршрутизации каждой зависимости в разные реестры с кэшированием tarball-архивов. Для снижения дублирования загрузок и экономии полосы пропускания на локальных серверах разработки и CI следует проксировать все зависимости.</li>
+<li>В качестве провайдера аутентификации по умолчанию использует htpasswd, но также поддерживает Gitlab, Bitbucket, LDAP. Можно использовать и собственный провайдер.</li>
+<li>Легко масштабируется с использованием различных провайдеров хранилища.</li>
+<li>Если ваш проект основан на Docker, использование официального образа — лучший выбор.</li>
+<li>Обеспечивает очень быстрый запуск тестовых сред и удобен для тестирования крупных монорепозиторных проектов.</li>
+</ul>
+<h3 id="_1">Управление и этапы верификации<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p>Атаки на цепочку поставок всё чаще нацелены на артефакты сборки, реестры и учётные данные CI. Добавьте облегчённые шаги управления и верификации для снижения риска и улучшения времени реагирования:</p>
+<ul>
+<li>Отслеживайте происхождение и создавайте SBOM для сборок (CycloneDX/SPDX), чтобы можно было отследить, что было собрано и откуда поступили входные данные.</li>
+</ul>
+<p>Пример CycloneDX:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Генерация SBOM</span>
+npm<span class="w"> </span>install<span class="w"> </span>@cyclonedx/cyclonedx-npm
+npx<span class="w"> </span>@cyclonedx/cyclonedx-npm<span class="w"> </span>--validate<span class="w"> </span>&gt;<span class="w"> </span>sbom.json<span class="w"> </span><span class="c1"># Используйте флаг `--omit dev` для исключения dev-зависимостей из SBOM при необходимости</span>
+</code></pre></div>
+<ul>
+<li>Подписывайте артефакты и подтверждения происхождения сборки (например, используйте Sigstore / cosign или аналогичные инструменты подписи), чтобы потребители могли проверить целостность перед установкой.</li>
+</ul>
+<p>Пример Sigstore:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// sign-and-verify.js</span>
+<span class="c1">// npm install sigstore fs</span>
+
+<span class="k">import</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;fs&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">sigstore</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;sigstore&#39;</span><span class="p">;</span>
+
+<span class="c1">// Путь к собранному npm-пакету (через `npm pack`)</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">artifact</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;my-lib-1.0.0.tgz&#39;</span><span class="p">;</span>
+
+<span class="c1">// --- Подпись ---</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">artifact</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bundle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">sigstore</span><span class="p">.</span><span class="nx">sign</span><span class="p">(</span><span class="nx">payload</span><span class="p">);</span>
+<span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">artifact</span><span class="si">}</span><span class="sb">.sigstore.json`</span><span class="p">,</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">bundle</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Подписано:&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">artifact</span><span class="p">);</span>
+
+<span class="c1">// --- Верификация ---</span>
+<span class="k">await</span><span class="w"> </span><span class="nx">sigstore</span><span class="p">.</span><span class="nx">verify</span><span class="p">(</span><span class="nx">payload</span><span class="p">,</span><span class="w"> </span><span class="nx">bundle</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Верификация прошла успешно!&#39;</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li>Отдавайте предпочтение неизменяемым реестрам с контролем доступа или проверенным зеркалам (приватные реестры, Verdaccio с кэшем вышестоящего реестра или <a href="#используйте-локальный-npm-прокси">одобренные зеркала</a>) и включайте политики хранения/неизменяемости там, где это доступно.</li>
+<li>Ограничивайте, разграничивайте и ротируйте токены CI и публикующих пользователей. Привязывайте токены публикации к рабочим процессам или диапазонам IP-адресов и минимизируйте привилегии.</li>
+<li>Верифицируйте пакеты во время CI: проверяйте подписи или происхождение, валидируйте SBOM, <a href="#5-проводите-аудит-уязвимостей-в-зависимостях-с-открытым-исходным-кодом">запускайте SCA и статический анализ</a> и <a href="#2-соблюдайте-lockfile">устанавливайте из зафиксированных версий lockfile</a>.</li>
+<li>Автоматизируйте мониторинг и оповещения о необычных публикациях, использовании токенов или изменениях зависимостей, а также ведите документированный план реагирования (отзыв токенов, депрекация/удаление скомпрометированных пакетов, публикация исправлений и уведомление потребителей).</li>
+</ul>
+<p>Эти меры постепенны и не несут рисков при внедрении. В совокупности они делают атаки на цепочку поставок сложнее и ускоряют обнаружение и восстановление в случае компрометации.</p>
+<h2 id="7">7) Ответственно раскрывайте уязвимости безопасности<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<p>Когда обнаруживаются уязвимости безопасности, они представляют потенциально серьёзную угрозу, если публикуются без предварительного предупреждения или соответствующих мер по устранению для пользователей, которые не могут защитить себя самостоятельно.</p>
+<p>Рекомендуется, чтобы исследователи безопасности следовали программе ответственного раскрытия — набору процессов и руководящих принципов, направленных на установление связи между исследователями и поставщиком или сопровождающим уязвимого актива для передачи информации об уязвимости, её влиянии и применимости. После правильной сортировки уязвимости поставщик и исследователь координируют исправление и дату публикации уязвимости, стремясь предоставить путь обновления или устранения для затронутых пользователей до того, как проблема безопасности станет общедоступной.</p>
+<h2 id="8-2fa">8) Включите 2FA<a class="headerlink" href="#8-2fa" title="Permanent link">&para;</a></h2>
+<p>Включение двухфакторной аутентификации (2FA) является критически важной лучшей практикой безопасности npm. Реестр npm поддерживает два режима включения 2FA для учётной записи пользователя:</p>
+<ul>
+<li>Только авторизация — когда пользователь входит в npm через веб-сайт или CLI или выполняет другие действия, такие как изменение информации профиля.</li>
+<li>Авторизация и режим записи — действия с профилем и входом, а также операции записи, такие как управление токенами и пакетами, и ограниченная поддержка информации о видимости команды и пакетов.</li>
+</ul>
+<p>Для начала работы см. официальную документацию: <a href="https://docs.npmjs.com/requiring-2fa-for-package-publishing-and-settings-modification">Requiring 2FA</a>.</p>
+<p>Оснастите себя приложением аутентификации, например Google Authentication, которое можно установить на мобильное устройство, и вы готовы к работе. Один простой способ начать расширенную защиту 2FA для вашей учётной записи — через пользовательский интерфейс npm, который позволяет очень легко её включить. Если вы предпочитаете командную строку, включить 2FA также легко при использовании поддерживаемой версии npm-клиента (&gt;=5.5.1):</p>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>profile<span class="w"> </span>enable-2fa<span class="w"> </span>auth-and-writes
+</code></pre></div>
+<p>Следуйте инструкциям командной строки для включения 2FA и сохранения аварийных кодов аутентификации. Если вы хотите включить режим 2FA только для входа и изменений профиля, вы можете заменить <code>auth-and-writes</code> на <code>auth-only</code> в приведённой выше команде.</p>
+<h2 id="_2">Дополнительные ресурсы по безопасности<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning">About secret scanning</a></li>
+<li><a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure">Best practices for securing accounts</a></li>
+</ul>
+<h2 id="9-npm">9) Используйте токены авторов npm<a class="headerlink" href="#9-npm" title="Permanent link">&para;</a></h2>
+<p>Каждый раз, когда вы входите с помощью npm CLI, для вашего пользователя генерируется токен, который аутентифицирует вас в реестре npm. Токены упрощают выполнение действий, связанных с реестром npm, в процессе CI и автоматизированных процедур, таких как доступ к приватным модулям в реестре или публикация новых версий на этапе сборки.</p>
+<p>Токенами можно управлять через веб-сайт реестра npm, а также с помощью npm-клиента командной строки. Пример использования CLI для создания токена только для чтения, ограниченного определённым диапазоном адресов IPv4:</p>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>token<span class="w"> </span>create<span class="w"> </span>--read-only<span class="w"> </span>--cidr<span class="o">=</span><span class="m">192</span>.0.2.0/24
+</code></pre></div>
+<p>Для проверки созданных токенов или отзыва токенов в экстренных случаях можно использовать <code>npm token list</code> или <code>npm token revoke</code> соответственно.</p>
+<p>Убедитесь, что вы следуете этой лучшей практике безопасности npm, защищая и минимизируя раскрытие своих npm-токенов.</p>
+<h2 id="10-typosquatting-slopsquatting">10) Понимание атак typosquatting и slopsquatting<a class="headerlink" href="#10-typosquatting-slopsquatting" title="Permanent link">&para;</a></h2>
+<h3 id="typosquatting">Атаки typosquatting<a class="headerlink" href="#typosquatting" title="Permanent link">&para;</a></h3>
+<p>Typosquatting — это атака, основанная на ошибках пользователей, таких как опечатки. При typosquatting злоумышленники публикуют вредоносные модули в реестр npm с именами, очень похожими на существующие популярные модули. Эти вредоносные пакеты эксплуатируют распространённые ошибки при вводе или визуальное сходство, чтобы обманом заставить разработчиков установить их вместо легитимных пакетов.</p>
+<p>Команда безопасности Snyk отслеживала десятки вредоносных пакетов в экосистеме npm, использовавших typosquatting для обмана пользователей; аналогичные атаки наблюдались и в реестре Python PyPi. Среди наиболее известных инцидентов: <a href="https://snyk.io/vuln/npm:crossenv:20170802">cross-env</a>, <a href="https://snyk.io/vuln/SNYK-JS-EVENTSTREAM-72638">event-stream</a> и <a href="https://snyk.io/vuln/npm:eslint-scope:20180712">eslint-scope</a>.</p>
+<p>Одной из основных целей атак typosquatting являются учётные данные пользователей, поскольку любой пакет имеет доступ к переменным окружения через глобальную переменную <code>process.env</code>. Другие примеры включают случай с event-stream, когда злоумышленники нацелились на разработчиков с целью <a href="https://snyk.io/blog/a-post-mortem-of-the-malicious-event-stream-backdoor">внедрения вредоносного кода</a> в исходный код приложения.</p>
+<h3 id="slopsquatting">Атаки slopsquatting<a class="headerlink" href="#slopsquatting" title="Permanent link">&para;</a></h3>
+<p>Slopsquatting — более новый вектор атаки, эксплуатирующий AI-помощников по написанию кода и большие языковые модели (LLM). Когда разработчики используют AI-инструменты для генерации кода или рекомендаций по пакетам, эти модели иногда могут «галлюцинировать» названия пакетов, которых на самом деле не существует. Злоумышленники отслеживают такие галлюцинации и создают вредоносные пакеты с именно такими именами, зная, что разработчики могут слепо доверять и устанавливать пакеты, предложенные их AI-помощниками.</p>
+<p>Для защиты от slopsquatting:</p>
+<ul>
+<li>Всегда проверяйте, что пакеты, предложенные AI-инструментами, действительно существуют и являются легитимными</li>
+<li>Проверяйте репозиторий пакета, статистику загрузок и информацию о сопровождающих</li>
+<li>Сверяйте предложения AI с официальной документацией</li>
+<li>С осторожностью относитесь к пакетам с очень малым количеством загрузок или недавними датами создания</li>
+<li>Изучайте исходный код пакета перед установкой, особенно для пакетов, предложенных AI</li>
+</ul>
+<h2 id="11">11) Используйте доверенных публикаторов для безопасной публикации пакетов<a class="headerlink" href="#11" title="Permanent link">&para;</a></h2>
+<p>Традиционная публикация в npm основана на долгосрочных токенах, которые могут быть скомпрометированы или случайно раскрыты. Trusted publishing с использованием OpenID Connect (OIDC) предоставляет более безопасную альтернативу, используя краткосрочные, специфичные для рабочего процесса учётные данные, автоматически генерируемые во время CI/CD-процессов. В настоящее время trusted publishing поддерживает GitHub Actions и GitLab CI/CD Pipelines.</p>
+<h3 id="trusted-publishing">Как работает trusted publishing<a class="headerlink" href="#trusted-publishing" title="Permanent link">&para;</a></h3>
+<p>Trusted publishing создаёт отношение доверия между npm и вашим CI/CD-провайдером с использованием OIDC. При настройке доверенного публикатора для вашего пакета npm будет принимать публикации из конкретного рабочего процесса, который вы авторизовали, в дополнение к традиционным методам аутентификации, таким как npm-токены и ручная публикация. npm CLI автоматически обнаруживает OIDC-окружения и использует их для аутентификации, прежде чем переходить к традиционным токенам.</p>
+<p>Этот подход устраняет риски безопасности, связанные с долгосрочными токенами записи, которые могут быть скомпрометированы, случайно раскрыты в логах или требуют ручной ротации. Вместо этого каждая публикация использует краткосрочные, криптографически подписанные токены, специфичные для вашего рабочего процесса, которые не могут быть извлечены или повторно использованы.</p>
+<h3 id="_3">Автоматическая генерация подтверждений происхождения<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>При публикации через trusted publishing npm автоматически генерирует подтверждения происхождения (provenance attestations), которые предоставляют криптографическое доказательство подлинности пакета. Это помогает пользователям убедиться, что пакеты поступают из законных источников и не были подделаны.</p>
+<p>Дополнительную информацию см. в <a href="https://docs.npmjs.com/trusted-publishers">документации по npm trusted publishing</a>.</p>
+<h2 id="_4">Итоговые рекомендации<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>В заключение списка лучших практик безопасности npm приведём следующие советы для снижения риска подобных атак:</p>
+<ul>
+<li>Будьте особенно внимательны при копировании команд установки пакетов в терминал. Убедитесь, что проверили репозиторий исходного кода и реестр npm, что именно этот пакет вы намерены установить. Вы можете проверить метаданные пакета с помощью <code>npm info</code>, чтобы получить дополнительную информацию о контрибьюторах и последних версиях.</li>
+<li>По умолчанию работайте с npm без авторизации в повседневных задачах, чтобы ваши учётные данные не стали слабым местом, ведущим к компрометации аккаунта.</li>
+<li>При установке пакетов добавляйте <code>--ignore-scripts</code> для снижения риска выполнения произвольных команд. Например: <code>npm install my-malicious-package --ignore-scripts</code></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

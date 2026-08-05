@@ -1,0 +1,5332 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Kubernetes_Security_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="Key_Management_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Laravel_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Kubernetes Security - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kubernetes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kubernetes Security
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обзор
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Получение оповещений об обновлениях безопасности и сообщение об уязвимостях
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ВВЕДЕНИЕ: Что такое Kubernetes?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ВВЕДЕНИЕ: Что такое Kubernetes?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компоненты плоскости управления
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компоненты узлов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 1: Защита хостов Kubernetes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 1: Защита хостов Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обновление Kubernetes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обновление Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      График выпуска Kubernetes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 2: Защита компонентов Kubernetes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 2: Защита компонентов Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита панели управления Kubernetes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etcd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничение доступа к etcd (ВАЖНО)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ограничение доступа к etcd (ВАЖНО)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etcd_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничение доступа к основному экземпляру etcd
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контроль сетевого доступа к чувствительным портам
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контроль доступа к Kubernetes API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Контроль доступа к Kubernetes API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-api_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как Kubernetes обрабатывает авторизацию API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Внешняя аутентификация API для Kubernetes (РЕКОМЕНДУЕТСЯ)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-kubernetes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Варианты встроенной аутентификации API Kubernetes (НЕ РЕКОМЕНДУЕТСЯ)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализация управления доступом на основе ролей в Kubernetes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubelet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничение доступа к Kubelet
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 3: Лучшие практики безопасности Kubernetes: фаза сборки
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 3: Лучшие практики безопасности Kubernetes: фаза сборки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что такое образ контейнера?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что такое образ контейнера?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Убедитесь, что образы актуальны
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте только авторизованные образы в вашей среде
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ci-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте CI-пайплайн для контроля и выявления уязвимостей
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Минимизируйте функции во всех образах
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Минимизируйте функции во всех образах">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      По возможности используйте дистрибутивно-минимальные или пустые образы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 4: Лучшие практики безопасности Kubernetes: фаза развёртывания
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 4: Лучшие практики безопасности Kubernetes: фаза развёртывания">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Код, использующий пространства имён для изоляции ресурсов Kubernetes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Код, использующий пространства имён для изоляции ресурсов Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Установка пространства имён для запроса
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Установка предпочтительного пространства имён
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imagepolicywebhook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте ImagePolicyWebhook для управления происхождением образов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализуйте непрерывное сканирование уязвимостей
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Применяйте контекст безопасности к подам и контейнерам
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Применяйте контекст безопасности к подам и контейнерам">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример контекста безопасности: определение пода с параметрами контекста безопасности
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Непрерывно оценивайте привилегии, используемые контейнерами
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Непрерывно оценивайте привилегии, используемые контейнерами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pod-security-standards-pod-security-admission" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте Pod Security Standards и встроенный контроллер допуска Pod Security Admission для применения уровней привилегий контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование политик безопасности подов для управления атрибутами безопасности подов, включая уровни привилегий контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-mesh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обеспечение дополнительной безопасности с помощью service mesh
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обеспечение дополнительной безопасности с помощью service mesh">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service-mesh_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Преимущества service mesh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-mesh_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Недостатки service mesh
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализация централизованного управления политиками
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Реализация централизованного управления политиками">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opa" class="md-nav__link">
+    <span class="md-ellipsis">
+      Наиболее распространённые варианты использования OPA
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Наиболее распространённые варианты использования OPA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opa_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      OPA для авторизации приложений
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opa-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      OPA для контроля допуска Kubernetes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opa-service-mesh" class="md-nav__link">
+    <span class="md-ellipsis">
+      OPA для авторизации service mesh
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничение использования ресурсов в кластере
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте сетевые политики Kubernetes для контроля трафика между подами и кластерами
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита данных
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Защита данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Храните секреты как секреты
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шифруйте секреты в состоянии покоя
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      Альтернативы ресурсам Kubernetes Secret
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поиск раскрытых секретов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 5: Лучшие практики безопасности Kubernetes: фаза выполнения
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 5: Лучшие практики безопасности Kubernetes: фаза выполнения">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pod-security-admission" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте Pod Security Admission для предотвращения развёртывания рискованных контейнеров/подов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Безопасность среды выполнения контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Изоляция контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение загрузки контейнерами нежелательных модулей ядра
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сравнение и анализ различных активностей во время выполнения в подах одних и тех же развёртываний
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мониторинг сетевого трафика для ограничения ненужных или небезопасных коммуникаций
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      При взломе масштабируйте подозрительные поды до нуля
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Регулярно ротируйте учётные данные инфраструктуры
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Журналирование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Включите аудит-журналирование
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Включите аудит-журналирование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Аудит-журналы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      Определение политик аудита
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      Понимание журналирования
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Понимание журналирования">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование узлов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование кластера
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    <span class="md-ellipsis">
+      События
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-kubernetes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 5: Защита управляемого Kubernetes у облачных провайдеров
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 5: Защита управляемого Kubernetes у облачных провайдеров">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 6: Безопасность цепочки поставок
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 6: Безопасность цепочки поставок">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    <span class="md-ellipsis">
+      Лучшие практики защиты цепочки поставок контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 7: Заключение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 7: Заключение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встраивайте безопасность в жизненный цикл контейнеров как можно раньше
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте встроенные средства безопасности Kubernetes для снижения операционных рисков
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте контекст, предоставляемый Kubernetes, для приоритизации усилий по устранению проблем
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обзор
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Получение оповещений об обновлениях безопасности и сообщение об уязвимостях
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ВВЕДЕНИЕ: Что такое Kubernetes?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ВВЕДЕНИЕ: Что такое Kubernetes?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компоненты плоскости управления
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компоненты узлов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 1: Защита хостов Kubernetes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 1: Защита хостов Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обновление Kubernetes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обновление Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      График выпуска Kubernetes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 2: Защита компонентов Kubernetes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 2: Защита компонентов Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита панели управления Kubernetes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etcd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничение доступа к etcd (ВАЖНО)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ограничение доступа к etcd (ВАЖНО)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etcd_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничение доступа к основному экземпляру etcd
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контроль сетевого доступа к чувствительным портам
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контроль доступа к Kubernetes API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Контроль доступа к Kubernetes API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-api_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как Kubernetes обрабатывает авторизацию API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Внешняя аутентификация API для Kubernetes (РЕКОМЕНДУЕТСЯ)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-kubernetes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Варианты встроенной аутентификации API Kubernetes (НЕ РЕКОМЕНДУЕТСЯ)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализация управления доступом на основе ролей в Kubernetes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubelet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничение доступа к Kubelet
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 3: Лучшие практики безопасности Kubernetes: фаза сборки
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 3: Лучшие практики безопасности Kubernetes: фаза сборки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что такое образ контейнера?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что такое образ контейнера?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Убедитесь, что образы актуальны
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте только авторизованные образы в вашей среде
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ci-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте CI-пайплайн для контроля и выявления уязвимостей
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Минимизируйте функции во всех образах
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Минимизируйте функции во всех образах">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      По возможности используйте дистрибутивно-минимальные или пустые образы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 4: Лучшие практики безопасности Kubernetes: фаза развёртывания
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 4: Лучшие практики безопасности Kubernetes: фаза развёртывания">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Код, использующий пространства имён для изоляции ресурсов Kubernetes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Код, использующий пространства имён для изоляции ресурсов Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Установка пространства имён для запроса
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Установка предпочтительного пространства имён
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imagepolicywebhook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте ImagePolicyWebhook для управления происхождением образов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализуйте непрерывное сканирование уязвимостей
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Применяйте контекст безопасности к подам и контейнерам
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Применяйте контекст безопасности к подам и контейнерам">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример контекста безопасности: определение пода с параметрами контекста безопасности
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Непрерывно оценивайте привилегии, используемые контейнерами
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Непрерывно оценивайте привилегии, используемые контейнерами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pod-security-standards-pod-security-admission" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте Pod Security Standards и встроенный контроллер допуска Pod Security Admission для применения уровней привилегий контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование политик безопасности подов для управления атрибутами безопасности подов, включая уровни привилегий контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-mesh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обеспечение дополнительной безопасности с помощью service mesh
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обеспечение дополнительной безопасности с помощью service mesh">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service-mesh_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Преимущества service mesh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-mesh_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Недостатки service mesh
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализация централизованного управления политиками
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Реализация централизованного управления политиками">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opa" class="md-nav__link">
+    <span class="md-ellipsis">
+      Наиболее распространённые варианты использования OPA
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Наиболее распространённые варианты использования OPA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opa_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      OPA для авторизации приложений
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opa-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      OPA для контроля допуска Kubernetes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opa-service-mesh" class="md-nav__link">
+    <span class="md-ellipsis">
+      OPA для авторизации service mesh
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничение использования ресурсов в кластере
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте сетевые политики Kubernetes для контроля трафика между подами и кластерами
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита данных
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Защита данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Храните секреты как секреты
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шифруйте секреты в состоянии покоя
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      Альтернативы ресурсам Kubernetes Secret
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поиск раскрытых секретов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 5: Лучшие практики безопасности Kubernetes: фаза выполнения
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 5: Лучшие практики безопасности Kubernetes: фаза выполнения">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pod-security-admission" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте Pod Security Admission для предотвращения развёртывания рискованных контейнеров/подов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Безопасность среды выполнения контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Изоляция контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение загрузки контейнерами нежелательных модулей ядра
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сравнение и анализ различных активностей во время выполнения в подах одних и тех же развёртываний
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мониторинг сетевого трафика для ограничения ненужных или небезопасных коммуникаций
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      При взломе масштабируйте подозрительные поды до нуля
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Регулярно ротируйте учётные данные инфраструктуры
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Журналирование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Включите аудит-журналирование
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Включите аудит-журналирование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Аудит-журналы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      Определение политик аудита
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      Понимание журналирования
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Понимание журналирования">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование узлов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналирование кластера
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    <span class="md-ellipsis">
+      События
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-kubernetes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 5: Защита управляемого Kubernetes у облачных провайдеров
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 5: Защита управляемого Kubernetes у облачных провайдеров">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 6: Безопасность цепочки поставок
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 6: Безопасность цепочки поставок">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    <span class="md-ellipsis">
+      Лучшие практики защиты цепочки поставок контейнеров
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      РАЗДЕЛ 7: Заключение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РАЗДЕЛ 7: Заключение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    <span class="md-ellipsis">
+      Встраивайте безопасность в жизненный цикл контейнеров как можно раньше
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте встроенные средства безопасности Kubernetes для снижения операционных рисков
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте контекст, предоставляемый Kubernetes, для приоритизации усилий по устранению проблем
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ссылки
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="kubernetes">Шпаргалка по безопасности Kubernetes<a class="headerlink" href="#kubernetes" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Обзор<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Данная шпаргалка является отправной точкой для защиты кластера Kubernetes. Она разделена на следующие категории:</p>
+<ul>
+<li>Получение оповещений об обновлениях Kubernetes</li>
+<li>ВВЕДЕНИЕ: Что такое Kubernetes?</li>
+<li>Защита хостов Kubernetes</li>
+<li>Защита компонентов Kubernetes</li>
+<li>Использование панели управления Kubernetes</li>
+<li>Лучшие практики безопасности Kubernetes: фаза сборки</li>
+<li>Лучшие практики безопасности Kubernetes: фаза развёртывания</li>
+<li>Лучшие практики безопасности Kubernetes: фаза выполнения</li>
+</ul>
+<p>Для получения дополнительной информации о Kubernetes обратитесь к Приложению.</p>
+<h2 id="_2">Получение оповещений об обновлениях безопасности и сообщение об уязвимостях<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Подпишитесь на группу kubernetes-announce (<a href="https://kubernetes.io/docs/reference/issues-security/security/">https://kubernetes.io/docs/reference/issues-security/security/</a>) для получения писем об объявлениях безопасности. Подробнее о том, как сообщать об уязвимостях, см. на странице отчётов о безопасности (<a href="https://kubernetes.io/docs/reference/issues-security/security">https://kubernetes.io/docs/reference/issues-security/security</a>).</p>
+<h2 id="kubernetes_1">ВВЕДЕНИЕ: Что такое Kubernetes?<a class="headerlink" href="#kubernetes_1" title="Permanent link">&para;</a></h2>
+<p>Kubernetes — это движок оркестрации контейнеров с открытым исходным кодом для автоматизации развёртывания, масштабирования и управления контейнеризованными приложениями. Проект с открытым исходным кодом размещён в Cloud Native Computing Foundation (CNCF).</p>
+<p>При развёртывании Kubernetes вы получаете кластер. Кластер Kubernetes состоит из набора рабочих машин, называемых узлами, на которых запускаются контейнеризованные приложения. Плоскость управления управляет рабочими узлами и подами в кластере.</p>
+<h3 id="_3">Компоненты плоскости управления<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>Компоненты плоскости управления принимают глобальные решения о кластере, а также обнаруживают события кластера и реагируют на них. Она состоит из таких компонентов, как kube-apiserver, etcd, kube-scheduler, kube-controller-manager и cloud-controller-manager.</p>
+<p><strong>Компонент:</strong> kube-apiserver
+<strong>Описание:</strong> Предоставляет Kubernetes API. API-сервер является интерфейсом для плоскости управления Kubernetes.</p>
+<p><strong>Компонент:</strong> etcd
+<strong>Описание:</strong> Согласованное и высокодоступное хранилище ключей-значений, используемое в качестве резервного хранилища Kubernetes для всех данных кластера.</p>
+<p><strong>Компонент:</strong> kube-scheduler
+<strong>Описание:</strong> Отслеживает новые поды без назначенного узла и выбирает для них узел для запуска.</p>
+<p><strong>Компонент:</strong> kube-controller-manager
+<strong>Описание:</strong> Запускает процессы контроллеров. Логически каждый контроллер является отдельным процессом, но для снижения сложности все они компилируются в один двоичный файл и запускаются в одном процессе.</p>
+<p><strong>Компонент:</strong> cloud-controller-manager
+<strong>Описание:</strong> Менеджер облачных контроллеров позволяет связать кластер с API облачного провайдера и отделяет компоненты, взаимодействующие с облачной платформой, от компонентов, взаимодействующих только с кластером.</p>
+<h3 id="_4">Компоненты узлов<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>Компоненты узлов выполняются на каждом узле, обслуживая работающие поды и обеспечивая среду выполнения Kubernetes. Включают такие компоненты, как kubelet, kube-proxy и среда выполнения контейнеров.</p>
+<p><strong>Компонент:</strong> kubelet
+<strong>Описание:</strong> Агент, выполняющийся на каждом узле кластера. Обеспечивает запуск контейнеров в поде.</p>
+<p><strong>Компонент:</strong> kube-proxy
+<strong>Описание:</strong> Сетевой прокси, работающий на каждом узле кластера, реализующий часть концепции Kubernetes Service.</p>
+<p><strong>Контейнер:</strong> runtime
+<strong>Описание:</strong> Среда выполнения контейнеров — программное обеспечение, отвечающее за запуск контейнеров.</p>
+<h2 id="1-kubernetes">РАЗДЕЛ 1: Защита хостов Kubernetes<a class="headerlink" href="#1-kubernetes" title="Permanent link">&para;</a></h2>
+<p>Kubernetes может быть развёрнут различными способами: на «голом железе», локально и в публичном облаке (пользовательская сборка Kubernetes на виртуальных машинах или использование управляемого сервиса). Поскольку Kubernetes разработан для максимальной переносимости, клиенты могут легко переносить рабочие нагрузки и переключаться между несколькими установками.</p>
+<p>Поскольку Kubernetes может быть настроен для широкого спектра сценариев, эта гибкость является слабым местом при защите кластеров Kubernetes. Инженеры, отвечающие за развёртывание платформы Kubernetes, должны знать обо всех потенциальных векторах атак и уязвимостях для своих кластеров.</p>
+<p>Для усиления защиты базовых хостов кластеров Kubernetes рекомендуется устанавливать последние версии операционных систем, усиливать их защиту, внедрять необходимые системы управления патчами и конфигурацией, реализовывать основные правила брандмауэра и принимать специальные меры безопасности для центра обработки данных.</p>
+<h3 id="kubernetes_2">Обновление Kubernetes<a class="headerlink" href="#kubernetes_2" title="Permanent link">&para;</a></h3>
+<p>Поскольку невозможно отследить все потенциальные векторы атак на кластер Kubernetes, первая и лучшая защита — всегда использовать последнюю стабильную версию Kubernetes.</p>
+<p>В случае обнаружения уязвимостей в работающих контейнерах рекомендуется всегда обновлять исходный образ и переразвёртывать контейнеры. <strong>Старайтесь избегать прямых обновлений работающих контейнеров, поскольку это может нарушить связь между образом и контейнером.</strong></p>
+<div class="highlight"><pre><span></span><code>Пример: apt-update
+</code></pre></div>
+<p><strong>Обновление контейнеров чрезвычайно просто с функцией плавающих обновлений Kubernetes — это позволяет постепенно обновлять работающее приложение, обновляя его образы до последней версии.</strong></p>
+<h4 id="kubernetes_3">График выпуска Kubernetes<a class="headerlink" href="#kubernetes_3" title="Permanent link">&para;</a></h4>
+<p>Проект Kubernetes поддерживает ветки выпуска для трёх последних минорных версий и применяет соответствующие исправления, включая исправления безопасности, к этим трём веткам в зависимости от серьёзности и осуществимости. Патч-выпуски публикуются из этих веток с регулярной периодичностью, плюс дополнительные срочные выпуски при необходимости. Поэтому всегда рекомендуется обновлять кластер Kubernetes до последней доступной стабильной версии. Рекомендуется ознакомиться с политикой допустимого смещения версий для получения дополнительных сведений: <a href="https://kubernetes.io/docs/setup/release/version-skew-policy/">https://kubernetes.io/docs/setup/release/version-skew-policy/</a>.</p>
+<p>Существует несколько методов, таких как плавающие обновления и миграция пулов узлов, позволяющих выполнить обновление с минимальными перебоями и простоями.</p>
+<p>--</p>
+<h2 id="2-kubernetes">РАЗДЕЛ 2: Защита компонентов Kubernetes<a class="headerlink" href="#2-kubernetes" title="Permanent link">&para;</a></h2>
+<p>В этом разделе обсуждается, как защитить компоненты Kubernetes. Охватываются следующие темы:</p>
+<ul>
+<li>Защита панели управления Kubernetes</li>
+<li>Ограничение доступа к etcd (Важно)</li>
+<li>Контроль сетевого доступа к чувствительным портам</li>
+<li>Контроль доступа к Kubernetes API</li>
+<li>Реализация управления доступом на основе ролей в Kubernetes</li>
+<li>Ограничение доступа к Kubelet</li>
+</ul>
+<p>--</p>
+<h3 id="kubernetes_4">Защита панели управления Kubernetes<a class="headerlink" href="#kubernetes_4" title="Permanent link">&para;</a></h3>
+<p>Панель управления Kubernetes — это web-приложение для управления кластером. Оно не является частью самого кластера Kubernetes и должно устанавливаться владельцами кластера. Поэтому существует множество руководств по его установке. К сожалению, большинство из них создают сервисный аккаунт с очень высокими привилегиями. Это привело к взлому Tesla и некоторых других компаний через такую небезопасно настроенную панель управления K8s. (Ссылка: Ресурсы облака Tesla взломаны для майнинга криптовалюты — <a href="https://arstechnica.com/information-technology/2018/02/tesla-cloud-resources-are-hacked-to-run-cryptocurrency-mining-malware/">https://arstechnica.com/information-technology/2018/02/tesla-cloud-resources-are-hacked-to-run-cryptocurrency-mining-malware/</a>)</p>
+<p>Для предотвращения атак через панель управления следуйте следующим советам:</p>
+<ul>
+<li>Не открывайте доступ к панели управления без дополнительной аутентификации публично. Нет необходимости получать доступ к такому мощному инструменту извне вашей локальной сети</li>
+<li>Включите управление доступом на основе ролей (RBAC) (см. ниже), чтобы ограничить сервисный аккаунт, используемый панелью управления</li>
+<li>Не предоставляйте высокие привилегии сервисному аккаунту панели управления</li>
+<li>Предоставляйте разрешения отдельно каждому пользователю, чтобы каждый видел только то, что должен видеть</li>
+<li>При использовании сетевых политик можно блокировать запросы к панели управления даже от внутренних подов (это не повлияет на туннель прокси через kubectl proxy)</li>
+<li>До версии 1.8 панель управления имела сервисный аккаунт с полными привилегиями, поэтому убедитесь, что не осталось привязки ролей для cluster-admin.</li>
+<li>Разверните панель управления с аутентифицирующим обратным прокси с включённой многофакторной аутентификацией. Это можно сделать с помощью встроенных OIDC <code>id_tokens</code> или с использованием Kubernetes Impersonation. Это позволяет использовать панель управления с учётными данными пользователя вместо привилегированного <code>ServiceAccount</code>. Этот метод можно использовать как в локальных, так и в управляемых облачных кластерах.</li>
+</ul>
+<p>--</p>
+<h3 id="etcd">Ограничение доступа к etcd (ВАЖНО)<a class="headerlink" href="#etcd" title="Permanent link">&para;</a></h3>
+<p>etcd — критически важный компонент Kubernetes, хранящий информацию о состояниях и секретах, и он должен быть защищён иначе, чем остальная часть кластера. Доступ на запись к etcd API-сервера эквивалентен получению root-доступа ко всему кластеру, и даже доступ на чтение может быть использован для довольно лёгкого повышения привилегий.</p>
+<p>Планировщик Kubernetes будет искать в etcd определения подов без узла. Затем он отправляет найденные поды доступному kubelet для планирования. Валидация отправляемых подов выполняется API-сервером перед записью в etcd, поэтому вредоносные пользователи, напрямую записывающие в etcd, могут обойти многие механизмы безопасности, например PodSecurityPolicies.</p>
+<p>Администраторы должны всегда использовать надёжные учётные данные от API-серверов к etcd-серверу, такие как взаимная аутентификация через TLS-сертификаты клиента, и зачастую рекомендуется изолировать etcd-серверы за брандмауэром, к которому имеют доступ только API-серверы.</p>
+<h4 id="etcd_1">Ограничение доступа к основному экземпляру etcd<a class="headerlink" href="#etcd_1" title="Permanent link">&para;</a></h4>
+<p>Предоставление другим компонентам кластера доступа на чтение или запись к основному экземпляру etcd для полного пространства ключей эквивалентно предоставлению доступа cluster-admin. Настоятельно рекомендуется использовать отдельные экземпляры etcd для других компонентов или использовать ACL etcd для ограничения доступа на чтение и запись подмножеством пространства ключей.</p>
+<p>--</p>
+<h3 id="_5">Контроль сетевого доступа к чувствительным портам<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>Настоятельно рекомендуется настроить аутентификацию и авторизацию на кластере и узлах кластера. Поскольку кластеры Kubernetes обычно слушают диапазон чётко определённых и характерных портов, злоумышленникам проще идентифицировать кластеры и атаковать их.</p>
+<p>Ниже приведён обзор портов по умолчанию, используемых в Kubernetes. Убедитесь, что ваша сеть блокирует доступ к этим портам, и серьёзно рассмотрите возможность ограничения доступа к API-серверу Kubernetes только для доверенных сетей.</p>
+<p><strong>Узлы плоскости управления:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Протокол</th>
+<th>Диапазон портов</th>
+<th>Назначение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TCP</td>
+<td>6443</td>
+<td>Kubernetes API Server</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>2379-2380</td>
+<td>etcd server client API</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>10250</td>
+<td>Kubelet API</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>10259</td>
+<td>kube-scheduler</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>10257</td>
+<td>kube-controller-manager</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>10255</td>
+<td>Read-Only Kubelet API</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Рабочие узлы:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Протокол</th>
+<th>Диапазон портов</th>
+<th>Назначение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TCP</td>
+<td>10248</td>
+<td>Kubelet Healthz API</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>10249</td>
+<td>Kube-proxy Metrics API</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>10250</td>
+<td>Kubelet API</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>10255</td>
+<td>Read-Only Kubelet API</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>10256</td>
+<td>Kube-proxy Healthz API</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>30000-32767</td>
+<td>NodePort Services</td>
+</tr>
+</tbody>
+</table>
+<p>--</p>
+<h3 id="kubernetes-api">Контроль доступа к Kubernetes API<a class="headerlink" href="#kubernetes-api" title="Permanent link">&para;</a></h3>
+<p>Первая линия защиты Kubernetes от злоумышленников — ограничение и защита доступа к запросам API, поскольку эти запросы используются для управления платформой Kubernetes. Дополнительную информацию можно найти в документации по адресу <a href="https://kubernetes.io/docs/reference/access-authn-authz/controlling-access/">https://kubernetes.io/docs/reference/access-authn-authz/controlling-access/</a>.</p>
+<p>Этот раздел охватывает следующие темы:</p>
+<ul>
+<li>Как Kubernetes обрабатывает авторизацию API</li>
+<li>Внешняя аутентификация API для Kubernetes (рекомендуется)</li>
+<li>Встроенная аутентификация API Kubernetes (не рекомендуется)</li>
+<li>Реализация управления доступом на основе ролей в Kubernetes</li>
+<li>Ограничение доступа к Kubelet</li>
+</ul>
+<p>--</p>
+<h4 id="kubernetes-api_1">Как Kubernetes обрабатывает авторизацию API<a class="headerlink" href="#kubernetes-api_1" title="Permanent link">&para;</a></h4>
+<p>В Kubernetes необходимо пройти аутентификацию (войти в систему), прежде чем запрос может быть авторизован (получить разрешение на доступ), и Kubernetes ожидает атрибуты, общие для запросов REST API. Это означает, что существующие общеорганизационные или облачные системы контроля доступа, которые могут обрабатывать другие API, работают с авторизацией Kubernetes.</p>
+<p>Когда Kubernetes авторизует запросы API с помощью API-сервера, разрешения по умолчанию запрещены. Он оценивает все атрибуты запроса относительно всех политик и разрешает или запрещает запрос. Все части запроса API должны быть разрешены какой-либо политикой для продолжения.</p>
+<p>--</p>
+<h4 id="api-kubernetes">Внешняя аутентификация API для Kubernetes (РЕКОМЕНДУЕТСЯ)<a class="headerlink" href="#api-kubernetes" title="Permanent link">&para;</a></h4>
+<p>Из-за слабости внутренних механизмов Kubernetes для аутентификации API мы настоятельно рекомендуем более крупным или производственным кластерам использовать один из методов внешней аутентификации API.</p>
+<ul>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/#openid-connect-tokens">OpenID Connect</a> (OIDC) позволяет внешнюю аутентификацию, использование токенов с коротким сроком действия и централизованные группы для авторизации.</li>
+<li>Управляемые дистрибутивы Kubernetes, такие как GKE, EKS и AKS, поддерживают аутентификацию с использованием учётных данных от соответствующих IAM-провайдеров.</li>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/#user-impersonation">Kubernetes Impersonation</a> можно использовать как с управляемыми облачными кластерами, так и с локальными кластерами для внешней аутентификации без необходимости доступа к параметрам конфигурации API-сервера.</li>
+</ul>
+<p>Помимо выбора подходящей системы аутентификации, доступ к API следует рассматривать как привилегированный и использовать многофакторную аутентификацию (MFA) для всех пользовательских доступов.</p>
+<p>Дополнительную информацию см. в справочной документации по аутентификации Kubernetes по адресу <a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication">https://kubernetes.io/docs/reference/access-authn-authz/authentication</a>.</p>
+<p>--</p>
+<h4 id="api-kubernetes_1">Варианты встроенной аутентификации API Kubernetes (НЕ РЕКОМЕНДУЕТСЯ)<a class="headerlink" href="#api-kubernetes_1" title="Permanent link">&para;</a></h4>
+<p>Kubernetes предоставляет ряд внутренних механизмов для аутентификации API-сервера, однако они обычно подходят только для непроизводственных или небольших кластеров. Кратко рассмотрим каждый внутренний механизм и объясним, почему не следует их использовать.</p>
+<ul>
+<li>
+<p><a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/#static-token-file">Файл статических токенов</a>: аутентификация использует токены открытого текста, хранящиеся в CSV-файле на узле(ах) API-сервера. ПРЕДУПРЕЖДЕНИЕ: Нельзя изменить учётные данные в этом файле без перезапуска API-сервера.</p>
+</li>
+<li>
+<p><a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/#x509-client-certs">Клиентские сертификаты X509</a> доступны, но не подходят для производственного использования, поскольку Kubernetes <a href="https://github.com/kubernetes/kubernetes/issues/18982">не поддерживает отзыв сертификатов</a>. В результате эти пользовательские учётные данные не могут быть изменены или отозваны без ротации корневого ключа центра сертификации и повторного выпуска всех сертификатов кластера.</p>
+</li>
+<li>
+<p><a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/#service-account-tokens">Токены сервисных аккаунтов</a> также доступны для аутентификации. Основное предназначение — позволить рабочим нагрузкам, выполняющимся в кластере, аутентифицироваться на API-сервере; однако они также могут использоваться для пользовательской аутентификации.</p>
+</li>
+</ul>
+<p>--</p>
+<h3 id="kubernetes_5">Реализация управления доступом на основе ролей в Kubernetes<a class="headerlink" href="#kubernetes_5" title="Permanent link">&para;</a></h3>
+<p>Управление доступом на основе ролей (RBAC) — это метод регулирования доступа к компьютерным или сетевым ресурсам на основе ролей отдельных пользователей в организации. К счастью, Kubernetes поставляется со встроенным компонентом RBAC с ролями по умолчанию, позволяющими определять обязанности пользователей в зависимости от действий, которые клиент может захотеть выполнить. Следует использовать авторизаторы Node и RBAC совместно с плагином допуска NodeRestriction.</p>
+<p>Компонент RBAC сопоставляет входящего пользователя или группу с набором разрешений, связанных с ролями. Эти разрешения объединяют глаголы (get, create, delete) с ресурсами (поды, сервисы, узлы) и могут быть ограничены пространством имён или кластером. Авторизация RBAC использует группу API rbac.authorization.k8s.io для принятия решений об авторизации, позволяя динамически настраивать политики через Kubernetes API.</p>
+<p>Для включения RBAC запустите API-сервер с флагом --authorization-mode, установленным в список значений, разделённых запятой, включающий RBAC; например:</p>
+<div class="highlight"><pre><span></span><code>kube-apiserver<span class="w"> </span>--authorization-mode<span class="o">=</span>Example,RBAC<span class="w"> </span>--other-options<span class="w"> </span>--more-options
+</code></pre></div>
+<p>Подробные примеры использования RBAC см. в документации Kubernetes по адресу <a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac">https://kubernetes.io/docs/reference/access-authn-authz/rbac</a></p>
+<p>--</p>
+<h3 id="kubelet">Ограничение доступа к Kubelet<a class="headerlink" href="#kubelet" title="Permanent link">&para;</a></h3>
+<p>Kubelet предоставляет конечные точки HTTPS, предоставляющие мощный контроль над узлом и контейнерами. По умолчанию Kubelet допускает неаутентифицированный доступ к этому API. Производственные кластеры должны включить аутентификацию и авторизацию Kubelet.</p>
+<p>Дополнительную информацию см. в документации по аутентификации/авторизации Kubelet по адресу <a href="https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn-authz/">https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn-authz/</a></p>
+<p>--</p>
+<h2 id="3-kubernetes">РАЗДЕЛ 3: Лучшие практики безопасности Kubernetes: фаза сборки<a class="headerlink" href="#3-kubernetes" title="Permanent link">&para;</a></h2>
+<p>На этапе сборки следует обеспечить безопасность образов контейнеров Kubernetes, создавая безопасные образы и сканируя их на наличие известных уязвимостей.</p>
+<p>--</p>
+<h3 id="_6">Что такое образ контейнера?<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>Образ контейнера (CI) — это неизменяемый, лёгкий, автономный пакет, содержащий всё необходимое для запуска приложения: код приложения, среду выполнения, системные библиотеки, конфигурацию и системные инструменты. Образы строятся как многоуровневые артефакты только для чтения, переносимые между хостами, но разделяющие ядро операционной системы хоста. См. Docker: Что такое контейнер? (<a href="https://www.docker.com/resources/what-container">https://www.docker.com/resources/what-container</a>).</p>
+<p>Образы контейнеров должны создаваться на основе утверждённого и безопасного базового образа. Этот базовый образ должен регулярно сканироваться и отслеживаться, чтобы гарантировать, что все образы основаны на безопасном и подлинном образе. Реализуйте строгие политики управления, определяющие, как образы создаются и хранятся в доверенных реестрах образов.</p>
+<p>--</p>
+<h4 id="_7">Убедитесь, что образы актуальны<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>Убедитесь, что ваши образы (и любые сторонние инструменты, которые вы включаете) актуальны и используют последние версии своих компонентов.</p>
+<p>--</p>
+<h3 id="_8">Используйте только авторизованные образы в вашей среде<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>Загрузка и запуск образов контейнеров из неизвестных источников очень опасна. Убедитесь, что разрешён запуск только образов, соответствующих политике организации, иначе организация рискует запустить уязвимые или даже вредоносные контейнеры.</p>
+<p>--</p>
+<h3 id="ci-">Используйте CI-пайплайн для контроля и выявления уязвимостей<a class="headerlink" href="#ci-" title="Permanent link">&para;</a></h3>
+<p>Реестр контейнеров Kubernetes служит центральным репозиторием всех образов контейнеров в системе. В зависимости от ваших потребностей можно использовать публичный репозиторий или иметь частный реестр в качестве реестра контейнеров. Рекомендуется хранить утверждённые образы в частном реестре и публиковать в эти реестры только утверждённые образы, что автоматически сокращает количество потенциальных образов в вашем пайплайне до малой доли от сотен тысяч публично доступных образов.</p>
+<p>Также настоятельно рекомендуется добавить CI-пайплайн, интегрирующий оценку безопасности (например, сканирование уязвимостей) в процесс сборки. Этот пайплайн должен проверять весь код, утверждённый для производства и используемый для сборки образов. После сборки образа он должен сканироваться на предмет уязвимостей безопасности. Только если проблем не обнаружено, образ должен публиковаться в частный реестр и затем развёртываться в производство. Если механизм оценки безопасности обнаруживает проблемы в коде, это должно создать сбой в пайплайне, что поможет обнаружить образы с проблемами безопасности и предотвратить их попадание в реестр образов.</p>
+<p>Многие репозитории исходного кода предоставляют возможности сканирования (например, <a href="https://docs.github.com/en/code-security/supply-chain-security">Github</a>, <a href="https://docs.gitlab.com/ee/user/application_security/container_scanning/index.html">GitLab</a>), а многие CI-инструменты предлагают интеграцию со сканерами уязвимостей с открытым исходным кодом, такими как <a href="https://github.com/aquasecurity/trivy">Trivy</a> или <a href="https://github.com/anchore/grype">Grype</a>.</p>
+<p>Разрабатываются плагины авторизации образов для Kubernetes, предотвращающие доставку несанкционированных образов. Дополнительную информацию см. в PR <a href="https://github.com/kubernetes/kubernetes/pull/27129">https://github.com/kubernetes/kubernetes/pull/27129</a>.</p>
+<p>--</p>
+<h3 id="_9">Минимизируйте функции во всех образах<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>В качестве лучшей практики Google и другие технологические гиганты строго ограничивают код в своих контейнерах выполнения уже многие годы. Такой подход улучшает соотношение сигнал/шум для сканеров (например, CVE) и снижает нагрузку на установление происхождения до того, что действительно необходимо.</p>
+<p>Рассмотрите использование минимальных образов, таких как дистрибутивно-минимальные образы (см. ниже). Если это невозможно, не включайте менеджеры пакетов ОС или оболочки в образы, поскольку они могут содержать неизвестные уязвимости. Если вы абсолютно вынуждены включить какие-либо пакеты ОС, удалите менеджер пакетов на более позднем шаге процесса генерации.</p>
+<p>--</p>
+<h4 id="-">По возможности используйте дистрибутивно-минимальные или пустые образы<a class="headerlink" href="#-" title="Permanent link">&para;</a></h4>
+<p>Дистрибутивно-минимальные образы резко сокращают поверхность атаки, поскольку не содержат оболочек и включают меньше пакетов, чем другие образы. Дополнительную информацию об этих образах см. на <a href="https://github.com/GoogleContainerTools/distroless">https://github.com/GoogleContainerTools/distroless</a>.</p>
+<p>Пустой образ, идеально подходящий для статически компилируемых языков, таких как Go, — поверхность атаки поистине минимальна: только ваш код!</p>
+<p>Дополнительную информацию см. на <a href="https://hub.docker.com/_/scratch">https://hub.docker.com/_/scratch</a></p>
+<hr />
+<h2 id="4-kubernetes">РАЗДЕЛ 4: Лучшие практики безопасности Kubernetes: фаза развёртывания<a class="headerlink" href="#4-kubernetes" title="Permanent link">&para;</a></h2>
+<p>После создания инфраструктуры Kubernetes её необходимо безопасно настроить до развёртывания рабочих нагрузок. При настройке инфраструктуры убедитесь, что у вас есть видимость того, какие образы развёртываются и как они развёртываются, иначе вы не сможете выявлять нарушения политик безопасности и реагировать на них. Перед развёртыванием ваша система должна знать и быть в состоянии сообщить вам:</p>
+<ul>
+<li><strong>Что развёртывается</strong> — включая информацию об используемом образе, например компоненты или уязвимости, и поды, которые будут развёрнуты.</li>
+<li><strong>Куда будет развёртываться</strong> — в какие кластеры, пространства имён и узлы.</li>
+<li><strong>Как развёртывается</strong> — запускается ли с привилегиями, с какими другими развёртываниями может взаимодействовать, какой контекст безопасности пода применяется, если есть.</li>
+<li><strong>К чему имеет доступ</strong> — включая секреты, тома и другие компоненты инфраструктуры, такие как хост или API оркестратора.</li>
+<li><strong>Соответствует ли требованиям?</strong> — выполняет ли требования ваших политик и требований безопасности.</li>
+</ul>
+<p>--</p>
+<h3 id="kubernetes_6">Код, использующий пространства имён для изоляции ресурсов Kubernetes<a class="headerlink" href="#kubernetes_6" title="Permanent link">&para;</a></h3>
+<p>Пространства имён предоставляют возможность создавать логические разделы, обеспечивать разделение ресурсов и ограничивать область действия разрешений пользователей.</p>
+<p>--</p>
+<h4 id="_10">Установка пространства имён для запроса<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h4>
+<p>Для установки пространства имён текущего запроса используйте флаг --namespace. Примеры:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>run<span class="w"> </span>nginx<span class="w"> </span>--image<span class="o">=</span>nginx<span class="w"> </span>--namespace<span class="o">=</span>&lt;insert-namespace-name-here&gt;
+kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>--namespace<span class="o">=</span>&lt;insert-namespace-name-here&gt;
+</code></pre></div>
+<p>--</p>
+<h4 id="_11">Установка предпочтительного пространства имён<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h4>
+<p>Можно постоянно сохранить пространство имён для всех последующих команд kubectl в этом контексте с помощью:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>config<span class="w"> </span>set-context<span class="w"> </span>--current<span class="w"> </span>--namespace<span class="o">=</span>&lt;insert-namespace-name-here&gt;
+</code></pre></div>
+<p>Затем проверьте это следующей командой:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>config<span class="w"> </span>view<span class="w"> </span>--minify<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>namespace:
+</code></pre></div>
+<p>Подробнее о пространствах имён см. на <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces">https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces</a></p>
+<p>--</p>
+<h3 id="imagepolicywebhook">Используйте ImagePolicyWebhook для управления происхождением образов<a class="headerlink" href="#imagepolicywebhook" title="Permanent link">&para;</a></h3>
+<p>Настоятельно рекомендуется использовать контроллер допуска ImagePolicyWebhook для предотвращения использования несанкционированных образов, отклонения подов, использующих несанкционированные образы, и отказа от образов, соответствующих следующим критериям:</p>
+<ul>
+<li>Образы, не проходившие сканирование в последнее время</li>
+<li>Образы, использующие базовый образ, явно не разрешённый</li>
+<li>Образы из небезопасных реестров</li>
+</ul>
+<p>Подробнее о webhook см. на <a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#imagepolicywebhook">https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#imagepolicywebhook</a></p>
+<p>--</p>
+<h3 id="_12">Реализуйте непрерывное сканирование уязвимостей<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p>Поскольку новые уязвимости постоянно обнаруживаются, вы не всегда можете знать, не содержат ли ваши контейнеры недавно раскрытых уязвимостей (CVE) или устаревших пакетов. Для поддержания высокого уровня безопасности регулярно сканируйте в производстве как собственные контейнеры (приложения, которые вы создали и ранее сканировали), так и сторонние контейнеры (полученные из доверенных репозиториев и поставщиков).</p>
+<p>Проекты с открытым исходным кодом, такие как <a href="https://github.com/deepfence/ThreatMapper">ThreatMapper</a>, могут помочь в выявлении и приоритизации уязвимостей.</p>
+<p>--</p>
+<h3 id="_13">Применяйте контекст безопасности к подам и контейнерам<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p>Контекст безопасности — это свойство, определённое в deployment yaml и управляющее параметрами безопасности для всех подов/контейнеров/томов. Оно должно применяться во всей инфраструктуре. При правильной реализации свойства контекста безопасности повсеместно можно устранить целые классы атак, основанных на привилегированном доступе. Например, любая атака, зависящая от установки программного обеспечения или записи в файловую систему, будет остановлена, если указать файловые системы только для чтения в контексте безопасности.</p>
+<p>При настройке контекста безопасности для подов предоставляйте только те привилегии, которые необходимы для работы ресурсов в контейнерах и томах. Некоторые важные параметры свойства контекста безопасности:</p>
+<p>Настройки контекста безопасности:</p>
+<ol>
+<li>
+<p>SecurityContext-&gt;<strong>runAsNonRoot</strong>
+   Описание: Указывает, что контейнеры должны запускаться от имени пользователя без root-прав.</p>
+</li>
+<li>
+<p>SecurityContext-&gt;<strong>Capabilities</strong>
+   Описание: Управляет возможностями Linux, назначаемыми контейнеру.</p>
+</li>
+<li>
+<p>SecurityContext-&gt;<strong>readOnlyRootFilesystem</strong>
+   Описание: Управляет возможностью записи контейнера в корневую файловую систему.</p>
+</li>
+<li>
+<p>PodSecurityContext-&gt;<strong>runAsNonRoot</strong>
+   Описание: Предотвращает запуск контейнера с пользователем 'root' в составе пода.</p>
+</li>
+</ol>
+<h4 id="_14">Пример контекста безопасности: определение пода с параметрами контекста безопасности<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hello-world</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># спецификация контейнеров пода</span>
+<span class="w">  </span><span class="c1"># ...</span>
+<span class="w">  </span><span class="c1"># ...</span>
+<span class="w">  </span><span class="c1"># Контекст безопасности</span>
+<span class="w">  </span><span class="nt">securityContext</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">readOnlyRootFilesystem</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">runAsNonRoot</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Дополнительную информацию о контексте безопасности для подов см. в документации по адресу <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context">https://kubernetes.io/docs/tasks/configure-pod-container/security-context</a></p>
+<p>--</p>
+<h3 id="_15">Непрерывно оценивайте привилегии, используемые контейнерами<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<p>Настоятельно рекомендуется, чтобы все контейнеры соответствовали принципу минимальных привилегий, поскольку риск безопасности во многом определяется возможностями, привязками ролей и привилегиями, предоставленными контейнерам. Каждый контейнер должен иметь только минимальные привилегии и возможности, позволяющие ему выполнять свою предназначенную функцию.</p>
+<h4 id="pod-security-standards-pod-security-admission">Используйте Pod Security Standards и встроенный контроллер допуска Pod Security Admission для применения уровней привилегий контейнеров<a class="headerlink" href="#pod-security-standards-pod-security-admission" title="Permanent link">&para;</a></h4>
+<p>Pod Security Standards в сочетании с контроллером допуска Pod Security Admission позволяют администраторам кластера применять требования к полям <code>securityContext</code> подов. Существуют три профиля Pod Security Standard:</p>
+<ul>
+<li><strong>Privileged</strong>: Без ограничений, допускает известные эскалации привилегий. Предназначен для использования с системными и инфраструктурными рабочими нагрузками, требующими привилегий для правильной работы. Все настройки securityContext разрешены.</li>
+<li><strong>Baseline</strong>: Минимально ограничительная политика, разработанная для обычных контейнеризованных рабочих нагрузок с предотвращением известных эскалаций привилегий. Предназначена для разработчиков и операторов некритических приложений. Наиболее опасные настройки securityContext, такие как securityContext.privileged, hostPID, hostPath, hostIPC, не разрешены.</li>
+<li><strong>Restricted</strong>: Наиболее ограничительная политика, разработанная для применения текущих практик усиления защиты подов за счёт некоторой совместимости. Предназначена для критически важных с точки зрения безопасности рабочих нагрузок или ненадёжных пользователей. Restricted включает все требования политики Baseline плюс значительно более строгие требования, такие как сброс всех возможностей, применение runAsNotRoot и другие.</li>
+</ul>
+<p>Каждый из профилей имеет определённые базовые настройки, которые можно найти подробнее <a href="https://kubernetes.io/docs/concepts/security/pod-security-standards/#profile-details">здесь</a>.</p>
+<p>Контроллер допуска Pod Security Admission позволяет применять, проверять или предупреждать о нарушении определённой политики. Режимы <code>audit</code> и <code>warn</code> можно использовать для определения того, будет ли конкретный Pod Security Standard в обычных условиях препятствовать развёртыванию пода при установке в режим <code>enforce</code>.</p>
+<p>Ниже приведён пример пространства имён, допускающего только развёртывание подов, соответствующих ограничительному Pod Security Standard:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Namespace</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">policy-test</span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">pod-security.kubernetes.io/enforce</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">restricted</span>
+<span class="w">    </span><span class="nt">pod-security.kubernetes.io/audit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">restricted</span>
+<span class="w">    </span><span class="nt">pod-security.kubernetes.io/warn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">restricted</span>
+</code></pre></div>
+<p>Администраторы кластера должны правильно организовывать и применять политики к пространствам имён кластера, допуская привилегированную политику только в тех пространствах имён, где это абсолютно необходимо, например для критических служб кластера, требующих доступа к базовому хосту. Пространствам имён следует устанавливать наименьшую применимую Pod Security Policy, соответствующую их уровню риска.</p>
+<p>Если требуется более детальное применение политик помимо трёх профилей (Privileged, Baseline, Restricted), можно использовать сторонние контроллеры допуска, такие как OPA Gatekeeper или Kyverno, или встроенную Validating Admission Policy.</p>
+<h4 id="_16">Использование политик безопасности подов для управления атрибутами безопасности подов, включая уровни привилегий контейнеров<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p><strong>Предупреждение</strong>
+Kubernetes устарел Pod Security Policies в пользу Pod Security Standards и контроллера допуска Pod Security Admission, и он был удалён из Kubernetes в v1.25. Рассмотрите использование Pod Security Standards и контроллера допуска Pod Security Admission.</p>
+</blockquote>
+<p>Все политики безопасности должны включать следующие условия:</p>
+<ul>
+<li>Процессы приложений не запускаются от имени root.</li>
+<li>Эскалация привилегий не разрешена.</li>
+<li>Корневая файловая система доступна только для чтения.</li>
+<li>Используется монтирование файловой системы /proc по умолчанию (маскированное).</li>
+<li>Сеть хоста или пространство процессов НЕ должны использоваться — использование <code>hostNetwork: true</code> приведёт к игнорированию NetworkPolicies, поскольку под будет использовать сеть хоста.</li>
+<li>Неиспользуемые и ненужные возможности Linux устраняются.</li>
+<li>Используйте параметры SELinux для более точного контроля процессов.</li>
+<li>Предоставляйте каждому приложению собственный сервисный аккаунт Kubernetes.</li>
+<li>Если контейнеру не нужен доступ к Kubernetes API, не позволяйте ему монтировать учётные данные сервисного аккаунта.</li>
+</ul>
+<p>Дополнительную информацию о политиках безопасности подов см. в документации по адресу <a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/">https://kubernetes.io/docs/concepts/policy/pod-security-policy/</a>.</p>
+<p>--</p>
+<h3 id="service-mesh">Обеспечение дополнительной безопасности с помощью service mesh<a class="headerlink" href="#service-mesh" title="Permanent link">&para;</a></h3>
+<p>Service mesh — это уровень инфраструктуры, который может быстро, безопасно и надёжно обрабатывать коммуникацию между сервисами в приложениях, что позволяет снизить сложность управления микросервисами и развёртываниями. Он обеспечивает унифицированный способ защиты, подключения и мониторинга микросервисов, и service mesh отлично справляется с операционными задачами и проблемами при запуске контейнеров и микросервисов.</p>
+<h4 id="service-mesh_1">Преимущества service mesh<a class="headerlink" href="#service-mesh_1" title="Permanent link">&para;</a></h4>
+<p>Service mesh предоставляет следующие преимущества:</p>
+<ol>
+<li>Наблюдаемость</li>
+</ol>
+<p>Генерирует метрики трассировки и телеметрии, что позволяет легко понять систему и быстро выявить причины проблем.</p>
+<ol start="2">
+<li>Специализированные функции безопасности</li>
+</ol>
+<p>Обеспечивает функции безопасности, которые быстро выявляют любой скомпрометированный трафик, входящий в кластер, и могут защитить сервисы внутри сети при правильной реализации. Также может помочь управлять безопасностью через mTLS, контроль входящего и исходящего трафика и другие механизмы.</p>
+<ol start="3">
+<li>Возможность защиты микросервисов с помощью mTLS</li>
+</ol>
+<p>Поскольку защита микросервисов сложна, существует множество инструментов для обеспечения их безопасности. Однако service mesh является наиболее элегантным решением для шифрования передаваемого трафика внутри сети.</p>
+<p>Он обеспечивает защиту с помощью взаимного шифрования TLS (mTLS) трафика между сервисами, а mesh может автоматически шифровать и дешифровать запросы и ответы, снимая эту нагрузку с разработчиков приложений. Mesh также может улучшить производительность, отдавая приоритет повторному использованию существующих постоянных соединений, что снижает необходимость в вычислительно дорогостоящем создании новых. С service mesh можно защитить трафик по сети, а также обеспечить надёжную аутентификацию и авторизацию на основе идентичности для каждого микросервиса.</p>
+<p>Мы видим, что service mesh имеет большую ценность для корпоративных компаний, поскольку он позволяет видеть, включён ли и работает ли mTLS между каждым из ваших сервисов. Также можно получать немедленные оповещения об изменении статуса безопасности.</p>
+<ol start="4">
+<li>Контроль входящего и исходящего трафика</li>
+</ol>
+<p>Позволяет отслеживать и устранять скомпрометированный трафик по мере его прохождения через mesh. Например, если Istio интегрируется с Kubernetes в качестве контроллера входящего трафика, он может обрабатывать балансировку нагрузки для входящего трафика. Это позволяет защитникам добавить уровень безопасности на периметре с правилами входящего трафика, тогда как контроль исходящего трафика позволяет видеть и управлять внешними сервисами и контролировать взаимодействие сервисов с трафиком.</p>
+<ol start="5">
+<li>Операционный контроль</li>
+</ol>
+<p>Позволяет командам безопасности и платформы устанавливать правильные макроконтроли для применения средств управления доступом, позволяя разработчикам делать необходимые настройки для быстрой работы в этих рамках.</p>
+<ol start="6">
+<li>Возможность управления RBAC</li>
+</ol>
+<p>Service mesh может помочь защитникам реализовать надёжную систему управления доступом на основе ролей (RBAC), которая, пожалуй, является одним из наиболее критических требований в крупных инженерных организациях. Даже безопасная система может быть легко обойдена чрезмерно привилегированными пользователями или сотрудниками, а система RBAC может:</p>
+<ul>
+<li>Ограничить привилегированных пользователей до минимальных привилегий, необходимых для выполнения рабочих обязанностей</li>
+<li>Обеспечить, что доступ к системам установлен как «запретить всё» по умолчанию</li>
+<li>Помочь разработчикам убедиться, что документация с описанием ролей и обязанностей создана, что является одной из наиболее критических проблем безопасности в корпоративной среде.</li>
+</ul>
+<h4 id="service-mesh_2">Недостатки service mesh<a class="headerlink" href="#service-mesh_2" title="Permanent link">&para;</a></h4>
+<p>Хотя service mesh имеет много преимуществ, он также несёт в себе уникальный набор проблем, некоторые из которых перечислены ниже:</p>
+<ul>
+<li>Добавляет новый уровень сложности</li>
+</ul>
+<p>Когда прокси, sidecar-контейнеры и другие компоненты вводятся в уже сложную среду, это резко увеличивает сложность разработки и операций.</p>
+<ul>
+<li>Требует дополнительной экспертизы</li>
+</ul>
+<p>Если mesh, такой как Istio, добавляется поверх оркестратора, такого как Kubernetes, операторам необходимо становиться экспертами в обеих технологиях.</p>
+<ul>
+<li>Может замедлить инфраструктуру</li>
+</ul>
+<p>Поскольку service mesh является инвазивной и сложной технологией, он может значительно замедлить архитектуру.</p>
+<ul>
+<li>Требует принятия ещё одной платформы</li>
+</ul>
+<p>Поскольку service mesh являются инвазивными, они вынуждают разработчиков и операторов адаптироваться к сильно самоутверждённой платформе и соответствовать её правилам.</p>
+<h3 id="_17">Реализация централизованного управления политиками<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<p>Существует ряд проектов, способных обеспечить централизованное управление политиками для кластера Kubernetes, включая проект <a href="https://www.openpolicyagent.org/">Open Policy Agent</a> (OPA), <a href="https://kyverno.io/">Kyverno</a> или <a href="https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/">Validating Admission Policy</a> (встроенная функция, ставшая общедоступной в версии 1.30). Для более детального примера в этой шпаргалке мы сосредоточимся на OPA.</p>
+<p>OPA был создан в 2016 году для унификации применения политик в различных технологиях и системах, и он может использоваться для применения политик на такой платформе, как Kubernetes. В настоящее время OPA входит в состав CNCF в качестве инкубационного проекта. Он может создать унифицированный метод применения политик безопасности в стеке. Хотя разработчики могут налагать детальный контроль над кластером с помощью RBAC и политик безопасности подов, эти технологии применяются только к кластеру, но не за его пределами.</p>
+<p>Поскольку OPA — это универсальный, доменно-независимый инструмент применения политик, не основанный ни на каком другом проекте, запросы политик и решения не следуют определённому формату. Таким образом, его можно интегрировать с API, демоном Linux SSH, объектным хранилищем, таким как Ceph, и можно использовать любые допустимые данные JSON в качестве атрибутов запроса, если они предоставляют необходимые данные. OPA позволяет выбирать входные и выходные данные — например, можно настроить OPA для возврата объекта JSON True или False, числа, строки или даже сложного объекта данных.</p>
+<h4 id="opa">Наиболее распространённые варианты использования OPA<a class="headerlink" href="#opa" title="Permanent link">&para;</a></h4>
+<h5 id="opa_1">OPA для авторизации приложений<a class="headerlink" href="#opa_1" title="Permanent link">&para;</a></h5>
+<p>OPA может предоставить разработчикам готовую технологию авторизации, чтобы команде не пришлось разрабатывать её с нуля. Он использует декларативный язык политик, специально предназначенный для написания и применения правил, таких как «Алиса может записывать в этот репозиторий» или «Боб может обновлять этот аккаунт». Эта технология предоставляет богатый набор инструментов, позволяющих разработчикам интегрировать политики в приложения и предоставлять конечным пользователям возможность создавать политики для своих арендаторов.</p>
+<p>Если у вас уже есть собственное решение для авторизации приложений, возможно, нет смысла заменять его OPA. Но если вы хотите повысить эффективность разработчиков, переходя к решению, масштабирующемуся с микросервисами и позволяющему декомпозировать монолитные приложения, вам потребуется распределённая система авторизации, и OPA (или один из конкурентов) может стать ответом.</p>
+<h5 id="opa-kubernetes">OPA для контроля допуска Kubernetes<a class="headerlink" href="#opa-kubernetes" title="Permanent link">&para;</a></h5>
+<p>Поскольку Kubernetes предоставляет разработчикам огромный контроль над традиционными хранилищами «вычисления, сети и хранилища», они могут использовать его для настройки сети точно так, как хотят, и хранилища точно так, как хотят. Но это означает, что администраторы и команды безопасности должны гарантировать, что разработчики не навредят себе (или своим соседям).</p>
+<p>OPA может решить эти проблемы безопасности, позволяя безопасности строить политики, требующие, чтобы все образы контейнеров были из доверенных источников, предотвращать запуск разработчиками программного обеспечения от имени root, гарантировать, что хранилище всегда помечено битом шифрования и не удаляется только потому, что под перезапускается, ограничивать доступ к интернету и т.д.</p>
+<p>Это также позволяет администраторам убедиться, что изменения политик не причиняют больше вреда, чем пользы. OPA интегрируется непосредственно в API-сервер Kubernetes и имеет полные полномочия отклонять любой ресурс, который политика допуска считает нежелательным в кластере — будь то вычислительный, сетевой или связанный с хранилищем. Кроме того, политику можно запускать вне диапазона для мониторинга результатов, а политики OPA можно предоставлять на ранних стадиях жизненного цикла разработки (например, в пайплайне CI/CD или даже на ноутбуках разработчиков), если разработчикам нужна ранняя обратная связь.</p>
+<h5 id="opa-service-mesh">OPA для авторизации service mesh<a class="headerlink" href="#opa-service-mesh" title="Permanent link">&para;</a></h5>
+<p>И наконец, OPA может регулировать использование архитектур service mesh. Зачастую администраторы обеспечивают соответствие нормативным требованиям, встраивая политики в service mesh, даже когда это связано с изменением исходного кода. Даже если вы не встраиваете OPA для реализации логики авторизации приложений (основной вариант использования, обсуждаемый выше), вы можете контролировать API-микросервисы, помещая политики авторизации в service mesh. Но если вас мотивирует безопасность, вы можете реализовать политики в service mesh для ограничения горизонтального перемещения в архитектуре микросервисов.</p>
+<h3 id="_18">Ограничение использования ресурсов в кластере<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
+<p>Важно определять квоты ресурсов для контейнеров в Kubernetes, поскольку все ресурсы в кластере Kubernetes создаются с неограниченными лимитами CPU и запросами/лимитами памяти по умолчанию. Если запускаются контейнеры без ограничений ресурсов, система рискует столкнуться с атаками типа «отказ в обслуживании» (DoS) или сценариями «шумного соседа». К счастью, OPA может использовать квоты ресурсов для пространства имён, что ограничит количество или ёмкость ресурсов, предоставляемых этому пространству имён, и ограничит его, определяя ёмкость CPU, памяти или постоянного дискового пространства.</p>
+<p>Кроме того, OPA может ограничивать количество подов, сервисов или томов в каждом пространстве имён и ограничивать максимальный или минимальный размер некоторых из вышеупомянутых ресурсов. Квоты ресурсов предоставляют лимиты по умолчанию, если они не указаны, и предотвращают запрос пользователями неоправданно высоких или низких значений для часто резервируемых ресурсов, таких как память.</p>
+<p>Ниже приведён пример определения квоты ресурсов пространства имён в соответствующем yaml. Он ограничивает количество подов в пространстве имён до 4, устанавливает запросы CPU от 1 до 2 и запросы памяти от 1 ГБ до 2 ГБ.</p>
+<p><code>compute-resources.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ResourceQuota</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">compute-resources</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hard</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">pods</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4&quot;</span>
+<span class="w">    </span><span class="nt">requests.cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span>
+<span class="w">    </span><span class="nt">requests.memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
+<span class="w">    </span><span class="nt">limits.cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2&quot;</span>
+<span class="w">    </span><span class="nt">limits.memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2Gi</span>
+</code></pre></div>
+<p>Назначение квоты ресурсов пространству имён:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>./compute-resources.yaml<span class="w"> </span>--namespace<span class="o">=</span>myspace
+</code></pre></div>
+<p>Дополнительную информацию о настройке квот ресурсов см. в документации Kubernetes по адресу <a href="https://kubernetes.io/docs/concepts/policy/resource-quotas/">https://kubernetes.io/docs/concepts/policy/resource-quotas/</a>.</p>
+<h3 id="kubernetes_7">Используйте сетевые политики Kubernetes для контроля трафика между подами и кластерами<a class="headerlink" href="#kubernetes_7" title="Permanent link">&para;</a></h3>
+<p>Если кластер запускает различные приложения, скомпрометированное приложение может атаковать другие соседние приложения. Этот сценарий может произойти, поскольку Kubernetes по умолчанию позволяет каждому поду связываться с каждым другим подом. Если разрешён входящий трафик из внешней конечной точки сети, под сможет отправлять трафик на конечную точку за пределами кластера.</p>
+<p>Настоятельно рекомендуется, чтобы разработчики реализовывали сетевую сегментацию, поскольку это ключевой контроль безопасности, гарантирующий, что контейнеры могут взаимодействовать только с другими утверждёнными контейнерами, и предотвращающий горизонтальное перемещение злоумышленников по контейнерам. Однако применение сетевой сегментации в облаке затруднено из-за «динамичной» природы сетевых идентичностей контейнеров (IP).</p>
+<p>Хотя пользователи Google Cloud Platform могут воспользоваться автоматическими правилами брандмауэра, предотвращающими межкластерное взаимодействие, другие пользователи могут применять аналогичные реализации при локальном развёртывании с использованием сетевых брандмауэров или решений SDN. Также Kubernetes Network SIG работает над методами, которые значительно улучшат политики взаимодействия между подами. Новый API сетевых политик должен удовлетворить потребность в создании правил брандмауэра вокруг подов, ограничивающих сетевой доступ контейнера.</p>
+<p>Ниже приведён пример сетевой политики, управляющей сетью для подов «backend», которая допускает только входящий сетевой доступ от подов «frontend»:</p>
+<div class="highlight"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/apis/</span><span class="kc">net</span><span class="err">.alpha.kuber</span><span class="kc">netes</span><span class="err">.io/v</span><span class="mi">1</span><span class="err">alpha</span><span class="mi">1</span><span class="err">/</span><span class="kc">na</span><span class="err">mespaces/</span><span class="kc">tenant</span><span class="mi">-</span><span class="err">a/</span><span class="kc">net</span><span class="err">workpolicys</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NetworkPolicy&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pol1&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;spec&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;allowIncoming&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;from&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">        </span><span class="nt">&quot;pods&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;segment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;frontend&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}],</span>
+<span class="w">      </span><span class="nt">&quot;toPorts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">        </span><span class="nt">&quot;port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;protocol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TCP&quot;</span>
+<span class="w">      </span><span class="p">}]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;podSelector&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;segment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backend&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Дополнительную информацию о настройке сетевых политик см. в документации Kubernetes по адресу <a href="https://kubernetes.io/docs/concepts/services-networking/network-policies">https://kubernetes.io/docs/concepts/services-networking/network-policies</a>.</p>
+<h3 id="_19">Защита данных<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h3>
+<h4 id="_20">Храните секреты как секреты<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h4>
+<p>Важно понимать, как конфиденциальные данные, такие как учётные данные и ключи, хранятся и доступны в вашей инфраструктуре. Kubernetes хранит их в «секрете» — небольшом объекте, содержащем конфиденциальные данные, например пароль или токен.</p>
+<p>Лучше всего монтировать секреты в тома только для чтения в контейнерах, а не раскрывать их как переменные среды. Кроме того, секреты должны храниться отдельно от образа или пода, иначе любой, имеющий доступ к образу, будет иметь доступ и к секрету, хотя под не может получить доступ к секретам другого пода. Сложные приложения, обрабатывающие несколько процессов и имеющие публичный доступ, особенно уязвимы в этом отношении.</p>
+<h4 id="_21">Шифруйте секреты в состоянии покоя<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h4>
+<p>Всегда шифруйте резервные копии с помощью хорошо проверенного решения для резервного копирования и шифрования и рассматривайте возможность использования полного шифрования диска там, где это возможно, поскольку база данных etcd содержит любую информацию, доступную через Kubernetes API. Доступ к этой базе данных может предоставить злоумышленнику значительную видимость состояния кластера.</p>
+<p>Kubernetes поддерживает шифрование в состоянии покоя — функцию, введённую в 1.7 и ставшую v1 beta с версии 1.13, которая шифрует ресурсы Secret в etcd и предотвращает просмотр содержимого этих секретов теми, кто имеет доступ к резервным копиям etcd. Хотя эта функция в настоящее время является бета-версией, она обеспечивает дополнительный уровень защиты, когда резервные копии не зашифрованы или злоумышленник получает доступ на чтение к etcd.</p>
+<h4 id="kubernetes-secret">Альтернативы ресурсам Kubernetes Secret<a class="headerlink" href="#kubernetes-secret" title="Permanent link">&para;</a></h4>
+<p>Поскольку внешний менеджер секретов может хранить и управлять секретами вместо их хранения в Kubernetes Secrets, стоит рассмотреть эту альтернативу безопасности. Менеджер предоставляет ряд преимуществ по сравнению с использованием Kubernetes Secrets, включая возможность управления секретами в нескольких кластерах (или облаках) и возможность централизованного управления и ротации секретов.</p>
+<p>Дополнительную информацию о секретах и их альтернативах см. в документации по адресу <a href="https://kubernetes.io/docs/concepts/configuration/secret/">https://kubernetes.io/docs/concepts/configuration/secret/</a>.</p>
+<p>Также см. шпаргалку <a href="Secrets_Management_Cheat_Sheet.html">Управление секретами</a> для получения дополнительных сведений и лучших практик управления секретами.</p>
+<h4 id="_22">Поиск раскрытых секретов<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h4>
+<p>Настоятельно рекомендуется проверить секретный материал, присутствующий в контейнере, в соответствии с принципом «минимальных привилегий» и оценить риск, создаваемый компрометацией.</p>
+<p>Помните, что инструменты с открытым исходным кодом, такие как <a href="https://github.com/deepfence/SecretScanner">SecretScanner</a> и <a href="https://github.com/deepfence/ThreatMapper">ThreatMapper</a>, могут сканировать файловые системы контейнеров на наличие конфиденциальных ресурсов, таких как API-токены, пароли и ключи. Такие ресурсы будут доступны любому пользователю, имеющему доступ к незашифрованной файловой системе контейнера, — при сборке, в состоянии покоя в реестре или резервной копии, или во время выполнения.</p>
+<hr />
+<h2 id="5-kubernetes">РАЗДЕЛ 5: Лучшие практики безопасности Kubernetes: фаза выполнения<a class="headerlink" href="#5-kubernetes" title="Permanent link">&para;</a></h2>
+<p>Когда инфраструктура Kubernetes переходит в фазу выполнения, контейнеризованные приложения сталкиваются с множеством новых проблем безопасности. Необходимо получить видимость работающей среды для обнаружения угроз и реагирования на них по мере возникновения.</p>
+<p>Если вы проактивно защищаете контейнеры и развёртывания Kubernetes на этапах сборки и развёртывания, это значительно снижает вероятность инцидентов безопасности во время выполнения и последующие усилия по реагированию на них.</p>
+<p>Прежде всего, отслеживайте наиболее важные с точки зрения безопасности действия контейнеров, включая:</p>
+<ul>
+<li>Активность процессов</li>
+<li>Сетевые коммуникации между контейнеризованными сервисами</li>
+<li>Сетевые коммуникации между контейнеризованными сервисами и внешними клиентами и серверами</li>
+</ul>
+<p>Обнаружение аномалий путём наблюдения за поведением контейнеров обычно проще в контейнерах, чем в виртуальных машинах, благодаря декларативной природе контейнеров и Kubernetes. Эти атрибуты позволяют упростить интроспекцию того, что развёрнуто, и ожидаемой активности.</p>
+<h3 id="pod-security-admission">Используйте Pod Security Admission для предотвращения развёртывания рискованных контейнеров/подов<a class="headerlink" href="#pod-security-admission" title="Permanent link">&para;</a></h3>
+<p>Ранее рекомендованная <a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/">Pod Security Policy</a> устарела и заменена <a href="https://kubernetes.io/docs/concepts/security/pod-security-admission/">Pod Security Admission</a> — новой функцией, позволяющей применять политики безопасности к подам в кластере Kubernetes.</p>
+<p>Рекомендуется использовать уровень <code>baseline</code> как минимальное требование безопасности для всех подов для обеспечения стандартного уровня безопасности в кластере. Однако кластеры должны стремиться применять уровень <code>restricted</code>, следующий лучшим практикам усиления защиты подов.</p>
+<p>Дополнительную информацию о настройке Pod Security Admission см. в документации по адресу <a href="https://kubernetes.io/docs/tasks/configure-pod-container/enforce-standards-admission-controller/">https://kubernetes.io/docs/tasks/configure-pod-container/enforce-standards-admission-controller/</a>.</p>
+<h3 id="_23">Безопасность среды выполнения контейнеров<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h3>
+<p>Если контейнеры защищены на этапе выполнения, команды безопасности имеют возможность обнаруживать угрозы и аномалии и реагировать на них, пока контейнеры или рабочие нагрузки находятся в рабочем состоянии. Обычно это осуществляется путём перехвата низкоуровневых системных вызовов и поиска событий, которые могут указывать на компрометацию. Некоторые примеры событий, которые должны инициировать оповещение:</p>
+<ul>
+<li>Запуск оболочки внутри контейнера</li>
+<li>Монтирование контейнером чувствительного пути с хоста, такого как /proc</li>
+<li>Неожиданное чтение конфиденциального файла в работающем контейнере, такого как /etc/shadow</li>
+<li>Установка исходящего сетевого соединения</li>
+</ul>
+<p>Инструменты с открытым исходным кодом, такие как Falco от Sysdig, могут помочь операторам быстро настроить безопасность среды выполнения контейнеров, предоставляя защитникам большое количество готовых обнаружений, а также возможность создавать пользовательские правила.</p>
+<h3 id="_24">Изоляция контейнеров<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h3>
+<p>Когда средам выполнения контейнеров разрешено напрямую обращаться к ядру хоста, ядро часто взаимодействует с оборудованием и устройствами для ответа на запрос. Хотя Cgroups и пространства имён предоставляют контейнерам определённую изоляцию, ядро по-прежнему представляет большую поверхность атаки. Когда защитники имеют дело с многоарендными и крайне ненадёжными кластерами, они часто добавляют дополнительный уровень изоляции для обеспечения отсутствия побегов из контейнера и эксплойтов ядра. Ниже рассмотрим несколько технологий с открытым исходным кодом, помогающих дополнительно изолировать работающие контейнеры от ядра хоста:</p>
+<ul>
+<li>Kata Containers: OSS-проект, использующий уменьшенные виртуальные машины для минимизации потребления ресурсов и максимизации производительности для дальнейшей изоляции контейнеров.</li>
+<li>gVisor: более лёгкое ядро, чем виртуальная машина (даже уменьшенная). Это собственное независимое ядро, написанное на Go, находящееся между контейнером и ядром хоста. Это надёжная изоляционная среда — gVisor поддерживает ~70% системных вызовов Linux из контейнера, но использует только около 20 системных вызовов к ядру хоста.</li>
+<li>Firecracker: сверхлёгкая виртуальная машина, работающая в пространстве пользователя. Поскольку она защищена политиками seccomp, cgroup и пространства имён, системные вызовы очень ограничены. Firecracker создан с учётом безопасности, однако может не поддерживать все развёртывания Kubernetes или среды выполнения контейнеров.</li>
+</ul>
+<h3 id="_25">Предотвращение загрузки контейнерами нежелательных модулей ядра<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h3>
+<p>Поскольку ядро Linux автоматически загружает модули ядра с диска при необходимости в определённых обстоятельствах, например при подключении оборудования или монтировании файловой системы, это может быть значительной поверхностью атаки. Особенно актуально для Kubernetes то, что даже непривилегированные процессы могут вызывать загрузку определённых модулей ядра, связанных с сетевыми протоколами, просто создав сокет соответствующего типа. Эта ситуация может позволить злоумышленникам использовать уязвимость в модулях ядра, которые, по предположению администратора, не использовались.</p>
+<p>Для предотвращения автоматической загрузки конкретных модулей можно удалить их с узла или добавить правила для их блокировки. В большинстве дистрибутивов Linux это можно сделать, создав файл, такой как <code>/etc/modprobe.d/kubernetes-blacklist.conf</code> со следующим содержимым:</p>
+<div class="highlight"><pre><span></span><code># DCCP вряд ли нужен, имел несколько серьёзных
+# уязвимостей и плохо поддерживается.
+blacklist dccp
+
+# SCTP не используется в большинстве кластеров Kubernetes и также имел
+# уязвимости в прошлом.
+blacklist sctp
+</code></pre></div>
+<p>Для более обобщённой блокировки загрузки модулей можно использовать Linux Security Module (такой как SELinux), чтобы полностью запретить разрешение module_request для контейнеров, предотвращая загрузку ядром модулей для контейнеров при любых обстоятельствах. (Поды по-прежнему смогут использовать модули, загруженные вручную, или модули, загруженные ядром от имени какого-либо более привилегированного процесса).</p>
+<h3 id="_26">Сравнение и анализ различных активностей во время выполнения в подах одних и тех же развёртываний<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h3>
+<p>Когда контейнеризованные приложения реплицируются в целях высокой доступности, отказоустойчивости или масштабирования, эти реплики должны вести себя почти одинаково. Если реплика имеет значительные отклонения от других, защитники захотят провести дополнительное расследование. Инструмент безопасности Kubernetes должен быть интегрирован с другими внешними системами (email, PagerDuty, Slack, Google Cloud Security Command Center, SIEM и т.д.) и использовать метки или аннотации развёртывания для оповещения команды, ответственной за данное приложение, при обнаружении потенциальной угрозы. Если вы выбираете коммерческого поставщика средств безопасности Kubernetes, он должен поддерживать широкий спектр интеграций с внешними инструментами.</p>
+<h3 id="_27">Мониторинг сетевого трафика для ограничения ненужных или небезопасных коммуникаций<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h3>
+<p>Контейнеризованные приложения обычно активно используют сеть кластера, поэтому наблюдение за активным сетевым трафиком является хорошим способом понять, как приложения взаимодействуют друг с другом, и выявить неожиданные коммуникации. Следует наблюдать за активным сетевым трафиком и сравнивать его с тем, что разрешено согласно сетевым политикам Kubernetes.</p>
+<p>В то же время сравнение активного трафика с разрешённым даёт ценную информацию о том, что не происходит, но разрешено. На основе этой информации можно дополнительно ужесточить разрешённые сетевые политики, устраняя избыточные соединения и уменьшая общую поверхность атаки.</p>
+<p>Проекты с открытым исходным кодом, такие как <a href="https://github.com/kinvolk/inspektor-gadget">https://github.com/kinvolk/inspektor-gadget</a> или <a href="https://github.com/deepfence/PacketStreamer">https://github.com/deepfence/PacketStreamer</a>, могут помочь в этом, а коммерческие решения безопасности обеспечивают различную степень анализа сетевого трафика контейнеров.</p>
+<h3 id="_28">При взломе масштабируйте подозрительные поды до нуля<a class="headerlink" href="#_28" title="Permanent link">&para;</a></h3>
+<p>Сдерживайте успешный взлом, используя встроенные средства управления Kubernetes для масштабирования подозрительных подов до нуля или завершения и перезапуска экземпляров скомпрометированных приложений.</p>
+<h3 id="_29">Регулярно ротируйте учётные данные инфраструктуры<a class="headerlink" href="#_29" title="Permanent link">&para;</a></h3>
+<p>Чем короче срок жизни секрета или учётных данных, тем сложнее злоумышленнику использовать эти учётные данные. Устанавливайте короткие сроки жизни сертификатов и автоматизируйте их ротацию. Используйте провайдер аутентификации, который может контролировать время доступности выданных токенов, и используйте короткие сроки жизни там, где это возможно. Если вы используете токены сервисных аккаунтов во внешних интеграциях, планируйте регулярную ротацию этих токенов. Например, после завершения фазы начальной загрузки токен начальной загрузки, использованный для настройки узлов, должен быть отозван или его авторизация удалена.</p>
+<h3 id="_30">Журналирование<a class="headerlink" href="#_30" title="Permanent link">&para;</a></h3>
+<p>Kubernetes предоставляет ведение журналов на уровне кластера, позволяющее записывать активность контейнеров в центральный концентратор журналов. При создании кластера стандартный вывод и стандартный вывод ошибок каждого контейнера могут поглощаться агентом Fluentd, работающим на каждом узле (либо в Google Stackdriver Logging, либо в Elasticsearch) и просматриваться с помощью Kibana.</p>
+<h4 id="-_1">Включите аудит-журналирование<a class="headerlink" href="#-_1" title="Permanent link">&para;</a></h4>
+<p>Аудит-регистратор — это бета-функция, записывающая действия, выполненные API, для последующего анализа в случае компрометации. Рекомендуется включить аудит-журналирование и архивировать файл аудита на защищённом сервере.</p>
+<p>Обеспечьте, что журналы отслеживают аномальные или нежелательные вызовы API, особенно любые ошибки авторизации (эти записи журнала будут содержать сообщение статуса «Forbidden»). Ошибки авторизации могут означать, что злоумышленник пытается использовать похищенные учётные данные.</p>
+<p>Управляемые провайдеры Kubernetes, включая GKE, предоставляют доступ к этим данным в консоли облака и могут позволить настроить оповещения об ошибках авторизации.</p>
+<h5 id="-_2">Аудит-журналы<a class="headerlink" href="#-_2" title="Permanent link">&para;</a></h5>
+<p>Аудит-журналы могут быть полезны для соответствия требованиям, поскольку они должны помочь ответить на вопросы о том, что произошло, кто это сделал и когда. Kubernetes предоставляет гибкий аудит запросов kube-apiserver на основе политик. Они помогают отслеживать все действия в хронологическом порядке.</p>
+<p>Пример аудит-журнала:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="s2">&quot;Event&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;audit.k8s.io/v1beta1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:{</span><span class="w"> </span><span class="nt">&quot;creationTimestamp&quot;</span><span class="p">:</span><span class="s2">&quot;2019-08-22T12:00:00Z&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;level&quot;</span><span class="p">:</span><span class="s2">&quot;Metadata&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="s2">&quot;2019-08-22T12:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;auditID&quot;</span><span class="p">:</span><span class="s2">&quot;23bc44ds-2452-242g-fsf2-4242fe3ggfes&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;stage&quot;</span><span class="p">:</span><span class="s2">&quot;RequestReceived&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;requestURI&quot;</span><span class="p">:</span><span class="s2">&quot;/api/v1/namespaces/default/persistentvolumeclaims&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;verb&quot;</span><span class="p">:</span><span class="s2">&quot;list&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;user&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="s2">&quot;user@example.org&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;groups&quot;</span><span class="p">:[</span><span class="w"> </span><span class="s2">&quot;system:authenticated&quot;</span><span class="w"> </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;sourceIPs&quot;</span><span class="p">:[</span><span class="w"> </span><span class="s2">&quot;172.12.56.1&quot;</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;objectRef&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;resource&quot;</span><span class="p">:</span><span class="s2">&quot;persistentvolumeclaims&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;namespace&quot;</span><span class="p">:</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;apiVersion&quot;</span><span class="p">:</span><span class="s2">&quot;v1&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;requestReceivedTimestamp&quot;</span><span class="p">:</span><span class="s2">&quot;2019-08-22T12:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;stageTimestamp&quot;</span><span class="p">:</span><span class="s2">&quot;2019-08-22T12:00:00Z&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="_31">Определение политик аудита<a class="headerlink" href="#_31" title="Permanent link">&para;</a></h4>
+<p>Политика аудита устанавливает правила, определяющие, какие события должны записываться и какие данные хранятся при включении события. Структура объекта политики аудита определена в группе API audit.k8s.io. Когда событие обрабатывается, оно сравнивается со списком правил по порядку. Первое совпадающее правило устанавливает «уровень аудита» события.</p>
+<p>Известные уровни аудита:</p>
+<ul>
+<li>None — не регистрировать события, соответствующие этому правилу</li>
+<li>Metadata — регистрировать метаданные запроса (запрашивающий пользователь, временная метка, ресурс, глагол и т.д.), но не тело запроса или ответа</li>
+<li>Request — регистрировать метаданные события и тело запроса, но не тело ответа. Не применяется к запросам, не связанным с ресурсами</li>
+<li>RequestResponse — регистрировать метаданные события, тела запроса и ответа. Не применяется к запросам, не связанным с ресурсами</li>
+</ul>
+<p>Файл с политикой можно передать kube-apiserver с помощью флага --audit-policy-file. Если флаг опущен, события не регистрируются. Обратите внимание, что поле rules должно присутствовать в файле политики аудита. Политика без (0) правил считается недопустимой.</p>
+<h4 id="_32">Понимание журналирования<a class="headerlink" href="#_32" title="Permanent link">&para;</a></h4>
+<p>Одна из главных проблем с журналированием Kubernetes — понять, какие журналы генерируются и как их использовать. Начнём с рассмотрения общей картины архитектуры журналирования Kubernetes.</p>
+<h5 id="_33">Журналирование контейнеров<a class="headerlink" href="#_33" title="Permanent link">&para;</a></h5>
+<p>Первый уровень журналов, которые можно собирать из кластера Kubernetes, — это журналы, генерируемые контейнеризованными приложениями. Простейший метод журналирования контейнеров — запись в потоки стандартного вывода (stdout) и стандартного вывода ошибок (stderr).</p>
+<p>Манифест выглядит следующим образом:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example</span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">busybox</span>
+<span class="w">      </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/bin/sh</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-c</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;while</span><span class="nv"> </span><span class="s">true;</span><span class="nv"> </span><span class="s">do</span><span class="nv"> </span><span class="s">echo</span><span class="nv"> </span><span class="s">$(date);</span><span class="nv"> </span><span class="s">sleep</span><span class="nv"> </span><span class="s">1;</span><span class="nv"> </span><span class="s">done&#39;</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<p>Для применения манифеста выполните:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>example.yaml
+</code></pre></div>
+<p>Для просмотра журналов этого контейнера выполните:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>log<span class="w"> </span>&lt;container-name&gt;<span class="w"> </span>command.
+</code></pre></div>
+<p>Для сохранения журналов контейнеров распространённый подход — запись журналов в файл журнала с последующим использованием sidecar-контейнера. Как показано в конфигурации пода выше, sidecar-контейнер будет работать в том же поде вместе с контейнером приложения, монтируя тот же том и обрабатывая журналы отдельно.</p>
+<p>Пример манифеста пода:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">busybox</span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/bin/sh</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-c</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">      </span><span class="no">while true;</span>
+<span class="w">      </span><span class="no">do</span>
+<span class="w">        </span><span class="no">echo &quot;$(date)\n&quot; &gt;&gt; /var/log/example.log;</span>
+<span class="w">        </span><span class="no">sleep 1;</span>
+<span class="w">      </span><span class="no">done</span>
+<span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">varlog</span>
+<span class="w">      </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sidecar</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">busybox</span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/bin/sh</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-c</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;tail</span><span class="nv"> </span><span class="s">-f</span><span class="nv"> </span><span class="s">/var/log/example.log&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">varlog</span>
+<span class="w">      </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log</span>
+<span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">varlog</span>
+<span class="w">    </span><span class="nt">emptyDir</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+</code></pre></div>
+<h5 id="_34">Журналирование узлов<a class="headerlink" href="#_34" title="Permanent link">&para;</a></h5>
+<p>Когда контейнер, работающий на Kubernetes, записывает журналы в потоки stdout или stderr, среда выполнения контейнеров передаёт их в драйвер журналирования, установленный конфигурацией Kubernetes.</p>
+<p>В большинстве случаев эти журналы окажутся в каталоге /var/log/containers на вашем хосте. Docker поддерживает несколько драйверов журналирования, но, к сожалению, конфигурация драйвера не поддерживается через Kubernetes API.</p>
+<p>После завершения или перезапуска контейнера kubelet сохраняет журналы на узле. Для предотвращения заполнения всего хранилища хоста этими файлами узел Kubernetes реализует механизм ротации журналов. При вытеснении контейнера с узла все контейнеры с соответствующими файлами журналов также вытесняются.</p>
+<p>В зависимости от операционной системы и дополнительных служб, работающих на вашей хост-машине, может потребоваться просмотр дополнительных журналов.</p>
+<p>Например, журналы systemd можно получить следующей командой:</p>
+<div class="highlight"><pre><span></span><code>journalctl<span class="w"> </span>-u
+</code></pre></div>
+<h5 id="_35">Журналирование кластера<a class="headerlink" href="#_35" title="Permanent link">&para;</a></h5>
+<p>В самом кластере Kubernetes существует длинный список компонентов кластера, которые также могут журналироваться, а также дополнительные типы данных (события, аудит-журналы). Вместе эти различные типы данных дают видимость того, как Kubernetes функционирует как система.</p>
+<p>Некоторые из этих компонентов работают в контейнере, а некоторые — на уровне операционной системы (в большинстве случаев, в виде службы systemd). Службы systemd записывают в journald, а компоненты, работающие в контейнерах, записывают журналы в каталог /var/log, если только среда выполнения контейнеров не настроена по-другому.</p>
+<h4 id="_36">События<a class="headerlink" href="#_36" title="Permanent link">&para;</a></h4>
+<p>События Kubernetes могут указывать на изменения состояния ресурсов Kubernetes и ошибки, такие как превышение квоты ресурсов или ожидающие поды, а также на любые информационные сообщения.</p>
+<p>Следующая команда возвращает все события в конкретном пространстве имён:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+
+NAMESPACE<span class="w"> </span>LAST<span class="w"> </span>SEEN<span class="w"> </span>TYPE<span class="w">   </span>REASON<span class="w"> </span>OBJECT<span class="w"> </span>MESSAGE
+kube-system<span class="w">  </span>8m22s<span class="w">  </span>Normal<span class="w">   </span>Scheduled<span class="w">            </span>pod/metrics-server-66dbbb67db-lh865<span class="w">                                       </span>Successfully<span class="w"> </span>assigned<span class="w"> </span>kube-system/metrics-server-66dbbb67db-lh865<span class="w"> </span>to<span class="w"> </span>aks-agentpool-42213468-1
+kube-system<span class="w">     </span>8m14s<span class="w">               </span>Normal<span class="w">    </span>Pulling<span class="w">                   </span>pod/metrics-server-66dbbb67db-lh865<span class="w">                                       </span>Pulling<span class="w"> </span>image<span class="w"> </span><span class="s2">&quot;aksrepos.azurecr.io/mirror/metrics-server-amd64:v0.2.1&quot;</span>
+kube-system<span class="w">     </span>7m58s<span class="w">               </span>Normal<span class="w">    </span>Pulled<span class="w">                    </span>pod/metrics-server-66dbbb67db-lh865<span class="w">                                       </span>Successfully<span class="w"> </span>pulled<span class="w"> </span>image<span class="w"> </span><span class="s2">&quot;aksrepos.azurecr.io/mirror/metrics-server-amd64:v0.2.1&quot;</span>
+kube-system<span class="w">     </span>7m57s<span class="w">               </span>Normal<span class="w">     </span>Created<span class="w">                   </span>pod/metrics-server-66dbbb67db-lh865<span class="w">                                       </span>Created<span class="w"> </span>container<span class="w"> </span>metrics-server
+kube-system<span class="w">     </span>7m57s<span class="w">               </span>Normal<span class="w">    </span>Started<span class="w">                   </span>pod/metrics-server-66dbbb67db-lh865<span class="w">                                       </span>Started<span class="w"> </span>container<span class="w"> </span>metrics-server
+kube-system<span class="w">     </span>8m23s<span class="w">               </span>Normal<span class="w">    </span>SuccessfulCreate<span class="w">          </span>replicaset/metrics-server-66dbbb67db<span class="w">             </span>Created<span class="w"> </span>pod:<span class="w"> </span>metrics-server-66dbbb67db-lh865
+</code></pre></div>
+<p>Следующая команда отобразит последние события для конкретного ресурса Kubernetes:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;
+
+Events:
+<span class="w">  </span>Type<span class="w">    </span>Reason<span class="w">     </span>Age<span class="w">   </span>From<span class="w">                               </span>Message
+<span class="w">  </span>----<span class="w">    </span>------<span class="w">     </span>----<span class="w">  </span>----<span class="w">                               </span>-------
+<span class="w">  </span>Normal<span class="w">  </span>Scheduled<span class="w">  </span>14m<span class="w">   </span>default-scheduler<span class="w">                  </span>Successfully<span class="w"> </span>assigned<span class="w"> </span>kube-system/coredns-7b54b5b97c-dpll7<span class="w"> </span>to<span class="w"> </span>aks-agentpool-42213468-1
+<span class="w">  </span>Normal<span class="w">  </span>Pulled<span class="w">     </span>13m<span class="w">   </span>kubelet,<span class="w"> </span>aks-agentpool-42213468-1<span class="w">  </span>Container<span class="w"> </span>image<span class="w"> </span><span class="s2">&quot;aksrepos.azurecr.io/mirror/coredns:1.3.1&quot;</span><span class="w"> </span>already<span class="w"> </span>present<span class="w"> </span>on<span class="w"> </span>machine
+<span class="w">  </span>Normal<span class="w">  </span>Created<span class="w">    </span>13m<span class="w">   </span>kubelet,<span class="w"> </span>aks-agentpool-42213468-1<span class="w">  </span>Created<span class="w"> </span>container<span class="w"> </span>coredns
+<span class="w">  </span>Normal<span class="w">  </span>Started<span class="w">    </span>13m<span class="w">   </span>kubelet,<span class="w"> </span>aks-agentpool-42213468-1<span class="w">  </span>Started<span class="w"> </span>container<span class="w"> </span>coredns
+</code></pre></div>
+<h2 id="5-kubernetes_1">РАЗДЕЛ 5: Защита управляемого Kubernetes у облачных провайдеров<a class="headerlink" href="#5-kubernetes_1" title="Permanent link">&para;</a></h2>
+<h3 id="aws">AWS<a class="headerlink" href="#aws" title="Permanent link">&para;</a></h3>
+<p>Существует несколько инструментов с открытым исходным кодом, помогающих в защите управляемого Kubernetes на AWS <a href="https://aws.amazon.com/eks/">(EKS)</a>:</p>
+<ul>
+<li><a href="https://github.com/aws-samples/hardeneks">hardeneks</a></li>
+<li><a href="https://github.com/DataDog/managed-kubernetes-auditing-toolkit">MKAD</a> (Managed Kubernetes Auditing Toolkit) от DataDog</li>
+</ul>
+<h2 id="6">РАЗДЕЛ 6: Безопасность цепочки поставок<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<p>Безопасность цепочки поставок контейнеров критически важна для предотвращения атак, эксплуатирующих уязвимости в процессе доставки программного обеспечения. Скомпрометированная цепочка поставок может привести к развёртыванию вредоносного кода в производственных средах, потенциально затрагивая тысячи контейнеров и приложений.</p>
+<p>Атаки на цепочки поставок в средах Kubernetes обычно нацелены на:</p>
+<ul>
+<li>Базовые образы и зависимости</li>
+<li>Процессы сборки и CI/CD-пайплайны</li>
+<li>Реестры контейнеров</li>
+<li>Манифесты развёртывания и Helm-чарты</li>
+<li>Сторонние библиотеки и пакеты</li>
+</ul>
+<p>Недавние резонансные атаки (SolarWinds, Codecov, ua-parser-js) демонстрируют серьёзное воздействие компрометации цепочки поставок.</p>
+<h3 id="_37">Лучшие практики защиты цепочки поставок контейнеров<a class="headerlink" href="#_37" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Используйте доверенные базовые образы: начинайте с минимальных, проверенных базовых образов из авторитетных источников для снижения уязвимостей.</li>
+<li>Реализуйте сканирование образов: регулярно сканируйте образы контейнеров на уязвимости с помощью таких инструментов, как Clair, Trivy или Aqua Security.</li>
+<li>Защитите CI/CD-пайплайны: обеспечьте безопасность процессов сборки с надлежащим контролем доступа и мониторингом.</li>
+<li>Подписывайте и проверяйте образы: используйте инструменты подписи образов, такие как Notary или Cosign, для обеспечения целостности образов контейнеров.</li>
+<li>Используйте частные реестры: храните образы контейнеров в частных реестрах с контролем доступа для предотвращения несанкционированного доступа.</li>
+<li>Отслеживайте уязвимости: непрерывно отслеживайте новые уязвимости в зависимостях и базовых образах.</li>
+<li>Реализуйте безопасность во время выполнения: используйте инструменты для мониторинга поведения контейнеров во время выполнения и обнаружения аномалий.</li>
+</ol>
+<h2 id="7">РАЗДЕЛ 7: Заключение<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<h3 id="_38">Встраивайте безопасность в жизненный цикл контейнеров как можно раньше<a class="headerlink" href="#_38" title="Permanent link">&para;</a></h3>
+<p>Необходимо интегрировать безопасность на более ранних этапах жизненного цикла контейнеров и обеспечить согласованность и общие цели между командами безопасности и DevOps. Безопасность может (и должна) быть инструментом, позволяющим разработчикам и командам DevOps уверенно создавать и развёртывать приложения, готовые к производству с точки зрения масштаба, стабильности и безопасности.</p>
+<h3 id="kubernetes_8">Используйте встроенные средства безопасности Kubernetes для снижения операционных рисков<a class="headerlink" href="#kubernetes_8" title="Permanent link">&para;</a></h3>
+<p>Используйте встроенные механизмы управления Kubernetes, когда они доступны, для применения политик безопасности, чтобы ваши меры безопасности не конфликтовали с оркестратором. Вместо использования стороннего прокси или прокладки для применения сетевой сегментации можно использовать сетевые политики Kubernetes для обеспечения безопасного сетевого взаимодействия.</p>
+<h3 id="kubernetes_9">Используйте контекст, предоставляемый Kubernetes, для приоритизации усилий по устранению проблем<a class="headerlink" href="#kubernetes_9" title="Permanent link">&para;</a></h3>
+<p>Следует учитывать, что ручная сортировка инцидентов безопасности и нарушений политик требует много времени в широко распространённых средах Kubernetes.</p>
+<p>Например, развёртывание, содержащее уязвимость с оценкой серьёзности 7 или выше, должно получить более высокий приоритет устранения, если это развёртывание содержит привилегированные контейнеры и открыто в Интернет, но более низкий приоритет, если оно находится в тестовой среде и поддерживает некритическое приложение.</p>
+<hr />
+<p><img alt="Архитектура Kubernetes" src="../assets/Kubernetes_Architecture.png" /></p>
+<h2 id="_39">Ссылки<a class="headerlink" href="#_39" title="Permanent link">&para;</a></h2>
+<p>Документация по плоскости управления — <a href="https://kubernetes.io">https://kubernetes.io</a></p>
+<ol>
+<li>Лучшие практики безопасности Kubernetes, которым все должны следовать — <a href="https://www.cncf.io/blog/2019/01/14/9-kubernetes-security-best-practices-everyone-must-follow">https://www.cncf.io/blog/2019/01/14/9-kubernetes-security-best-practices-everyone-must-follow</a></li>
+<li>Защита кластера — <a href="https://kubernetes.io/docs/tasks/administer-cluster/securing-a-cluster">https://kubernetes.io/docs/tasks/administer-cluster/securing-a-cluster</a></li>
+<li>Лучшие практики безопасности для развёртывания Kubernetes — <a href="https://kubernetes.io/blog/2016/08/security-best-practices-kubernetes-deployment">https://kubernetes.io/blog/2016/08/security-best-practices-kubernetes-deployment</a></li>
+<li>Лучшие практики безопасности Kubernetes — <a href="https://phoenixnap.com/kb/kubernetes-security-best-practices">https://phoenixnap.com/kb/kubernetes-security-best-practices</a></li>
+<li>Безопасность Kubernetes 101: Риски и 29 лучших практик — <a href="https://www.stackrox.com/post/2020/05/kubernetes-security-101">https://www.stackrox.com/post/2020/05/kubernetes-security-101</a></li>
+<li>15 лучших практик безопасности Kubernetes для защиты кластера — <a href="https://www.mobilise.cloud/15-kubernetes-security-best-practice-to-secure-your-cluster">https://www.mobilise.cloud/15-kubernetes-security-best-practice-to-secure-your-cluster</a></li>
+<li>Полное руководство по безопасности Kubernetes — <a href="https://neuvector.com/container-security/kubernetes-security-guide">https://neuvector.com/container-security/kubernetes-security-guide</a></li>
+<li>Руководство хакера по безопасности Kubernetes — <a href="https://techbeacon.com/enterprise-it/hackers-guide-kubernetes-security">https://techbeacon.com/enterprise-it/hackers-guide-kubernetes-security</a></li>
+<li>11 способов (не) быть взломанным — <a href="https://kubernetes.io/blog/2018/07/18/11-ways-not-to-get-hacked">https://kubernetes.io/blog/2018/07/18/11-ways-not-to-get-hacked</a></li>
+<li>12 лучших практик конфигурации Kubernetes — <a href="https://www.stackrox.com/post/2019/09/12-kubernetes-configuration-best-practices/#6-securely-configure-the-kubernetes-api-server">https://www.stackrox.com/post/2019/09/12-kubernetes-configuration-best-practices/#6-securely-configure-the-kubernetes-api-server</a></li>
+<li>Практическое руководство по журналированию Kubernetes — <a href="https://logz.io/blog/a-practical-guide-to-kubernetes-logging">https://logz.io/blog/a-practical-guide-to-kubernetes-logging</a></li>
+<li>Веб-интерфейс Kubernetes (Dashboard) — <a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard">https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard</a></li>
+<li>Ресурсы облака Tesla взломаны для майнинга криптовалюты — <a href="https://arstechnica.com/information-technology/2018/02/tesla-cloud-resources-are-hacked-to-run-cryptocurrency-mining-malware">https://arstechnica.com/information-technology/2018/02/tesla-cloud-resources-are-hacked-to-run-cryptocurrency-mining-malware</a></li>
+<li>OPEN POLICY AGENT: CLOUD-NATIVE AUTHORIZATION — <a href="https://blog.styra.com/blog/open-policy-agent-authorization-for-the-cloud">https://blog.styra.com/blog/open-policy-agent-authorization-for-the-cloud</a></li>
+<li>Introducing Policy As Code: The Open Policy Agent (OPA) — <a href="https://www.magalix.com/blog/introducing-policy-as-code-the-open-policy-agent-opa">https://www.magalix.com/blog/introducing-policy-as-code-the-open-policy-agent-opa</a></li>
+<li>What service mesh provides — <a href="https://aspenmesh.io/wp-content/uploads/2019/10/AspenMesh_CompleteGuide.pdf">https://aspenmesh.io/wp-content/uploads/2019/10/AspenMesh_CompleteGuide.pdf</a></li>
+<li>Three Technical Benefits of Service Meshes and their Operational Limitations, Part 1 — <a href="https://glasnostic.com/blog/service-mesh-istio-limits-and-benefits-part-1">https://glasnostic.com/blog/service-mesh-istio-limits-and-benefits-part-1</a></li>
+<li>Open Policy Agent: What Is OPA and How It Works (Examples) — <a href="https://spacelift.io/blog/what-is-open-policy-agent-and-how-it-works">https://spacelift.io/blog/what-is-open-policy-agent-and-how-it-works</a></li>
+<li>Send Kubernetes Metrics To Kibana and Elasticsearch — <a href="https://logit.io/sources/configure/kubernetes/">https://logit.io/sources/configure/kubernetes/</a></li>
+<li>Kubernetes Security Checklist — <a href="https://kubernetes.io/docs/concepts/security/security-checklist/">https://kubernetes.io/docs/concepts/security/security-checklist/</a></li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

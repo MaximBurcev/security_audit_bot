@@ -1,0 +1,3957 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="DOM_Clobbering_Prevention_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Database_Security_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>DOM based XSS Prevention - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#dom-based-xss" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DOM based XSS Prevention
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-html-javascript-html-" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #1 - HTML-кодирование, затем JavaScript-кодирование перед вставкой ненадёжных данных в HTML-подконтекст в контексте выполнения
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ПРАВИЛО #1 - HTML-кодирование, затем JavaScript-кодирование перед вставкой ненадёжных данных в HTML-подконтекст в контексте выполнения">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#html-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примеры опасных HTML-методов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Примеры опасных HTML-методов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибуты
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Методы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекомендация
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-javascript-html" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #2 - JavaScript-кодирование перед вставкой ненадёжных данных в подконтекст атрибутов HTML в контексте выполнения
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ПРАВИЛО #2 - JavaScript-кодирование перед вставкой ненадёжных данных в подконтекст атрибутов HTML в контексте выполнения">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      БЕЗОПАСНЫЙ, но НЕРАБОТАЮЩИЙ пример
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      БЕЗОПАСНЫЙ и ФУНКЦИОНАЛЬНО КОРРЕКТНЫЙ пример
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #3 - Будьте осторожны при вставке ненадёжных данных в подконтекст обработчиков событий и кода JavaScript в контексте выполнения
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ПРАВИЛО #3 - Будьте осторожны при вставке ненадёжных данных в подконтекст обработчиков событий и кода JavaScript в контексте выполнения">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#html-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Нейтрализующая природа HTML-кодирования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-javascript-css-" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #4 - JavaScript-кодирование перед вставкой ненадёжных данных в подконтекст CSS-атрибутов в контексте выполнения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-url-javascript-url-" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #5 - URL-кодирование, затем JavaScript-кодирование перед вставкой ненадёжных данных в подконтекст URL-атрибутов в контексте выполнения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-dom-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #6 - Заполняйте DOM с использованием безопасных функций или свойств JavaScript
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-dom-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #7 - Исправление уязвимостей DOM-based межсайтового скриптинга
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекомендации по разработке безопасных приложений на JavaScript
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендации по разработке безопасных приложений на JavaScript">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #1 - Ненадёжные данные следует рассматривать только как отображаемый текст
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-javascript-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #2 - Всегда применяйте JavaScript-кодирование и ограничивайте ненадёжные данные кавычками как строки при вводе в приложение при построении шаблонного JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-documentcreateelement-elementsetattributevalue-elementappendchild" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #3 - Используйте document.createElement("..."), element.setAttribute("...","value"), element.appendChild(...) и аналогичные методы для создания динамических интерфейсов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-html-" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #4 - Избегайте отправки ненадёжных данных в HTML-методы отображения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-eval" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #5 - Избегайте многочисленных методов, которые неявно вызывают eval() для переданных данных
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РЕКОМЕНДАЦИЯ #5 - Избегайте многочисленных методов, которые неявно вызывают eval() для переданных данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование замыкания (как предложил Газ)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n-" class="md-nav__link">
+    <span class="md-ellipsis">
+      N-уровней кодирования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #6 - Используйте ненадёжные данные только в правой части выражения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-url-dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #7 - При URL-кодировании в DOM учитывайте проблемы с набором символов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-objectx" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #8 - Ограничивайте доступ к свойствам объектов при использовании аксессоров object[x]
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-javascript-ecmascript-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #9 - Запускайте JavaScript в среде или песочнице ECMAScript 5
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-eval-json-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #10 - Не используйте eval() для JSON при преобразовании в нативные объекты JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dom-based-xss_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Типичные проблемы при устранении DOM-based XSS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Типичные проблемы при устранении DOM-based XSS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сложные контексты
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Непоследовательность библиотек кодирования
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Заблуждения относительно кодирования
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обычно безопасные методы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dom-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обнаружение DOM XSS с помощью вариантного анализа
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-html-javascript-html-" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #1 - HTML-кодирование, затем JavaScript-кодирование перед вставкой ненадёжных данных в HTML-подконтекст в контексте выполнения
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ПРАВИЛО #1 - HTML-кодирование, затем JavaScript-кодирование перед вставкой ненадёжных данных в HTML-подконтекст в контексте выполнения">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#html-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примеры опасных HTML-методов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Примеры опасных HTML-методов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибуты
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Методы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекомендация
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-javascript-html" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #2 - JavaScript-кодирование перед вставкой ненадёжных данных в подконтекст атрибутов HTML в контексте выполнения
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ПРАВИЛО #2 - JavaScript-кодирование перед вставкой ненадёжных данных в подконтекст атрибутов HTML в контексте выполнения">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      БЕЗОПАСНЫЙ, но НЕРАБОТАЮЩИЙ пример
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      БЕЗОПАСНЫЙ и ФУНКЦИОНАЛЬНО КОРРЕКТНЫЙ пример
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #3 - Будьте осторожны при вставке ненадёжных данных в подконтекст обработчиков событий и кода JavaScript в контексте выполнения
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ПРАВИЛО #3 - Будьте осторожны при вставке ненадёжных данных в подконтекст обработчиков событий и кода JavaScript в контексте выполнения">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#html-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Нейтрализующая природа HTML-кодирования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-javascript-css-" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #4 - JavaScript-кодирование перед вставкой ненадёжных данных в подконтекст CSS-атрибутов в контексте выполнения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-url-javascript-url-" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #5 - URL-кодирование, затем JavaScript-кодирование перед вставкой ненадёжных данных в подконтекст URL-атрибутов в контексте выполнения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-dom-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #6 - Заполняйте DOM с использованием безопасных функций или свойств JavaScript
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-dom-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      ПРАВИЛО #7 - Исправление уязвимостей DOM-based межсайтового скриптинга
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекомендации по разработке безопасных приложений на JavaScript
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендации по разработке безопасных приложений на JavaScript">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #1 - Ненадёжные данные следует рассматривать только как отображаемый текст
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-javascript-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #2 - Всегда применяйте JavaScript-кодирование и ограничивайте ненадёжные данные кавычками как строки при вводе в приложение при построении шаблонного JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-documentcreateelement-elementsetattributevalue-elementappendchild" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #3 - Используйте document.createElement("..."), element.setAttribute("...","value"), element.appendChild(...) и аналогичные методы для создания динамических интерфейсов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-html-" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #4 - Избегайте отправки ненадёжных данных в HTML-методы отображения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-eval" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #5 - Избегайте многочисленных методов, которые неявно вызывают eval() для переданных данных
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="РЕКОМЕНДАЦИЯ #5 - Избегайте многочисленных методов, которые неявно вызывают eval() для переданных данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование замыкания (как предложил Газ)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n-" class="md-nav__link">
+    <span class="md-ellipsis">
+      N-уровней кодирования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #6 - Используйте ненадёжные данные только в правой части выражения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-url-dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #7 - При URL-кодировании в DOM учитывайте проблемы с набором символов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-objectx" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #8 - Ограничивайте доступ к свойствам объектов при использовании аксессоров object[x]
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-javascript-ecmascript-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #9 - Запускайте JavaScript в среде или песочнице ECMAScript 5
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-eval-json-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      РЕКОМЕНДАЦИЯ #10 - Не используйте eval() для JSON при преобразовании в нативные объекты JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dom-based-xss_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Типичные проблемы при устранении DOM-based XSS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Типичные проблемы при устранении DOM-based XSS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сложные контексты
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Непоследовательность библиотек кодирования
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Заблуждения относительно кодирования
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обычно безопасные методы
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dom-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обнаружение DOM XSS с помощью вариантного анализа
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="dom-based-xss">Шпаргалка по предотвращению DOM-based XSS<a class="headerlink" href="#dom-based-xss" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>При рассмотрении XSS (межсайтового скриптинга) существует три общепризнанных формы <a href="https://owasp.org/www-community/attacks/xss/">XSS</a>:</p>
+<ul>
+<li><a href="https://owasp.org/www-community/attacks/xss/#stored-and-reflected-xss-attacks">Отражённый или хранимый</a></li>
+<li><a href="https://owasp.org/www-community/attacks/DOM_Based_XSS">DOM-based XSS</a>.</li>
+</ul>
+<p><a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html">Шпаргалка по предотвращению XSS</a> отлично рассматривает отражённый и хранимый XSS. Данная шпаргалка посвящена XSS на основе DOM (объектной модели документа) и является расширением <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html">Шпаргалки по предотвращению XSS</a> (и предполагает её понимание).</p>
+<p>Для понимания DOM-based XSS необходимо увидеть принципиальное отличие между отражённым и хранимым XSS и DOM-based XSS. Основное отличие заключается в том, где атака внедряется в приложение.</p>
+<p>Отражённый и хранимый XSS — проблемы внедрения на стороне сервера, тогда как DOM-based XSS — проблема внедрения на стороне клиента (браузера).</p>
+<p>Весь этот код происходит с сервера, что означает, что ответственность за его защиту от XSS лежит на владельце приложения, независимо от типа уязвимости XSS. Кроме того, атаки XSS всегда <strong>выполняются</strong> в браузере.</p>
+<p>Разница между отражённым/хранимым XSS заключается в том, где атака добавляется или внедряется в приложение. При отражённом/хранимом XSS атака внедряется в приложение в процессе серверной обработки запросов, где ненадёжные входные данные динамически добавляются в HTML. При DOM XSS атака внедряется в приложение непосредственно во время выполнения на стороне клиента.</p>
+<p>Когда браузер отображает HTML и любой связанный контент, такой как CSS или JavaScript, он определяет различные контексты отображения для разных видов входных данных и следует разным правилам для каждого контекста. Контекст отображения связан с разбором HTML-тегов и их атрибутов.</p>
+<ul>
+<li>HTML-парсер контекста отображения определяет, как данные представляются и располагаются на странице, и может быть дополнительно разделён на стандартные контексты HTML, атрибута HTML, URL и CSS.</li>
+<li>JavaScript- или VBScript-парсер контекста выполнения связан с разбором и выполнением кода скриптов. Каждый парсер имеет отдельную семантику в том, как он может выполнять код скриптов, что затрудняет создание согласованных правил для устранения уязвимостей в различных контекстах. Сложность усугубляется различными значениями и обработкой закодированных значений в каждом подконтексте (HTML, атрибут HTML, URL и CSS) в рамках контекста выполнения.</li>
+</ul>
+<p>Для целей данной статьи мы называем контексты HTML, атрибута HTML, URL и CSS подконтекстами, поскольку каждый из них может быть достигнут и установлен в контексте выполнения JavaScript.</p>
+<p>В коде JavaScript основным контекстом является JavaScript, но с правильными тегами и символами закрытия контекста злоумышленник может попытаться атаковать другие 4 контекста с использованием эквивалентных DOM-методов JavaScript.</p>
+<p>Ниже приведён пример уязвимости, возникающей в контексте JavaScript и подконтексте HTML:</p>
+<div class="highlight"><pre><span></span><code> <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&lt;%= taintedVar %&gt;&#39;</span><span class="p">;</span>
+<span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
+<span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">innerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">x</span><span class="p">;</span>
+<span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
+<span class="w"> </span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Рассмотрим отдельные подконтексты контекста выполнения по очереди.</p>
+<h2 id="1-html-javascript-html-">ПРАВИЛО #1 - HTML-кодирование, затем JavaScript-кодирование перед вставкой ненадёжных данных в HTML-подконтекст в контексте выполнения<a class="headerlink" href="#1-html-javascript-html-" title="Permanent link">&para;</a></h2>
+<p>Существует несколько методов и атрибутов, которые можно использовать для непосредственного отображения HTML-контента в JavaScript. Эти методы составляют HTML-подконтекст в контексте выполнения. Если этим методам передаются ненадёжные данные, может возникнуть уязвимость XSS. Например:</p>
+<h3 id="html-">Примеры опасных HTML-методов<a class="headerlink" href="#html-" title="Permanent link">&para;</a></h3>
+<h4 id="_2">Атрибуты<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="nx">element</span><span class="p">.</span><span class="nx">innerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;HTML&gt; Tags and markup&quot;</span><span class="p">;</span>
+<span class="w"> </span><span class="nx">element</span><span class="p">.</span><span class="nx">outerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;HTML&gt; Tags and markup&quot;</span><span class="p">;</span>
+</code></pre></div>
+<h4 id="_3">Методы<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">&quot;&lt;HTML&gt; Tags and markup&quot;</span><span class="p">);</span>
+<span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">writeln</span><span class="p">(</span><span class="s2">&quot;&lt;HTML&gt; Tags and markup&quot;</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="_4">Рекомендация<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>Для безопасного динамического обновления HTML в DOM рекомендуется:</p>
+<ol>
+<li>HTML-кодирование, затем</li>
+<li>JavaScript-кодирование всех ненадёжных входных данных, как показано в следующих примерах:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">ESAPI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-esapi&#39;</span><span class="p">);</span>
+<span class="w"> </span><span class="nx">element</span><span class="p">.</span><span class="nx">innerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;%=ESAPI.encoder().encodeForJavascript(ESAPI.encoder().encodeForHTML(untrustedData))%&gt;&quot;</span><span class="p">;</span>
+<span class="w"> </span><span class="nx">element</span><span class="p">.</span><span class="nx">outerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;%=ESAPI.encoder().encodeForJavascript(ESAPI.encoder().encodeForHTML(untrustedData))%&gt;&quot;</span><span class="p">;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">ESAPI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-esapi&#39;</span><span class="p">);</span>
+<span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">&quot;&lt;%=ESAPI.encoder().encodeForJavascript(ESAPI.encoder().encodeForHTML(untrustedData))%&gt;&quot;</span><span class="p">);</span>
+<span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">writeln</span><span class="p">(</span><span class="s2">&quot;&lt;%=ESAPI.encoder().encodeForJavascript(ESAPI.encoder().encodeForHTML(untrustedData))%&gt;&quot;</span><span class="p">);</span>
+</code></pre></div>
+<h2 id="2-javascript-html">ПРАВИЛО #2 - JavaScript-кодирование перед вставкой ненадёжных данных в подконтекст атрибутов HTML в контексте выполнения<a class="headerlink" href="#2-javascript-html" title="Permanent link">&para;</a></h2>
+<p>HTML-атрибутный <em>подконтекст</em> в <em>контексте</em> выполнения отличается от стандартных правил кодирования. Это объясняется тем, что правило кодирования HTML-атрибутов в контексте отображения HTML-атрибутов необходимо для предотвращения атак, пытающихся выйти из HTML-атрибутов или добавить дополнительные атрибуты, которые могут привести к XSS.</p>
+<p>Когда вы находитесь в контексте выполнения DOM, вам нужно только JavaScript-кодировать HTML-атрибуты, которые не выполняют код (атрибуты, отличные от обработчиков событий, CSS и URL-атрибутов).</p>
+<p>Например, общее правило — HTML-атрибутное кодирование ненадёжных данных (данных из базы данных, HTTP-запроса, пользователя, серверной системы и т.д.), помещаемых в HTML-атрибут. Это необходимый шаг при выводе данных в контексте отображения, однако использование HTML-атрибутного кодирования в контексте выполнения нарушит отображение данных приложением.</p>
+<h3 id="_5">БЕЗОПАСНЫЙ, но НЕРАБОТАЮЩИЙ пример<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">ESAPI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-esapi&#39;</span><span class="p">);</span>
+<span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">);</span>
+<span class="w"> </span><span class="nx">x</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;company_name&quot;</span><span class="p">);</span>
+<span class="w"> </span><span class="c1">// В следующей строке кода companyName представляет ненадёжный ввод пользователя</span>
+<span class="w"> </span><span class="c1">// ESAPI.encoder().encodeForHTMLAttribute() не нужен и вызывает двойное кодирование</span>
+<span class="w"> </span><span class="nx">x</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&lt;%=ESAPI.encoder().encodeForJavascript(ESAPI.encoder().encodeForHTMLAttribute(companyName))%&gt;&#39;</span><span class="p">);</span>
+<span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">form1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">forms</span><span class="p">[</span><span class="mf">0</span><span class="p">];</span>
+<span class="w"> </span><span class="nx">form1</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+</code></pre></div>
+<p>Проблема в том, что если companyName имело значение "Johnson &amp; Johnson". В текстовом поле ввода отобразилось бы "Johnson &#x26;amp; Johnson". Правильным кодированием в приведённом случае было бы только JavaScript-кодирование, чтобы запретить злоумышленнику закрывать одинарные кавычки и встраивать код, или экранирование в HTML и открытие нового тега script.</p>
+<h3 id="_6">БЕЗОПАСНЫЙ и ФУНКЦИОНАЛЬНО КОРРЕКТНЫЙ пример<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">ESAPI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-esapi&#39;</span><span class="p">);</span>
+<span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">);</span>
+<span class="w"> </span><span class="nx">x</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;company_name&quot;</span><span class="p">);</span>
+<span class="w"> </span><span class="nx">x</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&lt;%=ESAPI.encoder().encodeForJavascript(companyName)%&gt;&#39;</span><span class="p">);</span>
+<span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">form1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">forms</span><span class="p">[</span><span class="mf">0</span><span class="p">];</span>
+<span class="w"> </span><span class="nx">form1</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+</code></pre></div>
+<p>Важно отметить, что при установке HTML-атрибута, не выполняющего код, значение устанавливается непосредственно в атрибуте объекта HTML-элемента, поэтому нет опасений относительно внедрения снаружи.</p>
+<h2 id="3-javascript">ПРАВИЛО #3 - Будьте осторожны при вставке ненадёжных данных в подконтекст обработчиков событий и кода JavaScript в контексте выполнения<a class="headerlink" href="#3-javascript" title="Permanent link">&para;</a></h2>
+<p>Размещение динамических данных в коде JavaScript особенно опасно, поскольку JavaScript-кодирование имеет различную семантику для закодированных данных JavaScript по сравнению с другими видами кодирования. Во многих случаях JavaScript-кодирование не останавливает атаки в контексте выполнения. Например, JavaScript-закодированная строка будет выполнена, даже если она закодирована в JavaScript.</p>
+<p>Поэтому основная рекомендация — <strong>избегать включения ненадёжных данных в этот контекст</strong>. Если это необходимо, следующие примеры описывают подходы, которые работают и не работают.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">);</span>
+<span class="nx">x</span><span class="p">.</span><span class="nx">href</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">;</span>
+<span class="c1">// В следующей строке кода закодированные данные справа (второй аргумент setAttribute)</span>
+<span class="c1">// являются примером ненадёжных данных, которые были правильно закодированы в JavaScript, но всё равно выполняются.</span>
+<span class="nx">x</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;onclick&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;\u0061\u006c\u0065\u0072\u0074\u0028\u0032\u0032\u0029&quot;</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="s2">&quot;Click To Test&quot;</span><span class="p">);</span>
+<span class="nx">x</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">y</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+</code></pre></div>
+<p>Метод <code>setAttribute(name_string,value_string)</code> опасен, поскольку он неявно преобразует <em>value_string</em> в тип данных DOM-атрибута <em>name_string</em>.</p>
+<p>В приведённом выше случае имя атрибута является обработчиком событий JavaScript, поэтому значение атрибута неявно преобразуется в код JavaScript и вычисляется. В этом случае JavaScript-кодирование не защищает от DOM-based XSS.</p>
+<p>Другие методы JavaScript, принимающие код в виде строкового типа, будут иметь аналогичную проблему, описанную выше (<code>setTimeout</code>, <code>setInterval</code>, new Function и т.д.). Это резко контрастирует с JavaScript-кодированием в атрибуте обработчика событий HTML-тега (HTML-парсер), где JavaScript-кодирование защищает от XSS.</p>
+<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- НЕ работает  --&gt;</span>
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;bb&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span> <span class="na">onclick</span><span class="o">=</span><span class="s">&quot;\u0061\u006c\u0065\u0072\u0074\u0028\u0031\u0029&quot;</span><span class="p">&gt;</span> Test Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Альтернативой использованию <code>Element.setAttribute(...)</code> для установки DOM-атрибутов является прямая установка атрибута. Прямая установка атрибутов обработчиков событий позволит JavaScript-кодированию защитить от DOM-based XSS. Обратите внимание, что прямое помещение ненадёжных данных в контекст выполнения команд всегда является опасным решением.</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;bb&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span><span class="p">&gt;</span> Test Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">// Следующее НЕ работает, поскольку обработчик события устанавливается в строку.</span>
+<span class="c1">// &quot;alert(7)&quot; закодировано в JavaScript.</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;bb&quot;</span><span class="p">).</span><span class="nx">onclick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;\u0061\u006c\u0065\u0072\u0074\u0028\u0037\u0029&quot;</span><span class="p">;</span>
+
+<span class="c1">// Следующее НЕ работает, поскольку обработчик события устанавливается в строку.</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;bb&quot;</span><span class="p">).</span><span class="nx">onmouseover</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;testIt&quot;</span><span class="p">;</span>
+
+<span class="c1">// Следующее НЕ работает из-за закодированных &quot;(&quot; и &quot;)&quot;.</span>
+<span class="c1">// &quot;alert(77)&quot; закодировано в JavaScript.</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;bb&quot;</span><span class="p">).</span><span class="nx">onmouseover</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">\u0061\u006c\u0065\u0072\u0074\u0028\u0037\u0037\u0029</span><span class="p">;</span>
+
+<span class="c1">// Следующий пример хитрый</span>
+<span class="c1">// сначала testIt будет присвоен как обработчик события onmousehover, второй testIt выполнится при разборе.</span>
+<span class="c1">// это происходит потому, что второй testIt — отдельный оператор js</span>
+<span class="c1">// это происходит из-за разделителя ;</span>
+<span class="c1">// &quot;testIt;testIt&quot; закодировано в JavaScript.</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;bb&quot;</span><span class="p">).</span><span class="nx">onmouseover</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">\u0074\u0065\u0073\u0074\u0049\u0074\u003b\u0074\u0065\u0073</span>
+<span class="w">                                            </span><span class="nx">\u0074\u0049\u0074</span><span class="p">;</span>
+
+<span class="c1">// Следующее РАБОТАЕТ, поскольку закодированное значение является допустимым именем переменной или ссылкой на функцию.</span>
+<span class="c1">// &quot;testIt&quot; закодировано в JavaScript</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;bb&quot;</span><span class="p">).</span><span class="nx">onmouseover</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">\u0074\u0065\u0073\u0074\u0049\u0074</span><span class="p">;</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">testIt</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;I was called.&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Существуют и другие места в JavaScript, где JavaScript-кодирование принимается как допустимый исполняемый код.</p>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="k">for</span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">\u0062</span><span class="o">=</span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">\u0062</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">10</span><span class="p">;</span><span class="w"> </span><span class="nx">\u0062</span><span class="o">++</span><span class="p">){</span>
+<span class="w">     </span><span class="nx">\u0064\u006f\u0063\u0075\u006d\u0065\u006e\u0074</span>
+<span class="w">     </span><span class="p">.</span><span class="nx">\u0077\u0072\u0069\u0074\u0065\u006c\u006e</span>
+<span class="w">     </span><span class="p">(</span><span class="s2">&quot;\u0048\u0065\u006c\u006c\u006f\u0020\u0057\u006f\u0072\u006c\u0064&quot;</span><span class="p">);</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="w"> </span><span class="nx">\u0077\u0069\u006e\u0064\u006f\u0077</span>
+<span class="w"> </span><span class="p">.</span><span class="nx">\u0065\u0076\u0061\u006c</span>
+<span class="w"> </span><span class="nx">\u0064\u006f\u0063\u0075\u006d\u0065\u006e\u0074</span>
+<span class="w"> </span><span class="p">.</span><span class="nx">\u0077\u0072\u0069\u0074\u0065</span><span class="p">(</span><span class="mf">111111111</span><span class="p">);</span>
+</code></pre></div>
+<p>или</p>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;\u0065\u0076\u0061\u006c&quot;</span><span class="p">;</span>
+<span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;\u0061\u006c\u0065\u0072\u0074\u0028\u0031\u0031\u0029&quot;</span><span class="p">;</span>
+<span class="w"> </span><span class="nb">window</span><span class="p">[</span><span class="nx">s</span><span class="p">](</span><span class="nx">t</span><span class="p">);</span>
+</code></pre></div>
+<p>Поскольку JavaScript основан на международном стандарте (ECMAScript), JavaScript-кодирование обеспечивает поддержку международных символов в конструкциях программирования и переменных, а также альтернативных представлений строк (строковых экранирований).</p>
+<p>Однако обратное верно для HTML-кодирования. HTML-теги хорошо определены и не поддерживают альтернативных представлений одного и того же тега. Таким образом, HTML-кодирование не может использоваться для того, чтобы разработчик имел альтернативные представления тега <code>&lt;a&gt;</code>, например.</p>
+<h3 id="html-_1">Нейтрализующая природа HTML-кодирования<a class="headerlink" href="#html-_1" title="Permanent link">&para;</a></h3>
+<p>В целом HTML-кодирование служит для нейтрализации HTML-тегов, помещаемых в HTML и контексты HTML-атрибутов. Рабочий пример (без HTML-кодирования):</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;...&quot;</span> <span class="p">&gt;</span>
+</code></pre></div>
+<p>Обычно закодированный пример (не работает — НР):</p>
+<div class="highlight"><pre><span></span><code><span class="ni">&amp;#x3c;</span>a href=... <span class="ni">&amp;#x3e;</span>
+</code></pre></div>
+<p>Пример HTML-кодирования для выделения принципиального отличия от значений JavaScript-кодирования (НР):</p>
+<div class="highlight"><pre><span></span><code><span class="err">&lt;</span><span class="ni">&amp;#x61;</span> href=...&gt;
+</code></pre></div>
+<p>Если бы HTML-кодирование следовало той же семантике, что и JavaScript-кодирование, строка выше могла бы отобразить ссылку. Это отличие делает JavaScript-кодирование менее эффективным оружием в борьбе с XSS.</p>
+<h2 id="4-javascript-css-">ПРАВИЛО #4 - JavaScript-кодирование перед вставкой ненадёжных данных в подконтекст CSS-атрибутов в контексте выполнения<a class="headerlink" href="#4-javascript-css-" title="Permanent link">&para;</a></h2>
+<p>Обычно выполнение JavaScript из CSS-контекста требовало либо передачи <code>javascript:attackCode()</code> CSS-методу <code>url()</code>, либо вызова CSS-метода <code>expression()</code>, передавая JavaScript-код для непосредственного выполнения.</p>
+<p>Из практики вызов функции <code>expression()</code> из контекста выполнения (JavaScript) был отключён. Для защиты от CSS-метода <code>url()</code> убедитесь, что данные, передаваемые CSS-методу <code>url()</code>, URL-закодированы.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">ESAPI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-esapi&#39;</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundImage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;url(&lt;%=ESAPI.encoder().encodeForJavascript(ESAPI.encoder().encodeForURL(companyName))%&gt;)&quot;</span><span class="p">;</span>
+</code></pre></div>
+<h2 id="5-url-javascript-url-">ПРАВИЛО #5 - URL-кодирование, затем JavaScript-кодирование перед вставкой ненадёжных данных в подконтекст URL-атрибутов в контексте выполнения<a class="headerlink" href="#5-url-javascript-url-" title="Permanent link">&para;</a></h2>
+<p>Логика разбора URL как в контекстах выполнения, так и в контекстах отображения выглядит одинаковой. Поэтому правила кодирования для URL-атрибутов в контексте выполнения (DOM) практически не изменяются.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">ESAPI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-esapi&#39;</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">);</span>
+<span class="nx">x</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&lt;%=ESAPI.encoder().encodeForJavascript(ESAPI.encoder().encodeForURL(userRelativePath))%&gt;&#39;</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextElement</span><span class="p">(</span><span class="s2">&quot;Click Me To Test&quot;</span><span class="p">);</span>
+<span class="nx">x</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">y</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+</code></pre></div>
+<p>Если вы используете полностью квалифицированные URL, это нарушит ссылки, поскольку двоеточие в идентификаторе протокола (<code>http:</code> или <code>javascript:</code>) будет URL-закодировано, что предотвратит вызов протоколов <code>http</code> и <code>javascript</code>.</p>
+<h2 id="6-dom-javascript">ПРАВИЛО #6 - Заполняйте DOM с использованием безопасных функций или свойств JavaScript<a class="headerlink" href="#6-dom-javascript" title="Permanent link">&para;</a></h2>
+<p>Наиболее фундаментальный безопасный способ заполнения DOM ненадёжными данными — использование безопасного свойства присвоения <code>textContent</code>.</p>
+<p>Ниже приведён пример безопасного использования.</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="nx">element</span><span class="p">.</span><span class="nx">textContent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">untrustedData</span><span class="p">;</span><span class="w">  </span><span class="c1">// не выполняет код</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<h2 id="7-dom-based">ПРАВИЛО #7 - Исправление уязвимостей DOM-based межсайтового скриптинга<a class="headerlink" href="#7-dom-based" title="Permanent link">&para;</a></h2>
+<p>Лучший способ устранить DOM-based межсайтовый скриптинг — использовать правильный метод вывода (приёмник). Например, если вы хотите использовать пользовательский ввод для записи в элемент <code>div</code>, не используйте <code>innerHtml</code> — используйте <code>innerText</code> или <code>textContent</code>. Это решит проблему, и это правильный способ устранения уязвимостей DOM-based XSS.</p>
+<p><strong>Использование контролируемых пользователем входных данных в опасных источниках, таких как eval, — всегда плохая идея. В 99% случаев это признак плохой или ленивой практики программирования, поэтому просто не делайте этого, вместо того чтобы пытаться санитизировать входные данные.</strong></p>
+<p>Наконец, для устранения проблемы в нашем начальном коде вместо попытки правильно закодировать вывод, что хлопотно и легко сделать с ошибкой, мы просто используем <code>element.textContent</code> для записи в содержимое следующим образом:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">b</span><span class="p">&gt;</span>Current URL:<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">span</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;contentholder&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+...
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;contentholder&quot;</span><span class="p">).</span><span class="nx">textContent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">baseURI</span><span class="p">;</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Это делает то же самое, но на этот раз не уязвимо к DOM-based межсайтовому скриптингу.</p>
+<h2 id="javascript">Рекомендации по разработке безопасных приложений на JavaScript<a class="headerlink" href="#javascript" title="Permanent link">&para;</a></h2>
+<p>DOM-based XSS чрезвычайно сложно устранить из-за большой поверхности атаки и отсутствия стандартизации в разных браузерах.</p>
+<p>Приведённые ниже рекомендации являются попыткой предоставить руководство для разработчиков при создании веб-приложений на JavaScript (Web 2.0), чтобы они могли избежать XSS.</p>
+<h3 id="1-">РЕКОМЕНДАЦИЯ #1 - Ненадёжные данные следует рассматривать только как отображаемый текст<a class="headerlink" href="#1-" title="Permanent link">&para;</a></h3>
+<p>Избегайте обработки ненадёжных данных как кода или разметки в коде JavaScript.</p>
+<h3 id="2-javascript-javascript">РЕКОМЕНДАЦИЯ #2 - Всегда применяйте JavaScript-кодирование и ограничивайте ненадёжные данные кавычками как строки при вводе в приложение при построении шаблонного JavaScript<a class="headerlink" href="#2-javascript-javascript" title="Permanent link">&para;</a></h3>
+<p>Всегда применяйте JavaScript-кодирование и ограничивайте ненадёжные данные кавычками как строки при вводе в приложение, как показано в следующем примере.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;%= Encode.forJavaScript(untrustedData) %&gt;&quot;</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="3-documentcreateelement-elementsetattributevalue-elementappendchild">РЕКОМЕНДАЦИЯ #3 - Используйте document.createElement("..."), element.setAttribute("...","value"), element.appendChild(...) и аналогичные методы для создания динамических интерфейсов<a class="headerlink" href="#3-documentcreateelement-elementsetattributevalue-elementappendchild" title="Permanent link">&para;</a></h3>
+<p><code>document.createElement("...")</code>, <code>element.setAttribute("...","value")</code>, <code>element.appendChild(...)</code> и аналогичные методы — безопасные способы создания динамических интерфейсов.</p>
+<p>Обратите внимание, что <code>element.setAttribute</code> безопасен только для ограниченного числа атрибутов.</p>
+<p>Опасные атрибуты включают любой атрибут, являющийся контекстом выполнения команды, такой как <code>onclick</code> или <code>onblur</code>.</p>
+<p>Примеры безопасных атрибутов включают: <code>align</code>, <code>alink</code>, <code>alt</code>, <code>bgcolor</code>, <code>border</code>, <code>cellpadding</code>, <code>cellspacing</code>, <code>class</code>, <code>color</code>, <code>cols</code>, <code>colspan</code>, <code>coords</code>, <code>dir</code>, <code>face</code>, <code>height</code>, <code>hspace</code>, <code>ismap</code>, <code>lang</code>, <code>marginheight</code>, <code>marginwidth</code>, <code>multiple</code>, <code>nohref</code>, <code>noresize</code>, <code>noshade</code>, <code>nowrap</code>, <code>ref</code>, <code>rel</code>, <code>rev</code>, <code>rows</code>, <code>rowspan</code>, <code>scrolling</code>, <code>shape</code>, <code>span</code>, <code>summary</code>, <code>tabindex</code>, <code>title</code>, <code>usemap</code>, <code>valign</code>, <code>value</code>, <code>vlink</code>, <code>vspace</code>, <code>width</code>.</p>
+<h3 id="4-html-">РЕКОМЕНДАЦИЯ #4 - Избегайте отправки ненадёжных данных в HTML-методы отображения<a class="headerlink" href="#4-html-" title="Permanent link">&para;</a></h3>
+<p>Избегайте заполнения следующих методов ненадёжными данными.</p>
+<ol>
+<li><code>element.innerHTML = "...";</code></li>
+<li><code>element.outerHTML = "...";</code></li>
+<li><code>document.write(...);</code></li>
+<li><code>document.writeln(...);</code></li>
+</ol>
+<h3 id="5-eval">РЕКОМЕНДАЦИЯ #5 - Избегайте многочисленных методов, которые неявно вызывают eval() для переданных данных<a class="headerlink" href="#5-eval" title="Permanent link">&para;</a></h3>
+<p>Существует множество методов, которые неявно вызывают <code>eval()</code> для переданных данных, которых необходимо избегать.</p>
+<p>Убедитесь, что любые ненадёжные данные, передаваемые этим методам:</p>
+<ol>
+<li>Ограничены строковыми разделителями</li>
+<li>Заключены в замыкание или JavaScript-закодированы до N-уровней в зависимости от использования</li>
+<li>Обёрнуты в пользовательскую функцию.</li>
+</ol>
+<p>Убедитесь, что вы следуете шагу 3, чтобы убедиться, что ненадёжные данные не отправляются опасным методам внутри пользовательской функции, или обрабатывайте это, добавив дополнительный уровень кодирования.</p>
+<h4 id="_7">Использование замыкания (как предложил Газ)<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>Следующий пример иллюстрирует использование замыканий для избежания двойного JavaScript-кодирования.</p>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">ESAPI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-esapi&#39;</span><span class="p">);</span>
+<span class="w"> </span><span class="nx">setTimeout</span><span class="p">((</span><span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nx">customFunction</span><span class="p">(</span><span class="nx">param</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w"> </span><span class="p">})(</span><span class="s2">&quot;&lt;%=ESAPI.encoder().encodeForJavascript(untrustedData)%&gt;&quot;</span><span class="p">),</span><span class="w"> </span><span class="nx">y</span><span class="p">);</span>
+</code></pre></div>
+<p>Другой альтернативой является использование N-уровней кодирования.</p>
+<h4 id="n-">N-уровней кодирования<a class="headerlink" href="#n-" title="Permanent link">&para;</a></h4>
+<p>Если ваш код выглядит следующим образом, вам нужно только двойное JavaScript-кодирование входных данных.</p>
+<div class="highlight"><pre><span></span><code><span class="nx">setTimeout</span><span class="p">(</span><span class="s2">&quot;customFunction(&#39;&lt;%=doubleJavaScriptEncodedData%&gt;&#39;, y)&quot;</span><span class="p">);</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">customFunction</span><span class="w"> </span><span class="p">(</span><span class="nx">firstName</span><span class="p">,</span><span class="w"> </span><span class="nx">lastName</span><span class="p">)</span>
+<span class="w">     </span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">firstName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">lastNam</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>doubleJavaScriptEncodedData</code> имеет первый слой JavaScript-кодирования, обратимый (при выполнении) в одинарных кавычках.</p>
+<p>Затем неявный вызов <code>eval</code> из <code>setTimeout</code> обращает ещё один слой JavaScript-кодирования для передачи правильного значения в <code>customFunction</code>.</p>
+<p>Причина, по которой нужно только двойное JavaScript-кодирование, заключается в том, что функция <code>customFunction</code> сама не передала входные данные другому методу, неявно или явно вызывающему <code>eval</code>. Если <em>firstName</em> передавался бы другому JavaScript-методу, неявно или явно вызывающему <code>eval()</code>, то <code>&lt;%=doubleJavaScriptEncodedData%&gt;</code> выше нужно было бы изменить на <code>&lt;%=tripleJavaScriptEncodedData%&gt;</code>.</p>
+<p>Важное замечание по реализации: если JavaScript-код пытается использовать двойно- или трижды закодированные данные в сравнениях строк, значение может интерпретироваться по-разному в зависимости от того, сколько раз <code>eval()</code> применялся к данным перед передачей в сравнение if и сколько раз значение было JavaScript-закодировано.</p>
+<p>Если <strong>A</strong> дважды закодировано в JavaScript, следующая проверка <strong>if</strong> вернёт false.</p>
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;doubleJavaScriptEncodedA&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">//\u005c\u0075\u0030\u0030\u0034\u0031</span>
+<span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;x is A&quot;</span><span class="p">);</span>
+<span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;\u0041&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;This is what pops&quot;</span><span class="p">);</span>
+<span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p>Это поднимает интересный момент проектирования. В идеале правильный способ применения кодирования и избежания описанной проблемы — это серверное кодирование для контекста вывода, в который данные вводятся в приложение.</p>
+<p>Затем клиентское кодирование (с использованием библиотеки JavaScript-кодирования, такой как <a href="https://github.com/ESAPI/node-esapi/">node-esapi</a>) для отдельного подконтекста (DOM-методов), которому передаются ненадёжные данные.</p>
+<p>Вот несколько примеров их использования:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// серверное кодирование</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">ESAPI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-esapi&#39;</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;%=ESAPI.encoder().encodeForJavascript(untrustedData)%&gt;&quot;</span><span class="p">;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">// HTML-кодирование выполняется в JavaScript</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">ESAPI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-esapi&#39;</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">writeln</span><span class="p">(</span><span class="nx">ESAPI</span><span class="p">.</span><span class="nx">encoder</span><span class="p">().</span><span class="nx">encodeForHTML</span><span class="p">(</span><span class="nx">input</span><span class="p">));</span>
+</code></pre></div>
+<p>Один из вариантов — использовать неизменяемые свойства ECMAScript 5 в JavaScript-библиотеке.
+Другой вариант, предложенный Газ (Gareth), — использовать специфическую конструкцию кода для ограничения изменчивости с анонимными замыканиями.</p>
+<p>Пример:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">escapeHTML</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="nx">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">str</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">;</span>
+<span class="w">     </span><span class="kd">var</span><span class="w"> </span><span class="nx">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&#39;&#39;&quot;</span><span class="p">;</span>
+<span class="w">     </span><span class="k">for</span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="o">=</span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">str</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="nx">str</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nx">out</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s1">&#39;&amp;lt;&#39;</span><span class="p">;</span>
+<span class="w">         </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="nx">str</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nx">out</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">;</span>
+<span class="w">         </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="nx">str</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nx">out</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s1">&#39;&amp;#39;&#39;</span><span class="p">;</span>
+<span class="w">         </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="nx">str</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nx">out</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s1">&#39;&amp;quot;&#39;</span><span class="p">;</span>
+<span class="w">         </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nx">out</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">str</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+<span class="w">         </span><span class="p">}</span>
+<span class="w">     </span><span class="p">}</span>
+<span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="nx">out</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="6-">РЕКОМЕНДАЦИЯ #6 - Используйте ненадёжные данные только в правой части выражения<a class="headerlink" href="#6-" title="Permanent link">&para;</a></h3>
+<p>Используйте ненадёжные данные только в правой части выражения, особенно данные, которые выглядят как код и могут передаваться в приложение (например, <code>location</code> и <code>eval()</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="nb">window</span><span class="p">[</span><span class="nx">userDataOnLeftSide</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;userDataOnRightSide&quot;</span><span class="p">;</span>
+</code></pre></div>
+<p>Использование ненадёжных пользовательских данных в левой части выражения позволяет злоумышленнику подменять внутренние и внешние атрибуты объекта window, тогда как использование пользовательского ввода в правой части выражения не допускает прямой манипуляции.</p>
+<h3 id="7-url-dom">РЕКОМЕНДАЦИЯ #7 - При URL-кодировании в DOM учитывайте проблемы с набором символов<a class="headerlink" href="#7-url-dom" title="Permanent link">&para;</a></h3>
+<p>При URL-кодировании в DOM учитывайте проблемы с набором символов, поскольку набор символов в JavaScript DOM чётко не определён (Майк Сэмюэл).</p>
+<h3 id="8-objectx">РЕКОМЕНДАЦИЯ #8 - Ограничивайте доступ к свойствам объектов при использовании аксессоров object[x]<a class="headerlink" href="#8-objectx" title="Permanent link">&para;</a></h3>
+<p>Ограничивайте доступ к свойствам объектов при использовании аксессоров <code>object[x]</code> (Майк Сэмюэл). Иными словами, добавляйте уровень косвенности между ненадёжными входными данными и указанными свойствами объектов.</p>
+<p>Вот пример проблемы с использованием типов карт:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">myMapType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="nx">myMapType</span><span class="p">[</span><span class="o">&lt;%=</span><span class="nx">untrustedData</span><span class="o">%&gt;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;moreUntrustedData&quot;</span><span class="p">;</span>
+</code></pre></div>
+<p>Разработчик, пишущий код выше, пытался добавить дополнительные ключевые элементы в объект <code>myMapType</code>. Однако злоумышленник мог бы использовать это для подмены внутренних и внешних атрибутов объекта <code>myMapType</code>.</p>
+<p>Лучшим подходом было бы использование следующего:</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">untrustedData</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;location&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">myMapType</span><span class="p">.</span><span class="nx">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;moreUntrustedData&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="9-javascript-ecmascript-5">РЕКОМЕНДАЦИЯ #9 - Запускайте JavaScript в среде или песочнице ECMAScript 5<a class="headerlink" href="#9-javascript-ecmascript-5" title="Permanent link">&para;</a></h3>
+<p>Запускайте JavaScript в <a href="https://github.com/jcoglan/canopy">среде</a> или песочнице ECMAScript 5, чтобы усложнить компрометацию вашего JavaScript API (Гарет Хейс и Джон Стивенс).</p>
+<p>Примеры JavaScript-песочниц/санитайзеров:</p>
+<ul>
+<li><a href="https://github.com/leizongmin/js-xss">js-xss</a></li>
+<li><a href="https://github.com/apostrophecms/sanitize-html">sanitize-html</a></li>
+<li><a href="https://github.com/cure53/DOMPurify">DOMPurify</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API">MDN - HTML Sanitizer API</a></li>
+<li><a href="https://owasp.org/www-pdf-archive/OWASPSummit2011DOMSandboxingBrowserSecurityTrack.pdf">OWASP Summit 2011 - DOM Sandboxing</a></li>
+</ul>
+<h3 id="10-eval-json-javascript">РЕКОМЕНДАЦИЯ #10 - Не используйте eval() для JSON при преобразовании в нативные объекты JavaScript<a class="headerlink" href="#10-eval-json-javascript" title="Permanent link">&para;</a></h3>
+<p>Не используйте <code>eval()</code> для JSON при преобразовании в нативные объекты JavaScript. Вместо этого используйте <code>JSON.toJSON()</code> и <code>JSON.parse()</code> (Крис Шмидт).</p>
+<h2 id="dom-based-xss_1">Типичные проблемы при устранении DOM-based XSS<a class="headerlink" href="#dom-based-xss_1" title="Permanent link">&para;</a></h2>
+<h3 id="_8">Сложные контексты<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>Во многих случаях контекст не всегда очевиден.</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;javascript:myFunction(&#39;&lt;%=untrustedData%&gt;&#39;, &#39;test&#39;);&quot;</span><span class="p">&gt;</span>Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+ ...
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="nb">Function</span><span class="w"> </span><span class="nx">myFunction</span><span class="w"> </span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">url</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>В приведённом выше примере ненадёжные данные начинались в контексте отображения URL (атрибут <code>href</code> тега <code>a</code>), затем перешли в контекст выполнения JavaScript (обработчик протокола <code>javascript:</code>), который передал ненадёжные данные в URL-подконтекст выполнения (<code>window.location</code> в <code>myFunction</code>).</p>
+<p>Поскольку данные были введены в код JavaScript и переданы в URL-подконтекст, соответствующим серверным кодированием было бы следующее:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;javascript:myFunction(&#39;&lt;%=ESAPI.encoder().encodeForJavascript(ESAPI.encoder().encodeForURL(untrustedData)) %&gt;&#39;, &#39;test&#39;);&quot;</span><span class="p">&gt;</span>
+Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+ ...
+</code></pre></div>
+<p>Или если вы использовали ECMAScript 5 с неизменяемыми клиентскими библиотеками JavaScript-кодирования, вы могли бы сделать следующее:</p>
+<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- серверное URL-кодирование удалено. Теперь только JavaScript-кодирование на стороне сервера. --&gt;</span>
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;javascript:myFunction(&#39;&lt;%=ESAPI.encoder().encodeForJavascript(untrustedData)%&gt;&#39;, &#39;test&#39;);&quot;</span><span class="p">&gt;</span>Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+ ...
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="nb">Function</span><span class="w"> </span><span class="nx">myFunction</span><span class="w"> </span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">encodedURL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">ESAPI</span><span class="p">.</span><span class="nx">encoder</span><span class="p">().</span><span class="nx">encodeForURL</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span><span class="w">  </span><span class="c1">// URL-кодирование с помощью клиентских скриптов</span>
+<span class="w">    </span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">encodedURL</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<h3 id="_9">Непоследовательность библиотек кодирования<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>Существует ряд библиотек кодирования с открытым исходным кодом:</p>
+<ol>
+<li>OWASP <a href="https://owasp.org/www-project-enterprise-security-api/">ESAPI</a></li>
+<li>OWASP <a href="https://owasp.org/www-project-java-encoder/">Java Encoder</a></li>
+<li>Apache Commons Text <a href="https://commons.apache.org/proper/commons-text/javadocs/api-release/org/apache/commons/text/StringEscapeUtils.html">StringEscapeUtils</a>, замена из <a href="https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/StringEscapeUtils.html">Apache Commons Lang3</a></li>
+<li><a href="http://jtidy.sourceforge.net/">Jtidy</a></li>
+<li>Пользовательская реализация вашей компании.</li>
+</ol>
+<p>Некоторые работают на основе списка запретов, другие игнорируют важные символы, такие как "&lt;" и "&gt;".</p>
+<p>Java Encoder — активный проект, поддерживающий HTML, CSS и JavaScript-кодирование.</p>
+<p>ESAPI — один из немногих, работающих на основе списка разрешений и кодирующих все небуквенно-цифровые символы. Важно использовать библиотеку кодирования, которая понимает, какие символы могут использоваться для эксплуатации уязвимостей в соответствующих контекстах. Вокруг правильного кодирования существует масса заблуждений.</p>
+<h3 id="_10">Заблуждения относительно кодирования<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>Многие учебные программы и статьи по безопасности пропагандируют слепое использование HTML-кодирования для решения проблемы XSS.</p>
+<p>Логически это выглядит разумным советом, поскольку JavaScript-парсер не понимает HTML-кодирование.</p>
+<p>Однако если страницы, возвращаемые вашим веб-приложением, используют тип содержимого <code>text/xhtml</code> или расширение файла <code>*.xhtml</code>, то HTML-кодирование может не работать для защиты от XSS.</p>
+<p>Например:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="o">&amp;</span><span class="err">#</span><span class="nx">x61</span><span class="p">;</span><span class="nx">lert</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Вышеприведённое HTML-закодированное значение всё равно выполняется. Если этого недостаточно для запоминания, стоит помнить, что кодирования теряются при их получении с помощью атрибута value элемента DOM.</p>
+<p>Рассмотрим пример страницы и скрипта:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">form</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;myForm&quot;</span> <span class="err">...</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;lName&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;&lt;%=ESAPI.encoder().encodeForHTML(last_name)%&gt;&quot;</span><span class="p">&gt;</span>
+ ...
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">myForm</span><span class="p">.</span><span class="nx">lName</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span><span class="w">  </span><span class="c1">// при получении значения кодирование отменяется</span>
+<span class="w">  </span><span class="nb">document</span><span class="p">.</span><span class="nx">writeln</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span><span class="w">  </span><span class="c1">// любой код, переданный в lName, теперь выполняем.</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Наконец, существует проблема, что некоторые методы в JavaScript, которые обычно безопасны, могут быть небезопасны в определённых контекстах.</p>
+<h3 id="_11">Обычно безопасные методы<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>Один из примеров атрибута, считающегося безопасным, — <code>innerText</code>.</p>
+<p>Некоторые статьи или руководства рекомендуют его использование как альтернативу <code>innerHTML</code> для защиты от XSS в <code>innerHTML</code>. Однако в зависимости от тега, к которому применяется <code>innerText</code>, код может выполняться.</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;script&quot;</span><span class="p">);</span>
+<span class="w"> </span><span class="nx">tag</span><span class="p">.</span><span class="nx">innerText</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;%=untrustedData%&gt;&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// выполняет код</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Функция <code>innerText</code> была изначально введена Internet Explorer и официально включена в стандарт HTML в 2016 году после принятия всеми основными производителями браузеров.</p>
+<h3 id="dom-xss">Обнаружение DOM XSS с помощью вариантного анализа<a class="headerlink" href="#dom-xss" title="Permanent link">&para;</a></h3>
+<p><strong>Уязвимый код:</strong></p>
+<div class="highlight"><pre><span></span><code>&lt;script&gt;
+var x = location.hash.split(&quot;#&quot;)[1];
+document.write(x);
+&lt;/script&gt;
+</code></pre></div>
+<p>Правило Semgrep для выявления указанного выше DOM XSS <a href="https://semgrep.dev/s/we30">ссылка</a>.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

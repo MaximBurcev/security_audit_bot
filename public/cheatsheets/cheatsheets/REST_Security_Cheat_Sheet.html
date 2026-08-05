@@ -1,0 +1,3624 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="REST_Assessment_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Ruby_on_Rails_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>REST Security - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rest-security-cheat-sheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              REST Security
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#https" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Управление доступом
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      JWT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Keys
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничение HTTP-методов
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение выполнения API-вызовов не в том порядке
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Предотвращение выполнения API-вызовов не в том порядке">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проблема
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекомендации по защите
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контрольный список для тестирования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Валидация входных данных
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Валидация типов содержимого
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Валидация типов содержимого">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Валидация типов содержимого запросов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отправка безопасных типов содержимого ответов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Эндпоинты управления
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обработка ошибок
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналы аудита
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Заголовки безопасности
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cors" class="md-nav__link">
+    <span class="md-ellipsis">
+      CORS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Чувствительная информация в HTTP-запросах
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP-коды ответа
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#https" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Управление доступом
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      JWT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Keys
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ограничение HTTP-методов
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращение выполнения API-вызовов не в том порядке
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Предотвращение выполнения API-вызовов не в том порядке">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проблема
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Пример
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекомендации по защите
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контрольный список для тестирования
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Валидация входных данных
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Валидация типов содержимого
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Валидация типов содержимого">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Валидация типов содержимого запросов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отправка безопасных типов содержимого ответов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Эндпоинты управления
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обработка ошибок
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Журналы аудита
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Заголовки безопасности
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cors" class="md-nav__link">
+    <span class="md-ellipsis">
+      CORS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Чувствительная информация в HTTP-запросах
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP-коды ответа
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="rest-security-cheat-sheet">REST Security Cheat Sheet<a class="headerlink" href="#rest-security-cheat-sheet" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><a href="https://en.wikipedia.org/wiki/REST">REST</a> (или <strong>RE</strong>presentational <strong>S</strong>tate <strong>T</strong>ransfer) — это архитектурный стиль, впервые описанный в докторской диссертации <a href="https://en.wikipedia.org/wiki/Roy_Fielding">Роя Филдинга</a> <a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">«Архитектурные стили и проектирование сетевых программных архитектур»</a>.</p>
+<p>Этот стиль развивался по мере того, как Филдинг работал над спецификациями HTTP/1.1 и URI, и доказал свою пригодность для разработки распределённых гипермедийных приложений. Хотя REST применим в более широком контексте, чаще всего он используется для взаимодействия со службами по протоколу HTTP.</p>
+<p>Ключевой абстракцией информации в REST является ресурс. Ресурс REST API идентифицируется URI, как правило — HTTP URL. Компоненты REST используют коннекторы для выполнения действий над ресурсом: представление фиксирует текущее или желаемое состояние ресурса, после чего это представление передаётся по сети.</p>
+<p>Основные типы коннекторов — клиент и сервер; вспомогательные — кэш, резолвер и туннель.</p>
+<p>REST API являются безсостоятельными (stateless). Сервисы с сохранением состояния (stateful) не соответствуют архитектурному стилю REST. Слово «State» в аббревиатуре REST относится к состоянию ресурса, к которому обращается API, а не к состоянию сессии, в рамках которой вызывается API. Хотя для построения stateful API могут существовать веские причины, важно понимать, что управление сессиями — задача сложная и трудно реализуемая безопасным образом.</p>
+<p>Stateful-сервисы выходят за рамки данного Cheat Sheet: <em>передача состояния от клиента к бэкенду, формально делающая сервис stateless, является антипаттерном, которого также следует избегать, поскольку это создаёт уязвимости для атак с повторным использованием (replay) и имперсонации.</em></p>
+<p>Для реализации рабочих процессов с REST API ресурсы, как правило, создаются, читаются, обновляются и удаляются. Например, сайт электронной коммерции может предоставлять методы для создания пустой корзины, добавления товаров и оформления заказа. Каждый из этих REST-вызовов является stateless, и эндпоинт должен проверять, авторизован ли вызывающий на выполнение запрошенной операции.</p>
+<p>Ещё одна ключевая особенность REST-приложений — использование стандартных HTTP-методов и кодов ошибок, что позволяет устранить излишние различия между разными сервисами.</p>
+<p>Ещё одна ключевая особенность REST-приложений — использование <a href="https://en.wikipedia.org/wiki/HATEOAS">HATEOAS (Hypermedia As The Engine of Application State)</a>. Это делает REST-приложения самодокументируемыми и облегчает разработчикам взаимодействие с REST-сервисом без предварительных знаний о нём.</p>
+<h2 id="https">HTTPS<a class="headerlink" href="#https" title="Permanent link">&para;</a></h2>
+<p>Защищённые REST-сервисы должны предоставлять только HTTPS-эндпоинты. Это защищает учётные данные аутентификации при передаче — например, пароли, API-ключи или JSON Web Tokens. Кроме того, это позволяет клиентам аутентифицировать сервис и гарантирует целостность передаваемых данных.</p>
+<p>Дополнительную информацию см. в <a href="Transport_Layer_Security_Cheat_Sheet.html">Transport Layer Security Cheat Sheet</a>.</p>
+<p>Рассмотрите возможность использования взаимной аутентификации на основе клиентских сертификатов для дополнительной защиты высокопривилегированных веб-сервисов.</p>
+<h2 id="_2">Управление доступом<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Непубличные REST-сервисы должны выполнять контроль доступа на каждом эндпоинте API. В монолитных приложениях веб-сервисы реализуют это с помощью аутентификации пользователей, логики авторизации и управления сессиями. Для современных архитектур, построенных из нескольких микросервисов в стиле RESTful, такой подход имеет ряд недостатков.</p>
+<ul>
+<li>Чтобы минимизировать задержку и снизить связанность сервисов, решение о контроле доступа должно приниматься локально на REST-эндпоинтах.</li>
+<li>Аутентификация пользователей должна быть централизована в Identity Provider (IdP), который выдаёт токены доступа.</li>
+</ul>
+<h2 id="jwt">JWT<a class="headerlink" href="#jwt" title="Permanent link">&para;</a></h2>
+<p>Наблюдается тенденция к использованию <a href="https://tools.ietf.org/html/rfc7519">JSON Web Tokens</a> (JWT) в качестве формата токенов безопасности. JWT — это структуры данных JSON, содержащие набор утверждений (claims), которые могут использоваться для принятия решений об управлении доступом. Криптографическая подпись или код аутентификации сообщения (MAC) могут использоваться для защиты целостности JWT.</p>
+<ul>
+<li>Убедитесь, что целостность JWT защищена либо подписью, либо MAC. Не допускайте использования незащищённых JWT: <code>{"alg":"none"}</code>.<ul>
+<li>См. <a href="https://tools.ietf.org/html/rfc7519#section-6.1">здесь</a></li>
+</ul>
+</li>
+<li>В общем случае предпочтительнее использовать подписи, а не MAC для защиты целостности JWT.</li>
+</ul>
+<p>Если для защиты целостности используются MAC, любой сервис, способный проверять JWT, также может создавать новые JWT с использованием того же ключа. Это означает, что все сервисы, использующие один и тот же ключ, должны взаимно доверять друг другу. Следствием этого является то, что компрометация любого сервиса компрометирует и все остальные сервисы, разделяющие тот же ключ. Дополнительную информацию см. <a href="https://tools.ietf.org/html/rfc7515#section-10.5">здесь</a>.</p>
+<p>Проверяющая сторона (relying party) или потребитель токена проверяет JWT, верифицируя его целостность и содержащиеся в нём утверждения.</p>
+<ul>
+<li>Проверяющая сторона должна верифицировать целостность JWT на основе собственной конфигурации или жёстко заданной логики. Нельзя полагаться на информацию заголовка JWT при выборе алгоритма верификации. См. <a href="https://www.chosenplaintext.ca/2015/03/31/jwt-algorithm-confusion.html">здесь</a> и <a href="https://www.youtube.com/watch?v=bW5pS4e_MX8&gt;">здесь</a></li>
+</ul>
+<p>Ряд утверждений стандартизирован и должен присутствовать в JWT, используемых для контроля доступа. Необходимо проверять как минимум следующие стандартные утверждения:</p>
+<ul>
+<li><code>iss</code> (issuer) — является ли это доверенным издателем? Является ли он ожидаемым владельцем ключа подписи?</li>
+<li><code>aud</code> (audience) — входит ли проверяющая сторона в целевую аудиторию данного JWT?</li>
+<li><code>exp</code> (expiration time) — является ли текущее время более ранним, чем окончание периода действия токена?</li>
+<li><code>nbf</code> (not before time) — является ли текущее время более поздним, чем начало периода действия токена?</li>
+</ul>
+<p>Поскольку JWT содержат данные аутентифицированной сущности (пользователя и т.д.), может возникнуть рассинхронизация между JWT и текущим состоянием сессии пользователя — например, если сессия завершена раньше времени истечения срока действия токена вследствие явного выхода или тайм-аута бездействия. При наступлении события явного завершения сессии дайджест или хэш связанных JWT должен быть передан в список запрещённых (denylist) на API, что аннулирует данный JWT для всех запросов вплоть до истечения срока действия токена. Подробнее см. в <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html#token-explicit-revocation-by-the-user">JSON_Web_Token_for_Java_Cheat_Sheet</a>.</p>
+<h2 id="api-keys">API Keys<a class="headerlink" href="#api-keys" title="Permanent link">&para;</a></h2>
+<p>Публичные REST-сервисы без контроля доступа рискуют стать объектом массированного использования (farming), что может привести к чрезмерным расходам на полосу пропускания или вычислительные ресурсы. API-ключи могут снизить этот риск. Они также часто используются организациями для монетизации API: вместо блокировки высокочастотных вызовов клиентам предоставляется доступ в соответствии с приобретённым тарифным планом.</p>
+<p>API-ключи могут снизить воздействие атак типа «отказ в обслуживании» (DoS). Однако при выдаче сторонним клиентам их относительно легко скомпрометировать.</p>
+<ul>
+<li>Требуйте API-ключи для каждого запроса к защищённому эндпоинту.</li>
+<li>Возвращайте HTTP-код ответа <code>429 Too Many Requests</code>, если запросы поступают слишком быстро.</li>
+<li>Отзывайте API-ключ, если клиент нарушает соглашение об использовании.</li>
+<li>Не полагайтесь исключительно на API-ключи для защиты чувствительных, критически важных или высокоценных ресурсов.</li>
+</ul>
+<h2 id="http-">Ограничение HTTP-методов<a class="headerlink" href="#http-" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Применяйте allowlist допустимых HTTP-методов, например <code>GET</code>, <code>POST</code>, <code>PUT</code>.</li>
+<li>Отклоняйте все запросы, не соответствующие allowlist, с HTTP-кодом ответа <code>405 Method not allowed</code>.</li>
+<li>Убедитесь, что вызывающая сторона авторизована на использование входящего HTTP-метода для данной коллекции ресурсов, действия и записи.</li>
+</ul>
+<p>В Java EE, в частности, это может быть сложно реализовать корректно. См. <a href="../assets/REST_Security_Cheat_Sheet_Bypassing_VBAAC_with_HTTP_Verb_Tampering.pdf">Bypassing Web Authentication and Authorization with HTTP Verb Tampering</a> для объяснения этой распространённой ошибки конфигурации.</p>
+<h2 id="api-">Предотвращение выполнения API-вызовов не в том порядке<a class="headerlink" href="#api-" title="Permanent link">&para;</a></h2>
+<p>Современные REST API часто реализуют бизнес-процессы через последовательность эндпоинтов (например, создать → проверить → одобрить → завершить). Если бэкенд явно не проверяет переходы состояний рабочего процесса, злоумышленники могут вызывать эндпоинты не в том порядке, обходя предусмотренные механизмы контроля.</p>
+<h3 id="_3">Проблема<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>Выполнение API-вызовов не в том порядке происходит, когда злоумышленник:</p>
+<ul>
+<li>Пропускает обязательные шаги рабочего процесса, напрямую обращаясь к эндпоинтам последующих этапов.</li>
+<li>Воспроизводит или повторно использует токены в разных точках рабочего процесса.</li>
+<li>Эксплуатирует допущение о том, что фронтенд обеспечивает корректный порядок выполнения.</li>
+</ul>
+<p>Поскольку каждый эндпоинт может быть индивидуально аутентифицирован и авторизован, традиционные проверки контроля доступа часто не выявляют подобные проблемы.</p>
+<h3 id="_4">Пример<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>Рабочий процесс оформления заказа предполагает следующую последовательность:</p>
+<div class="highlight"><pre><span></span><code><span class="err">POST /checkout/create</span>
+<span class="err">POST /checkout/pay</span>
+<span class="err">POST /checkout/confirm</span>
+</code></pre></div>
+<p>Если бэкенд не проверяет переходы состояний рабочего процесса, злоумышленник может напрямую вызвать:</p>
+<div class="highlight"><pre><span></span><code><span class="err">POST /checkout/confirm</span>
+</code></pre></div>
+<p>не завершив оплату.</p>
+<h3 id="_5">Рекомендации по защите<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Выполняйте валидацию состояния рабочего процесса на стороне сервера для каждого запроса.</li>
+<li>Явно моделируйте рабочие процессы с использованием конечных состояний или машин состояний.</li>
+<li>Привязывайте токены или идентификаторы к конкретным этапам рабочего процесса.</li>
+<li>Не полагайтесь на логику фронтенда для обеспечения корректного порядка вызовов.</li>
+<li>Отклоняйте недопустимые или неупорядоченные переходы с понятными сообщениями об ошибках.</li>
+</ul>
+<h3 id="_6">Контрольный список для тестирования<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Можно ли вызывать эндпоинты не в том порядке?</li>
+<li>Проверяет ли каждый эндпоинт текущее состояние рабочего процесса?</li>
+<li>Можно ли повторно использовать токены на разных шагах рабочего процесса?</li>
+<li>Последовательно ли отклоняются недопустимые переходы состояний?</li>
+</ul>
+<h2 id="_7">Валидация входных данных<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Не доверяйте входным параметрам/объектам.</li>
+<li>Проверяйте входные данные: длину / диапазон / формат и тип.</li>
+<li>Добивайтесь неявной валидации входных данных, используя строгие типы — числа, булевы значения, даты, время или фиксированные диапазоны данных в параметрах API.</li>
+<li>Ограничивайте строковые входные данные с помощью регулярных выражений.</li>
+<li>Отклоняйте неожиданное/недопустимое содержимое.</li>
+<li>Используйте библиотеки или фреймворки для валидации/санитизации, доступные для вашего языка программирования.</li>
+<li>Определите подходящий лимит размера запроса и отклоняйте запросы, превышающие его, с HTTP-статусом 413 Request Entity Too Large.</li>
+<li>Рассмотрите возможность журналирования ошибок валидации входных данных. Следует предполагать злой умысел у того, кто совершает сотни неудачных попыток валидации входных данных в секунду.</li>
+<li>Ознакомьтесь с cheat sheet по валидации входных данных для исчерпывающего объяснения.</li>
+<li>Используйте безопасный парсер для разбора входящих сообщений. При использовании XML убедитесь, что применяется парсер, не уязвимый к атакам <a href="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_%28XXE%29_Processing">XXE</a> и подобным.</li>
+</ul>
+<h2 id="_8">Валидация типов содержимого<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>Тело REST-запроса или ответа должно соответствовать предполагаемому типу содержимого, указанному в заголовке. В противном случае это может привести к неверной интерпретации на стороне потребителя/производителя и к внедрению/выполнению кода.</p>
+<ul>
+<li>Документируйте все поддерживаемые типы содержимого в вашем API.</li>
+</ul>
+<h3 id="_9">Валидация типов содержимого запросов<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Отклоняйте запросы с неожиданными или отсутствующими заголовками Content-Type с HTTP-статусом <code>406 Unacceptable</code> или <code>415 Unsupported Media Type</code>. Однако для запросов с <code>Content-Length: 0</code> заголовок <code>Content-type</code> является необязательным.</li>
+<li>Для XML-типов содержимого обеспечьте соответствующее усиление защиты XML-парсера, см. <a href="XML_External_Entity_Prevention_Cheat_Sheet.html">XXE cheat sheet</a>.</li>
+<li>Избегайте случайного раскрытия нежелательных типов содержимого, явно объявляя их — например, в <a href="https://jersey.github.io/">Jersey</a> (Java): <code>@consumes("application/json"); @produces("application/json")</code>. Это позволяет, в частности, избежать векторов <a href="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_%28XXE%29_Processing">XXE-атак</a>.</li>
+</ul>
+<h3 id="_10">Отправка безопасных типов содержимого ответов<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>REST-сервисы нередко поддерживают несколько типов ответов (например, <code>application/xml</code> или <code>application/json</code>), а клиент указывает предпочтительный порядок типов ответов через заголовок Accept в запросе.</p>
+<ul>
+<li><strong>НЕ</strong> копируйте заголовок <code>Accept</code> в заголовок <code>Content-type</code> ответа напрямую.</li>
+<li>Отклоняйте запрос (предпочтительно с ответом <code>406 Not Acceptable</code>), если заголовок <code>Accept</code> не содержит явно ни одного из допустимых типов.</li>
+</ul>
+<p>Сервисы, включающие в ответы код скриптов (например, JavaScript), должны уделять особое внимание защите от атак с внедрением заголовков.</p>
+<ul>
+<li>Убедитесь, что в ответе отправляются правильные заголовки Content-Type, соответствующие содержимому тела — например, <code>application/json</code>, а не <code>application/javascript</code>.</li>
+</ul>
+<h2 id="_11">Эндпоинты управления<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Избегайте открытого доступа к эндпоинтам управления через Интернет.</li>
+<li>Если эндпоинты управления должны быть доступны через Интернет, убедитесь, что пользователи обязаны использовать надёжный механизм аутентификации, например многофакторный.</li>
+<li>Размещайте эндпоинты управления на других HTTP-портах или хостах, предпочтительно на отдельном сетевом интерфейсе (NIC) и в ограниченной подсети.</li>
+<li>Ограничивайте доступ к этим эндпоинтам с помощью правил межсетевого экрана или списков контроля доступа (ACL).</li>
+</ul>
+<h2 id="_12">Обработка ошибок<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Возвращайте общие сообщения об ошибках — избегайте излишнего раскрытия деталей сбоя.</li>
+<li>Не передавайте клиенту технические подробности (например, трассировки стека вызовов или другие внутренние подсказки).</li>
+</ul>
+<h2 id="_13">Журналы аудита<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Записывайте журналы аудита до и после событий, связанных с безопасностью.</li>
+<li>Рассмотрите возможность журналирования ошибок валидации токенов для обнаружения атак.</li>
+<li>Защищайтесь от атак с внедрением данных в журналы, предварительно санитизируя данные журналов.</li>
+</ul>
+<h2 id="_14">Заголовки безопасности<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<p>Существует ряд <a href="https://owasp.org/www-project-secure-headers/">заголовков, связанных с безопасностью</a>, которые можно возвращать в HTTP-ответах, чтобы браузеры действовали определённым образом. Однако некоторые из этих заголовков предназначены для использования с HTML-ответами и поэтому могут обеспечивать незначительную пользу или вовсе не приносить её в API, не возвращающем HTML.</p>
+<p>Следующие заголовки должны быть включены во все ответы API:</p>
+<table>
+<thead>
+<tr>
+<th>Заголовок</th>
+<th>Обоснование</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Cache-Control: no-store</code></td>
+<td>Заголовок, управляющий кэшированием в браузерах. Значение <code>no-store</code> указывает, что любые кэши (приватные или общие) не должны сохранять ответ, содержащий этот заголовок. Браузер обязан делать новый запрос при каждом обращении к API для получения актуального ответа. Этот заголовок со значением <code>no-store</code> предотвращает кэширование или сохранение чувствительной информации.</td>
+</tr>
+<tr>
+<td><code>Content-Security-Policy: frame-ancestors 'none'</code></td>
+<td>Заголовок, определяющий, может ли ответ быть встроен во фрейм через элементы <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code>, <code>&lt;embed&gt;</code> или <code>&lt;object&gt;</code>. Для ответа API нет необходимости во встраивании в какой-либо из этих элементов. Значение <code>frame-ancestors 'none'</code> запрещает любому домену обрамлять ответ, возвращаемый API. Этот заголовок защищает от кликджекинг-атак методом <a href="https://www.w3.org/Security/wiki/Clickjacking_Threats#Drag_and_drop_attacks">перетаскивания</a>.</td>
+</tr>
+<tr>
+<td><code>Content-Type</code></td>
+<td>Заголовок для указания типа содержимого ответа. Должен быть задан в соответствии с типом содержимого, возвращаемого API. Если не указан или указан некорректно, браузер может попытаться угадать тип содержимого, что может привести к атакам типа MIME sniffing. Одним из распространённых значений является <code>application/json</code>, если ответ API представлен в формате JSON.</td>
+</tr>
+<tr>
+<td><code>Strict-Transport-Security</code></td>
+<td>Заголовок, предписывающий браузеру обращаться к домену только по HTTPS, а любые последующие попытки доступа по HTTP автоматически преобразовывать в HTTPS. Этот заголовок гарантирует, что API-вызовы выполняются по HTTPS, и защищает от подменённых сертификатов.</td>
+</tr>
+<tr>
+<td><code>X-Content-Type-Options: nosniff</code></td>
+<td>Заголовок, предписывающий браузеру всегда использовать MIME-тип, объявленный в заголовке <code>Content-Type</code>, а не пытаться определить его по содержимому файла. Значение <code>nosniff</code> предотвращает выполнение браузером MIME sniffing и некорректную интерпретацию ответов как HTML.</td>
+</tr>
+<tr>
+<td><code>X-Frame-Options: DENY</code></td>
+<td>Заголовок, определяющий, может ли ответ быть встроен во фрейм через элементы <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code>, <code>&lt;embed&gt;</code> или <code>&lt;object&gt;</code>. Для ответа API нет необходимости во встраивании в какой-либо из этих элементов. Значение <code>DENY</code> запрещает любому домену обрамлять ответ, возвращаемый API. Этот заголовок со значением <code>DENY</code> защищает от кликджекинг-атак методом <a href="https://www.w3.org/Security/wiki/Clickjacking_Threats#Drag_and_drop_attacks">перетаскивания</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>Приведённые ниже заголовки предназначены для обеспечения дополнительной безопасности только в случае, когда ответы отображаются как HTML. Таким образом, если API <strong>никогда</strong> не возвращает HTML в ответах, эти заголовки могут не потребоваться. Однако при любой неопределённости относительно функций заголовков или типов информации, возвращаемой API (или которую он может возвращать в будущем), рекомендуется включить их в рамках подхода «глубокой защиты» (defence-in-depth).</p>
+<table>
+<thead>
+<tr>
+<th>Заголовок</th>
+<th>Пример</th>
+<th>Обоснование</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Security-Policy</td>
+<td><code>Content-Security-Policy: default-src 'none'</code></td>
+<td>Большинство функций CSP влияют только на страницы, отображаемые как HTML.</td>
+</tr>
+<tr>
+<td>Permissions-Policy</td>
+<td><code>Permissions-Policy: accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()</code></td>
+<td>Ранее этот заголовок назывался Feature-Policy. Когда браузеры следуют этому заголовку, он используется для управления функциями браузера с помощью директив. Пример отключает функции с пустым allowlist для ряда разрешённых <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy#directives">имён директив</a>. При применении этого заголовка убедитесь, что директивы актуальны и соответствуют вашим потребностям. Подробное объяснение управления функциями браузера см. в этой <a href="https://developer.chrome.com/en/docs/privacy-sandbox/permissions-policy">статье</a>.</td>
+</tr>
+<tr>
+<td>Referrer-Policy</td>
+<td><code>Referrer-Policy: no-referrer</code></td>
+<td>Не-HTML-ответы не должны инициировать дополнительные запросы.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cors">CORS<a class="headerlink" href="#cors" title="Permanent link">&para;</a></h2>
+<p>Cross-Origin Resource Sharing (CORS) — это стандарт W3C для гибкого определения допустимых межсайтовых запросов. Возвращая соответствующие CORS-заголовки, ваш REST API сообщает браузеру, каким доменам (они же origins) разрешено выполнять JavaScript-вызовы к REST-сервису.</p>
+<ul>
+<li>Отключайте CORS-заголовки, если межсайтовые вызовы не поддерживаются или не предполагаются.</li>
+<li>При задании разрешённых origins для межсайтовых вызовов будьте максимально конкретны и лишь настолько общи, насколько это необходимо.</li>
+</ul>
+<h2 id="http-_1">Чувствительная информация в HTTP-запросах<a class="headerlink" href="#http-_1" title="Permanent link">&para;</a></h2>
+<p>RESTful веб-сервисы должны внимательно следить за тем, чтобы не допускать утечки учётных данных. Пароли, токены безопасности и API-ключи не должны присутствовать в URL, так как это может быть зафиксировано в журналах веб-сервера, что делает их ценной мишенью.</p>
+<ul>
+<li>В запросах <code>POST</code>/<code>PUT</code> чувствительные данные следует передавать в теле запроса или в заголовках запроса.</li>
+<li>В запросах <code>GET</code> чувствительные данные следует передавать в HTTP-заголовке.</li>
+</ul>
+<p><strong>Правильно:</strong></p>
+<p><code>https://example.com/resourceCollection/[ID]/action</code></p>
+<p><code>https://twitter.com/vanderaj/lists</code></p>
+<p><strong>Неправильно:</strong></p>
+<p><code>https://example.com/controller/123/action?apiKey=a53f435643de32</code> — потому что apiKey содержится в URL.</p>
+<h2 id="http-_2">HTTP-коды ответа<a class="headerlink" href="#http-_2" title="Permanent link">&para;</a></h2>
+<p>HTTP определяет <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">коды статуса</a>. При проектировании REST API не используйте только <code>200</code> для успеха или <code>404</code> для ошибки. Всегда применяйте семантически подходящий код статуса для ответа.</p>
+<p>Ниже приведена неполная подборка <strong>кодов статуса</strong> REST API, связанных с безопасностью. Используйте её для проверки корректности возвращаемых кодов.</p>
+<table>
+<thead>
+<tr>
+<th>Код</th>
+<th>Сообщение</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+<td>Ответ на успешное действие REST API. HTTP-метод может быть GET, POST, PUT, PATCH или DELETE.</td>
+</tr>
+<tr>
+<td>201</td>
+<td>Created</td>
+<td>Запрос выполнен и ресурс создан. URI созданного ресурса возвращается в заголовке Location.</td>
+</tr>
+<tr>
+<td>202</td>
+<td>Accepted</td>
+<td>Запрос принят в обработку, но обработка ещё не завершена.</td>
+</tr>
+<tr>
+<td>301</td>
+<td>Moved Permanently</td>
+<td>Постоянное перенаправление.</td>
+</tr>
+<tr>
+<td>304</td>
+<td>Not Modified</td>
+<td>Ответ, связанный с кэшированием: возвращается, когда у клиента есть такая же копия ресурса, что и на сервере.</td>
+</tr>
+<tr>
+<td>307</td>
+<td>Temporary Redirect</td>
+<td>Временное перенаправление ресурса.</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>Запрос сформирован некорректно, например ошибка формата тела сообщения.</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>Предоставлены неверные или отсутствуют идентификатор/пароль аутентификации.</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>Используется, когда аутентификация прошла успешно, но аутентифицированный пользователь не имеет прав доступа к запрошенному ресурсу.</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>Запрошен несуществующий ресурс.</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Acceptable</td>
+<td>Ошибка при использовании неожиданного HTTP-метода. Например, REST API ожидает HTTP GET, но был использован HTTP PUT.</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Unacceptable</td>
+<td>Клиент указал в заголовке Accept тип содержимого, который не поддерживается API сервера.</td>
+</tr>
+<tr>
+<td>413</td>
+<td>Payload too large</td>
+<td>Используется для сигнализации о том, что размер запроса превышает установленный лимит, например при загрузке файлов.</td>
+</tr>
+<tr>
+<td>415</td>
+<td>Unsupported Media Type</td>
+<td>Запрошенный тип содержимого не поддерживается REST-сервисом.</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests</td>
+<td>Ошибка используется при обнаружении возможной DoS-атаки или при отклонении запроса из-за ограничения скорости (rate limiting).</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td>Непредвиденное условие не позволило серверу выполнить запрос. Обратите внимание, что ответ не должен раскрывать внутреннюю информацию, которая может помочь злоумышленнику, — например, подробные сообщения об ошибках или трассировки стека.</td>
+</tr>
+<tr>
+<td>501</td>
+<td>Not Implemented</td>
+<td>REST-сервис ещё не реализовал запрошенную операцию.</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable</td>
+<td>REST-сервис временно не может обработать запрос. Используется для информирования клиента о необходимости повторить попытку позже.</td>
+</tr>
+</tbody>
+</table>
+<p>Дополнительную информацию об использовании HTTP-кодов ответа в REST API можно найти <a href="https://www.restapitutorial.com/httpstatuscodes.html">здесь</a> и <a href="https://restfulapi.net/http-status-codes">здесь</a>.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

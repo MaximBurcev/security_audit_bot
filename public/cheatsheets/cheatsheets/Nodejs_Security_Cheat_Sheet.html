@@ -1,0 +1,4117 @@
+---
+redirect_from: "/cheatsheets/Nodejs_security_cheat_sheet.html"
+---
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="NodeJS_Docker_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="NoSQL_Security_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Nodejs Security - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#nodejs-security-cheat-sheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Nodejs Security
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контекст
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Цель
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекомендации
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#application-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Application Security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Application Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#promise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте плоские цепочки Promise
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Устанавливайте ограничения на размер запросов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Не блокируйте цикл событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выполняйте валидацию входных данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выполняйте экранирование выходных данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ведите журнал активности приложения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мониторинг цикла событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Принимайте меры против брутфорс-атак
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-csrf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте Anti-CSRF токены
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удаляйте ненужные маршруты
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращайте загрязнение HTTP-параметров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Возвращайте только необходимые данные
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте дескрипторы свойств объектов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте списки управления доступом
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Разрешения (Permissions)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Разрешения (Permissions)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примеры
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-exception-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error &amp; Exception Handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error & Exception Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uncaughtexception" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обрабатывайте uncaughtException
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eventemitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Прослушивайте ошибки при использовании EventEmitter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обрабатывайте ошибки в асинхронных вызовах
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Server Security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Server Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Устанавливайте флаги cookie надлежащим образом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте соответствующие заголовки безопасности
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platform-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform Security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поддерживайте пакеты в актуальном состоянии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Не используйте опасные функции
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Избегайте «злых» регулярных выражений
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Запускайте линтеры безопасности
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте строгий режим
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Придерживайтесь общих принципов безопасности приложений
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные ресурсы по безопасности Node.js
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контекст
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Цель
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Рекомендации
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#application-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Application Security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Application Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#promise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте плоские цепочки Promise
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Устанавливайте ограничения на размер запросов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Не блокируйте цикл событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выполняйте валидацию входных данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выполняйте экранирование выходных данных
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ведите журнал активности приложения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мониторинг цикла событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Принимайте меры против брутфорс-атак
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-csrf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте Anti-CSRF токены
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Удаляйте ненужные маршруты
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предотвращайте загрязнение HTTP-параметров
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Возвращайте только необходимые данные
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте дескрипторы свойств объектов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте списки управления доступом
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Разрешения (Permissions)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Разрешения (Permissions)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примеры
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-exception-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error &amp; Exception Handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error & Exception Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uncaughtexception" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обрабатывайте uncaughtException
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eventemitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Прослушивайте ошибки при использовании EventEmitter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обрабатывайте ошибки в асинхронных вызовах
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Server Security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Server Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Устанавливайте флаги cookie надлежащим образом
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте соответствующие заголовки безопасности
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platform-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform Security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поддерживайте пакеты в актуальном состоянии
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Не используйте опасные функции
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Избегайте «злых» регулярных выражений
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Запускайте линтеры безопасности
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Используйте строгий режим
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Придерживайтесь общих принципов безопасности приложений
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Дополнительные ресурсы по безопасности Node.js
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="nodejs-security-cheat-sheet">NodeJS Security Cheat Sheet<a class="headerlink" href="#nodejs-security-cheat-sheet" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>В этой шпаргалке перечислены действия, которые разработчики могут предпринять для создания безопасных приложений на Node.js. Каждый пункт содержит краткое пояснение и решение, специфичное для среды Node.js.</p>
+<h2 id="_2">Контекст<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Количество приложений на Node.js постоянно растёт, и они ничем не отличаются от приложений на других фреймворках и языках программирования — они также подвержены всем видам уязвимостей веб-приложений.</p>
+<h2 id="_3">Цель<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Цель данной шпаргалки — предоставить список лучших практик, которым следует придерживаться при разработке приложений на Node.js.</p>
+<h2 id="_4">Рекомендации<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>Существует несколько рекомендаций для повышения безопасности ваших приложений на Node.js. Они разделены на следующие категории:</p>
+<ul>
+<li><strong>Application Security</strong> (Безопасность приложения)</li>
+<li><strong>Error &amp; Exception Handling</strong> (Обработка ошибок и исключений)</li>
+<li><strong>Server Security</strong> (Безопасность сервера)</li>
+<li><strong>Platform Security</strong> (Безопасность платформы)</li>
+</ul>
+<h3 id="application-security">Application Security<a class="headerlink" href="#application-security" title="Permanent link">&para;</a></h3>
+<h4 id="promise">Используйте плоские цепочки Promise<a class="headerlink" href="#promise" title="Permanent link">&para;</a></h4>
+<p>Асинхронные функции обратного вызова (callback) — одна из сильнейших особенностей Node.js. Однако увеличение уровней вложенности внутри callback-функций может стать проблемой. Любой многоэтапный процесс может быть вложен на 10 и более уровней в глубину. Эта проблема называется «Pyramid of Doom» («Пирамида судьбы») или «Callback Hell» («Ад колбэков»). В таком коде ошибки и результаты теряются внутри callback-функций. Promise — хороший способ писать асинхронный код без погружения во вложенные пирамиды. Promise обеспечивает последовательное выполнение сверху вниз, оставаясь при этом асинхронным, и передаёт ошибки и результаты в следующую функцию <code>.then</code>.</p>
+<p>Ещё одно преимущество Promise — способ обработки ошибок. Если в классе Promise возникает ошибка, выполнение пропускает функции <code>.then</code> и вызывает первую найденную функцию <code>.catch</code>. Таким образом, Promise обеспечивает более надёжный перехват и обработку ошибок. В качестве принципа можно сделать так, чтобы весь асинхронный код (кроме эмиттеров) возвращал Promise. Следует отметить, что вызовы Promise также могут образовывать пирамиду. Чтобы полностью избежать «Callback Hell», следует использовать плоские цепочки Promise. Если используемый модуль не поддерживает Promise, можно преобразовать базовый объект в Promise с помощью функции <code>Promise.promisifyAll()</code>.</p>
+<p>Следующий фрагмент кода является примером «Callback Hell»:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">func1</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">callback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then calls the callback</span>
+<span class="p">}</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">func2</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">callback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then calls the callback</span>
+<span class="p">}</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">func3</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">callback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then calls the callback</span>
+<span class="p">}</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">func4</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">callback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then calls the callback</span>
+<span class="p">}</span>
+
+<span class="nx">func1</span><span class="p">(</span><span class="s2">&quot;input1&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">result1</span><span class="p">){</span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+<span class="w">      </span><span class="c1">// error operations</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w">   </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">//some operations</span>
+<span class="w">      </span><span class="nx">func2</span><span class="p">(</span><span class="s2">&quot;input2&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">result2</span><span class="p">){</span>
+<span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+<span class="w">            </span><span class="c1">//error operations</span>
+<span class="w">         </span><span class="p">}</span>
+<span class="w">         </span><span class="k">else</span><span class="p">{</span>
+<span class="w">            </span><span class="c1">//some operations</span>
+<span class="w">            </span><span class="nx">func3</span><span class="p">(</span><span class="s2">&quot;input3&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">result3</span><span class="p">){</span>
+<span class="w">               </span><span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+<span class="w">                  </span><span class="c1">//error operations</span>
+<span class="w">               </span><span class="p">}</span>
+<span class="w">               </span><span class="k">else</span><span class="p">{</span>
+<span class="w">                  </span><span class="c1">// some operations</span>
+<span class="w">                  </span><span class="nx">func4</span><span class="p">(</span><span class="s2">&quot;input 4&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">result4</span><span class="p">){</span>
+<span class="w">                     </span><span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+<span class="w">                        </span><span class="c1">// error operations</span>
+<span class="w">                     </span><span class="p">}</span>
+<span class="w">                     </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="c1">// some operations</span>
+<span class="w">                     </span><span class="p">}</span>
+<span class="w">                  </span><span class="p">});</span>
+<span class="w">               </span><span class="p">}</span>
+<span class="w">            </span><span class="p">});</span>
+<span class="w">         </span><span class="p">}</span>
+<span class="w">      </span><span class="p">});</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Приведённый выше код можно безопасно переписать, используя плоскую цепочку Promise:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">func1</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then resolves the promise</span>
+<span class="p">}</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">func2</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then resolves the promise</span>
+<span class="p">}</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">func3</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then resolves the promise</span>
+<span class="p">}</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">func4</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then resolves the promise</span>
+<span class="p">}</span>
+
+<span class="nx">func1</span><span class="p">(</span><span class="s2">&quot;input1&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">result</span><span class="p">){</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nx">func2</span><span class="p">(</span><span class="s2">&quot;input2&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="p">})</span>
+<span class="w">   </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">result</span><span class="p">){</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nx">func3</span><span class="p">(</span><span class="s2">&quot;input3&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="p">})</span>
+<span class="w">   </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">result</span><span class="p">){</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nx">func4</span><span class="p">(</span><span class="s2">&quot;input4&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="p">})</span>
+<span class="w">   </span><span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// error operations</span>
+<span class="w">   </span><span class="p">});</span>
+</code></pre></div>
+<p>А также с использованием async/await:</p>
+<div class="highlight"><pre><span></span><code><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">func1</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then resolves the promise</span>
+<span class="p">}</span>
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">func2</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then resolves the promise</span>
+<span class="p">}</span>
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">func3</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then resolves the promise</span>
+<span class="p">}</span>
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">func4</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// operations that takes a bit of time and then resolves the promise</span>
+<span class="p">}</span>
+
+<span class="p">(</span><span class="k">async</span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">res1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">func1</span><span class="p">(</span><span class="s2">&quot;input1&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">res2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">func2</span><span class="p">(</span><span class="s2">&quot;input2&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">res3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">func3</span><span class="p">(</span><span class="s2">&quot;input2&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">res4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">func4</span><span class="p">(</span><span class="s2">&quot;input2&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// error operations</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">})();</span>
+</code></pre></div>
+<h4 id="_5">Устанавливайте ограничения на размер запросов<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
+<p>Буферизация и разбор тел запросов могут быть ресурсоёмкими операциями. Если размер запросов не ограничен, злоумышленники могут отправлять запросы с большими телами, что приведёт к исчерпанию памяти сервера и/или заполнению дискового пространства. Вы можете ограничить размер тела запроса для всех запросов с помощью <a href="https://www.npmjs.com/package/raw-body">raw-body</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">contentType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;content-type&#39;</span><span class="p">)</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">express</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">getRawBody</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;raw-body&#39;</span><span class="p">)</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">express</span><span class="p">()</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;DELETE&#39;</span><span class="p">].</span><span class="nx">includes</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">next</span><span class="p">()</span>
+<span class="w">    </span><span class="k">return</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nx">getRawBody</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">length</span><span class="o">:</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">&#39;content-length&#39;</span><span class="p">],</span>
+<span class="w">    </span><span class="nx">limit</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;1kb&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">encoding</span><span class="o">:</span><span class="w"> </span><span class="nx">contentType</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">).</span><span class="nx">parameters</span><span class="p">.</span><span class="nx">charset</span>
+<span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">string</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">req</span><span class="p">.</span><span class="nx">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">string</span>
+<span class="w">    </span><span class="nx">next</span><span class="p">()</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">})</span>
+</code></pre></div>
+<p>Однако установка фиксированного ограничения размера для всех запросов может быть некорректным поведением, поскольку некоторые запросы могут содержать большой объём данных в теле — например, при загрузке файлов. Кроме того, ввод в формате JSON опаснее, чем multipart-ввод, поскольку разбор JSON является блокирующей операцией. Поэтому следует устанавливать ограничения размера запросов отдельно для разных типов контента. Это можно легко реализовать с помощью middleware express:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">urlencoded</span><span class="p">({</span><span class="w"> </span><span class="nx">extended</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">limit</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;1kb&quot;</span><span class="w"> </span><span class="p">}));</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="w"> </span><span class="nx">limit</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;1kb&quot;</span><span class="w"> </span><span class="p">}));</span>
+</code></pre></div>
+<p>Следует учитывать, что злоумышленники могут изменить заголовок <code>Content-Type</code> запроса и обойти ограничения размера. Поэтому перед обработкой запроса данные, содержащиеся в нём, должны быть проверены на соответствие типу контента, указанному в заголовках. Если проверка типа контента для каждого запроса существенно снижает производительность, можно проверять только определённые типы контента или запросы, превышающие заранее установленный размер.</p>
+<h4 id="_6">Не блокируйте цикл событий<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<p>Node.js существенно отличается от обычных платформ приложений, использующих потоки. Node.js имеет однопоточную архитектуру, управляемую событиями. Благодаря этой архитектуре пропускная способность повышается, а модель программирования упрощается. Node.js реализован на основе неблокирующего цикла событий ввода-вывода. С этим циклом событий нет ожидания I/O или переключения контекста. Цикл событий ищет события и передаёт их функциям-обработчикам. Из-за этого, когда выполняются ресурсоёмкие операции JavaScript, цикл событий ждёт их завершения. Вот почему такие операции называются «блокирующими». Для решения этой проблемы Node.js позволяет назначать callback-функции для событий, заблокированных I/O. Таким образом, основное приложение не блокируется, а callback-функции выполняются асинхронно. Поэтому в качестве общего принципа все блокирующие операции должны выполняться асинхронно, чтобы не блокировать цикл событий.</p>
+<p>Даже если блокирующие операции выполняются асинхронно, приложение может работать не так, как ожидается. Это происходит, когда есть код вне callback-функции, который зависит от кода внутри callback-функции и должен выполняться после него. Например, рассмотрим следующий код:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+<span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="s1">&#39;/file.txt&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// perform actions on file content</span>
+<span class="p">});</span>
+<span class="nx">fs</span><span class="p">.</span><span class="nx">unlinkSync</span><span class="p">(</span><span class="s1">&#39;/file.txt&#39;</span><span class="p">);</span>
+</code></pre></div>
+<p>В приведённом выше примере функция <code>unlinkSync</code> может выполниться раньше callback-функции, что приведёт к удалению файла до завершения желаемых действий с его содержимым. Подобные состояния гонки также могут влиять на безопасность вашего приложения. Примером может служить сценарий, при котором аутентификация выполняется в callback-функции, а аутентифицированные действия выполняются синхронно. Чтобы устранить такие состояния гонки, можно поместить все взаимозависимые операции в единую неблокирующую функцию. Таким образом можно гарантировать, что все операции выполняются в правильном порядке. Например, приведённый выше код можно переписать неблокирующим образом следующим образом:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+<span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="s1">&#39;/file.txt&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// perform actions on file content</span>
+<span class="w">  </span><span class="nx">fs</span><span class="p">.</span><span class="nx">unlink</span><span class="p">(</span><span class="s1">&#39;/file.txt&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="nx">err</span><span class="p">;</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>В приведённом выше коде вызов удаления файла и другие операции с файлом находятся в одном и том же callback-е. Это обеспечивает правильный порядок выполнения операций.</p>
+<h4 id="_7">Выполняйте валидацию входных данных<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>Валидация входных данных — важнейшая часть безопасности приложения. Её отсутствие может привести ко многим видам атак на приложение. К ним относятся SQL-инъекции, межсайтовый скриптинг (XSS), инъекции команд, включение локальных/удалённых файлов, отказ в обслуживании, обход каталогов, LDAP-инъекции и многие другие инъекционные атаки. Чтобы избежать этих атак, входные данные приложения должны быть предварительно очищены. Лучшая техника валидации — использование списка допустимых входных значений. Однако если это невозможно, входные данные сначала следует проверить на соответствие ожидаемой схеме, а опасные входные данные — экранировать. Для облегчения валидации входных данных в приложениях Node.js существуют такие модули, как <a href="https://www.npmjs.com/package/validator">validator</a> и <a href="https://www.npmjs.com/package/express-mongo-sanitize">express-mongo-sanitize</a>.
+Для получения подробной информации о валидации входных данных обратитесь к <a href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html">Input Validation Cheat Sheet</a>.</p>
+<p>JavaScript — динамический язык, и в зависимости от того, как фреймворк разбирает URL, данные, которые видит код приложения, могут принимать самые разные формы. Вот несколько примеров после разбора строки запроса в express.js:</p>
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>Содержимое request.query.foo в коде</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>?foo=bar</code></td>
+<td><code>'bar'</code> (string)</td>
+</tr>
+<tr>
+<td><code>?foo=bar&amp;foo=baz</code></td>
+<td><code>['bar', 'baz']</code> (array of string)</td>
+</tr>
+<tr>
+<td><code>?foo[]=bar</code></td>
+<td><code>['bar']</code> (array of string)</td>
+</tr>
+<tr>
+<td><code>?foo[]=bar&amp;foo[]=baz</code></td>
+<td><code>['bar', 'baz']</code> (array of string)</td>
+</tr>
+<tr>
+<td><code>?foo[bar]=baz</code></td>
+<td><code>{ bar : 'baz' }</code> (object with a key)</td>
+</tr>
+<tr>
+<td><code>?foo[]baz=bar</code></td>
+<td><code>['bar']</code> (array of string - postfix is lost)</td>
+</tr>
+<tr>
+<td><code>?foo[][baz]=bar</code></td>
+<td><code>[ { baz: 'bar' } ]</code> (array of object)</td>
+</tr>
+<tr>
+<td><code>?foo[bar][baz]=bar</code></td>
+<td><code>{ foo: { bar: { baz: 'bar' } } }</code> (object tree)</td>
+</tr>
+<tr>
+<td><code>?foo[10]=bar&amp;foo[9]=baz</code></td>
+<td><code>[ 'baz', 'bar' ]</code> (array of string - notice order)</td>
+</tr>
+<tr>
+<td><code>?foo[toString]=bar</code></td>
+<td><code>{}</code> (object where calling <code>toString()</code> will fail)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="_8">Выполняйте экранирование выходных данных<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<p>В дополнение к валидации входных данных следует экранировать весь HTML и JavaScript-контент, отображаемый пользователям через приложение, чтобы предотвратить атаки межсайтового скриптинга (XSS). Для экранирования выходных данных можно использовать библиотеки <a href="https://github.com/component/escape-html">escape-html</a> или <a href="https://github.com/ESAPI/node-esapi">node-esapi</a>.</p>
+<h4 id="_9">Ведите журнал активности приложения<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<p>Ведение журнала активности приложения является рекомендуемой хорошей практикой. Это упрощает отладку любых ошибок, возникающих во время выполнения приложения. Это также полезно с точки зрения безопасности, поскольку журналы могут использоваться при реагировании на инциденты. Кроме того, эти журналы можно использовать для питания систем обнаружения/предотвращения вторжений (IDS/IPS). В Node.js существуют такие модули, как <a href="https://www.npmjs.com/package/winston">Winston</a>, <a href="https://www.npmjs.com/package/bunyan">Bunyan</a> или <a href="https://www.npmjs.com/package/pino">Pino</a> для ведения журнала активности приложения. Эти модули обеспечивают потоковую передачу и запросы к журналам, а также предоставляют способ обработки необработанных исключений.</p>
+<p>С помощью следующего кода можно записывать активность приложения как в консоль, так и в нужный файл журнала:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="p">(</span><span class="nx">Winston</span><span class="p">.</span><span class="nx">Logger</span><span class="p">)</span><span class="w"> </span><span class="p">({</span>
+<span class="w">    </span><span class="nx">transports</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="ow">new</span><span class="w"> </span><span class="p">(</span><span class="nx">winston</span><span class="p">.</span><span class="nx">transports</span><span class="p">.</span><span class="nx">Console</span><span class="p">)(),</span>
+<span class="w">        </span><span class="ow">new</span><span class="w"> </span><span class="p">(</span><span class="nx">winston</span><span class="p">.</span><span class="nx">transports</span><span class="p">.</span><span class="nx">File</span><span class="p">)({</span><span class="w"> </span><span class="nx">filename</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;application.log&#39;</span><span class="w"> </span><span class="p">})</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nx">level</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;verbose&#39;</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Можно задать различные транспорты, чтобы сохранять ошибки в отдельный файл журнала, а общие журналы приложения — в другой. Дополнительную информацию о ведении журналов безопасности можно найти в <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">Logging Cheat Sheet</a>.</p>
+<h4 id="_10">Мониторинг цикла событий<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h4>
+<p>Когда сервер приложения испытывает большую нагрузку по сети, он может не справляться с обслуживанием пользователей. По сути, это разновидность атаки <a href="https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html">Denial of Service (DoS)</a>. Модуль <a href="https://www.npmjs.com/package/toobusy-js">toobusy-js</a> позволяет отслеживать цикл событий. Он отслеживает время ответа, и когда оно превышает определённый порог, этот модуль может сигнализировать о том, что сервер слишком занят. В этом случае можно прекратить обработку входящих запросов и отправлять сообщение <code>503 Server Too Busy</code>, чтобы приложение оставалось отзывчивым. Пример использования модуля <a href="https://www.npmjs.com/package/toobusy-js">toobusy-js</a> показан здесь:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">toobusy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;toobusy-js&#39;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">express</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">express</span><span class="p">();</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">toobusy</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// log if you see necessary</span>
+<span class="w">        </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">503</span><span class="p">).</span><span class="nx">send</span><span class="p">(</span><span class="s2">&quot;Server Too Busy&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">next</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div>
+<h4 id="-">Принимайте меры против брутфорс-атак<a class="headerlink" href="#-" title="Permanent link">&para;</a></h4>
+<p><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#protect-against-automated-attacks">Брутфорс</a> — распространённая угроза для всех веб-приложений. Злоумышленники могут использовать брутфорс как атаку на угадывание пароля для получения паролей учётных записей. Поэтому разработчики приложений должны принимать меры против брутфорс-атак, особенно на страницах входа. В Node.js для этой цели доступно несколько модулей. <a href="https://libraries.io/npm/express-bouncer">Express-bouncer</a>, <a href="https://libraries.io/npm/express-brute">express-brute</a> и <a href="https://libraries.io/npm/rate-limiter">rate-limiter</a> — лишь некоторые примеры. В зависимости от ваших потребностей и требований следует выбрать один или несколько из этих модулей и использовать их соответствующим образом. Модули <a href="https://libraries.io/npm/express-bouncer">express-bouncer</a> и <a href="https://libraries.io/npm/express-brute">express-brute</a> работают аналогично. Они увеличивают задержку для каждого неудачного запроса и могут быть настроены для конкретного маршрута. Эти модули можно использовать следующим образом:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">bouncer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-bouncer&#39;</span><span class="p">);</span>
+<span class="nx">bouncer</span><span class="p">.</span><span class="nx">whitelist</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">);</span><span class="w"> </span><span class="c1">// allow an IP address</span>
+<span class="c1">// give a custom error message</span>
+<span class="nx">bouncer</span><span class="p">.</span><span class="nx">blocked</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="p">,</span><span class="w"> </span><span class="nx">remaining</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">429</span><span class="p">).</span><span class="nx">send</span><span class="p">(</span><span class="s2">&quot;Too many requests have been made. Please wait &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">remaining</span><span class="o">/</span><span class="mf">1000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot; seconds.&quot;</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="c1">// route to protect</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">bouncer</span><span class="p">.</span><span class="nx">block</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">LoginFailed</span><span class="p">){</span><span class="w">  </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">bouncer</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="w"> </span><span class="nx">req</span><span class="w"> </span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">ExpressBrute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-brute&#39;</span><span class="p">);</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">store</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">ExpressBrute</span><span class="p">.</span><span class="nx">MemoryStore</span><span class="p">();</span><span class="w"> </span><span class="c1">// stores state locally, don&#39;t use this in production</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bruteforce</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">ExpressBrute</span><span class="p">(</span><span class="nx">store</span><span class="p">);</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/auth&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">bruteforce</span><span class="p">.</span><span class="nx">prevent</span><span class="p">,</span><span class="w"> </span><span class="c1">// error 429 if we hit this route too often</span>
+<span class="w">    </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Success!&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>Помимо <a href="https://libraries.io/npm/express-bouncer">express-bouncer</a> и <a href="https://libraries.io/npm/express-brute">express-brute</a>, модуль <a href="https://libraries.io/npm/rate-limiter">rate-limiter</a> также может помочь в предотвращении брутфорс-атак. Он позволяет указать, сколько запросов может сделать конкретный IP-адрес за определённый период времени.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">limiter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">RateLimiter</span><span class="p">();</span>
+<span class="nx">limiter</span><span class="p">.</span><span class="nx">addLimit</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;GET&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">500</span><span class="p">);</span><span class="w"> </span><span class="c1">// login page can be requested 5 times at max within 500 seconds</span>
+</code></pre></div>
+<p><a href="https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html#captcha">Использование CAPTCHA</a> — ещё один распространённый механизм защиты от брутфорса. Для Node.js разработаны соответствующие модули. Широко используемый в приложениях Node.js модуль — <a href="https://www.npmjs.com/package/svg-captcha">svg-captcha</a>. Его можно использовать следующим образом:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">svgCaptcha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;svg-captcha&#39;</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/captcha&#39;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">captcha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">svgCaptcha</span><span class="p">.</span><span class="nx">create</span><span class="p">();</span>
+<span class="w">    </span><span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">captcha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">captcha</span><span class="p">.</span><span class="nx">text</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">200</span><span class="p">).</span><span class="nx">send</span><span class="p">(</span><span class="nx">captcha</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#account-lockout">Блокировка учётной записи</a> — рекомендуемое решение для защиты легитимных пользователей от злоумышленников. Блокировка учётной записи возможна с помощью многих модулей, например <a href="https://www.npmjs.com/package/mongoose">mongoose</a>. Вы можете обратиться к <a href="http://devsmash.com/blog/implementing-max-login-attempts-with-mongoose">этой записи в блоге</a>, чтобы узнать, как реализована блокировка учётной записи в mongoose.</p>
+<h4 id="anti-csrf">Используйте Anti-CSRF токены<a class="headerlink" href="#anti-csrf" title="Permanent link">&para;</a></h4>
+<p><a href="https://owasp.org/www-community/attacks/csrf">Межсайтовая подделка запросов (CSRF)</a> направлена на выполнение авторизованных действий от имени аутентифицированного пользователя без его ведома. CSRF-атаки, как правило, выполняются для запросов, изменяющих состояние — например, изменение пароля, добавление пользователей или размещение заказов. <a href="https://www.npmjs.com/package/csurf">Csurf</a> — это middleware для express, которое использовалось для защиты от CSRF-атак. Однако недавно в этом пакете была обнаружена уязвимость безопасности. Команда разработчиков не устранила обнаруженную уязвимость и пометила пакет как устаревший (deprecated), рекомендуя использовать любой другой пакет для защиты от CSRF.</p>
+<p>Для получения подробной информации об атаках межсайтовой подделки запросов (CSRF) и методах защиты от них обратитесь к <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html">Cross-Site Request Forgery Prevention</a>.</p>
+<h4 id="_11">Удаляйте ненужные маршруты<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h4>
+<p>Веб-приложение не должно содержать страниц, которые не используются пользователями, поскольку это может увеличить поверхность атаки. Поэтому все неиспользуемые API-маршруты должны быть отключены в приложениях Node.js. Особенно это актуально для таких фреймворков, как <a href="https://sailsjs.com">Sails</a> и <a href="https://feathersjs.com">Feathers</a>, поскольку они автоматически генерируют конечные точки REST API. Например, в <a href="https://sailsjs.com">Sails</a>, если URL не совпадает с пользовательским маршрутом, он может совпасть с одним из автоматических маршрутов и всё равно сгенерировать ответ. Это может приводить к последствиям от утечки информации до выполнения произвольных команд. Поэтому перед использованием таких фреймворков и модулей важно знать, какие маршруты они генерируют автоматически, и удалять или отключать эти маршруты.</p>
+<h4 id="http-">Предотвращайте загрязнение HTTP-параметров<a class="headerlink" href="#http-" title="Permanent link">&para;</a></h4>
+<p><a href="https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/07-Input_Validation_Testing/04-Testing_for_HTTP_Parameter_Pollution.html">HTTP Parameter Pollution (HPP)</a> — атака, при которой злоумышленники отправляют несколько HTTP-параметров с одинаковым именем, что приводит к непредсказуемой интерпретации их приложением. Когда отправляется несколько значений параметра, Express помещает их в массив. Для решения этой проблемы можно использовать модуль <a href="https://www.npmjs.com/package/hpp">hpp</a>. При использовании этот модуль будет игнорировать все значения, переданные для параметра в <code>req.query</code> и/или <code>req.body</code>, и выбирать только последнее переданное значение параметра. Использование:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">hpp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;hpp&#39;</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">hpp</span><span class="p">());</span>
+</code></pre></div>
+<h4 id="_12">Возвращайте только необходимые данные<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h4>
+<p>Информация о пользователях приложения является одной из наиболее критичных сведений о приложении. Таблицы пользователей обычно включают поля: ID, имя пользователя, полное имя, адрес электронной почты, дату рождения, пароль и в некоторых случаях номера социального страхования. Поэтому при запросе и использовании объектов пользователей необходимо возвращать только нужные поля, поскольку в противном случае может произойти раскрытие персональных данных. То же самое относится и к другим объектам, хранящимся в базе данных. Если вам нужно только определённое поле объекта, следует возвращать только конкретные требуемые поля. Например, можно использовать функцию, подобную следующей, когда нужно получить информацию о пользователе. Таким образом можно возвращать только те поля, которые нужны для конкретной операции. Иными словами, если нужно только перечислить имена пользователей, не следует возвращать их адреса электронной почты или номера кредитных карт вместе с именами.</p>
+<div class="highlight"><pre><span></span><code><span class="nx">exports</span><span class="p">.</span><span class="nx">sanitizeUser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">user</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">username</span><span class="o">:</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">fullName</span><span class="o">:</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">fullName</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div>
+<h4 id="_13">Используйте дескрипторы свойств объектов<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h4>
+<p>Свойства объектов имеют три скрытых атрибута: <code>writable</code> (если false, значение свойства не может быть изменено), <code>enumerable</code> (если false, свойство не может использоваться в циклах for) и <code>configurable</code> (если false, свойство не может быть удалено). При определении свойства объекта через присваивание эти три скрытых атрибута по умолчанию устанавливаются в true. Эти свойства можно задать следующим образом:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">writable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">enumerable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">configurable</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Кроме того, существуют специальные функции для атрибутов объектов. <code>Object.preventExtensions()</code> предотвращает добавление новых свойств к объекту.</p>
+<h4 id="_14">Используйте списки управления доступом<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h4>
+<p>Авторизация предотвращает выполнение пользователями действий, выходящих за рамки их разрешений. Для этого пользователи и их роли должны быть определены с учётом принципа наименьших привилегий. Каждая роль пользователя должна иметь доступ только к тем ресурсам, которые ей необходимы. Для приложений Node.js можно использовать модуль <a href="https://www.npmjs.com/package/acl">acl</a>, который реализует ACL (список управления доступом). С помощью этого модуля можно создавать роли и назначать пользователей этим ролям.</p>
+<h3 id="permissions">Разрешения (Permissions)<a class="headerlink" href="#permissions" title="Permanent link">&para;</a></h3>
+<p>Начиная с Node.js v20, доступна модель разрешений (Permission Model) для ограничения привилегий приложения. Начиная с Node.js v23.5.0, модель считается стабильной и может быть включена с помощью флага <code>--permission</code> (более ранние версии требуют <code>--experimental-permission</code>).</p>
+<h4 id="_15">Использование<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>node<span class="w"> </span>--permission<span class="w"> </span><span class="o">[</span>--allow-&lt;type&gt;<span class="o">=</span>...<span class="o">]</span><span class="w"> </span>app.js
+</code></pre></div>
+<h4 id="_16">Примеры<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h4>
+<p>Используйте только <code>--permission</code>, чтобы по умолчанию ограничить все разрешения:</p>
+<div class="highlight"><pre><span></span><code>node<span class="w"> </span>--permission<span class="w"> </span>index.js
+</code></pre></div>
+<p>Используйте <code>--allow‑fs‑read</code>, чтобы указать, какие файлы или каталоги Node.js имеет право читать. Это особенно полезно для предотвращения уязвимостей Local File Inclusion (LFI):</p>
+<div class="highlight"><pre><span></span><code>node<span class="w"> </span>--permission<span class="w"> </span>--allow-fs-read<span class="o">=</span>/uploads/<span class="w"> </span>index.js
+</code></pre></div>
+<p>Используйте <code>--allow-fs-write</code>, чтобы указать, куда Node.js имеет право записывать файлы:</p>
+<div class="highlight"><pre><span></span><code>node<span class="w"> </span>--permission<span class="w"> </span>--allow-fs-write<span class="o">=</span>/uploads/<span class="w"> </span>index.js
+</code></pre></div>
+<p>Несанкционированный доступ вызывает ошибку времени выполнения:</p>
+<div class="highlight"><pre><span></span><code>Error: Access to this API has been restricted
+code: &#39;ERR_ACCESS_DENIED&#39;
+permission: &#39;FileSystemRead&#39;
+resource: &#39;/path/to/file&#39;
+</code></pre></div>
+<p>Другие флаги:</p>
+<ul>
+<li><code>--allow-child-process</code> — разрешает использование API <code>child_process</code></li>
+<li><code>--allow-worker</code> — разрешает использование API <code>worker_threads</code></li>
+<li><code>--allow-addons</code> — разрешает загрузку нативных аддонов</li>
+<li><code>--allow-wasi</code> — разрешает использование модулей WASI</li>
+</ul>
+<p><strong>Важное замечание:</strong> Символические ссылки следуются даже в том случае, если они указывают за пределы разрешённых путей. Это означает, что относительные символические ссылки могут обходить ограничения и предоставлять непреднамеренный доступ. Для обеспечения безопасности убедитесь, что ни один из разрешённых путей не содержит относительных символических ссылок при использовании модели разрешений.</p>
+<p>Подробнее см. в <a href="https://nodejs.org/api/permissions.html">официальной документации</a>.</p>
+<h3 id="error-exception-handling">Error &amp; Exception Handling<a class="headerlink" href="#error-exception-handling" title="Permanent link">&para;</a></h3>
+<h4 id="uncaughtexception">Обрабатывайте uncaughtException<a class="headerlink" href="#uncaughtexception" title="Permanent link">&para;</a></h4>
+<p>Поведение Node.js по умолчанию при необработанных исключениях — вывод текущего стека вызовов с последующим завершением потока. Однако Node.js позволяет настраивать это поведение. Он предоставляет глобальный объект <code>process</code>, доступный всем приложениям Node.js. Это объект EventEmitter, и в случае необработанного исключения генерируется событие <code>uncaughtException</code>, которое поступает в основной цикл событий. Для задания пользовательского поведения при необработанных исключениях можно привязаться к этому событию. Однако возобновление работы приложения после такого необработанного исключения может привести к дальнейшим проблемам. Поэтому, чтобы не пропустить ни одного необработанного исключения, следует привязаться к событию <code>uncaughtException</code> и освободить все выделенные ресурсы — дескрипторы файлов, хэндлы и тому подобное — перед завершением процесса. Возобновление работы приложения настоятельно не рекомендуется, поскольку приложение будет находиться в неизвестном состоянии. Важно отметить, что при отображении сообщений об ошибках пользователю в случае необработанного исключения не следует раскрывать подробную информацию, например трассировку стека. Вместо этого пользователям следует показывать пользовательские сообщения об ошибках, чтобы не допустить утечки информации.</p>
+<div class="highlight"><pre><span></span><code><span class="nx">process</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;uncaughtException&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// clean up allocated resources</span>
+<span class="w">    </span><span class="c1">// log necessary error details to log files</span>
+<span class="w">    </span><span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">();</span><span class="w"> </span><span class="c1">// exit the process to avoid unknown state</span>
+<span class="p">});</span>
+</code></pre></div>
+<h4 id="eventemitter">Прослушивайте ошибки при использовании EventEmitter<a class="headerlink" href="#eventemitter" title="Permanent link">&para;</a></h4>
+<p>При использовании EventEmitter ошибки могут возникать в любом месте цепочки событий. Как правило, если в объекте EventEmitter возникает ошибка, вызывается событие <code>error</code>, аргументом которого является объект Error. Однако если к этому событию <code>error</code> не привязаны слушатели, объект Error, переданный в качестве аргумента, выбрасывается и становится необработанным исключением. Иными словами, если не обрабатывать ошибки внутри объекта EventEmitter должным образом, эти необработанные ошибки могут привести к аварийному завершению вашего приложения. Поэтому при использовании объектов EventEmitter всегда следует прослушивать события <code>error</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">events</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">myEventEmitter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(){</span>
+<span class="w">    </span><span class="nx">events</span><span class="p">.</span><span class="nx">EventEmitter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">require</span><span class="p">(</span><span class="s1">&#39;util&#39;</span><span class="p">).</span><span class="nx">inherits</span><span class="p">(</span><span class="nx">myEventEmitter</span><span class="p">,</span><span class="w"> </span><span class="nx">events</span><span class="p">.</span><span class="nx">EventEmitter</span><span class="p">);</span>
+<span class="nx">myEventEmitter</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">someFunction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">param1</span><span class="p">,</span><span class="w"> </span><span class="nx">param2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">//in case of an error</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">emitter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">myEventEmitter</span><span class="p">();</span>
+<span class="nx">emitter</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+<span class="w">    </span><span class="c1">//Perform necessary error handling here</span>
+<span class="p">});</span>
+</code></pre></div>
+<h4 id="_17">Обрабатывайте ошибки в асинхронных вызовах<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h4>
+<p>Ошибки, возникающие в асинхронных callback-функциях, легко пропустить. Поэтому в качестве общего принципа первым аргументом асинхронных вызовов должен быть объект Error. Кроме того, маршруты express обрабатывают ошибки самостоятельно, но следует всегда помнить, что ошибки, возникающие в асинхронных вызовах внутри маршрутов express, не обрабатываются, если объект Error не передаётся первым аргументом.</p>
+<p>Ошибки в этих callback-функциях могут передаваться по цепочке столько раз, сколько необходимо. Каждый callback, которому была передана ошибка, может проигнорировать её, обработать или передать дальше.</p>
+<h3 id="server-security">Server Security<a class="headerlink" href="#server-security" title="Permanent link">&para;</a></h3>
+<h4 id="cookie">Устанавливайте флаги cookie надлежащим образом<a class="headerlink" href="#cookie" title="Permanent link">&para;</a></h4>
+<p>Как правило, информация о сессии передаётся с помощью cookie в веб-приложениях. Однако ненадлежащее использование HTTP cookie может сделать приложение уязвимым к различным атакам на управление сессиями. Для каждого cookie можно установить определённые флаги, чтобы предотвратить подобные атаки. Флаги <code>httpOnly</code>, <code>Secure</code> и <code>SameSite</code> очень важны для сессионных cookie. Флаг <code>httpOnly</code> запрещает доступ к cookie со стороны клиентского JavaScript. Это эффективная контрмера против XSS-атак. Флаг <code>Secure</code> позволяет cookie передаваться только при использовании HTTPS. Флаг <code>SameSite</code> может предотвратить отправку cookie в межсайтовых запросах, что помогает защититься от атак Cross-Site Request Forgery (CSRF). Помимо этих флагов, существуют и другие — domain, path и expires. Их правильная настройка рекомендуется, однако они в основном связаны с областью видимости cookie, а не с безопасностью cookie. Пример использования этих флагов приведён в следующем примере:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">session</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-session&#39;</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">session</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">secret</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;your-secret-key&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;cookieName&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">cookie</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">secure</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">httpOnly</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;/user&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">sameSite</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span>
+<span class="p">}));</span>
+</code></pre></div>
+<h4 id="_18">Используйте соответствующие заголовки безопасности<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h4>
+<p>Существует несколько <a href="https://owasp.org/www-project-secure-headers/">заголовков безопасности HTTP</a>, которые помогают предотвратить некоторые распространённые векторы атак.
+Пакет <a href="https://www.npmjs.com/package/helmet">helmet</a> может помочь установить эти заголовки:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">express</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;express&quot;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">helmet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;helmet&quot;</span><span class="p">);</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">express</span><span class="p">();</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">helmet</span><span class="p">());</span><span class="w"> </span><span class="c1">// Add various HTTP headers</span>
+</code></pre></div>
+<p>Функция верхнего уровня <code>helmet</code> является обёрткой вокруг 14 меньших middleware.
+Ниже приведён список заголовков безопасности HTTP, поддерживаемых middleware <code>helmet</code>:</p>
+<ul>
+<li><strong><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">Strict-Transport-Security</a></strong>: <a href="https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html">HTTP Strict Transport Security (HSTS)</a> указывает браузерам, что доступ к приложению возможен только через HTTPS-соединения. Для использования в приложении добавьте следующий код:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">helmet</span><span class="p">.</span><span class="nx">hsts</span><span class="p">());</span><span class="w"> </span><span class="c1">// default configuration</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span>
+<span class="w">  </span><span class="nx">helmet</span><span class="p">.</span><span class="nx">hsts</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">maxAge</span><span class="o">:</span><span class="w"> </span><span class="mf">123456</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">includeSubDomains</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">);</span><span class="w"> </span><span class="c1">// custom configuration</span>
+</code></pre></div>
+<ul>
+<li><strong><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options">X-Frame-Options</a>:</strong> определяет, может ли страница загружаться через элемент <code>&lt;frame&gt;</code> или <code>&lt;iframe&gt;</code>. Разрешение встраивания страницы в фрейм может привести к атакам <a href="https://owasp.org/www-community/attacks/Clickjacking">Clickjacking</a>.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">helmet</span><span class="p">.</span><span class="nx">frameguard</span><span class="p">());</span><span class="w"> </span><span class="c1">// default behavior (SAMEORIGIN)</span>
+</code></pre></div>
+<ul>
+<li><strong><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">X-XSS-Protection</a>:</strong> останавливает загрузку страниц при обнаружении отражённых атак межсайтового скриптинга (XSS). Этот заголовок устарел в современных браузерах, а его использование может привести к дополнительным проблемам безопасности на стороне клиента. Поэтому рекомендуется установить заголовок <strong>X-XSS-Protection: 0</strong>, чтобы отключить XSS Auditor и не позволять ему использовать поведение браузера по умолчанию при обработке ответа.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">helmet</span><span class="p">.</span><span class="nx">xssFilter</span><span class="p">());</span><span class="w"> </span><span class="c1">// sets &quot;X-XSS-Protection: 0&quot;</span>
+</code></pre></div>
+<p>Для современных браузеров рекомендуется внедрить надёжную политику <strong>Content-Security-Policy</strong>, как подробно описано в следующем разделе.</p>
+<ul>
+<li><strong><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy">Content-Security-Policy</a>:</strong> Content Security Policy разработана для снижения риска таких атак, как <a href="https://owasp.org/www-community/attacks/xss/">Cross-Site Scripting (XSS)</a> и <a href="https://owasp.org/www-community/attacks/Clickjacking">Clickjacking</a>. Она позволяет загружать контент только из списка источников, который вы определяете. В ней есть несколько директив, каждая из которых запрещает загрузку определённого типа контента. Подробное описание каждой директивы и порядок её использования можно найти в <a href="https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html">Content Security Policy Cheat Sheet</a>. Эти настройки можно реализовать в приложении следующим образом:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span>
+<span class="w">  </span><span class="nx">helmet</span><span class="p">.</span><span class="nx">contentSecurityPolicy</span><span class="p">({</span>
+<span class="w">    </span><span class="c1">// the following directives will be merged into the default helmet CSP policy</span>
+<span class="w">    </span><span class="nx">directives</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">defaultSrc</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&#39;self&#39;&quot;</span><span class="p">],</span><span class="w">  </span><span class="c1">// default value for all directives that are absent</span>
+<span class="w">      </span><span class="nx">scriptSrc</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&#39;self&#39;&quot;</span><span class="p">],</span><span class="w">   </span><span class="c1">// helps prevent XSS attacks</span>
+<span class="w">      </span><span class="nx">frameAncestors</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&#39;none&#39;&quot;</span><span class="p">],</span><span class="w">  </span><span class="c1">// helps prevent Clickjacking attacks</span>
+<span class="w">      </span><span class="nx">imgSrc</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&#39;self&#39;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&#39;http://imgexample.com&#39;&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nx">styleSrc</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&#39;none&#39;&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>Поскольку это middleware выполняет очень мало проверок, рекомендуется использовать инструменты проверки CSP, такие как <a href="https://csp-evaluator.withgoogle.com/">CSP Evaluator</a>.</p>
+<ul>
+<li><strong><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">X-Content-Type-Options</a>:</strong> Даже если сервер устанавливает правильный заголовок <code>Content-Type</code> в ответе, браузеры могут попытаться определить MIME-тип запрошенного ресурса самостоятельно. Этот заголовок является способом остановить такое поведение и указать браузеру не изменять MIME-типы, указанные в заголовке <code>Content-Type</code>. Его можно настроить следующим образом:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">helmet</span><span class="p">.</span><span class="nx">noSniff</span><span class="p">());</span>
+</code></pre></div>
+<ul>
+<li><strong><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">Cache-Control</a> и <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma">Pragma</a>:</strong> Заголовок Cache-Control можно использовать для предотвращения кэширования браузерами определённых ответов. Это следует делать для страниц, содержащих конфиденциальную информацию о пользователе или приложении. Однако отключение кэширования для страниц, не содержащих конфиденциальной информации, может существенно снизить производительность приложения. Поэтому кэширование следует отключать только для страниц, возвращающих конфиденциальную информацию. Соответствующие параметры и заголовки кэширования можно легко задать с помощью пакета <a href="https://www.npmjs.com/package/nocache">nocache</a>:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">nocache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;nocache&quot;</span><span class="p">);</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">nocache</span><span class="p">());</span>
+</code></pre></div>
+<p>Приведённый выше код соответствующим образом устанавливает заголовки Cache-Control, Surrogate-Control, Pragma и Expires.</p>
+<ul>
+<li><strong>X-Download-Options:</strong> Этот заголовок предотвращает выполнение загруженных файлов в контексте сайта в Internet Explorer. Это достигается с помощью директивы noopen. Это можно сделать с помощью следующего фрагмента кода:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">helmet</span><span class="p">.</span><span class="nx">ieNoOpen</span><span class="p">());</span>
+</code></pre></div>
+<ul>
+<li><strong>X-Powered-By:</strong> Заголовок X-Powered-By используется для информирования о том, какая технология используется на стороне сервера. Это излишний заголовок, приводящий к утечке информации, поэтому его следует удалить из вашего приложения. Для этого можно использовать <code>hidePoweredBy</code> следующим образом:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">helmet</span><span class="p">.</span><span class="nx">hidePoweredBy</span><span class="p">());</span>
+</code></pre></div>
+<p>Также можно указать в этом заголовке ложные сведения об используемых технологиях. Например, даже если ваше приложение не использует PHP, можно установить заголовок X-Powered-By таким образом, чтобы казалось, что оно его использует.</p>
+<div class="highlight"><pre><span></span><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">helmet</span><span class="p">.</span><span class="nx">hidePoweredBy</span><span class="p">({</span><span class="w"> </span><span class="nx">setTo</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;PHP 4.2.0&#39;</span><span class="w"> </span><span class="p">}));</span>
+</code></pre></div>
+<h3 id="platform-security">Platform Security<a class="headerlink" href="#platform-security" title="Permanent link">&para;</a></h3>
+<h4 id="_19">Поддерживайте пакеты в актуальном состоянии<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h4>
+<p>Безопасность вашего приложения напрямую зависит от того, насколько безопасны сторонние пакеты, используемые в приложении. Поэтому важно поддерживать пакеты в актуальном состоянии. Следует отметить, что <a href="https://owasp.org/www-project-top-ten/OWASP_Top_Ten_2017/Top_10-2017_A9-Using_Components_with_Known_Vulnerabilities">Использование компонентов с известными уязвимостями</a> по-прежнему входит в OWASP Top 10. Можно использовать <a href="https://jeremylong.github.io/DependencyCheck/analyzers/nodejs.html">OWASP Dependency-Check</a>, чтобы проверить, имеет ли какой-либо из пакетов, используемых в проекте, известную уязвимость. Также можно использовать <a href="https://github.com/retirejs/retire.js/">Retire.js</a> для проверки JavaScript-библиотек с известными уязвимостями.</p>
+<p>Начиная с версии 6, <code>npm</code> представил команду <code>audit</code>, которая предупреждает об уязвимых пакетах:</p>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>audit
+</code></pre></div>
+<p><code>npm</code> также представил простой способ обновления затронутых пакетов:</p>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>audit<span class="w"> </span>fix
+</code></pre></div>
+<p>Существует ещё несколько инструментов для проверки зависимостей. Более полный список можно найти в <a href="https://cheatsheetseries.owasp.org/cheatsheets/Vulnerable_Dependency_Management_Cheat_Sheet.html#tools">Vulnerable Dependency Management CS</a>.</p>
+<h4 id="_20">Не используйте опасные функции<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h4>
+<p>Существуют некоторые функции JavaScript, которые являются опасными и должны использоваться только там, где это необходимо или неизбежно. Первый пример — функция <code>eval()</code>. Эта функция принимает строковый аргумент и выполняет его как любой другой исходный код JavaScript. В сочетании с пользовательским вводом это поведение по своей сути приводит к уязвимости удалённого выполнения кода. Аналогично, вызовы <code>child_process.exec</code> также очень опасны. Эта функция действует как интерпретатор bash и передаёт свои аргументы в /bin/sh. Внедряя данные в эту функцию, злоумышленники могут выполнять произвольные команды на сервере.</p>
+<p>В дополнение к этим функциям, некоторые модули требуют особой осторожности при использовании. Например, модуль <code>fs</code> обрабатывает операции с файловой системой. Однако если в этот модуль передаётся ненадлежащим образом очищенный пользовательский ввод, ваше приложение может стать уязвимым к атакам включения файлов и обхода каталогов. Аналогично, модуль <code>vm</code> предоставляет API для компиляции и запуска кода в контекстах V8 Virtual Machine. Поскольку по своей природе он может выполнять опасные действия, его следует использовать внутри песочницы.</p>
+<p>Нельзя однозначно утверждать, что эти функции и модули вообще не следует использовать, однако их следует применять осторожно, особенно при работе с пользовательским вводом. Кроме того, существуют <a href="https://github.com/wisec/domxsswiki/wiki/Direct-Execution-Sinks">другие функции</a>, которые могут сделать ваше приложение уязвимым.</p>
+<h4 id="_21">Избегайте «злых» регулярных выражений<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h4>
+<p>Regular Expression Denial of Service (ReDoS) — это атака типа «отказ в обслуживании», которая эксплуатирует тот факт, что большинство реализаций регулярных выражений могут попадать в крайние ситуации, приводящие к их работе очень медленно (в зависимости от размера входных данных — экспоненциально). Затем злоумышленник может заставить программу, использующую регулярное выражение, попасть в эти крайние ситуации, и та будет зависать на очень долгое время.</p>
+<p><a href="https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS">Regular Expression Denial of Service (ReDoS)</a> — это тип атаки «отказ в обслуживании» с использованием регулярных выражений. Некоторые реализации регулярных выражений (Regex) вызывают крайние ситуации, которые делают приложение очень медленным. Злоумышленники могут использовать такие реализации regex, чтобы заставить приложение попасть в эти крайние ситуации и зависать на длительное время. Такие регулярные выражения называются «злыми», если приложение может зависнуть на специально созданном вводе. Как правило, эти регулярные выражения эксплуатируются с помощью группировки с повторением и чередования с перекрывающимися вариантами. Например, следующее регулярное выражение <code>^(([a-z])+.)+[A-Z]([a-z])+$</code> может использоваться для указания имён классов Java. Однако очень длинная строка (aaaa...aaaaAaaaaa...aaaa) также может соответствовать этому регулярному выражению. Существуют инструменты для проверки того, может ли регулярное выражение потенциально вызвать отказ в обслуживании. Один из примеров — <a href="https://github.com/davisjam/vuln-regex-detector">vuln-regex-detector</a>.</p>
+<h4 id="_22">Запускайте линтеры безопасности<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h4>
+<p>При разработке кода помнить все советы по безопасности действительно сложно. Также практически невозможно обязать всех членов команды соблюдать эти правила. Именно для этого существуют инструменты Static Analysis Security Testing (SAST). Эти инструменты не выполняют ваш код, а просто ищут паттерны, которые могут содержать риски безопасности. Поскольку JavaScript является динамическим и слабо типизированным языком, инструменты линтинга действительно необходимы в жизненном цикле разработки программного обеспечения. Правила линтинга следует периодически пересматривать, а результаты — проверять. Ещё одним преимуществом этих инструментов является возможность добавлять пользовательские правила для паттернов, которые вы считаете опасными. <a href="https://eslint.org/">ESLint</a> и <a href="http://jshint.com/">JSHint</a> — широко используемые инструменты SAST для линтинга JavaScript.</p>
+<h4 id="_23">Используйте строгий режим<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h4>
+<p>В JavaScript есть ряд небезопасных и опасных устаревших возможностей, которые не следует использовать. Для устранения этих возможностей ES5 включил строгий режим для разработчиков. В этом режиме ошибки, которые ранее были молчаливыми, теперь выбрасываются. Он также помогает JavaScript-движкам выполнять оптимизации. В строгом режиме ранее принимаемый некорректный синтаксис приводит к реальным ошибкам. Из-за этих улучшений всегда следует использовать строгий режим в своём приложении. Чтобы включить строгий режим, достаточно написать <code>"use strict";</code> в начале кода.</p>
+<p>Следующий код сгенерирует <code>ReferenceError: Can't find variable: y</code> в консоли, что не будет отображаться без использования строгого режима:</p>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
+<span class="nx">func</span><span class="p">();</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14</span><span class="p">;</span><span class="w">   </span><span class="c1">// This will cause an error (y is not defined)</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="_24">Придерживайтесь общих принципов безопасности приложений<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h4>
+<p>Данный список в основном сосредоточен на проблемах, характерных для приложений Node.js, с рекомендациями и примерами. В дополнение к этим существуют общие <a href="https://wiki.owasp.org/index.php/Security_by_Design_Principles">принципы безопасного проектирования</a>, применимые к веб-приложениям независимо от используемых технологий. Эти принципы также следует учитывать при разработке приложений. Для получения дополнительной информации об уязвимостях веб-приложений и методах защиты от них всегда можно обратиться к <a href="https://cheatsheetseries.owasp.org/">OWASP Cheat Sheet Series</a>.</p>
+<h2 id="nodejs">Дополнительные ресурсы по безопасности Node.js<a class="headerlink" href="#nodejs" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/lirantal/awesome-nodejs-security">Awesome Node.js Security resources</a></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

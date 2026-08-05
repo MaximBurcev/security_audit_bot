@@ -1,0 +1,3535 @@
+---
+redirect_from: "/cheatsheets/Authorization_Testing_Automation.html"
+---
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Testing_Automation_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="Authorization_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Automotive_Security.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Authorization Testing Automation - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Authorization Testing Automation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контекст
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Цель
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предложение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Предложение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подготовка к автоматизации матрицы авторизации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Создание сводного файла матрицы авторизации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализация интеграционного теста
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отображение матрицы авторизации для аудита / проверки
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Исходный код прототипа
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Контекст
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Цель
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Предложение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Предложение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подготовка к автоматизации матрицы авторизации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Создание сводного файла матрицы авторизации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализация интеграционного теста
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Отображение матрицы авторизации для аудита / проверки
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Исходный код прототипа
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="_1">Шпаргалка по автоматизации тестирования авторизации<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">Введение<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><strong>При реализации мер защиты приложения одной из наиболее важных частей процесса является определение и внедрение авторизаций.</strong> Несмотря на все проверки и аудиты безопасности, проводимые в процессе создания, большинство проблем с авторизацией возникают из-за того, что при обновлениях добавляются или изменяются функции без оценки их влияния на авторизации приложения (как правило, по причине нехватки ресурсов или времени).</p>
+<p>Для решения этой проблемы рекомендуется разработчикам автоматизировать оценку авторизаций и выполнять тестирование при создании новых релизов. Это позволяет команде знать, не будут ли изменения в приложении конфликтовать с определением и/или реализацией авторизации.</p>
+<h2 id="_3">Контекст<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Авторизация обычно содержит два элемента (также называемых измерениями): <strong>Функция</strong> и <strong>Логическая роль</strong>, которая к ней обращается. Иногда добавляется третье измерение — <strong>Данные</strong> — для определения доступа, включающего фильтрацию на уровне бизнес-данных.</p>
+<p>Как правило, оба измерения каждой авторизации перечисляются в таблице, называемой <strong>матрицей авторизации</strong>. При тестировании авторизаций логические роли иногда называются <strong>точкой зрения (Point Of View)</strong>.</p>
+<h2 id="_4">Цель<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>Данная шпаргалка предназначена для помощи в разработке собственных подходов к автоматизации тестирования авторизаций в матрице авторизации. Поскольку разработчикам потребуется разработать собственный подход к автоматизации, <strong>данная шпаргалка демонстрирует один возможный подход к автоматизации тестирования авторизаций для приложения, предоставляющего REST-сервисы.</strong></p>
+<h2 id="_5">Предложение<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h3 id="_6">Подготовка к автоматизации матрицы авторизации<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>Прежде чем начать автоматизацию тестирования матрицы авторизации, необходимо выполнить следующее:</p>
+<ol>
+<li>
+<p><strong>Формализовать матрицу авторизации в сводном файле, что позволит:</strong></p>
+<ol>
+<li>Легко обрабатывать матрицу программой.</li>
+<li>Предоставить человеку возможность читать и обновлять её при необходимости отслеживания комбинаций авторизаций.</li>
+<li>Настроить иерархию авторизаций, что позволит легко создавать различные комбинации.</li>
+<li>Создать максимально возможную независимость от технологии и дизайна, используемых при реализации приложений.</li>
+</ol>
+</li>
+<li>
+<p><strong>Создать набор интеграционных тестов, полностью использующих сводный файл матрицы авторизации в качестве источника входных данных, что позволит оценивать различные комбинации со следующими преимуществами:</strong></p>
+<ol>
+<li>Минимальный объём поддержки при обновлении сводного файла матрицы авторизации.</li>
+<li>Чёткое указание при провальном тесте исходной комбинации авторизации, не соответствующей матрице авторизации.</li>
+</ol>
+</li>
+</ol>
+<h3 id="_7">Создание сводного файла матрицы авторизации<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p><strong>В данном примере используется формат XML для формализации матрицы авторизации.</strong></p>
+<p>Эта XML-структура содержит три основных раздела (или узла):</p>
+<ul>
+<li>Узел <strong>roles</strong>: Описывает возможные логические роли, используемые в системе, содержит список ролей и объясняет различные роли (уровни авторизации).</li>
+<li>Узел <strong>services</strong>: Содержит список доступных сервисов, предоставляемых системой, описание этих сервисов и определение связанных логических ролей, которые могут их вызывать.</li>
+<li>Узел <strong>services-testing</strong>: Содержит тестовые данные для каждого сервиса, если сервис использует входные данные, отличные от URL или пути.</li>
+</ul>
+<p><strong>Этот пример демонстрирует, как авторизация может быть определена с помощью XML</strong>:</p>
+<blockquote>
+<p>Заполнители (значения в {}) используются для обозначения мест, куда интеграционные тесты должны подставить тестовые значения при необходимости</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!--</span>
+<span class="cm">      Данный файл материализует матрицу авторизации для различных</span>
+<span class="cm">      сервисов, предоставляемых системой:</span>
+
+<span class="cm">      Тесты будут использовать его как источник входных данных для различных тест-кейсов:</span>
+<span class="cm">      1) Определяя легитимный доступ и корректную реализацию</span>
+<span class="cm">      2) Выявляя нелегитимный доступ (проблема определения авторизации</span>
+<span class="cm">      в реализации сервиса)</span>
+
+<span class="cm">      Атрибут &quot;name&quot; используется для уникальной идентификации СЕРВИСА или РОЛИ.</span>
+<span class="cm">  --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;authorization-matrix&gt;</span>
+
+<span class="w">      </span><span class="cm">&lt;!-- Описывает возможные логические роли, используемые в системе; используется здесь для</span>
+<span class="cm">      предоставления списка и объяснения различных ролей (уровни авторизации) --&gt;</span>
+<span class="w">      </span><span class="nt">&lt;roles&gt;</span>
+<span class="w">          </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ANONYMOUS&quot;</span>
+<span class="w">          </span><span class="na">description=</span><span class="s">&quot;Указывает, что авторизация не требуется&quot;</span><span class="nt">/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;BASIC&quot;</span>
+<span class="w">          </span><span class="na">description=</span><span class="s">&quot;Роль для стандартного пользователя (минимальные права доступа, чуть выше анонимного)&quot;</span><span class="nt">/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ADMIN&quot;</span>
+<span class="w">          </span><span class="na">description=</span><span class="s">&quot;Роль для пользователя-администратора (максимальные права доступа)&quot;</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/roles&gt;</span>
+
+<span class="w">      </span><span class="cm">&lt;!-- Список и описание доступных сервисов системы и связанных логических ролей, которые могут их вызывать --&gt;</span>
+<span class="w">      </span><span class="nt">&lt;services&gt;</span>
+<span class="w">          </span><span class="nt">&lt;service</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ReadSingleMessage&quot;</span><span class="w"> </span><span class="na">uri=</span><span class="s">&quot;/{messageId}&quot;</span><span class="w"> </span><span class="na">http-method=</span><span class="s">&quot;GET&quot;</span>
+<span class="w">          </span><span class="na">http-response-code-for-access-allowed=</span><span class="s">&quot;200&quot;</span><span class="w"> </span><span class="na">http-response-code-for-access-denied=</span><span class="s">&quot;403&quot;</span><span class="nt">&gt;</span>
+<span class="w">              </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ANONYMOUS&quot;</span><span class="nt">/&gt;</span>
+<span class="w">              </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;BASIC&quot;</span><span class="nt">/&gt;</span>
+<span class="w">              </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ADMIN&quot;</span><span class="nt">/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/service&gt;</span>
+<span class="w">          </span><span class="nt">&lt;service</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ReadAllMessages&quot;</span><span class="w"> </span><span class="na">uri=</span><span class="s">&quot;/&quot;</span><span class="w"> </span><span class="na">http-method=</span><span class="s">&quot;GET&quot;</span>
+<span class="w">          </span><span class="na">http-response-code-for-access-allowed=</span><span class="s">&quot;200&quot;</span><span class="w"> </span><span class="na">http-response-code-for-access-denied=</span><span class="s">&quot;403&quot;</span><span class="nt">&gt;</span>
+<span class="w">              </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ANONYMOUS&quot;</span><span class="nt">/&gt;</span>
+<span class="w">              </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;BASIC&quot;</span><span class="nt">/&gt;</span>
+<span class="w">              </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ADMIN&quot;</span><span class="nt">/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/service&gt;</span>
+<span class="w">          </span><span class="nt">&lt;service</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;CreateMessage&quot;</span><span class="w"> </span><span class="na">uri=</span><span class="s">&quot;/&quot;</span><span class="w"> </span><span class="na">http-method=</span><span class="s">&quot;PUT&quot;</span>
+<span class="w">          </span><span class="na">http-response-code-for-access-allowed=</span><span class="s">&quot;200&quot;</span><span class="w"> </span><span class="na">http-response-code-for-access-denied=</span><span class="s">&quot;403&quot;</span><span class="nt">&gt;</span>
+<span class="w">              </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;BASIC&quot;</span><span class="nt">/&gt;</span>
+<span class="w">              </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ADMIN&quot;</span><span class="nt">/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/service&gt;</span>
+<span class="w">          </span><span class="nt">&lt;service</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DeleteMessage&quot;</span><span class="w"> </span><span class="na">uri=</span><span class="s">&quot;/{messageId}&quot;</span><span class="w"> </span><span class="na">http-method=</span><span class="s">&quot;DELETE&quot;</span>
+<span class="w">          </span><span class="na">http-response-code-for-access-allowed=</span><span class="s">&quot;200&quot;</span><span class="w"> </span><span class="na">http-response-code-for-access-denied=</span><span class="s">&quot;403&quot;</span><span class="nt">&gt;</span>
+<span class="w">              </span><span class="nt">&lt;role</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ADMIN&quot;</span><span class="nt">/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/service&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/services&gt;</span>
+
+<span class="w">      </span><span class="cm">&lt;!-- Тестовые данные для каждого сервиса при необходимости --&gt;</span>
+<span class="w">      </span><span class="nt">&lt;services-testing&gt;</span>
+<span class="w">          </span><span class="nt">&lt;service</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ReadSingleMessage&quot;</span><span class="nt">&gt;</span>
+<span class="w">              </span><span class="nt">&lt;payload/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/service&gt;</span>
+<span class="w">          </span><span class="nt">&lt;service</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;ReadAllMessages&quot;</span><span class="nt">&gt;</span>
+<span class="w">              </span><span class="nt">&lt;payload/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/service&gt;</span>
+<span class="w">          </span><span class="nt">&lt;service</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;CreateMessage&quot;</span><span class="nt">&gt;</span>
+<span class="w">              </span><span class="nt">&lt;payload</span><span class="w"> </span><span class="na">content-type=</span><span class="s">&quot;application/json&quot;</span><span class="nt">&gt;</span>
+<span class="w">                  </span>{&quot;content&quot;:&quot;test&quot;}
+<span class="w">              </span><span class="nt">&lt;/payload&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/service&gt;</span>
+<span class="w">          </span><span class="nt">&lt;service</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DeleteMessage&quot;</span><span class="nt">&gt;</span>
+<span class="w">              </span><span class="nt">&lt;payload/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/service&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/services-testing&gt;</span>
+
+<span class="w">  </span><span class="nt">&lt;/authorization-matrix&gt;</span>
+</code></pre></div>
+<h3 id="_8">Реализация интеграционного теста<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p><strong>При создании интеграционного теста следует использовать максимально факторизованный код и один тест-кейс на каждую точку зрения (POV), чтобы проверки можно было профилировать по уровню доступа (логической роли). Это упрощает отображение/идентификацию ошибок.</strong></p>
+<p>В данном интеграционном тесте реализованы парсинг, объектное отображение и доступ к матрице авторизации путём маршалинга XML в объект Java и обратного маршалинга (JAXB) для реализации тестов и минимизации объёма кода для разработчика.</p>
+<p><strong>Пример реализации класса интеграционного тест-кейса:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.owasp.pocauthztesting.enumeration.SecurityRole</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.owasp.pocauthztesting.service.AuthService</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.owasp.pocauthztesting.vo.AuthorizationMatrix</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.http.client.methods.CloseableHttpResponse</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.http.client.methods.HttpDelete</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.http.client.methods.HttpGet</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.http.client.methods.HttpPut</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.http.client.methods.HttpRequestBase</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.http.entity.StringEntity</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.http.impl.client.CloseableHttpClient</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.http.impl.client.HttpClients</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.junit.Assert</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.junit.BeforeClass</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.junit.Test</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">org.xml.sax.InputSource</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.bind.JAXBContext</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.parsers.SAXParserFactory</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.transform.Source</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.xml.transform.sax.SAXSource</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.File</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.FileInputStream</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.List</span><span class="p">;</span>
+<span class="w">  </span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Optional</span><span class="p">;</span>
+
+<span class="w">  </span><span class="cm">/**</span>
+<span class="cm">   * Интеграционные тест-кейсы проверяют корректность реализации матрицы авторизации.</span>
+<span class="cm">   * Создают тест-кейс для каждой логической роли, проверяющий доступ ко всем сервисам системы.</span>
+<span class="cm">   * Реализация ориентирована на читаемость.</span>
+<span class="cm">   */</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">AuthorizationMatrixIT</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">      </span><span class="cm">/**</span>
+<span class="cm">       * Объектное представление матрицы авторизации</span>
+<span class="cm">       */</span>
+<span class="w">      </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">AuthorizationMatrix</span><span class="w"> </span><span class="n">AUTHZ_MATRIX</span><span class="p">;</span>
+
+<span class="w">      </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">BASE_URL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;http://localhost:8080&quot;</span><span class="p">;</span>
+
+
+<span class="w">      </span><span class="cm">/**</span>
+<span class="cm">       * Загрузка матрицы авторизации в дерево объектов</span>
+<span class="cm">       *</span>
+<span class="cm">       * @throws Exception При возникновении любой ошибки</span>
+<span class="cm">       */</span>
+<span class="w">      </span><span class="nd">@BeforeClass</span>
+<span class="w">      </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">globalInit</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">FileInputStream</span><span class="w"> </span><span class="n">fis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">FileInputStream</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="s">&quot;authorization-matrix.xml&quot;</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="n">SAXParserFactory</span><span class="w"> </span><span class="n">spf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SAXParserFactory</span><span class="p">.</span><span class="na">newInstance</span><span class="p">();</span>
+<span class="w">              </span><span class="n">spf</span><span class="p">.</span><span class="na">setFeature</span><span class="p">(</span><span class="s">&quot;http://xml.org/sax/features/external-general-entities&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">);</span>
+<span class="w">              </span><span class="n">spf</span><span class="p">.</span><span class="na">setFeature</span><span class="p">(</span><span class="s">&quot;http://xml.org/sax/features/external-parameter-entities&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">);</span>
+<span class="w">              </span><span class="n">spf</span><span class="p">.</span><span class="na">setFeature</span><span class="p">(</span><span class="s">&quot;http://apache.org/xml/features/nonvalidating/load-external-dtd&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">);</span>
+<span class="w">              </span><span class="n">Source</span><span class="w"> </span><span class="n">xmlSource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SAXSource</span><span class="p">(</span><span class="n">spf</span><span class="p">.</span><span class="na">newSAXParser</span><span class="p">().</span><span class="na">getXMLReader</span><span class="p">(),</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InputSource</span><span class="p">(</span><span class="n">fis</span><span class="p">));</span>
+<span class="w">              </span><span class="n">JAXBContext</span><span class="w"> </span><span class="n">jc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JAXBContext</span><span class="p">.</span><span class="na">newInstance</span><span class="p">(</span><span class="n">AuthorizationMatrix</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">              </span><span class="n">AUTHZ_MATRIX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">AuthorizationMatrix</span><span class="p">)</span><span class="w"> </span><span class="n">jc</span><span class="p">.</span><span class="na">createUnmarshaller</span><span class="p">().</span><span class="na">unmarshal</span><span class="p">(</span><span class="n">xmlSource</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="cm">/**</span>
+<span class="cm">       * Тест доступа к сервисам от имени анонимного пользователя.</span>
+<span class="cm">       *</span>
+<span class="cm">       * @throws Exception</span>
+<span class="cm">       */</span>
+<span class="w">      </span><span class="nd">@Test</span>
+<span class="w">      </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testAccessUsingAnonymousUserPointOfView</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="c1">//Выполнение тестов - без токена доступа</span>
+<span class="w">          </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">executeTestWithPointOfView</span><span class="p">(</span><span class="n">SecurityRole</span><span class="p">.</span><span class="na">ANONYMOUS</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span>
+<span class="w">          </span><span class="c1">//Проверка результатов тестов</span>
+<span class="w">          </span><span class="n">Assert</span><span class="p">.</span><span class="na">assertEquals</span><span class="p">(</span><span class="s">&quot;Access issues detected using the ANONYMOUS USER point of view:\n&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">formatErrorsList</span><span class="p">(</span><span class="n">errors</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">errors</span><span class="p">.</span><span class="na">size</span><span class="p">());</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="cm">/**</span>
+<span class="cm">       * Тест доступа к сервисам от имени обычного пользователя.</span>
+<span class="cm">       *</span>
+<span class="cm">       * @throws Exception</span>
+<span class="cm">       */</span>
+<span class="w">      </span><span class="nd">@Test</span>
+<span class="w">      </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testAccessUsingBasicUserPointOfView</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="c1">//Получение токена доступа для данной точки зрения</span>
+<span class="w">          </span><span class="n">String</span><span class="w"> </span><span class="n">accessToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generateTestCaseAccessToken</span><span class="p">(</span><span class="s">&quot;basic&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">SecurityRole</span><span class="p">.</span><span class="na">BASIC</span><span class="p">);</span>
+<span class="w">          </span><span class="c1">//Выполнение тестов</span>
+<span class="w">          </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">executeTestWithPointOfView</span><span class="p">(</span><span class="n">SecurityRole</span><span class="p">.</span><span class="na">BASIC</span><span class="p">,</span><span class="w"> </span><span class="n">accessToken</span><span class="p">);</span>
+<span class="w">          </span><span class="c1">//Проверка результатов тестов</span>
+<span class="w">          </span><span class="n">Assert</span><span class="p">.</span><span class="na">assertEquals</span><span class="p">(</span><span class="s">&quot;Access issues detected using the BASIC USER point of view:\n &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">formatErrorsList</span><span class="p">(</span><span class="n">errors</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">errors</span><span class="p">.</span><span class="na">size</span><span class="p">());</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="cm">/**</span>
+<span class="cm">       * Тест доступа к сервисам от имени пользователя с правами администратора.</span>
+<span class="cm">       *</span>
+<span class="cm">       * @throws Exception</span>
+<span class="cm">       */</span>
+<span class="w">      </span><span class="nd">@Test</span>
+<span class="w">      </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testAccessUsingAdministratorUserPointOfView</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="c1">//Получение токена доступа для данной точки зрения</span>
+<span class="w">          </span><span class="n">String</span><span class="w"> </span><span class="n">accessToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generateTestCaseAccessToken</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">SecurityRole</span><span class="p">.</span><span class="na">ADMIN</span><span class="p">);</span>
+<span class="w">          </span><span class="c1">//Выполнение тестов</span>
+<span class="w">          </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">executeTestWithPointOfView</span><span class="p">(</span><span class="n">SecurityRole</span><span class="p">.</span><span class="na">ADMIN</span><span class="p">,</span><span class="w"> </span><span class="n">accessToken</span><span class="p">);</span>
+<span class="w">          </span><span class="c1">//Проверка результатов тестов</span>
+<span class="w">          </span><span class="n">Assert</span><span class="p">.</span><span class="na">assertEquals</span><span class="p">(</span><span class="s">&quot;Access issues detected using the ADMIN USER point of view:\n&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">formatErrorsList</span><span class="p">(</span><span class="n">errors</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">errors</span><span class="p">.</span><span class="na">size</span><span class="p">());</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="cm">/**</span>
+<span class="cm">       * Оценка доступа ко всем сервисам с использованием указанной точки зрения (POV).</span>
+<span class="cm">       *</span>
+<span class="cm">       * @param pointOfView Точка зрения для использования</span>
+<span class="cm">       * @param accessToken Токен доступа, связанный с точкой зрения в части авторизации.</span>
+<span class="cm">       * @return Список обнаруженных ошибок</span>
+<span class="cm">       * @throws Exception При возникновении любой ошибки</span>
+<span class="cm">       */</span>
+<span class="w">      </span><span class="kd">private</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">executeTestWithPointOfView</span><span class="p">(</span><span class="n">SecurityRole</span><span class="w"> </span><span class="n">pointOfView</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">accessToken</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="w">          </span><span class="n">String</span><span class="w"> </span><span class="n">errorMessageTplForUnexpectedReturnCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The service &#39;%s&#39; when called with POV &#39;%s&#39; return a response code %s that is not the expected one in allowed or denied case.&quot;</span><span class="p">;</span>
+<span class="w">          </span><span class="n">String</span><span class="w"> </span><span class="n">errorMessageTplForIncorrectReturnCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The service &#39;%s&#39; when called with POV &#39;%s&#39; return a response code %s that is not the expected one (%s expected).&quot;</span><span class="p">;</span>
+<span class="w">          </span><span class="n">String</span><span class="w"> </span><span class="n">fatalErrorMessageTpl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The service &#39;%s&#39; when called with POV %s meet the error: %s&quot;</span><span class="p">;</span>
+
+<span class="w">          </span><span class="c1">//Получение списка сервисов для вызова</span>
+<span class="w">          </span><span class="n">List</span><span class="o">&lt;</span><span class="n">AuthorizationMatrix</span><span class="p">.</span><span class="na">Services</span><span class="p">.</span><span class="na">Service</span><span class="o">&gt;</span><span class="w"> </span><span class="n">services</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUTHZ_MATRIX</span><span class="p">.</span><span class="na">getServices</span><span class="p">().</span><span class="na">getService</span><span class="p">();</span>
+
+<span class="w">          </span><span class="c1">//Получение тестовых данных для сервисов</span>
+<span class="w">          </span><span class="n">List</span><span class="o">&lt;</span><span class="n">AuthorizationMatrix</span><span class="p">.</span><span class="na">ServicesTesting</span><span class="p">.</span><span class="na">Service</span><span class="o">&gt;</span><span class="w"> </span><span class="n">servicesTestPayload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AUTHZ_MATRIX</span><span class="p">.</span><span class="na">getServicesTesting</span><span class="p">().</span><span class="na">getService</span><span class="p">();</span>
+
+<span class="w">          </span><span class="c1">//Последовательный вызов всех сервисов (без акцента на производительность)</span>
+<span class="w">          </span><span class="n">services</span><span class="p">.</span><span class="na">forEach</span><span class="p">(</span><span class="n">service</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="c1">//Получение тестовых данных для текущего сервиса</span>
+<span class="w">              </span><span class="n">String</span><span class="w"> </span><span class="n">payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">              </span><span class="n">String</span><span class="w"> </span><span class="n">payloadContentType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">              </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">AuthorizationMatrix</span><span class="p">.</span><span class="na">ServicesTesting</span><span class="p">.</span><span class="na">Service</span><span class="o">&gt;</span><span class="w"> </span><span class="n">serviceTesting</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">servicesTestPayload</span><span class="p">.</span><span class="na">stream</span><span class="p">().</span><span class="na">filter</span><span class="p">(</span><span class="n">srvPld</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">srvPld</span><span class="p">.</span><span class="na">getName</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="n">service</span><span class="p">.</span><span class="na">getName</span><span class="p">())).</span><span class="na">findFirst</span><span class="p">();</span>
+<span class="w">              </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">serviceTesting</span><span class="p">.</span><span class="na">isPresent</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="n">payload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">serviceTesting</span><span class="p">.</span><span class="na">get</span><span class="p">().</span><span class="na">getPayload</span><span class="p">().</span><span class="na">getValue</span><span class="p">();</span>
+<span class="w">                  </span><span class="n">payloadContentType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">serviceTesting</span><span class="p">.</span><span class="na">get</span><span class="p">().</span><span class="na">getPayload</span><span class="p">().</span><span class="na">getContentType</span><span class="p">();</span>
+<span class="w">              </span><span class="p">}</span>
+<span class="w">              </span><span class="c1">//Вызов сервиса и проверка соответствия ответа</span>
+<span class="w">              </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="c1">//Вызов сервиса</span>
+<span class="w">                  </span><span class="kt">int</span><span class="w"> </span><span class="n">serviceResponseCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">callService</span><span class="p">(</span><span class="n">service</span><span class="p">.</span><span class="na">getUri</span><span class="p">(),</span><span class="w"> </span><span class="n">payload</span><span class="p">,</span><span class="w"> </span><span class="n">payloadContentType</span><span class="p">,</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="na">getHttpMethod</span><span class="p">(),</span><span class="w"> </span><span class="n">accessToken</span><span class="p">);</span>
+<span class="w">                  </span><span class="c1">//Проверка, определена ли роль для данной точки зрения в текущем сервисе</span>
+<span class="w">                  </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">AuthorizationMatrix</span><span class="p">.</span><span class="na">Services</span><span class="p">.</span><span class="na">Service</span><span class="p">.</span><span class="na">Role</span><span class="o">&gt;</span><span class="w"> </span><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="na">getRole</span><span class="p">().</span><span class="na">stream</span><span class="p">().</span><span class="na">filter</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="na">getName</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="n">pointOfView</span><span class="p">.</span><span class="na">name</span><span class="p">())).</span><span class="na">findFirst</span><span class="p">();</span>
+<span class="w">                  </span><span class="kt">boolean</span><span class="w"> </span><span class="n">accessIsGrantedInAuthorizationMatrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">role</span><span class="p">.</span><span class="na">isPresent</span><span class="p">();</span>
+<span class="w">                  </span><span class="c1">//Проверка соответствия поведения коду ответа и настроенной авторизации в матрице</span>
+<span class="w">                  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">serviceResponseCode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="na">getHttpResponseCodeForAccessAllowed</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="c1">//Роль не в списке допустимых для доступа к сервису — ошибка</span>
+<span class="w">                      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">accessIsGrantedInAuthorizationMatrix</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                          </span><span class="n">errors</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="n">errorMessageTplForIncorrectReturnCode</span><span class="p">,</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="na">getName</span><span class="p">(),</span><span class="w"> </span><span class="n">pointOfView</span><span class="p">.</span><span class="na">name</span><span class="p">(),</span><span class="w"> </span><span class="n">serviceResponseCode</span><span class="p">,</span>
+<span class="w">                           </span><span class="n">service</span><span class="p">.</span><span class="na">getHttpResponseCodeForAccessDenied</span><span class="p">()));</span>
+<span class="w">                      </span><span class="p">}</span>
+<span class="w">                  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">serviceResponseCode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="na">getHttpResponseCodeForAccessDenied</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="c1">//Роль в списке допустимых для доступа к сервису — ошибка</span>
+<span class="w">                      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">accessIsGrantedInAuthorizationMatrix</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                          </span><span class="n">errors</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="n">errorMessageTplForIncorrectReturnCode</span><span class="p">,</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="na">getName</span><span class="p">(),</span><span class="w"> </span><span class="n">pointOfView</span><span class="p">.</span><span class="na">name</span><span class="p">(),</span><span class="w"> </span><span class="n">serviceResponseCode</span><span class="p">,</span>
+<span class="w">                           </span><span class="n">service</span><span class="p">.</span><span class="na">getHttpResponseCodeForAccessAllowed</span><span class="p">()));</span>
+<span class="w">                      </span><span class="p">}</span>
+<span class="w">                  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="n">errors</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="n">errorMessageTplForUnexpectedReturnCode</span><span class="p">,</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="na">getName</span><span class="p">(),</span><span class="w"> </span><span class="n">pointOfView</span><span class="p">.</span><span class="na">name</span><span class="p">(),</span><span class="w"> </span><span class="n">serviceResponseCode</span><span class="p">));</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">              </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="n">errors</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="n">fatalErrorMessageTpl</span><span class="p">,</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="na">getName</span><span class="p">(),</span><span class="w"> </span><span class="n">pointOfView</span><span class="p">.</span><span class="na">name</span><span class="p">(),</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">()));</span>
+<span class="w">              </span><span class="p">}</span>
+
+
+<span class="w">          </span><span class="p">});</span>
+
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">errors</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="cm">/**</span>
+<span class="cm">       * Вызов сервиса с указанными данными и возврат полученного HTTP-кода ответа.</span>
+<span class="cm">       * Этот шаг вынесен отдельно для упрощения поддержки тест-кейсов.</span>
+<span class="cm">       *</span>
+<span class="cm">       * @param uri                URI целевого сервиса</span>
+<span class="cm">       * @param payloadContentType Тип содержимого отправляемых данных</span>
+<span class="cm">       * @param payload            Отправляемые данные</span>
+<span class="cm">       * @param httpMethod         Используемый HTTP-метод</span>
+<span class="cm">       * @param accessToken        Токен доступа для идентификации вызывающей стороны</span>
+<span class="cm">       * @return Полученный HTTP-код ответа</span>
+<span class="cm">       * @throws Exception При возникновении любой ошибки</span>
+<span class="cm">       */</span>
+<span class="w">      </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">callService</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">uri</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">payload</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">payloadContentType</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">httpMethod</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">accessToken</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="kt">int</span><span class="w"> </span><span class="n">rc</span><span class="p">;</span>
+
+<span class="w">          </span><span class="c1">//Построение запроса - использование Apache HTTP Client для большей гибкости комбинаций</span>
+<span class="w">          </span><span class="n">HttpRequestBase</span><span class="w"> </span><span class="n">request</span><span class="p">;</span>
+<span class="w">          </span><span class="n">String</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">BASE_URL</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">uri</span><span class="p">).</span><span class="na">replaceAll</span><span class="p">(</span><span class="s">&quot;\\{messageId\\}&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="p">);</span>
+<span class="w">          </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">httpMethod</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="k">case</span><span class="w"> </span><span class="s">&quot;GET&quot;</span><span class="p">:</span>
+<span class="w">                  </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HttpGet</span><span class="p">(</span><span class="n">url</span><span class="p">);</span>
+<span class="w">                  </span><span class="k">break</span><span class="p">;</span>
+<span class="w">              </span><span class="k">case</span><span class="w"> </span><span class="s">&quot;DELETE&quot;</span><span class="p">:</span>
+<span class="w">                  </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HttpDelete</span><span class="p">(</span><span class="n">url</span><span class="p">);</span>
+<span class="w">                  </span><span class="k">break</span><span class="p">;</span>
+<span class="w">              </span><span class="k">case</span><span class="w"> </span><span class="s">&quot;PUT&quot;</span><span class="p">:</span>
+<span class="w">                  </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HttpPut</span><span class="p">(</span><span class="n">url</span><span class="p">);</span>
+<span class="w">                  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">payload</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="n">request</span><span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Content-Type&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">payloadContentType</span><span class="p">);</span>
+<span class="w">                      </span><span class="p">((</span><span class="n">HttpPut</span><span class="p">)</span><span class="w"> </span><span class="n">request</span><span class="p">).</span><span class="na">setEntity</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">StringEntity</span><span class="p">(</span><span class="n">payload</span><span class="p">.</span><span class="na">trim</span><span class="p">()));</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">                  </span><span class="k">break</span><span class="p">;</span>
+<span class="w">              </span><span class="k">default</span><span class="p">:</span>
+<span class="w">                  </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UnsupportedOperationException</span><span class="p">(</span><span class="n">httpMethod</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; not supported !&quot;</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="n">request</span><span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;Authorization&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">accessToken</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">accessToken</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+
+
+<span class="w">          </span><span class="c1">//Отправка запроса и получение HTTP-кода ответа</span>
+<span class="w">          </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">CloseableHttpClient</span><span class="w"> </span><span class="n">httpClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HttpClients</span><span class="p">.</span><span class="na">createDefault</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">CloseableHttpResponse</span><span class="w"> </span><span class="n">httpResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">httpClient</span><span class="p">.</span><span class="na">execute</span><span class="p">(</span><span class="n">request</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="c1">//Содержимое ответа здесь не важно...</span>
+<span class="w">                  </span><span class="n">rc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">httpResponse</span><span class="p">.</span><span class="na">getStatusLine</span><span class="p">().</span><span class="na">getStatusCode</span><span class="p">();</span>
+<span class="w">              </span><span class="p">}</span>
+<span class="w">          </span><span class="p">}</span>
+
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">rc</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="cm">/**</span>
+<span class="cm">       * Генерация JWT-токена для указанного пользователя и роли.</span>
+<span class="cm">       *</span>
+<span class="cm">       * @param login Логин пользователя</span>
+<span class="cm">       * @param role  Логическая роль авторизации</span>
+<span class="cm">       * @return JWT-токен</span>
+<span class="cm">       * @throws Exception При возникновении любой ошибки в процессе создания</span>
+<span class="cm">       */</span>
+<span class="w">      </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">generateTestCaseAccessToken</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">login</span><span class="p">,</span><span class="w"> </span><span class="n">SecurityRole</span><span class="w"> </span><span class="n">role</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AuthService</span><span class="p">().</span><span class="na">issueAccessToken</span><span class="p">(</span><span class="n">login</span><span class="p">,</span><span class="w"> </span><span class="n">role</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+
+
+<span class="w">      </span><span class="cm">/**</span>
+<span class="cm">       * Форматирование списка ошибок в строку для вывода.</span>
+<span class="cm">       *</span>
+<span class="cm">       * @param errors Список ошибок</span>
+<span class="cm">       * @return Строка для вывода</span>
+<span class="cm">       */</span>
+<span class="w">      </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">formatErrorsList</span><span class="p">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">errors</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">StringBuilder</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">();</span>
+<span class="w">          </span><span class="n">errors</span><span class="p">.</span><span class="na">forEach</span><span class="p">(</span><span class="n">e</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">e</span><span class="p">).</span><span class="na">append</span><span class="p">(</span><span class="s">&quot;\n&quot;</span><span class="p">));</span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<p>При обнаружении проблемы (или нескольких проблем) с авторизацией вывод будет следующим:</p>
+<div class="highlight"><pre><span></span><code><span class="n">testAccessUsingAnonymousUserPointOfView</span><span class="p">(</span><span class="n">org</span><span class="p">.</span><span class="na">owasp</span><span class="p">.</span><span class="na">pocauthztesting</span><span class="p">.</span><span class="na">AuthorizationMatrixIT</span><span class="p">)</span>
+<span class="n">Time</span><span class="w"> </span><span class="n">elapsed</span><span class="p">:</span><span class="w"> </span><span class="mf">1.009</span><span class="w"> </span><span class="n">s</span><span class="w">  </span><span class="err">###</span><span class="w"> </span><span class="n">FAILURE</span>
+<span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">AssertionError</span><span class="p">:</span>
+<span class="n">Access</span><span class="w"> </span><span class="n">issues</span><span class="w"> </span><span class="n">detected</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">ANONYMOUS</span><span class="w"> </span><span class="n">USER</span><span class="w"> </span><span class="n">point</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">view</span><span class="p">:</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="err">&#39;</span><span class="n">DeleteMessage</span><span class="err">&#39;</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">POV</span><span class="w"> </span><span class="err">&#39;</span><span class="n">ANONYMOUS</span><span class="err">&#39;</span><span class="w"> </span><span class="k">return</span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="nf">one</span><span class="w"> </span><span class="p">(</span><span class="mi">403</span><span class="w"> </span><span class="n">expected</span><span class="p">).</span>
+
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="err">&#39;</span><span class="n">CreateMessage</span><span class="err">&#39;</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">POV</span><span class="w"> </span><span class="err">&#39;</span><span class="n">ANONYMOUS</span><span class="err">&#39;</span><span class="w"> </span><span class="k">return</span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="nf">one</span><span class="w"> </span><span class="p">(</span><span class="mi">403</span><span class="w"> </span><span class="n">expected</span><span class="p">).</span>
+
+<span class="n">testAccessUsingBasicUserPointOfView</span><span class="p">(</span><span class="n">org</span><span class="p">.</span><span class="na">owasp</span><span class="p">.</span><span class="na">pocauthztesting</span><span class="p">.</span><span class="na">AuthorizationMatrixIT</span><span class="p">)</span>
+<span class="n">Time</span><span class="w"> </span><span class="n">elapsed</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05</span><span class="w"> </span><span class="n">s</span><span class="w">  </span><span class="err">###</span><span class="w"> </span><span class="n">FAILURE</span><span class="o">!</span>
+<span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">AssertionError</span><span class="p">:</span>
+<span class="n">Access</span><span class="w"> </span><span class="n">issues</span><span class="w"> </span><span class="n">detected</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">BASIC</span><span class="w"> </span><span class="n">USER</span><span class="w"> </span><span class="n">point</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">view</span><span class="p">:</span>
+<span class="w">    </span><span class="n">The</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="err">&#39;</span><span class="n">DeleteMessage</span><span class="err">&#39;</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">POV</span><span class="w"> </span><span class="err">&#39;</span><span class="n">BASIC</span><span class="err">&#39;</span><span class="w"> </span><span class="k">return</span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="nf">one</span><span class="w"> </span><span class="p">(</span><span class="mi">403</span><span class="w"> </span><span class="n">expected</span><span class="p">).</span>
+</code></pre></div>
+<h2 id="_9">Отображение матрицы авторизации для аудита / проверки<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>Даже если матрица авторизации хранится в человекочитаемом формате (XML), может потребоваться отображение XML-файла в удобочитаемом виде для выявления потенциальных несоответствий и упрощения проверки, аудита и обсуждения матрицы авторизации.</p>
+<!-- textlint-disable -->
+<p>Для этого можно использовать следующую XSL-таблицу стилей:</p>
+<!-- textlint-enable -->
+
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="k">&lt;xsl:stylesheet</span><span class="w"> </span><span class="na">xmlns:xsl=</span><span class="s">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span><span class="w"> </span><span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="k">&lt;xsl:template</span><span class="w"> </span><span class="na">match=</span><span class="s">&quot;/&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;html&gt;</span>
+<span class="w">      </span><span class="nt">&lt;head&gt;</span>
+<span class="w">        </span><span class="nt">&lt;title&gt;</span>Authorization<span class="w"> </span>Matrix<span class="nt">&lt;/title&gt;</span>
+<span class="w">        </span><span class="nt">&lt;link</span><span class="w"> </span><span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span>
+<span class="w">        </span><span class="na">href=</span><span class="s">&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css&quot;</span>
+<span class="w">        </span><span class="na">integrity=</span><span class="s">&quot;sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ&quot;</span>
+<span class="w">        </span><span class="na">crossorigin=</span><span class="s">&quot;anonymous&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/head&gt;</span>
+<span class="w">      </span><span class="nt">&lt;body&gt;</span>
+<span class="w">        </span><span class="nt">&lt;h3&gt;</span>Roles<span class="nt">&lt;/h3&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ul&gt;</span>
+<span class="w">          </span><span class="k">&lt;xsl:for-each</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;authorization-matrix/roles/role&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="k">&lt;xsl:choose</span><span class="nt">&gt;</span>
+<span class="w">              </span><span class="k">&lt;xsl:when</span><span class="w"> </span><span class="na">test=</span><span class="s">&quot;@name = &#39;ADMIN&#39;&quot;</span><span class="nt">&gt;</span>
+<span class="w">                </span><span class="nt">&lt;div</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;alert alert-warning&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;alert&quot;</span><span class="nt">&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;strong&gt;</span>
+<span class="w">                    </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@name&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;/strong&gt;</span>
+<span class="w">                  </span>:
+<span class="w">                  </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@description&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                </span><span class="nt">&lt;/div&gt;</span>
+<span class="w">              </span><span class="k">&lt;/xsl:when&gt;</span>
+<span class="w">              </span><span class="k">&lt;xsl:when</span><span class="w"> </span><span class="na">test=</span><span class="s">&quot;@name = &#39;BASIC&#39;&quot;</span><span class="nt">&gt;</span>
+<span class="w">                </span><span class="nt">&lt;div</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;alert alert-info&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;alert&quot;</span><span class="nt">&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;strong&gt;</span>
+<span class="w">                    </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@name&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;/strong&gt;</span>
+<span class="w">                  </span>:
+<span class="w">                  </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@description&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                </span><span class="nt">&lt;/div&gt;</span>
+<span class="w">              </span><span class="k">&lt;/xsl:when&gt;</span>
+<span class="w">              </span><span class="k">&lt;xsl:otherwise</span><span class="nt">&gt;</span>
+<span class="w">                </span><span class="nt">&lt;div</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;alert alert-danger&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;alert&quot;</span><span class="nt">&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;strong&gt;</span>
+<span class="w">                    </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@name&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;/strong&gt;</span>
+<span class="w">                  </span>:
+<span class="w">                  </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@description&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                </span><span class="nt">&lt;/div&gt;</span>
+<span class="w">              </span><span class="k">&lt;/xsl:otherwise&gt;</span>
+<span class="w">            </span><span class="k">&lt;/xsl:choose&gt;</span>
+<span class="w">          </span><span class="k">&lt;/xsl:for-each&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/ul&gt;</span>
+<span class="w">        </span><span class="nt">&lt;h3&gt;</span>Authorizations<span class="nt">&lt;/h3&gt;</span>
+<span class="w">        </span><span class="nt">&lt;table</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;table table-hover table-sm&quot;</span><span class="nt">&gt;</span>
+<span class="w">          </span><span class="nt">&lt;thead</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;thead-inverse&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="nt">&lt;tr&gt;</span>
+<span class="w">              </span><span class="nt">&lt;th&gt;</span>Service<span class="nt">&lt;/th&gt;</span>
+<span class="w">              </span><span class="nt">&lt;th&gt;</span>URI<span class="nt">&lt;/th&gt;</span>
+<span class="w">              </span><span class="nt">&lt;th&gt;</span>Method<span class="nt">&lt;/th&gt;</span>
+<span class="w">              </span><span class="nt">&lt;th&gt;</span>Role<span class="nt">&lt;/th&gt;</span>
+<span class="w">            </span><span class="nt">&lt;/tr&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/thead&gt;</span>
+<span class="w">          </span><span class="nt">&lt;tbody&gt;</span>
+<span class="w">            </span><span class="k">&lt;xsl:for-each</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;authorization-matrix/services/service&quot;</span><span class="nt">&gt;</span>
+<span class="w">              </span><span class="k">&lt;xsl:variable</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;service-name&quot;</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@name&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">              </span><span class="k">&lt;xsl:variable</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;service-uri&quot;</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@uri&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">              </span><span class="k">&lt;xsl:variable</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;service-method&quot;</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@http-method&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">              </span><span class="k">&lt;xsl:for-each</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;role&quot;</span><span class="nt">&gt;</span>
+<span class="w">                </span><span class="nt">&lt;tr&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;td</span><span class="w"> </span><span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+<span class="w">                    </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;$service-name&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;/td&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;td&gt;</span>
+<span class="w">                    </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;$service-uri&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;/td&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;td&gt;</span>
+<span class="w">                    </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;$service-method&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;/td&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;td&gt;</span>
+<span class="w">                    </span><span class="k">&lt;xsl:variable</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;service-role-name&quot;</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@name&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                    </span><span class="k">&lt;xsl:choose</span><span class="nt">&gt;</span>
+<span class="w">                      </span><span class="k">&lt;xsl:when</span><span class="w"> </span><span class="na">test=</span><span class="s">&quot;@name = &#39;ADMIN&#39;&quot;</span><span class="nt">&gt;</span>
+<span class="w">                        </span><span class="nt">&lt;div</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;alert alert-warning&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;alert&quot;</span><span class="nt">&gt;</span>
+<span class="w">                          </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@name&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                        </span><span class="nt">&lt;/div&gt;</span>
+<span class="w">                      </span><span class="k">&lt;/xsl:when&gt;</span>
+<span class="w">                      </span><span class="k">&lt;xsl:when</span><span class="w"> </span><span class="na">test=</span><span class="s">&quot;@name = &#39;BASIC&#39;&quot;</span><span class="nt">&gt;</span>
+<span class="w">                        </span><span class="nt">&lt;div</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;alert alert-info&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;alert&quot;</span><span class="nt">&gt;</span>
+<span class="w">                          </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@name&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                        </span><span class="nt">&lt;/div&gt;</span>
+<span class="w">                      </span><span class="k">&lt;/xsl:when&gt;</span>
+<span class="w">                      </span><span class="k">&lt;xsl:otherwise</span><span class="nt">&gt;</span>
+<span class="w">                        </span><span class="nt">&lt;div</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;alert alert-danger&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;alert&quot;</span><span class="nt">&gt;</span>
+<span class="w">                          </span><span class="k">&lt;xsl:value-of</span><span class="w"> </span><span class="na">select=</span><span class="s">&quot;@name&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">                        </span><span class="nt">&lt;/div&gt;</span>
+<span class="w">                      </span><span class="k">&lt;/xsl:otherwise&gt;</span>
+<span class="w">                    </span><span class="k">&lt;/xsl:choose&gt;</span>
+<span class="w">                  </span><span class="nt">&lt;/td&gt;</span>
+<span class="w">                </span><span class="nt">&lt;/tr&gt;</span>
+<span class="w">              </span><span class="k">&lt;/xsl:for-each&gt;</span>
+<span class="w">            </span><span class="k">&lt;/xsl:for-each&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/tbody&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/table&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/body&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/html&gt;</span>
+<span class="w">  </span><span class="k">&lt;/xsl:template&gt;</span>
+<span class="k">&lt;/xsl:stylesheet&gt;</span>
+</code></pre></div>
+<p>Пример отображения:</p>
+<p><img alt="RenderingExample" src="../assets/Authorization_Testing_Automation_AutomationRendering.png" /></p>
+<h2 id="_10">Исходный код прототипа<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/righettod/poc-authz-testing">Репозиторий на GitHub</a></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

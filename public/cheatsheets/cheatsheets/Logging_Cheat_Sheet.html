@@ -1,0 +1,3726 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Logging_Vocabulary_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Logging - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Logging
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Назначение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Назначение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Операционные варианты использования
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Варианты использования в области безопасности
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проектирование, реализация и тестирование
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Проектирование, реализация и тестирование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Источники данных о событиях
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Где записывать данные о событиях
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Какие события регистрировать
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибуты событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Данные для исключения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Настраиваемое журналирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сбор событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сетевая архитектура
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Развёртывание и эксплуатация
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Развёртывание и эксплуатация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выпуск
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Эксплуатация
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мониторинг событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Утилизация журналов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атаки на журналы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Атаки на журналы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конфиденциальность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Целостность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Доступность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подотчётность
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Связанные статьи
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Назначение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Назначение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Операционные варианты использования
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Варианты использования в области безопасности
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проектирование, реализация и тестирование
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Проектирование, реализация и тестирование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Источники данных о событиях
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Где записывать данные о событиях
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Какие события регистрировать
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атрибуты событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Данные для исключения
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Настраиваемое журналирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сбор событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Сетевая архитектура
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Развёртывание и эксплуатация
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Развёртывание и эксплуатация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выпуск
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Эксплуатация
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Мониторинг событий
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Утилизация журналов
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Атаки на журналы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Атаки на журналы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конфиденциальность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Целостность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Доступность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подотчётность
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Связанные статьи
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="_1">Шпаргалка по журналированию<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">Введение<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Данная шпаргалка содержит концентрированные рекомендации для разработчиков по созданию механизмов журналирования приложений, особенно в части журналирования безопасности.</p>
+<p>Многие системы включают журналирование сетевых устройств, операционной системы, web-сервера, почтового сервера и сервера базы данных, но зачастую журналирование событий пользовательского приложения отсутствует, отключено или настроено ненадлежащим образом. Оно обеспечивает значительно более глубокое понимание, чем только журналирование инфраструктуры. Журналирование web-приложений (например, web-сайта или web-сервиса) — это нечто большее, чем включение журналов web-сервера (например, с использованием расширенного формата файла журнала).</p>
+<p>Журналирование приложений должно быть согласованным внутри приложения, согласованным в рамках портфеля приложений организации и использовать отраслевые стандарты там, где это применимо, чтобы зарегистрированные данные о событиях могли потребляться, коррелироваться, анализироваться и управляться широким спектром систем.</p>
+<h2 id="_3">Назначение<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Журналирование приложений должно всегда включать события безопасности. Журналы приложений представляют бесценные данные как для вариантов использования в области безопасности, так и в операционных целях.</p>
+<h3 id="_4">Операционные варианты использования<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Общая отладка</li>
+<li>Установление базовых показателей</li>
+<li>Мониторинг бизнес-процессов, например прекращение процесса продаж, транзакции, подключения</li>
+<li>Предоставление информации о проблемах и необычных условиях</li>
+<li>Мониторинг производительности, например время загрузки данных, тайм-ауты страниц</li>
+<li>Другие специфические бизнес-требования</li>
+</ul>
+<h3 id="_5">Варианты использования в области безопасности<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>Журналирование приложений также может использоваться для записи других типов событий:</p>
+<ul>
+<li>Мониторинг против автоматизации</li>
+<li>Выявление инцидентов безопасности</li>
+<li>Мониторинг нарушений политик</li>
+<li>Поддержка средств управления неотказуемостью (следует учитывать, что неотказуемость трудно достичь для журналов, поскольку их достоверность часто основана лишь на надлежащем аудите стороны ведения журналов, тогда как механизмы, такие как цифровые подписи, сложно использовать в данном контексте)</li>
+<li>Журналы аудита, например добавление, изменение и удаление данных, экспорт данных</li>
+<li>Мониторинг соответствия требованиям</li>
+<li>Данные для последующих запросов информации, например запросы доступа субъекта данных, запросы о свободе информации, судебные разбирательства, полицейские и другие регуляторные расследования</li>
+<li>Законодательно санкционированный перехват данных, например перехват на прикладном уровне</li>
+<li>Предоставление дополнительных данных, специфичных для приложения, для расследования инцидентов, которые отсутствуют в других источниках журналов</li>
+<li>Помощь в защите от выявления и эксплуатации уязвимостей через обнаружение атак</li>
+</ul>
+<p>Мониторинг процессов, аудит и журналы транзакций обычно собираются с иными целями, чем журналирование событий безопасности, и это часто означает, что они должны храниться отдельно.</p>
+<p>Типы собираемых событий и деталей, как правило, различаются.</p>
+<p>Например, журнал аудита <a href="https://www.pcisecuritystandards.org/pci_security/">PCIDSS</a> будет содержать хронологическую запись действий для обеспечения независимо проверяемого следа, позволяющего реконструировать, просматривать и исследовать исходную последовательность приписываемых транзакций. Важно не регистрировать слишком много или слишком мало.</p>
+<p>Используйте знание предполагаемых целей для определения того, что, когда и в каком объёме регистрировать. Остальная часть этой шпаргалки преимущественно посвящена журналированию событий безопасности.</p>
+<h2 id="_6">Проектирование, реализация и тестирование<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h3 id="_7">Источники данных о событиях<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p>Само приложение имеет доступ к широкому спектру информационных событий, которые должны использоваться для создания записей журнала. Таким образом, основным источником данных о событиях является сам код приложения.</p>
+<p>Приложение располагает наибольшей информацией о пользователе (например, идентичность, роли, разрешения) и контексте события (цель, действие, результаты), и часто эти данные недоступны ни устройствам инфраструктуры, ни даже тесно связанным приложениям.</p>
+<p>Другие источники информации об использовании приложений, которые также следует рассматривать:</p>
+<ul>
+<li>Клиентское программное обеспечение, например действия на настольном программном обеспечении и мобильных устройствах в локальных журналах или с использованием технологий обмена сообщениями, обработчик исключений JavaScript через AJAX, web-браузер, например с использованием механизма отчётов Content Security Policy (CSP)</li>
+<li>Встроенный код инструментирования</li>
+<li>Сетевые брандмауэры</li>
+<li>Системы обнаружения вторжений в сеть и на хосте (NIDS и HIDS)</li>
+<li>Тесно связанные приложения, например фильтры, встроенные в программное обеспечение web-сервера, перенаправления/переписывания URL web-сервера на скриптовые пользовательские страницы ошибок и обработчики</li>
+<li>Брандмауэры приложений, например фильтры, охранники, XML-шлюзы, брандмауэры баз данных, брандмауэры web-приложений (WAF)</li>
+<li>Приложения баз данных, например автоматические журналы аудита, действия на основе триггеров</li>
+<li>Службы мониторинга репутации, например мониторинг доступности или вредоносного ПО</li>
+<li>Другие приложения, например мониторинг мошенничества, CRM</li>
+<li>Операционная система, например мобильная платформа</li>
+</ul>
+<p>При включении данных о событиях из систем в другой доверенной зоне необходимо учитывать степень доверия к информации о событиях. Данные могут отсутствовать, быть изменены, подделаны, воспроизведены и могут быть вредоносными — они всегда должны рассматриваться как ненадёжные данные.</p>
+<p>Рассмотрите, как можно проверить источник и как обеспечить целостность и неотказуемость.</p>
+<h3 id="_8">Где записывать данные о событиях<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>Приложения обычно записывают данные журнала событий в файловую систему или базу данных (SQL или NoSQL). Приложения, установленные на настольных компьютерах и мобильных устройствах, могут использовать локальное хранилище и локальные базы данных, а также отправлять данные в удалённое хранилище.</p>
+<p>Выбранный фреймворк может ограничивать доступные варианты. Все типы приложений могут отправлять данные о событиях в удалённые системы (вместо или в дополнение к более локальному хранилищу).</p>
+<p>Это может быть централизованная система сбора и управления журналами (например, SIEM или SEM) или другое приложение. Рассмотрите, может ли приложение просто отправлять поток событий без буферизации в stdout для управления средой выполнения.</p>
+<ul>
+<li>При использовании файловой системы предпочтительно использовать отдельный раздел, отличный от разделов операционной системы, других файлов приложений и пользовательского контента<ul>
+<li>Для журналов на основе файлов применяйте строгие права доступа к пользователям, имеющим доступ к каталогам, и права доступа к файлам внутри каталогов</li>
+<li>В web-приложениях журналы не должны быть открыты в местах, доступных через web; если это необходимо, доступ должен быть ограничен, а MIME-тип настроен как обычный текст (не HTML)</li>
+</ul>
+</li>
+<li>При использовании базы данных предпочтительно использовать отдельную учётную запись базы данных, которая используется только для записи данных журнала и имеет очень ограниченные права доступа к базе данных, таблицам, функциям и командам</li>
+<li>Используйте стандартные форматы по защищённым протоколам для записи и отправки данных о событиях или файлов журналов в другие системы, например Common Log File System (CLFS) или Common Event Format (CEF) через syslog; стандартные форматы облегчают интеграцию с централизованными службами журналирования</li>
+</ul>
+<p>Рассмотрите отдельные файлы/таблицы для расширенной информации о событиях, такой как трассировки стека ошибок или запись заголовков и тел HTTP-запросов и ответов.</p>
+<h3 id="_9">Какие события регистрировать<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>Уровень и содержание мониторинга безопасности, оповещения и отчётности необходимо определять на этапе требований и проектирования проектов, и они должны быть соразмерны рискам информационной безопасности. Это определяет, что должно быть зарегистрировано.</p>
+<p>Не существует универсального решения, и слепой контрольный список может привести к ненужному «туману оповещений», при котором реальные проблемы остаются незамеченными.</p>
+<p>По возможности всегда регистрируйте:</p>
+<ul>
+<li>Сбои валидации входных данных, например нарушения протокола, неприемлемые кодировки, недопустимые имена и значения параметров<ul>
+<li>Специальное событие для сбоев при проверке значения на соответствие дискретному и конечному списку допустимых значений (например, страна из выпадающего списка). Это событие высокого уровня безопасности, так как оно может быть только атакой. Например: <code>input_validation_fail[:field,userid]</code>.</li>
+</ul>
+</li>
+<li>Сбои валидации выходных данных, например несоответствие наборов записей базы данных, неверная кодировка данных</li>
+<li>Успехи и неудачи аутентификации</li>
+<li>Сбои авторизации (контроль доступа)</li>
+<li>Сбои управления сессиями, например изменение значения идентификации сессии cookie или подозрительные сбои валидации JWT</li>
+<li>Ошибки приложений и системные события, например синтаксические и ошибки выполнения, проблемы подключения, проблемы производительности, сообщения об ошибках сторонних служб, ошибки файловой системы, обнаружение вирусов при загрузке файлов, изменения конфигурации</li>
+<li>Запуски и остановки приложений и связанных систем, а также инициализация журналирования (запуск, остановка или пауза)</li>
+<li>Использование функций повышенного риска, включая:<ul>
+<li>Действия администрирования пользователей, такие как добавление или удаление пользователей, изменение привилегий, назначение пользователей токенам, добавление или удаление токенов</li>
+<li>Использование системных административных привилегий или доступа администраторами приложений, включая все действия этих пользователей</li>
+<li>Использование учётных записей по умолчанию, общих учётных записей или «экстренного доступа»</li>
+<li>Доступ к конфиденциальным данным, таким как платёжные данные держателей карт</li>
+<li>Действия шифрования, такие как использование или ротация криптографических ключей</li>
+<li>Создание и удаление объектов системного уровня</li>
+<li>Импорт и экспорт данных, включая отчёты на экране</li>
+<li>Отправка и обработка пользовательского контента — особенно загрузка файлов</li>
+<li>Сбои десериализации</li>
+<li>Сетевые подключения и связанные с ними сбои, такие как сбои TLS бэкенда (включая сбои валидации сертификатов) или запросы с неожиданным HTTP-методом</li>
+</ul>
+</li>
+<li>Юридические и другие согласия, например разрешения на возможности мобильного телефона, условия использования, условия обслуживания, согласие на использование персональных данных, разрешение на получение маркетинговых коммуникаций</li>
+<li>Подозрительные действия бизнес-логики, такие как:<ul>
+<li>Попытки выполнить набор действий вне порядка или обойти управление потоком</li>
+<li>Действия, не имеющие смысла в бизнес-контексте</li>
+<li>Попытки превысить ограничения для конкретных действий</li>
+</ul>
+</li>
+</ul>
+<p>При возможности рассмотрите, можно ли регистрировать следующие события и является ли эта информация желательной:</p>
+<ul>
+<li>Сбой последовательности</li>
+<li>Чрезмерное использование</li>
+<li>Изменения данных</li>
+<li>Мошенничество и другая преступная деятельность</li>
+<li>Подозрительное, неприемлемое или неожиданное поведение</li>
+<li>Изменения конфигурации</li>
+<li>Изменения кода приложения и/или памяти</li>
+</ul>
+<h3 id="_10">Атрибуты событий<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>Каждая запись журнала должна содержать достаточно информации для последующего мониторинга и анализа. Это может быть полное содержимое данных, но чаще всего это извлечённые или только сводные свойства.</p>
+<p>Журналы приложений должны фиксировать «когда, где, кто и что» для каждого события.</p>
+<p>Свойства будут различаться в зависимости от архитектуры, класса приложения и хост-системы/устройства, но часто включают следующее:</p>
+<ul>
+<li>Когда<ul>
+<li>Дата и время журнала (международный формат)</li>
+<li>Дата и время события — временная метка события может отличаться от времени журналирования, например журналирование сервера, где клиентское приложение размещено на удалённом устройстве, которое периодически или нерегулярно подключается</li>
+<li>Идентификатор взаимодействия <code>Примечание A</code></li>
+</ul>
+</li>
+<li>Где<ul>
+<li>Идентификатор приложения, например имя и версия</li>
+<li>Адрес приложения, например кластер/имя хоста или IPv4 или IPv6-адрес сервера и номер порта, идентификатор рабочей станции, локальный идентификатор устройства</li>
+<li>Служба, например имя и протокол</li>
+<li>Геолокация</li>
+<li>Окно/форма/страница, например URL точки входа и HTTP-метод для web-приложения, имя диалогового окна</li>
+<li>Местоположение в коде, например имя скрипта, имя модуля</li>
+</ul>
+</li>
+<li>Кто (человек или машинный пользователь)<ul>
+<li>Адрес источника, например идентификатор устройства/машины пользователя, IP-адрес пользователя, идентификатор сотовой/RF-башни, номер мобильного телефона</li>
+<li>Идентичность пользователя (если аутентифицирован или иным образом известен), например первичный ключ таблицы базы данных пользователей, имя пользователя, номер лицензии</li>
+</ul>
+</li>
+<li>Что<ul>
+<li>Тип события <code>Примечание B</code></li>
+<li>Серьёзность события <code>Примечание B</code>, например <code>{0=emergency, 1=alert, ..., 7=debug}, {fatal, error, warning, info, debug, trace}</code></li>
+<li>Флаг события, связанного с безопасностью (если журналы содержат данные событий, не связанных с безопасностью)</li>
+<li>Описание</li>
+</ul>
+</li>
+</ul>
+<p>Дополнительно рассмотрите регистрацию:</p>
+<ul>
+<li>Даты и времени события из вторичного источника времени (например, GPS)</li>
+<li>Действие — изначально предполагаемая цель запроса, например вход в систему, обновление идентификатора сессии, выход из системы, обновление профиля</li>
+<li>Объект, например затронутый компонент или другой объект (учётная запись пользователя, ресурс данных, файл), например URL, идентификатор сессии, учётная запись пользователя, файл</li>
+<li>Статус результата — было ли ДЕЙСТВИЕ над ОБЪЕКТОМ успешным, например Успех, Неудача, Отложено</li>
+<li>Причина — почему произошёл вышеуказанный статус, например Пользователь не аутентифицирован при проверке базы данных..., Неверные учётные данные</li>
+<li>HTTP-код статуса (только web-приложения) — код статуса, возвращённый пользователю (часто 200 или 301)</li>
+<li>HTTP-заголовки запроса или User-Agent HTTP (только web-приложения)</li>
+<li>Классификация типа пользователя, например публичный, аутентифицированный пользователь, CMS-пользователь, поисковый робот, авторизованный тестировщик на проникновение, монитор доступности (см. «Данные для исключения» ниже)</li>
+<li>Аналитическая достоверность обнаружения события <code>Примечание B</code>, например низкая, средняя, высокая или числовое значение</li>
+<li>Ответы, которые видит пользователь и/или предпринимает приложение, например код статуса, пользовательские текстовые сообщения, завершение сессии, оповещения администратора</li>
+<li>Расширенные сведения, например трассировка стека, системные сообщения об ошибках, отладочная информация, тело HTTP-запроса, заголовки и тело HTTP-ответа</li>
+<li>Внутренние классификации, например ответственность, ссылки на соответствие требованиям</li>
+<li>Внешние классификации, например NIST Security Content Automation Protocol (SCAP), Mitre Common Attack Pattern Enumeration and Classification (CAPEC)</li>
+</ul>
+<p>Дополнительную информацию см. в разделе «другие» связанных статей, указанных в конце, особенно в исчерпывающей статье Антона Чувакина и Гуннара Петерсона.</p>
+<p><strong>Примечание A:</strong> «Идентификатор взаимодействия» — это метод связывания всех (соответствующих) событий для одного взаимодействия с пользователем (например, отправка формы настольного приложения, запрос web-страницы, нажатие кнопки в мобильном приложении, вызов web-сервиса). Приложение знает, что все эти события относятся к одному взаимодействию, и это следует фиксировать, а не терять информацию, вынуждая последующие методы корреляции восстанавливать отдельные события. Например, один SOAP-запрос может иметь несколько сбоев валидации входных данных, охватывающих небольшой диапазон времени. Как ещё один пример, сбой валидации выходных данных может произойти значительно позже отправки входных данных для долгосрочного «запроса-саги», отправленного приложением на сервер базы данных.</p>
+<p><strong>Примечание B:</strong> Каждая организация должна обеспечить последовательный и задокументированный подход к классификации событий (тип, достоверность, серьёзность), синтаксису описаний и длинам полей и типам данных, включая формат дат/времени.</p>
+<h3 id="_11">Данные для исключения<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>Никогда не регистрируйте данные, если это не санкционировано законом. Например, перехват некоторых коммуникаций, мониторинг сотрудников и сбор некоторых данных без согласия могут быть незаконными.</p>
+<p>Никогда не исключайте события от «известных» пользователей, таких как другие внутренние системы, «доверенные» третьи стороны, роботы поисковых систем, системы мониторинга доступности/процессов и другие удалённые системы мониторинга, тестировщики на проникновение, аудиторы. Однако следует включить флаг классификации для каждого из них в записанные данные.</p>
+<p>Следующее обычно не должно быть напрямую записано в журналы, а должно быть удалено, замаскировано, санировано, захешировано или зашифровано:</p>
+<ul>
+<li>Исходный код приложения</li>
+<li>Значения идентификации сессий (рассмотрите замену захешированным значением при необходимости отслеживания событий, специфичных для сессии)</li>
+<li>Токены доступа</li>
+<li>Конфиденциальные персональные данные и некоторые формы персонально идентифицируемой информации (PII), например здоровье, государственные идентификаторы, уязвимые люди</li>
+<li>Пароли аутентификации</li>
+<li>Строки подключения к базе данных</li>
+<li>Ключи шифрования и другие основные секреты</li>
+<li>Данные банковского счёта или держателя платёжной карты</li>
+<li>Данные более высокого уровня безопасности, чем разрешено хранить системе журналирования</li>
+<li>Коммерчески конфиденциальная информация</li>
+<li>Информация, сбор которой незаконен в соответствующих юрисдикциях</li>
+<li>Информация, от сбора которой пользователь отказался или не дал согласия, например при использовании «не отслеживать» или истечении срока согласия на сбор</li>
+</ul>
+<p>Иногда также могут существовать следующие данные; хотя они полезны для последующего расследования, перед записью события их также может потребоваться обработать особым образом:</p>
+<ul>
+<li>Пути к файлам</li>
+<li>Строки подключения к базе данных</li>
+<li>Внутренние сетевые имена и адреса</li>
+<li>Неконфиденциальные персональные данные (например, личные имена, номера телефонов, адреса электронной почты)</li>
+</ul>
+<p>Рассмотрите использование методов деидентификации персональных данных, таких как удаление, перемешивание или псевдонимизация прямых и косвенных идентификаторов, если идентичность человека не требуется или риск считается слишком высоким.</p>
+<p>В некоторых системах санация может выполняться после сбора журналов и перед их отображением.</p>
+<h3 id="_12">Настраиваемое журналирование<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p>Может быть желательно изменять уровень журналирования (тип событий на основе серьёзности или уровня угрозы, объём записываемых деталей). Если это реализовано, убедитесь, что:</p>
+<ul>
+<li>Уровень по умолчанию должен предоставлять достаточно деталей для бизнес-нужд</li>
+<li>Не должно быть возможности полностью деактивировать журналирование приложений или журналирование событий, необходимых для выполнения требований соответствия</li>
+<li>Изменения уровня/объёма журналирования должны быть внутренними для приложения (например, выполняться автоматически приложением на основе утверждённого алгоритма) или следовать процессам управления изменениями (например, изменения данных конфигурации, модификация исходного кода)</li>
+<li>Уровень журналирования должен периодически проверяться</li>
+</ul>
+<h3 id="_13">Сбор событий<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p>Если ваш фреймворк разработки поддерживает подходящие механизмы журналирования, используйте или развивайте их. В противном случае реализуйте общеприкладной обработчик журналов, который может вызываться из других модулей/компонентов.</p>
+<p>Документируйте интерфейс, ссылаясь на требования организации к классификации событий и синтаксису описаний.</p>
+<p>По возможности создайте этот обработчик журналов в виде стандартного модуля, который можно тщательно протестировать, развернуть в нескольких приложениях и добавить в список утверждённых и рекомендуемых модулей.</p>
+<ul>
+<li>Выполняйте валидацию входных данных для данных о событиях из других доверенных зон, чтобы убедиться, что они в правильном формате (и рассмотрите оповещение и отказ от журналирования при сбое валидации входных данных)</li>
+<li>Выполняйте санацию всех данных о событиях для предотвращения атак инъекции журнала, например символов возврата каретки (CR), перевода строки (LF) и символов-разделителей (и опционально для удаления конфиденциальных данных)</li>
+<li>Правильно кодируйте данные для выходного (журналируемого) формата</li>
+<li>При записи в базы данных прочитайте, поймите и применяйте шпаргалку по SQL-инъекциям</li>
+<li>Убедитесь, что сбои в процессах/системах журналирования не препятствуют работе приложения и не допускают утечки информации</li>
+<li>Синхронизируйте время на всех серверах и устройствах <code>Примечание C</code></li>
+</ul>
+<p><strong>Примечание C:</strong> Это не всегда возможно, когда приложение работает на устройстве под контролем другой стороны (например, на мобильном телефоне пользователя, на удалённой рабочей станции клиента в другой корпоративной сети). В таких случаях попробуйте измерить смещение времени или зафиксировать уровень достоверности в метке времени события.</p>
+<p>По возможности записывайте данные в стандартном формате или, по крайней мере, убедитесь, что они могут быть экспортированы/переданы с использованием отраслевого стандартного формата.</p>
+<p>В некоторых случаях события могут ретранслироваться или собираться в промежуточных точках. В последнем случае некоторые данные могут агрегироваться или суммироваться перед пересылкой в центральный репозиторий и систему анализа.</p>
+<h3 id="_14">Проверка<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<p>Функциональность и системы журналирования должны быть включены в процессы проверки кода, тестирования приложений и проверки безопасности:</p>
+<ul>
+<li>Убедитесь, что журналирование работает корректно и соответствует спецификации</li>
+<li>Проверьте, что события классифицируются последовательно и имена полей, типы и длины правильно определены в соответствии с согласованным стандартом</li>
+<li>Убедитесь, что журналирование реализовано и включено во время тестирования безопасности приложений, нечёткого тестирования, тестирования на проникновение и тестирования производительности</li>
+<li>Проверьте, что механизмы не подвержены атакам инъекций</li>
+<li>Убедитесь, что при журналировании нет нежелательных побочных эффектов</li>
+<li>Проверьте влияние на механизмы журналирования при потере внешнего сетевого подключения (если оно обычно требуется)</li>
+<li>Убедитесь, что журналирование не может использоваться для исчерпания системных ресурсов, например путём заполнения дискового пространства или превышения пространства журнала транзакций базы данных, что приводит к отказу в обслуживании</li>
+<li>Проверьте влияние сбоев журналирования на приложение, таких как имитация потери подключения к базе данных, нехватки места в файловой системе, отсутствия прав записи в файловую систему и ошибок выполнения в самом модуле журналирования</li>
+<li>Проверьте средства управления доступом к данным журнала событий</li>
+<li>Если данные журнала используются в каком-либо действии против пользователей (например, блокировка доступа, блокировка учётной записи), убедитесь, что это не может быть использовано для создания отказа в обслуживании (DoS) для других пользователей</li>
+</ul>
+<h3 id="_15">Сетевая архитектура<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<p>Для примера на диаграмме ниже показан сервис, предоставляющий бизнес-функциональность клиентам. Рекомендуется создать централизованную систему сбора журналов. Может быть много таких сервисов, но все они должны безопасно собирать журналы в централизованной системе.</p>
+<p>Приложения этого бизнес-сервиса расположены в сетевых сегментах:</p>
+<ul>
+<li>FRONTEND 1 (DMZ, UI)</li>
+<li>MIDDLEWARE 1 (бизнес-приложение — ядро сервиса)</li>
+<li>BACKEND 1 (база данных сервиса)</li>
+</ul>
+<p>Сервис, отвечающий за сбор IT-событий, включая события безопасности, расположен в следующих сегментах:</p>
+<ul>
+<li>BACKEND 2 (хранилище журналов)</li>
+<li>MIDDLEWARE 3 — 2 приложения:<ul>
+<li>Приложение загрузки журналов, которое скачивает журнал из хранилища, предварительно обрабатывает и передаёт в UI</li>
+<li>Коллектор журналов, принимающий журналы от бизнес-приложений, другой инфраструктуры, облачных приложений и сохраняющий их в хранилище журналов</li>
+</ul>
+</li>
+<li>FRONTEND 2 (UI для просмотра журналов событий бизнес-сервиса)</li>
+<li>FRONTEND 3 (приложения, получающие журналы из облачных приложений и передающие журналы коллектору журналов)<ul>
+<li>Допускается объединение функциональности двух приложений в одном</li>
+</ul>
+</li>
+</ul>
+<p>Например, все внешние запросы от пользователей проходят через сервис управления API, см. приложение в сегменте MIDDLEWARE 2.</p>
+<p><img alt="MIDDLEWARE" src="https://raw.githubusercontent.com/OWASP/CheatSheetSeries/master/assets/Logging_Cheat_Sheet.drawio.png" /></p>
+<p>Как видно на рисунке выше, на сетевом уровне процессы сохранения и загрузки журналов требуют открытия различных сетевых доступов (портов), стрелки выделены разными цветами. Также сохранение и загрузка выполняются разными приложениями.</p>
+<p>Полная шпаргалка по сетевой сегментации от <a href="https://github.com/sergiomarotco">sergiomarotco</a>: <a href="https://github.com/sergiomarotco/Network-segmentation-cheat-sheet">ссылка</a></p>
+<h2 id="_16">Развёртывание и эксплуатация<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h2>
+<h3 id="_17">Выпуск<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Предоставляйте информацию о конфигурации безопасности, добавляя детали о механизмах журналирования в документацию выпуска</li>
+<li>Информируйте владельца приложения/процесса о механизмах журналирования приложения</li>
+<li>Убедитесь, что выходные данные мониторинга (см. ниже) интегрированы с процессами реагирования на инциденты</li>
+</ul>
+<h3 id="_18">Эксплуатация<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
+<p>Включите процессы для обнаружения остановки журналирования и выявления вмешательства или несанкционированного доступа и удаления (см. защиту ниже).</p>
+<h3 id="_19">Защита<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h3>
+<p>Механизмы журналирования и собранные данные о событиях должны быть защищены от злоупотреблений, таких как вмешательство при передаче, а также несанкционированный доступ, изменение и удаление после хранения. Журналы могут содержать персональные и другие конфиденциальные данные, или данные могут содержать информацию о коде и логике приложения.</p>
+<p>Кроме того, собранная информация в журналах сама по себе может иметь бизнес-ценность (для конкурентов, сплетников, журналистов и активистов), например позволяя оценивать доходы или предоставляя информацию о производительности сотрудников.</p>
+<p>Эти данные могут храниться на конечных устройствах, в промежуточных точках, в централизованных репозиториях и в архивах и резервных копиях.</p>
+<p>Рассмотрите, нужно ли исключать, маскировать, санировать, хешировать или шифровать части данных при проверке или извлечении.</p>
+<p>В состоянии покоя:</p>
+<ul>
+<li>Встройте обнаружение вмешательства, чтобы знать, была ли запись изменена или удалена</li>
+<li>Как можно скорее храните или копируйте данные журнала на носители только для чтения</li>
+<li>Весь доступ к журналам должен фиксироваться и отслеживаться (и может требовать предварительного одобрения)</li>
+<li>Привилегии на чтение данных журналов должны быть ограничены и периодически пересматриваться</li>
+</ul>
+<p>При передаче:</p>
+<ul>
+<li>При отправке данных журнала по ненадёжным сетям (например, для сбора, отправки в другое место, для анализа, для отчётности) используйте защищённый протокол передачи</li>
+<li>Рассмотрите, нужно ли проверять происхождение данных о событиях</li>
+<li>Выполняйте проверки должной осмотрительности (регуляторные и в области безопасности) перед отправкой данных о событиях третьим сторонам</li>
+</ul>
+<p>Дополнительные рекомендации см. в <code>NIST SP 800-92</code> Guide to Computer Security Log Management.</p>
+<h3 id="_20">Мониторинг событий<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
+<p>Зарегистрированные данные о событиях должны быть доступны для проверки, и должны существовать процессы надлежащего мониторинга, оповещения и отчётности:</p>
+<ul>
+<li>Включите журналирование приложений в любые существующие системы/инфраструктуры управления журналами, например централизованные системы журналирования и анализа</li>
+<li>Убедитесь, что информация о событиях доступна соответствующим командам</li>
+<li>Включите оповещение и немедленно сигнализируйте ответственным командам о более серьёзных событиях</li>
+<li>Делитесь соответствующей информацией о событиях с другими системами обнаружения, связанными организациями и централизованными системами сбора/обмена информацией</li>
+</ul>
+<h3 id="_21">Утилизация журналов<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
+<p>Данные журнала, временные журналы отладки и резервные копии/копии/извлечения не должны уничтожаться до истечения требуемого периода хранения данных и не должны храниться после этого времени.</p>
+<p>Юридические, регуляторные и договорные обязательства могут влиять на эти периоды.</p>
+<h2 id="_22">Атаки на журналы<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h2>
+<p>Из-за своей полезности в качестве защиты журналы могут быть целью атак. См. также OWASP <a href="https://owasp.org/www-community/attacks/Log_Injection">Log Injection</a> и <a href="https://cwe.mitre.org/data/definitions/117.html">CWE-117</a>.</p>
+<h3 id="_23">Конфиденциальность<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h3>
+<p>Кто должен иметь возможность читать что? Атака на конфиденциальность позволяет несанкционированной стороне получить доступ к конфиденциальной информации, хранящейся в журналах.</p>
+<ul>
+<li>Журналы содержат PII пользователей. Злоумышленники собирают PII, а затем либо публикуют её, либо используют для дальнейших атак на этих пользователей.</li>
+<li>Журналы содержат технические секреты, такие как пароли. Злоумышленники используют их для более глубоких атак.</li>
+</ul>
+<h3 id="_24">Целостность<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h3>
+<p>Какая информация должна быть изменяемой кем?</p>
+<ul>
+<li>Злоумышленник с доступом на чтение к журналу использует его для эксфильтрации секретов.</li>
+<li>Атака использует журналы для соединения с уязвимыми аспектами платформ журналирования, такими как отправка полезной нагрузки через syslog для записи за пределами допустимой области.</li>
+</ul>
+<h3 id="_25">Доступность<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h3>
+<p>Какое время простоя допустимо?</p>
+<ul>
+<li>Злоумышленник заполняет файлы журнала, чтобы исчерпать дисковое пространство, доступное для нежурналирующих аспектов функционирования системы. Например, тот же диск, используемый для файлов журналов, может использоваться для хранения SQL-данных приложения.</li>
+<li>Злоумышленник заполняет файлы журнала, чтобы исчерпать дисковое пространство для дальнейшего журналирования.</li>
+<li>Злоумышленник использует одну запись журнала для уничтожения других записей журнала.</li>
+<li>Злоумышленник использует низкую производительность кода журналирования для снижения производительности приложения.</li>
+</ul>
+<h3 id="_26">Подотчётность<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h3>
+<p>Кто несёт ответственность за ущерб?</p>
+<ul>
+<li>Злоумышленник предотвращает запись, чтобы скрыть следы.</li>
+<li>Злоумышленник повреждает журнал, чтобы скрыть следы.</li>
+<li>Злоумышленник вызывает запись неверной идентичности в журнал, чтобы скрыть ответственную сторону.</li>
+</ul>
+<h2 id="_27">Связанные статьи<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h2>
+<ul>
+<li>OWASP <a href="https://owasp.org/www-project-enterprise-security-api/">ESAPI Documentation</a>.</li>
+<li>OWASP <a href="https://owasp.org/www-project-security-logging/">Logging Project</a>.</li>
+<li>IETF <a href="https://tools.ietf.org/rfc/rfc5424.txt">syslog protocol</a>.</li>
+<li>Mitre <a href="https://cee.mitre.org/">Common Event Expression (CEE)</a> (с 2014 года активно не разрабатывается).</li>
+<li>NIST <a href="https://csrc.nist.gov/publications/nistpubs/800-92/SP800-92.pdf">SP 800-92 Guide to Computer Security Log Management</a>.</li>
+<li>PCISSC <a href="https://www.pcisecuritystandards.org/security_standards/documents.php">PCI DSS v2.0 Requirement 10 and PA-DSS v2.0 Requirement 4</a>.</li>
+<li>W3C <a href="https://www.w3.org/TR/WD-logfile.html">Extended Log File Format</a>.</li>
+<li>Other <a href="https://taosecurity.blogspot.co.uk/2009/08/build-visibility-in.html">Build Visibility In, Richard Bejtlich, TaoSecurity blog</a>.</li>
+<li>Other <a href="https://community.microfocus.com/t5/ArcSight-Connectors/ArcSight-Common-Event-Format-CEF-Implementation-Standard/ta-p/1645557">Common Event Format (CEF), Arcsight</a>.</li>
+<li>Other <a href="https://www.ibm.com/developerworks/community/wikis/form/anonymous/api/wiki/9989d3d7-02c1-444e-92be-576b33d2f2be/page/3dc63f46-4a33-4e0b-98bf-4e55b74e556b/attachment/a19b9122-5940-4c89-ba3e-4b4fc25e2328/media/QRadar_LEEF_Format_Guide.pdf">Log Event Extended Format (<strong>LEEF</strong>), IBM</a>.</li>
+<li>Other <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb986747(v=vs.85).aspx">Common Log File System (CLFS), Microsoft</a>.</li>
+<li>Other <a href="https://www.symantec.com/connect/articles/building-secure-applications-consistent-logging">Building Secure Applications: Consistent Logging, Rohit Sethi &amp; Nish Bhalla, Symantec Connect</a>.</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

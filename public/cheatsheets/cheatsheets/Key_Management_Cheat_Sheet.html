@@ -1,0 +1,3556 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/Key_Management_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="Java_Security_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="Kubernetes_Security_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>Key Management - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Key Management
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Общие руководящие принципы и соображения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выбор ключей
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Выбор ключей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритмы и протоколы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Алгоритмы и протоколы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Криптографические хеш-функции
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритмы с симметричными ключами
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритмы с асимметричными ключами
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mac" class="md-nav__link">
+    <span class="md-ellipsis">
+      Коды аутентификации сообщений (MAC)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Цифровые подписи
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ключи шифрования ключей
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Стойкость ключей
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения об управлении памятью
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Совершенная прямая секретность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование ключей
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Темы по криптографическим модулям
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Лучшие практики жизненного цикла управления ключами
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Лучшие практики жизненного цикла управления ключами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Генерация
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Распределение
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хранение
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Депонирование и резервное копирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подотчётность и аудит
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компрометация и восстановление ключа
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хранилища доверия
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Библиотеки управления криптографическими ключами
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Документация
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Общие руководящие принципы и соображения
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выбор ключей
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Выбор ключей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритмы и протоколы
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Алгоритмы и протоколы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Криптографические хеш-функции
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритмы с симметричными ключами
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритмы с асимметричными ключами
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mac" class="md-nav__link">
+    <span class="md-ellipsis">
+      Коды аутентификации сообщений (MAC)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Цифровые подписи
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ключи шифрования ключей
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Стойкость ключей
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения об управлении памятью
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Совершенная прямая секретность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Использование ключей
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Темы по криптографическим модулям
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Лучшие практики жизненного цикла управления ключами
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Лучшие практики жизненного цикла управления ключами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Генерация
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Распределение
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хранение
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Депонирование и резервное копирование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подотчётность и аудит
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компрометация и восстановление ключа
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Хранилища доверия
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Библиотеки управления криптографическими ключами
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Документация
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="_1">Шпаргалка по управлению ключами<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">Введение<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>Данная шпаргалка по управлению ключами предоставляет разработчикам руководство по реализации управления криптографическими ключами в приложении безопасным образом. Важно документировать и согласовывать правила и практики по следующим темам:</p>
+<ol>
+<li>Управление жизненным циклом ключей (генерация, распределение, уничтожение)</li>
+<li>Компрометация, восстановление и обнуление ключей</li>
+<li>Хранение ключей</li>
+<li>Соглашение о ключах</li>
+</ol>
+<h2 id="_3">Общие руководящие принципы и соображения<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Разработайте план общей криптографической стратегии организации, который будет руководить разработчиками, работающими над различными приложениями, и обеспечит соответствие криптографических возможностей каждого приложения минимальным требованиям и лучшим практикам.</p>
+<p>Определите криптографические требования и требования к управлению ключами для вашего приложения и составьте карту всех компонентов, обрабатывающих или хранящих криптографический ключевой материал.</p>
+<h2 id="_4">Выбор ключей<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>Выбор криптографических алгоритмов и алгоритмов управления ключами для конкретного приложения должен начинаться с понимания целей приложения.</p>
+<p>Например, если приложению необходимо безопасно хранить данные, разработчик должен выбрать набор алгоритмов, поддерживающих цель защиты данных в состоянии покоя. Приложения, которым требуется передача и получение данных, выберут набор алгоритмов, поддерживающих цель защиты данных при передаче.</p>
+<p>Мы предоставили рекомендации по выбору криптографических наборов в приложении на основе целей приложения и безопасности. Разработчики приложений зачастую начинают разработку криптографических возможностей и управления ключами с изучения того, что доступно в библиотеке.</p>
+<p>Однако следует провести анализ реальных потребностей приложения, чтобы определить оптимальный подход к управлению ключами. Начните с понимания целей безопасности приложения, что затем определит выбор наиболее подходящих криптографических протоколов. Например, приложению может потребоваться:</p>
+<ol>
+<li>Конфиденциальность данных в состоянии покоя и конфиденциальность данных при передаче.</li>
+<li>Подлинность конечного устройства.</li>
+<li>Подлинность источника данных.</li>
+<li>Целостность данных при передаче.</li>
+<li>Ключи для создания ключей шифрования данных.</li>
+</ol>
+<p>После понимания потребностей безопасности приложения разработчики могут определить, какие протоколы и алгоритмы необходимы. После определения протоколов и алгоритмов можно начать определение различных типов ключей, которые будут поддерживать цели приложения.</p>
+<p>Существует разнообразный набор типов ключей и сертификатов для рассмотрения, например:</p>
+<ol>
+<li><strong>Шифрование:</strong> <a href="https://en.wikipedia.org/wiki/Symmetric-key_algorithm">Симметричные</a> ключи шифрования, <a href="https://en.wikipedia.org/wiki/Public-key_cryptography">Асимметричные</a> ключи шифрования (открытые и закрытые).</li>
+<li><strong>Аутентификация конечных устройств:</strong> Предварительно распределённые симметричные ключи, доверенные сертификаты, якоря доверия.</li>
+<li><strong>Аутентификация источника данных:</strong> <a href="https://en.wikipedia.org/wiki/HMAC">HMAC</a>.</li>
+<li><strong>Защита целостности:</strong> <a href="https://en.wikipedia.org/wiki/Message_authentication_code">Коды аутентификации сообщений</a> (MAC).</li>
+<li><strong>Ключи шифрования ключей</strong>.</li>
+</ol>
+<h3 id="_5">Алгоритмы и протоколы<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>Согласно <code>NIST SP 800-57 Part 1</code>, многие алгоритмы и схемы, предоставляющие услугу безопасности, используют <a href="https://en.wikipedia.org/wiki/Hash_function">хеш-функцию</a> в качестве компонента алгоритма.</p>
+<p>Хеш-функции используются в алгоритмах цифровой подписи (<code>FIPS186</code>), кодах аутентификации сообщений с ключом (HMAC) (<code>FIPS198</code>), функциях/методах получения ключей (<code>NIST Special Publications (SP) 800-56A, 800-56B, 800-56C и 800-108</code>) и генераторах случайных чисел (<code>NIST SP 800-90A</code>). Утверждённые хеш-функции определены в <code>FIPS180</code>.</p>
+<p><code>NIST SP 800-57 Part 1</code> выделяет три основных класса утверждённых криптографических алгоритмов: хеш-функции, симметричные алгоритмы и асимметричные алгоритмы. Классы определяются количеством криптографических ключей, используемых в сочетании с алгоритмом.</p>
+<p>АНБ опубликовало отчёт <a href="https://media.defense.gov/2025/May/30/2003728741/-1/-1/0/CSA_CNSA_2.0_ALGORITHMS.PDF">Commercial National Security Algorithm Suite 2.0</a>, в котором перечислены криптографические алгоритмы, ожидающиеся стойкими даже при достижениях в области квантовых вычислений.</p>
+<h4 id="-">Криптографические хеш-функции<a class="headerlink" href="#-" title="Permanent link">&para;</a></h4>
+<p>Криптографические хеш-функции не требуют ключей. Хеш-функции генерируют относительно небольшой дайджест (хеш-значение) из (возможно) большого входного значения так, что обратное вычисление принципиально затруднено (т.е. сложно найти входное значение, которое даст заданный результат). Хеш-функции используются как строительные блоки для управления ключами, например:</p>
+<ol>
+<li>Для обеспечения аутентификации данных и служб обеспечения целостности (Раздел 4.2.3) — хеш-функция используется с ключом для генерации кода аутентификации сообщения.</li>
+<li>Для сжатия сообщений при генерации и проверке цифровых подписей (Раздел 4.2.4).</li>
+<li>Для получения ключей в алгоритмах установления ключей (Раздел 4.2.5).</li>
+<li>Для генерации детерминированных случайных чисел (Раздел 4.2.7).</li>
+</ol>
+<h4 id="_6">Алгоритмы с симметричными ключами<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<p>Алгоритмы с симметричными ключами (иногда называемые алгоритмами с секретными ключами) преобразуют данные так, что обратное преобразование принципиально затруднено без знания секретного ключа. Ключ «симметричен», поскольку один и тот же ключ используется для криптографической операции и её обратной операции (например, шифрования и дешифрования).</p>
+<p>Симметричные ключи часто известны более чем одной стороне; однако ключ не должен раскрываться сторонам, не имеющим авторизованного доступа к данным, защищённым этим алгоритмом и ключом. Алгоритмы с симметричными ключами используются, например:</p>
+<ol>
+<li>Для обеспечения конфиденциальности данных (Раздел 4.2.2); один и тот же ключ используется для шифрования и дешифрования данных.</li>
+<li>Для обеспечения аутентификации и служб обеспечения целостности (Раздел 4.2.3) в форме кодов аутентификации сообщений (MAC); один и тот же ключ используется для генерации MAC и его проверки. MAC обычно используют либо алгоритм симметричного шифрования, либо криптографическую хеш-функцию в качестве криптографического примитива.</li>
+<li>Как часть процесса установления ключей (Раздел 4.2.5).</li>
+<li>Для генерации детерминированных случайных чисел (Раздел 4.2.7).</li>
+</ol>
+<h4 id="_7">Алгоритмы с асимметричными ключами<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>Алгоритмы с асимметричными ключами, широко известные как алгоритмы с открытым ключом, используют два связанных ключа (т.е. пару ключей) для выполнения своих функций: открытый ключ и закрытый ключ. Открытый ключ может быть известен любому; закрытый ключ должен находиться под исключительным контролем стороны, «владеющей» парой ключей. Несмотря на то, что открытый и закрытый ключи пары ключей связаны, знание открытого ключа не позволяет раскрыть закрытый ключ. Асимметричные алгоритмы используются, например:</p>
+<ol>
+<li>Для вычисления цифровых подписей (Раздел 4.2.4).</li>
+<li>Для установления криптографического ключевого материала (Раздел 4.2.5).</li>
+<li>Для генерации случайных чисел (Раздел 4.2.7).</li>
+</ol>
+<h4 id="mac">Коды аутентификации сообщений (MAC)<a class="headerlink" href="#mac" title="Permanent link">&para;</a></h4>
+<p>Коды аутентификации сообщений (MAC) обеспечивают аутентификацию данных и целостность. MAC — это криптографическая контрольная сумма данных, используемая для обеспечения уверенности в том, что данные не изменились и что MAC был вычислен ожидаемой стороной.</p>
+<p>Хотя целостность сообщений часто обеспечивается с помощью некриптографических методов, известных как коды обнаружения ошибок, эти коды могут быть изменены злоумышленником в его интересах. Использование утверждённого криптографического механизма, такого как MAC, позволяет решить эту проблему.</p>
+<p>Кроме того, MAC может предоставить получателю уверенность в том, что источник данных является держателем ключа (т.е. стороной, авторизованной для обладания ключом). MAC часто используются для аутентификации отправителя перед получателем, когда только эти две стороны разделяют ключ MAC.</p>
+<h4 id="_8">Цифровые подписи<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<p><a href="https://en.wikipedia.org/wiki/Digital_signature">Цифровые подписи</a> используются для обеспечения аутентификации, целостности и <a href="https://en.wikipedia.org/wiki/Non-repudiation">неотказуемости</a>. Цифровые подписи используются в сочетании с хеш-функциями и вычисляются на данных любой длины (до предела, определяемого хеш-функцией).</p>
+<p><code>FIPS186</code> определяет алгоритмы, утверждённые для вычисления цифровых подписей.</p>
+<h4 id="_9">Ключи шифрования ключей<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<p>Симметричные ключи оборачивания ключей используются для шифрования других ключей с помощью алгоритмов симметричного ключа. Ключи оборачивания ключей также известны как ключи шифрования ключей.</p>
+<h3 id="_10">Стойкость ключей<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>Ознакомьтесь с <code>NIST SP 800-57</code> (Рекомендация по управлению ключами) для получения рекомендуемых руководящих принципов по стойкости ключей для конкретных реализаций алгоритмов. Также рассмотрите следующие лучшие практики:</p>
+<ol>
+<li>Установите минимальную вычислительную стойкость приложения к атакам. Понимание минимальной вычислительной стойкости к атакам должно учитывать изощрённость злоумышленников, как долго необходимо защищать данные, где данные хранятся и подвергаются ли они воздействию. Определение вычислительной стойкости к атакам позволит инженерам узнать минимальную длину криптографического ключа, необходимую для защиты данных в течение их жизненного цикла. Обратитесь к <code>NIST SP 800-131a</code> для получения дополнительных рекомендаций по определению соответствующих длин ключей для выбранного алгоритма.</li>
+<li>При шифровании ключей для хранения или распределения всегда шифруйте криптографический ключ другим ключом равной или большей криптографической стойкости.</li>
+<li>При переходе на <a href="https://en.wikipedia.org/wiki/Elliptic-curve_cryptography">алгоритмы на основе эллиптических кривых</a> выбирайте длину ключа, равную или превосходящую сравнимую стойкость других алгоритмов, используемых в вашей системе. Обратитесь к <code>NIST SP 800-57 Таблица 2</code>.</li>
+<li>Разработайте стратегию общей криптографической стратегии организации, которая будет руководить разработчиками, работающими над различными приложениями, и обеспечит соответствие криптографических возможностей каждого приложения минимальным требованиям и лучшим практикам.</li>
+</ol>
+<h3 id="_11">Соображения об управлении памятью<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>Ключи, хранящиеся в памяти в течение длительного времени, могут «отпечататься». Это можно смягчить путём разбиения ключа на компоненты, которые часто обновляются (<code>NIST SP 800-57</code>).</p>
+<p>Потеря или повреждение носителя памяти, на котором хранятся ключи и/или сертификаты, и планирование восстановления согласно <code>NIST SP 800-57</code>.</p>
+<p>Планируйте восстановление после возможного повреждения носителя памяти, необходимого для систем, подсистем или компонентов генерации, регистрации и/или распределения ключей или сертификатов, как рекомендовано в <code>NIST SP 800-57</code>.</p>
+<h3 id="_12">Совершенная прямая секретность<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p><a href="https://en.wikipedia.org/wiki/Ephemeral_key">Эфемерные ключи</a> могут обеспечить защиту совершенной прямой секретности, что означает: компрометация долгосрочного ключа подписи сервера не компрометирует конфиденциальность прошлых сессий. Обратитесь к <a href="Transport_Layer_Security_Cheat_Sheet.html">шпаргалке по TLS</a>.</p>
+<h3 id="_13">Использование ключей<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p>Согласно NIST, в целом один ключ должен использоваться только для одной цели (например, шифрования, аутентификации, оборачивания ключей, генерации случайных чисел или цифровых подписей).</p>
+<p>Существует несколько причин для этого:</p>
+<ol>
+<li>Использование одного и того же ключа для двух различных криптографических процессов может ослабить безопасность, обеспечиваемую одним или обоими процессами.</li>
+<li>Ограничение использования ключа ограничивает ущерб, который мог бы быть причинён в случае его компрометации.</li>
+<li>Некоторые варианты использования ключей мешают друг другу. Например, время, в течение которого ключ может потребоваться для каждого использования и цели. Требования к хранению данных могут различаться для разных типов данных.</li>
+</ol>
+<h3 id="_14">Темы по криптографическим модулям<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<p>Согласно <code>NIST SP 800-133</code>, криптографические модули — это набор аппаратного обеспечения, программного обеспечения и/или встроенного программного обеспечения, реализующего функции безопасности (включая криптографические алгоритмы и генерацию ключей) и содержащегося в пределах криптографического модуля для обеспечения защиты ключей.</p>
+<h2 id="_15">Лучшие практики жизненного цикла управления ключами<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
+<h3 id="_16">Генерация<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
+<p>Криптографические ключи должны генерироваться в криптографическом модуле с соответствием как минимум <code>FIPS 140-2 или 140-3</code>. Для пояснительных целей рассматривайте криптографический модуль, в котором генерируется ключ, как модуль генерации ключей.</p>
+<p>Любое случайное значение, необходимое модулю генерации ключей, должно генерироваться внутри этого модуля; то есть генератор случайных битов, генерирующий случайное значение, должен быть реализован в криптографическом модуле с соответствием как минимум <code>FIPS 140-2 или 140-3</code>, генерирующем ключ.</p>
+<p>Аппаратные криптографические модули предпочтительнее программных криптографических модулей для защиты.</p>
+<h3 id="_17">Распределение<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<p>Сгенерированные ключи должны передаваться (при необходимости) по защищённым каналам и использоваться соответствующим криптографическим алгоритмом как минимум в криптографических модулях, соответствующих <code>FIPS 140-2 или 140-3</code>. Для получения дополнительных сведений о рекомендациях этого раздела обратитесь к <code>NIST Special Paper 800-133</code>.</p>
+<h3 id="_18">Хранение<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Разработчики должны понимать, где в приложении хранятся криптографические ключи. Определите, на каких устройствах памяти хранятся ключи.</li>
+<li>Ключи должны быть защищены как в энергозависимой, так и в постоянной памяти, в идеале обрабатываясь в безопасных криптографических модулях.</li>
+<li>Ключи никогда не должны храниться в открытом виде.</li>
+<li>Убедитесь, что все ключи хранятся в криптографическом хранилище, таком как <a href="https://en.wikipedia.org/wiki/Hardware_security_module">аппаратный модуль безопасности</a> (HSM) или изолированный криптографический сервис.</li>
+<li>Если вы планируете хранить ключи на автономных устройствах/базах данных, зашифруйте ключи с использованием ключей шифрования ключей (KEK) перед экспортом ключевого материала. Длина (и алгоритм) KEK должна быть эквивалентна или превосходить стойкость защищаемых ключей.</li>
+<li>Обеспечьте применение защиты целостности к ключам при хранении (рассмотрите алгоритмы двойного назначения, поддерживающие шифрование и MAC).</li>
+<li>Убедитесь, что стандартный код на уровне приложения никогда не читает криптографические ключи и не использует их напрямую — используйте библиотеки управления ключами.</li>
+<li>Убедитесь, что ключи и криптографические операции выполняются внутри защищённого хранилища.</li>
+<li>Вся работа должна выполняться в хранилище (например, доступ к ключам, шифрование, дешифрование, подписание и т.д.).</li>
+</ol>
+<p>Для более полного руководства по хранению конфиденциальной информации, такой как ключи, см. <a href="Secrets_Management_Cheat_Sheet.html">Шпаргалку по управлению секретами</a>.</p>
+<h3 id="_19">Депонирование и резервное копирование<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h3>
+<p>Данные, зашифрованные с использованием утраченных криптографических ключей, никогда не будут восстановлены. Поэтому приложение обязательно должно включать безопасную возможность резервного копирования ключей, особенно для приложений, поддерживающих шифрование данных в состоянии покоя для долгосрочных хранилищ данных.</p>
+<p>При резервном копировании ключей убедитесь, что база данных, используемая для хранения ключей, зашифрована с использованием как минимум валидированного модуля <code>FIPS 140-2 или 140-3</code>. Иногда полезно депонировать ключевой материал для использования в расследованиях и для повторного предоставления ключевого материала пользователям в случае утери или повреждения ключа.</p>
+<p>Никогда не депонируйте ключи, используемые для создания цифровых подписей, но рассматривайте необходимость депонирования ключей, поддерживающих шифрование. Зачастую депонирование может выполняться <a href="https://en.wikipedia.org/wiki/Certificate_authority">Центром сертификации</a> (CA) или системой управления ключами, предоставляющей сертификаты и ключи; однако в некоторых случаях необходимо реализовать отдельные API, чтобы система могла выполнять депонирование для приложения.</p>
+<h3 id="_20">Подотчётность и аудит<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
+<p>Подотчётность подразумевает идентификацию тех, кто имеет доступ к криптографическим ключам или контролирует их на протяжении их жизненного цикла. Подотчётность может быть эффективным инструментом для предотвращения компрометации ключей и снижения воздействия компрометации после её обнаружения.</p>
+<p>Хотя предпочтительно, чтобы ни один человек не мог видеть ключи, как минимум система управления ключами должна учитывать всех лиц, способных видеть криптографические ключи в открытом виде.</p>
+<p>Кроме того, более сложные системы управления ключами могут учитывать всех лиц, авторизованных для доступа к любым криптографическим ключам или управления ими — как в открытом, так и в зашифрованном виде.</p>
+<p>Подотчётность обеспечивает три значительных преимущества:</p>
+<ol>
+<li>Помогает определить, когда могла произойти компрометация и какие лица могли быть причастны.</li>
+<li>Защищает от компрометации, поскольку лица, имеющие доступ к ключу, знают, что их доступ к ключу зафиксирован.</li>
+<li>Очень полезна при восстановлении после обнаруженной компрометации ключа для определения, где использовался ключ и какие данные или другие ключи были защищены скомпрометированным ключом.</li>
+</ol>
+<p>Определённые принципы оказались полезными для обеспечения подотчётности криптографических ключей. Эти принципы могут применяться не ко всем системам или всем типам ключей.</p>
+<p>Некоторые принципы, применимые к долгосрочным ключам, контролируемым людьми, включают:</p>
+<ol>
+<li>Уникальная идентификация ключей.</li>
+<li>Идентификация пользователя ключа.</li>
+<li>Идентификация дат и времени использования ключа, а также защищаемых данных.</li>
+<li>Идентификация других ключей, защищённых симметричным или закрытым ключом.</li>
+</ol>
+<p>Для систем управления ключами должны проводиться два типа аудита:</p>
+<ol>
+<li>План безопасности и процедуры, разработанные для его поддержки, должны периодически проверяться, чтобы убедиться, что они по-прежнему поддерживают политику управления ключами (<code>NIST SP 800-57 Part 2</code>).</li>
+<li>Применяемые защитные механизмы должны периодически переоцениваться с точки зрения уровня безопасности, который они обеспечивают и ожидается обеспечить в будущем, а также правильно и эффективно ли они поддерживают соответствующие политики.</li>
+</ol>
+<p>Следует учитывать новые технологические разработки и атаки. На более регулярной основе действия людей, использующих, эксплуатирующих и обслуживающих систему, должны проверяться для подтверждения соблюдения установленных процедур безопасности.</p>
+<p>Сильные криптографические системы могут быть скомпрометированы небрежными и неадекватными действиями людей. Крайне необычные события должны фиксироваться и проверяться как возможные индикаторы попыток атак на систему.</p>
+<h3 id="_21">Компрометация и восстановление ключа<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
+<p>Компрометация ключа имеет следующие последствия:</p>
+<ol>
+<li>В целом, несанкционированное раскрытие ключа, используемого для обеспечения защиты конфиденциальности (т.е. посредством шифрования), означает, что все данные, зашифрованные этим ключом, могут быть раскрыты или стать известными несанкционированным сторонам. Раскрытие закрытого ключа подписи Центра сертификации означает, что злоумышленник может создавать мошеннические сертификаты и списки отзыва сертификатов (CRL).</li>
+<li>Компрометация целостности ключа означает, что ключ неверен — либо ключ был изменён (намеренно или случайно), либо был подменён другим ключом; это включает удаление (недоступность) ключа. Подмена или модификация ключа, используемого для обеспечения целостности, ставит под сомнение целостность всей информации, защищённой этим ключом. Эта информация могла быть предоставлена или изменена несанкционированной стороной, знающей ключ. Подмена открытого или секретного ключа, который будет использоваться (в будущем) для шифрования данных, может позволить несанкционированной стороне (знающей ключ дешифрования) дешифровать данные, зашифрованные с использованием ключа шифрования.</li>
+<li>Компрометация связи ключа с его использованием или приложением означает, что ключ может использоваться для неправильной цели (например, для установления ключей вместо цифровых подписей) или для неправильного приложения, что может привести к компрометации информации, защищённой ключом.</li>
+<li>Компрометация связи ключа с владельцем или другой стороной означает, что личность другой стороны не может быть удостоверена (т.е. неизвестно, кто в действительности является другой стороной) или что информация не может быть обработана правильно (например, дешифрована с правильным ключом).</li>
+<li>Компрометация связи ключа с другой информацией означает, что связи нет вообще или что связь установлена с неправильной «информацией». Это может привести к сбою криптографических служб, потере информации или компрометации безопасности информации. Аналогично воздействию программ-вымогателей, за исключением того, что нельзя заплатить выкуп и вернуть ключ.</li>
+</ol>
+<p>Обычно задействуются следующие процедуры:</p>
+<ol>
+<li>Ограничение времени нахождения симметричного или закрытого ключа в открытом виде.</li>
+<li>Предотвращение просмотра людьми симметричных и закрытых ключей в открытом виде.</li>
+<li>Ограничение симметричных и закрытых ключей в открытом виде физически защищёнными контейнерами. Это включает генераторы ключей, устройства транспортировки ключей, загрузчики ключей, криптографические модули и устройства хранения ключей.</li>
+<li>Использование проверок целостности для обеспечения сохранности ключа или его связи с другими данными. Например, ключи могут оборачиваться (т.е. шифроваться) таким образом, что несанкционированные изменения оборачивания или связей будут обнаружены.</li>
+<li>Применение подтверждения ключа (см. NIST SP 800-57 Part 1 Раздел 4.2.5.5) для обеспечения уверенности в том, что правильный ключ действительно был установлен.</li>
+<li>Создание системы подотчётности, отслеживающей каждый доступ к симметричным и закрытым ключам в открытом виде.</li>
+<li>Обеспечение криптографической проверки целостности ключа (например, с использованием MAC или цифровой подписи).</li>
+<li>Использование доверенных временных меток для подписанных данных. Уничтожение ключей сразу после того, как они больше не нужны.</li>
+<li>Создание плана восстановления после компрометации, особенно в случае компрометации CA.</li>
+</ol>
+<p>План восстановления после компрометации необходим для восстановления криптографических служб безопасности в случае компрометации ключа. План восстановления после компрометации должен быть задокументирован и легко доступен.</p>
+<p>План восстановления после компрометации должен содержать:</p>
+<ol>
+<li>Идентификацию и контактную информацию персонала для уведомления.</li>
+<li>Идентификацию и контактную информацию персонала для выполнения действий по восстановлению.</li>
+<li>Метод замены ключей.</li>
+<li>Инвентарь всех криптографических ключей и их использование (например, расположение всех сертификатов в системе).</li>
+<li>Обучение всего соответствующего персонала процедурам восстановления.</li>
+<li>Идентификацию и контактную информацию всего персонала, необходимого для поддержки процедур восстановления.</li>
+<li>Политики обязательной проверки отзыва ключей (для минимизации последствий компрометации).</li>
+<li>Мониторинг операций по замене ключей (для обеспечения выполнения всех необходимых операций для всех затронутых ключей).</li>
+<li>Любые другие процедуры восстановления, которые могут включать:<ol>
+<li>Физическую проверку оборудования.</li>
+<li>Идентификацию всей информации, которая могла быть скомпрометирована в результате инцидента.</li>
+<li>Идентификацию всех подписей, которые могут быть недействительными из-за компрометации ключа подписи.</li>
+<li>Распределение нового ключевого материала при необходимости.</li>
+</ol>
+</li>
+</ol>
+<h2 id="_22">Хранилища доверия<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Разработайте меры контроля для защиты хранилища доверия от внедрения корневых сертификатов третьих сторон. Управление доступом реализуется и применяется на уровне каждой стороны и приложения.</li>
+<li>Реализуйте средства контроля целостности объектов, хранящихся в хранилище доверия.</li>
+<li>Не допускайте экспорта ключей из хранилища доверия без аутентификации и авторизации.</li>
+<li>Установите строгие политики и процедуры для экспорта ключевого материала из приложений в сетевые приложения и другие компоненты.</li>
+<li>Реализуйте безопасный процесс обновления хранилища доверия.</li>
+</ol>
+<h2 id="_23">Библиотеки управления криптографическими ключами<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h2>
+<p>Используйте только авторитетные криптографические библиотеки, которые хорошо поддерживаются, обновляются и протестированы и валидированы сторонними организациями (например, <code>NIST</code>/<code>FIPS</code>).</p>
+<h2 id="_24">Документация<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://cryptobook.nakov.com/">Practical cryptography for developers</a>.</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

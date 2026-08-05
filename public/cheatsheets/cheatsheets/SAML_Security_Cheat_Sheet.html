@@ -1,0 +1,3859 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Website with the collection of all the cheat sheets of the project.">
+      
+      
+      
+        <link rel="canonical" href="https://cheatsheetseries.owasp.org/cheatsheets/SAML_Security_Cheat_Sheet.html">
+      
+      
+        <link rel="prev" href="Ruby_on_Rails_Cheat_Sheet.html">
+      
+      
+        <link rel="next" href="SQL_Injection_Prevention_Cheat_Sheet.html">
+      
+      
+      <link rel="icon" href="../assets/WebSite_Favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+    
+    
+      
+        <title>SAML Security - OWASP Серия шпаргалок по безопасности</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#saml" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-header__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Серия шпаргалок по безопасности
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SAML Security
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="OWASP Серия шпаргалок по безопасности" class="md-nav__button md-logo" aria-label="OWASP Серия шпаргалок по безопасности" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo.svg" alt="logo">
+
+    </a>
+    OWASP Серия шпаргалок по безопасности
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/CheatSheetSeries" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/CheatSheetSeries
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Введение
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс (по алфавиту)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс ASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexMASVS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс MASVS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexProactiveControls.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс превентивных мер
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IndexTopTen.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Индекс Top 10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Шпаргалки
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Шпаргалки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AI_Agent_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AI-агентов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AJAX_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность AJAX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Abuse_Case_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Случаи злоупотреблений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Access_Control_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Контроль доступа
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attack_Surface_Analysis_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ поверхности атаки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Authorization_Testing_Automation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Автоматизация тестирования авторизации
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Automotive_Security.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность автомобилей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Bean_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация Bean
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Browser_Extension_Vulnerabilities_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Уязвимости расширений браузера
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C-Based_Toolchain_Hardening_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Укрепление C-инструментальной цепочки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="CI_CD_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Choosing_and_Using_Security_Questions_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выбор и использование секретных вопросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Clickjacking_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от Clickjacking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Content_Security_Policy_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Content Security Policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cookie_Theft_Mitigation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение кражи Cookie
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Credential_Stuffing_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Credential Stuffing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cross_Site_Scripting_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Cryptographic_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Криптографическое хранилище
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_Clobbering_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM Clobbering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DOM_based_XSS_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение DOM XSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Database_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность баз данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Denial_of_Service_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Отказ в обслуживании
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Dependency_Graph_SBOM_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Граф зависимостей SBOM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Deserialization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Десериализация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_REST_Framework_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Django REST Framework
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Django_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Django
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Docker_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="DotNet_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность .NET
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Drone_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность дронов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Error_Handling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обработка ошибок
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="File_Upload_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Загрузка файлов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Forgot_Password_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Восстановление пароля
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="GraphQL_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность GraphQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gRPC_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTML5_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность HTML5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Headers_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP-заголовки
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="HTTP_Strict_Transport_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Strict Transport Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Infrastructure_as_Code_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Injection_Prevention_in_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение инъекций в Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Input_Validation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Валидация входных данных
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение IDOR
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JAAS_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JAAS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="JSON_Web_Token_for_Java_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON Web Token для Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Java_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Key_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление ключами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Kubernetes_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Laravel_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Laravel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LDAP_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LDAP-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Legacy_Application_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление устаревшими приложениями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение LLM Prompt Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Логирование
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Logging_Vocabulary_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Словарь событий логирования
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MCP_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность MCP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mass_Assignment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Массовое присваивание
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Microservices_based_Security_Arch_Doc_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура безопасности микросервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mobile_Application_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мобильных приложений
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multifactor_Authentication_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Многофакторная аутентификация
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Multi_Tenant_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность мультиарендных систем
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Network_Segmentation_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Сегментация сети
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NodeJS_Docker_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node.js в Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Nodejs_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Node.js
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NoSQL_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NoSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="NPM_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность NPM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OAuth2_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OAuth 2.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OS_Command_Injection_Defense_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита от инъекции команд ОС
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_Storage_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Хранение паролей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PHP_Configuration_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Конфигурация PHP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Pinning_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Закрепление сертификатов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prototype_Pollution_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение Prototype Pollution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Query_Parameterization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Параметризация запросов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Assessment_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Оценка REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="REST_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Ruby_on_Rails_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ruby on Rails
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="SAML_Security_Cheat_Sheet.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность SAML
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка конфиденциальности и целостности сообщений
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка использования протокола
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Проверка использования протокола">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка подписей
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка правил обработки протокола
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка реализации привязки
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка мер безопасности
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idp-initiated-sso-service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения по незапрошенным ответам (IdP Initiated SSO) для Service Provider
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identity-provider-service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения для Identity Provider и Service Provider
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Соображения для Identity Provider и Service Provider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#x509" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения по сертификатам X.509
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Соображения по сертификатам X.509">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#saml_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Стороны SAML и организации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Случаи использования сертификатов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Случаи использования сертификатов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#saml-idp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подписание SAML IdP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saml-idp_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шифрование SAML IdP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подписание SP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sp_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шифрование SP
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Содержимое сертификата
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Содержимое сертификата">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ключи и алгоритмы подписи
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ключи и алгоритмы подписи">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ключи
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритмы подписи
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Срок жизни сертификата
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extended-key-usage-eku-key-usage-ku" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extended Key Usage (EKU) и Key Usage (KU)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#crl-distribution-point-cdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Точка распределения списка отзыва сертификатов (CRL Distribution Point, CDP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-ocsp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Протокол статуса онлайн-сертификата (OCSP)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Иерархия сертификатов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Иерархия сертификатов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Издатель сертификата
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Публичный центр сертификации (CA)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ca_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Частный центр сертификации (CA)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Самоподписанный сертификат
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Самоподписанный сертификат">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#saml-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Создание самоподписанного SAML-сертификата
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url-" class="md-nav__link">
+    <span class="md-ellipsis">
+      URL-адреса метаданных сертификата
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита ключа подписи
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identity-provider-idp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения для Identity Provider (IdP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-provider-sp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения для Service Provider (SP)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Валидация входных данных
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Криптография
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SQL_Injection_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SQL-инъекций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_AI_Model_Ops_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Операции с AI-моделями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Cloud_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасная облачная архитектура
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Code_Review_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Анализ безопасности кода
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secure_Product_Design_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасное проектирование продукта
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Securing_Cascading_Style_Sheets_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность CSS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение SSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Serverless_FaaS_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность Serverless/FaaS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Session_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сессиями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Software_Supply_Chain_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность цепочки поставок ПО
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Symfony_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Symfony
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Secrets_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление секретами
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Javascript_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление сторонним JavaScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Third_Party_Payment_Gateway_Integration.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Интеграция платёжных шлюзов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Threat_Modeling_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Моделирование угроз
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TLS_Cipher_String_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Строки шифров TLS (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transaction_Authorization_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Авторизация транзакций
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита транспортного уровня (устарело)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Transport_Layer_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность транспортного уровня
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Неверифицированные перенаправления
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="User_Privacy_Protection_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Защита конфиденциальности пользователей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Virtual_Patching_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Виртуальные патчи
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Disclosure_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Раскрытие уязвимостей
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerable_Dependency_Management_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Управление уязвимыми зависимостями
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Service_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность веб-сервисов
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="WebSocket_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность WebSocket
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_External_Entity_Prevention_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Предотвращение XXE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XML_Security_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Безопасность XML
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XS_Leaks_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    XS Leaks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="XSS_Filter_Evasion_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Обход XSS-фильтров
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Zero_Trust_Architecture_Cheat_Sheet.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Архитектура Zero Trust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Введение
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка конфиденциальности и целостности сообщений
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка использования протокола
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Проверка использования протокола">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка подписей
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка правил обработки протокола
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка реализации привязки
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Проверка мер безопасности
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idp-initiated-sso-service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения по незапрошенным ответам (IdP Initiated SSO) для Service Provider
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identity-provider-service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения для Identity Provider и Service Provider
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Соображения для Identity Provider и Service Provider">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#x509" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения по сертификатам X.509
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Соображения по сертификатам X.509">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#saml_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Стороны SAML и организации
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Случаи использования сертификатов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Случаи использования сертификатов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#saml-idp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подписание SAML IdP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saml-idp_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шифрование SAML IdP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подписание SP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sp_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шифрование SP
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Содержимое сертификата
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Содержимое сертификата">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ключи и алгоритмы подписи
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ключи и алгоритмы подписи">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ключи
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритмы подписи
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Срок жизни сертификата
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extended-key-usage-eku-key-usage-ku" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extended Key Usage (EKU) и Key Usage (KU)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#crl-distribution-point-cdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Точка распределения списка отзыва сертификатов (CRL Distribution Point, CDP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-ocsp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Протокол статуса онлайн-сертификата (OCSP)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Иерархия сертификатов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Иерархия сертификатов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Издатель сертификата
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Публичный центр сертификации (CA)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ca_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Частный центр сертификации (CA)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Самоподписанный сертификат
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Самоподписанный сертификат">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#saml-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Создание самоподписанного SAML-сертификата
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url-" class="md-nav__link">
+    <span class="md-ellipsis">
+      URL-адреса метаданных сертификата
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Защита ключа подписи
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identity-provider-idp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения для Identity Provider (IdP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-provider-sp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Соображения для Service Provider (SP)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Валидация входных данных
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Криптография
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="saml">Шпаргалка по безопасности SAML<a class="headerlink" href="#saml" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Введение<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><strong>S</strong>ecurity <strong>A</strong>ssertion <strong>M</strong>arkup <strong>L</strong>anguage (<a href="https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a>) — открытый стандарт для обмена информацией об авторизации и аутентификации. <em>Профиль SAML/SSO для веб-браузера с привязками Redirect/POST</em> является одной из наиболее распространённых реализаций SSO. Данная шпаргалка сосредоточена преимущественно на этом профиле.</p>
+<h2 id="_2">Проверка конфиденциальности и целостности сообщений<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><a href="Transport_Layer_Security_Cheat_Sheet.html">TLS 1.2</a> — наиболее распространённое решение для обеспечения конфиденциальности и целостности сообщений на транспортном уровне. Обратитесь к <a href="https://docs.oasis-open.org/security/saml/v2.0/saml-sec-consider-2.0-os.pdf">SAML Security (раздел 4.2.1)</a> для получения дополнительной информации. Этот шаг поможет противодействовать следующим атакам:</p>
+<ul>
+<li>Перехват (Eavesdropping) 7.1.1.1</li>
+<li>Кража информации аутентификации пользователя 7.1.1.2</li>
+<li>Кража Bearer-токена 7.1.1.3</li>
+<li>Удаление сообщений 7.1.1.6</li>
+<li>Модификация сообщений 7.1.1.7</li>
+<li>Атака «человек посередине» 7.1.1.8</li>
+</ul>
+<p>Сообщение с цифровой подписью и сертифицированным ключом — наиболее распространённое решение для обеспечения целостности и аутентификации сообщений. Обратитесь к <a href="https://docs.oasis-open.org/security/saml/v2.0/saml-sec-consider-2.0-os.pdf">SAML Security (раздел 4.3)</a> для получения дополнительной информации. Этот шаг поможет противодействовать следующим атакам:</p>
+<ul>
+<li>Атака «человек посередине» 6.4.2</li>
+<li>Поддельное утверждение (Forged Assertion) 6.4.3</li>
+<li>Модификация сообщений 7.1.1.7</li>
+</ul>
+<p>Утверждения могут быть зашифрованы через XMLEnc для предотвращения раскрытия конфиденциальных атрибутов после передачи. Обратитесь к <a href="https://docs.oasis-open.org/security/saml/v2.0/saml-sec-consider-2.0-os.pdf">SAML Security (раздел 4.2.2)</a> для получения дополнительной информации. Этот шаг поможет противодействовать следующим атакам:</p>
+<ul>
+<li>Кража информации аутентификации пользователя 7.1.1.2</li>
+</ul>
+<h2 id="_3">Проверка использования протокола<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>Это распространённая область для пробелов в безопасности — см. <a href="https://www.kb.cert.org/vuls/id/612636/">уязвимость Google SSO</a> как реальный пример. Их SSO-профиль был уязвим к атаке «человек посередине» со стороны вредоносного SP (Service Provider).</p>
+<p>Профиль SSO для веб-браузера наиболее уязвим к атакам со стороны доверенных партнёров. Эта конкретная уязвимость была обнаружена потому, что SAML Response не содержал всех необходимых элементов данных для безопасного обмена сообщениями. Соблюдение требований использования <a href="https://docs.oasis-open.org/security/saml/v2.0/saml-profiles-2.0-os.pdf">SAML Profile</a> для AuthnRequest (4.1.4.1) и Response (4.1.4.2) поможет противодействовать этой атаке.</p>
+<p>Команда <em>AVANTSSAR</em> предложила следующие обязательные элементы данных:</p>
+<ul>
+<li><strong>AuthnRequest(ID, SP):</strong> <code>AuthnRequest</code> должен содержать <code>ID</code> и <code>SP</code>. Где <code>ID</code> — строка, однозначно идентифицирующая запрос, а <code>SP</code> идентифицирует <code>Service Provider</code>, инициировавший запрос. Кроме того, атрибут <code>ID</code> запроса должен быть возвращён в ответе (<code>InResponseTo="&lt;requestId&gt;"</code>). <code>InResponseTo</code> помогает гарантировать подлинность ответа от доверенного IdP. Это был один из отсутствующих атрибутов, из-за которого SSO Google оказался уязвимым.</li>
+<li><strong>Response(ID, SP, IdP, {AA} K -1/IdP):</strong> Response должен содержать все эти элементы. Где <code>ID</code> — строка, однозначно идентифицирующая ответ. <code>SP</code> идентифицирует получателя ответа. <code>IdP</code> идентифицирует поставщика удостоверений, авторизующего ответ. <code>{AA} K -1/IdP</code> — утверждение с цифровой подписью, подписанное закрытым ключом <code>IdP</code>.</li>
+<li><strong>AuthAssert(ID, C, IdP, SP):</strong> В Response должно существовать утверждение аутентификации. Оно должно содержать <code>ID</code>, клиента <code>(C)</code>, поставщика удостоверений <code>(IdP)</code> и идентификатор поставщика услуг <code>(SP)</code>.</li>
+</ul>
+<h3 id="_4">Проверка подписей<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>Уязвимости в реализациях SAML, связанные с атаками XML Signature Wrapping, были описаны в 2012 году в работе <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final91-8-23-12.pdf">On Breaking SAML: Be Whoever You Want to Be</a>.</p>
+<p>В ответ были предложены следующие рекомендации (<a href="https://arxiv.org/pdf/1401.7483v1.pdf">Secure SAML validation to prevent XML signature wrapping attacks</a>):</p>
+<ul>
+<li>Без исключений всегда выполняйте валидацию схемы XML-документа перед его использованием в целях безопасности:<ul>
+<li>Всегда используйте локальные, доверенные копии схем для валидации.</li>
+<li>Никогда не разрешайте автоматическую загрузку схем из сторонних источников.</li>
+<li>По возможности проверяйте схемы и выполняйте их ужесточение, отключая возможные выражения с подстановочными типами или упрощённой обработкой.</li>
+</ul>
+</li>
+<li>Надёжно проверяйте цифровую подпись:<ul>
+<li>Если ожидается только один ключ подписи, используйте <code>StaticKeySelector</code>. Получите ключ непосредственно от поставщика удостоверений, сохраните его в локальном файле и игнорируйте любые элементы <code>KeyInfo</code> в документе.</li>
+<li>Если ожидается более одного ключа подписи, используйте <code>X509KeySelector</code> (вариант JKS). Получите эти ключи непосредственно от поставщиков удостоверений, сохраните их в локальном JKS и игнорируйте любые элементы <code>KeyInfo</code> в документе.</li>
+</ul>
+</li>
+<li>Избегайте атак подмены подписи (signature-wrapping).<ul>
+<li>Никогда не используйте <code>getElementsByTagName</code> для выбора элементов безопасности в XML-документе без предварительной валидации.</li>
+<li>Всегда используйте абсолютные XPath-выражения для выбора элементов, если не применяется ужесточённая схема для валидации.</li>
+</ul>
+</li>
+</ul>
+<h2 id="_5">Проверка правил обработки протокола<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>Это ещё одна распространённая область пробелов в безопасности, просто из-за огромного количества шагов, которые необходимо проверить.</p>
+<p>Обработка SAML response — дорогостоящая операция, но все шаги должны быть проверены:</p>
+<ul>
+<li>Проверьте правила обработки AuthnRequest. Обратитесь к <a href="https://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf">SAML Core</a> (3.4.1.4) для получения всех правил обработки AuthnRequest. Этот шаг поможет противодействовать следующим атакам:<ul>
+<li>Атака «человек посередине» (6.4.2)</li>
+</ul>
+</li>
+<li>Проверьте правила обработки Response. Обратитесь к <a href="https://docs.oasis-open.org/security/saml/v2.0/saml-profiles-2.0-os.pdf">SAML Profiles</a> (4.1.4.3) для получения всех правил обработки Response. Этот шаг поможет противодействовать следующим атакам:<ul>
+<li>Украденное утверждение (Stolen Assertion) (6.4.1)</li>
+<li>Атака «человек посередине» (6.4.2)</li>
+<li>Поддельное утверждение (Forged Assertion) (6.4.3)</li>
+<li>Раскрытие состояния браузера (Browser State Exposure) (6.4.4)</li>
+</ul>
+</li>
+</ul>
+<h2 id="_6">Проверка реализации привязки<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Для HTTP Redirect Binding обратитесь к <a href="https://docs.oasis-open.org/security/saml/v2.0/saml-bindings-2.0-os.pdf">SAML Binding</a> (3.4). Для просмотра примера кодирования можно обратиться к RequestUtil.java из <a href="https://developers.google.com/google-apps/sso/saml_reference_implementation_web">эталонной реализации Google</a>.</li>
+<li>Для HTTP POST Binding обратитесь к <a href="https://docs.oasis-open.org/security/saml/v2.0/saml-bindings-2.0-os.pdf">SAML Binding</a> (3.5). Соображения о кешировании также очень важны. Если SAML-сообщение протокола будет закешировано, оно впоследствии может быть использовано в атаках «Украденное утверждение» (Stolen Assertion) (6.4.1) или «Повторное воспроизведение» (Replay) (6.4.5).</li>
+</ul>
+<h2 id="_7">Проверка мер безопасности<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>Пересмотрите каждую угрозу безопасности из документа <a href="https://docs.oasis-open.org/security/saml/v2.0/saml-sec-consider-2.0-os.pdf">SAML Security</a> и убедитесь, что вы применили соответствующие контрмеры для угроз, которые могут существовать в вашей конкретной реализации.</p>
+<p>Дополнительные рассматриваемые меры должны включать:</p>
+<ul>
+<li>При необходимости предпочтительна фильтрация по IP. Например, эта мера могла бы предотвратить первоначальную уязвимость безопасности Google, если бы Google предоставил каждому доверенному партнёру отдельный endpoint и настроил IP-фильтр для каждого endpoint. Этот шаг поможет противодействовать следующим атакам:<ul>
+<li>Украденное утверждение (Stolen Assertion) (6.4.1)</li>
+<li>Атака «человек посередине» (6.4.2)</li>
+</ul>
+</li>
+<li>Предпочтительно короткое время жизни SAML Response. Этот шаг поможет противодействовать следующим атакам:<ul>
+<li>Украденное утверждение (Stolen Assertion) (6.4.1)</li>
+<li>Раскрытие состояния браузера (Browser State Exposure) (6.4.4)</li>
+</ul>
+</li>
+<li>Предпочтительно использование OneTimeUse в SAML Response. Этот шаг поможет противодействовать следующим атакам:<ul>
+<li>Раскрытие состояния браузера (Browser State Exposure) (6.4.4)</li>
+<li>Повторное воспроизведение (Replay) (6.4.5)</li>
+</ul>
+</li>
+</ul>
+<p>Нужна архитектурная диаграмма? <a href="https://www.oasis-open.org/committees/download.php/11511/sstc-saml-tech-overview-2.0-draft-03.pdf">Технический обзор SAML</a> содержит наиболее полные диаграммы. Для профиля SSO для веб-браузера с привязками Redirect/POST обратитесь к разделу 4.1.3. В целом, из всей документации SAML технический обзор является наиболее ценным с высокоуровневой точки зрения.</p>
+<h2 id="idp-initiated-sso-service-provider">Соображения по незапрошенным ответам (IdP Initiated SSO) для Service Provider<a class="headerlink" href="#idp-initiated-sso-service-provider" title="Permanent link">&para;</a></h2>
+<p>Незапрошенный ответ (Unsolicited Response) по своей конструкции менее безопасен из-за отсутствия защиты от <strong>login <a href="https://owasp.org/www-community/attacks/csrf">CSRF</a></strong>. Это ограничение возникает потому, что Service Provider (SP) не имеет возможности создать сессию до входа или проверить, что запрос аутентификации был намеренно инициирован пользователем.</p>
+<p>Хотя эта конструкция не делает IdP-инициированный SSO уникально уязвимым к атакам «человек посередине» (MITM) — эти риски в равной мере применимы к SP-инициированным потокам при компрометации безопасности транспорта — она устраняет важный уровень проверки намерений при входе.</p>
+<p>Несмотря на эти опасения, IdP-инициированный SSO остаётся поддерживаемым для обратной совместимости (особенно с SAML 1.1). Если его необходимо включить, следующие шаги (в дополнение к упомянутым выше) должны помочь защитить этот поток:</p>
+<ul>
+<li>Следуйте процессу валидации, описанному в <a href="https://docs.oasis-open.org/security/saml/v2.0/saml-profiles-2.0-os.pdf">SAML Profiles (раздел 4.1.5)</a>. Этот шаг поможет противодействовать следующим атакам:<ul>
+<li>Повторное воспроизведение (Replay) (6.1.2)</li>
+<li>Вставка сообщений (Message Insertion) (6.1.3)</li>
+</ul>
+</li>
+<li>Если значение параметра <code>RelayState</code> является URL, убедитесь, что URL проверяется и явно включён в список разрешённых. Этот шаг поможет противодействовать следующей атаке:<ul>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">Открытое перенаправление (Open Redirect)</a></li>
+</ul>
+</li>
+<li>Реализуйте надлежащее обнаружение повторного воспроизведения на уровне ответа или утверждения. Это поможет противодействовать следующей атаке:<ul>
+<li>Повторное воспроизведение (Replay) (6.1.2)</li>
+</ul>
+</li>
+</ul>
+<h2 id="identity-provider-service-provider">Соображения для Identity Provider и Service Provider<a class="headerlink" href="#identity-provider-service-provider" title="Permanent link">&para;</a></h2>
+<p>Протокол SAML редко является предпочтительным вектором атаки, хотя важно иметь шпаргалки, чтобы убедиться в его надёжности. Различные endpoints подвергаются атакам чаще, поэтому способ генерации SAML-токена и его потребления одинаково важны на практике.</p>
+<h3 id="x509">Соображения по сертификатам X.509<a class="headerlink" href="#x509" title="Permanent link">&para;</a></h3>
+<p>Как правило, ассоциация безопасности между Identity Provider (IdP) и Service Provider (SP) создаётся, когда SP явно выбирает доверие подписывающему сертификату X.509 IdP. Способ, которым это происходит, может оказать сильное влияние на общую безопасность. Способ генерации сертификата, содержимое сертификата и защита соответствующего закрытого ключа сертификата — всё это оказывает сильное влияние на безопасность. Например, если злоумышленник имеет доступ к ключу подписи IdP, он может создавать SAML-ответы с любыми желаемыми утверждениями.</p>
+<p>Во многих случаях метод ручной установки ассоциации аналогичен <a href="https://cheatsheetseries.owasp.org/cheatsheets/Pinning_Cheat_Sheet.html">Certificate Pinning</a>, что не является идеальным решением. В зависимости от программного обеспечения IdP и SP или различных конструктивных соображений, это может быть неизбежным.</p>
+<p>Имейте в виду, что тип подписи сертификата может отличаться от типа подписи XML-документа. Соответствующий закрытый ключ сертификата — единственный ключ, который может использоваться для подписи XML-документа, но алгоритм подписи выбирается по усмотрению IdP. Наиболее широко поддерживаемый алгоритм подписи — rsa-sha256.</p>
+<h4 id="saml_1">Стороны SAML и организации<a class="headerlink" href="#saml_1" title="Permanent link">&para;</a></h4>
+<p>Наиболее распространённые случаи использования SAML — это бизнес-взаимодействие (B2B). Это означает, что у двух сторон разные политики безопасности, практики и допустимые уровни риска. Это руководство сосредоточено главным образом на случае использования B2B. Однако федерация или SSO на основе SAML широко используются внутри организации. В этом случае термин «сторонний CA» не применяется. Вероятно, CA был создан и управляется в соответствии со стандартами компании и несёт не больший и не меньший риск для систем SAML. Термин «сторонний CA» означает частный CA, управляемый третьей стороной.</p>
+<h4 id="_8">Случаи использования сертификатов<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<p>В системе SAML есть 5 отдельных случаев использования сертификатов. Хотя этот документ в основном говорит о подписывающем сертификате SAML IdP, соображения безопасности применимы ко всем четырём сертификатам, связанным с SAML. Пятый сертификат — TLS-сертификат сервера IdP — ничем не отличается от любого другого серверного сертификата.</p>
+<h5 id="saml-idp">Подписание SAML IdP<a class="headerlink" href="#saml-idp" title="Permanent link">&para;</a></h5>
+<p>Это сертификат, который SP использует для проверки SAML-ответа IdP. IdP подписывает этот ответ соответствующим закрытым ключом сертификата. Это часто наиболее важный сертификат и закрытый ключ, поскольку они защищают утверждения об идентификации, отправляемые SP.</p>
+<h5 id="saml-idp_1">Шифрование SAML IdP<a class="headerlink" href="#saml-idp_1" title="Permanent link">&para;</a></h5>
+<p>Это менее распространённый случай, так как он используется, когда SP хочет защитить SAML-запрос, отправляемый IdP, не только от подделки, но и от раскрытия информации. В SAML-запросе не должно быть конфиденциальной информации, поэтому он используется реже. При использовании сертификат и закрытый ключ должны отличаться от подписывающего сертификата SAML.</p>
+<h5 id="sp">Подписание SP<a class="headerlink" href="#sp" title="Permanent link">&para;</a></h5>
+<p>Хотя это и не обязательно, рекомендуется, чтобы SP и IdP не разрешали IdP Initiated SSO. Это означает, что вызывающая сторона начинает поток SAML на стороне SP, который создаёт подписанный SAML-запрос, предназначенный для IdP.</p>
+<h5 id="sp_1">Шифрование SP<a class="headerlink" href="#sp_1" title="Permanent link">&para;</a></h5>
+<p>Рекомендуется избегать размещения конфиденциальных данных в SAML-ответе IdP, но иногда это неизбежно. Это могут быть имена пользователей или другие персональные данные (PII). Когда раскрытие информации является соображением, SP будет иметь сертификат шифрования SAML. IdP будет использовать его и встроенный публичный ключ для шифрования SAML-ответа. SP должен использовать отдельную пару сертификата и ключа для подписания и шифрования SAML.</p>
+<h4 id="_9">Содержимое сертификата<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<p>В контексте подписания и шифрования SAML сертификаты X.509 чаще всего рассматриваются просто как обёртка для хранения публичного ключа, используемого для проверки подписи или обёртывания симметричного ключа для шифрования SAML. Тем не менее сертификат может содержать атрибуты, которые могут быть использованы для дополнительного повышения безопасности.</p>
+<p>OWASP рекомендует IdP и SP принять EKU, KU и сроки жизни ключей, упомянутые ниже. Они законным образом повышают безопасность и позволяют проверяющей стороне дополнительно защитить себя. Они также помогают продемонстрировать соответствие нормам PKI.</p>
+<h5 id="_10">Ключи и алгоритмы подписи<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h5>
+<p>Размер и тип пары ключей и выбор алгоритма подписи оказывают сильное влияние на безопасность и совместимость. Не все программные пакеты или библиотеки IdP и SP поддерживают все комбинации параметров. Поскольку один IdP часто связан со многими SP, единственный вариант — выбрать наименее защищённый вариант, который всё ещё считается безопасным. Наиболее поддерживаемая и в настоящее время безопасная комбинация — использование ключей RSA 2048 бит и хеширования/подписания SHA-256. Это относится к алгоритму подписи сертификата, а не к подписанию XML SAML.</p>
+<p>По мере того как постквантовые алгоритмы становятся более распространёнными и в конечном счёте обязательными, это становится ещё более сложным. Разработчики программного обеспечения SAML SP и IdP должны начать изучать варианты поддержки большего количества ключей и алгоритмов подписи.</p>
+<h6 id="_11">Ключи<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h6>
+<p>Ключи ECC могут быть значительно меньше при обеспечении большей безопасности, чем ключи RSA, а математические операции выполняются быстрее. Они предпочтительны, когда все стороны могут их использовать. Ключи ECC могут быть всего 256 бит и при этом оставаться безопасными. Ключи RSA более совместимы. Минимальный размер ключа RSA должен составлять 2048 бит.
+По крайней мере один крупный поставщик <a href="https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-fed-saml-idp">Microsoft Entra</a> не поддерживает ключи ECC.</p>
+<h6 id="_12">Алгоритмы подписи<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h6>
+<p>При использовании криптографии с публичным ключом для подписи данных данные сначала хешируются выбранным алгоритмом, а затем хеш подписывается закрытым ключом.</p>
+<p>Ни один IdP не должен использовать SHA-1 в качестве хеша подписи сертификата. SHA-256 — минимальный порог. Тем не менее, если возможно, переход на более крупные алгоритмы хеширования, такие как SHA-384 или SHA-512, означает лучшее обеспечение будущей совместимости службы. В данном контексте речь идёт об алгоритме подписи сертификата, а не о том, который используется для подписания XML SAML-ответа.</p>
+<h5 id="_13">Срок жизни сертификата<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h5>
+<p>Сертификаты содержат атрибуты NotBefore и NotOnorAfter. Большинство IdP игнорируют их в пользу гарантии доступности, если смена сертификата не происходит вовремя. Срок жизни SAML-сертификата должен управляться достаточно хорошо, чтобы игнорирование этих атрибутов не было необходимым. Игнорирование периода действия сертификата — принципиально плохая идея. Хотя <a href="https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final">NIST SP 800-57 (Часть 1, Версия 5)</a> позволяет ключам RSA 2048 бит служить 3 года, максимальный срок жизни подписывающего сертификата SAML должен составлять два года. Если закрытый ключ не защищён должным образом, например в Hardware Security Module (HSM), этого может быть слишком долго для безопасности.</p>
+<h5 id="extended-key-usage-eku-key-usage-ku">Extended Key Usage (EKU) и Key Usage (KU)<a class="headerlink" href="#extended-key-usage-eku-key-usage-ku" title="Permanent link">&para;</a></h5>
+<p><a href="https://www.rfc-editor.org/rfc/rfc5280#section-4.2.1.12">EKU</a> описывает конкретный случай использования, для которого предназначен сертификат. Это такие случаи использования, как аутентификация сервера, аутентификация клиента и подписание кода, которые не подходят для подписания SAML. Не существует широко принятого EKU для подписания SAML, но <a href="https://www.rfc-editor.org/rfc/rfc9336.txt">RFC 9336</a> определяет один, который идеально подходит: id-kp-documentSigning (1.3.6.1.5.5.7.3.36). IdP и SP могут рассмотреть возможность стандартизации на этом EKU.</p>
+<p><a href="https://www.rfc-editor.org/rfc/rfc5280#section-4.2.1.3">KU</a> описывает базовые криптографические операции, для которых предназначен закрытый ключ. Это такие вещи, как digitalSignature, nonRepudiation, keyEncipherment и т.д. IdP и SP могут рассмотреть требование digitalSignature и, кроме того, запрет сертификатов, которые имеют другие KU, поскольку сертификаты должны использоваться только для одного случая применения. Например, TLS-сертификат сервера IdP никогда не должен быть подписывающим сертификатом SAML.</p>
+<h5 id="crl-distribution-point-cdp">Точка распределения списка отзыва сертификатов (CRL Distribution Point, CDP)<a class="headerlink" href="#crl-distribution-point-cdp" title="Permanent link">&para;</a></h5>
+<p><a href="https://www.rfc-editor.org/rfc/rfc5280#section-4.2.1.13">Точки распределения CRL (Certificate Revocation List)</a> — это список сертификатов, которым CA отзывает доверие. Они чаще всего доставляются по HTTP, а URL-адреса CRL обычно встроены в каждый сертификат, выданный CA. <a href="https://www.rfc-editor.org/rfc/rfc5280#appendix-C.4">CRL</a> подписан CA, поэтому атака «человек посередине» против HTTP не может нарушить целостность списка, кроме как подделать его, тем самым делая его недействительным. То есть злоумышленник не может его изменить. Только сертификаты, подписанные CA, могут иметь CRL. Если в SAML-сертификате указан CRL, он должен быть доступен проверяющей стороне, и эта сторона должна <a href="https://www.rfc-editor.org/rfc/rfc5280#section-6.3">проверить</a> его.</p>
+<p>Учитывая уровень риска при компрометации закрытого ключа и меньший масштаб отношений IdP-SP, стороны в системе SAML должны разработать план со списками контактов для уведомления и быстрой смены сертификатов в случае инцидента. Многие продукты и библиотеки SAML не поддерживают проверку отзыва, и простой отзыв сертификата без скоординированной замены означает простой.</p>
+<h5 id="-ocsp">Протокол статуса онлайн-сертификата (OCSP)<a class="headerlink" href="#-ocsp" title="Permanent link">&para;</a></h5>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc6960">OCSP</a> — ещё один способ проверки отзыва сертификата. URL-адрес OCSP встроен в сертификат, как и CRL, и должен быть доступен по HTTP. Ответ подписан, поэтому атаки MITM не являются угрозой целостности. OCSP становится менее популярным, поскольку обмен создаёт проблемы конфиденциальности. IP-адрес вызывающей стороны виден, и раскрывается сертификат, который используется. Это менее актуально для SAML, поскольку не раскрывается целевой веб-сайт, а общее использование снизилось. Если URL-адрес OCSP присутствует в каком-либо сертификате в цепочке, его следует использовать для проверки отзыва сертификата.</p>
+<h4 id="_14">Иерархия сертификатов<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h4>
+<p>Подписывающий сертификат SAML может быть подписан одним из трёх способов. Сертификат может быть самоподписанным, подписанным публичным CA или подписанным частным CA. У каждого есть свои плюсы и минусы, однако, учитывая текущее состояние WebPKI (публичного) и частного PKI, использование самоподписанных SAML-сертификатов является явным победителем при соблюдении надлежащих мер предосторожности при обмене сертификатами.</p>
+<h5 id="_15">Издатель сертификата<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h5>
+<p>Все сертификаты X.509 подписываются с использованием закрытого ключа органом, известным как <a href="https://www.rfc-editor.org/rfc/rfc5280#section-4.1.2.4">Издатель (Issuer)</a>. Это может быть CA или в случае самоподписанного сертификата — соответствующий закрытый ключ сертификата. В случае сертификата, подписанного CA, подписывающая сторона также может иметь сертификат, у которого есть Издатель, и так далее. Это называется цепочкой или путём, и она должна завершаться корневым CA (который по определению является самоподписанным). Издатель должен быть проверен. Если издателем является CA, его атрибуты, такие как EKU, KU и CRL, также могут быть проверены. Это должно происходить для каждого сертификата в <a href="https://datatracker.ietf.org/doc/html/rfc5280#section-3.2">пути</a> вплоть до корневого.</p>
+<h5 id="ca">Публичный центр сертификации (CA)<a class="headerlink" href="#ca" title="Permanent link">&para;</a></h5>
+<p>При использовании этого типа сертификата публичный CA выдаёт сертификат в соответствии со своими правилами и правилами <a href="https://cabforum.org/">CA Browser Forum</a> (CABF). Эти публичные корневые CA включаются в хранилища доверия, поддерживаемые крупными производителями браузеров. Большинство вещей в Интернете доверяют им, потому что кто-то следит за тем, чтобы хранилища доверия были там, где они должны быть.</p>
+<p>Когда IdP меняет свой подписывающий сертификат SAML, каждый SP должен одновременно обновить явное доверие к этому сертификату. Это может быть сложным при небольшом количестве SP. При большом их количестве это почти невозможно. Эта трудность привела к использованию подписывающих сертификатов SAML с максимально длительными сроками жизни. Раньше это было два года с публичными CA, затем 398 дней. Основное внимание стандартов WebPKI и CABF уделяется серверным сертификатам для TLS. Недавние и продолжающиеся изменения в сроках жизни сертификатов делают сертификаты, выданные публичным CA, менее привлекательными. Это связано с тем, что у CABF есть путь к тому, чтобы сертификаты, выданные публичным CA, служили только <a href="https://cabforum.org/2025/04/11/ballot-sc081v3-introduce-schedule-of-reducing-validity-and-data-reuse-periods/">47 дней</a>. Поскольку IdP должен получить сертификат, объявить об изменении в разумные сроки, а затем выполнить это изменение, IdP и SP будут находиться в постоянном состоянии обновления сертификатов.</p>
+<p>Стоит отметить, что у CABF нет нормативного регулирования использования или получения сертификатов SAML; сертификаты от их членов CA — это то, что широко считается публичными CA. То есть им широко доверяют браузеры, операционные системы и различные фреймворки разработки.</p>
+<p>Использование сертификатов, подписанных публичным CA, позволяет проверять отзыв, что может повысить безопасность, но если обмен сертификатами не защищён, это может создать ложное чувство безопасности.</p>
+<h5 id="ca_1">Частный центр сертификации (CA)<a class="headerlink" href="#ca_1" title="Permanent link">&para;</a></h5>
+<p>Поскольку большинство IdP и SP рассматривают сертификаты X.509 как явное доверие, частные CA и PKI могут использоваться. Способ разработки, создания и управления частными CA сильно варьируется, и в конечном счёте грамотное управление CA обходится очень дорого. Чтобы доверять CA третьей стороны, необходимо чётко понимать жизненный цикл CA. Существуют два типа аудита, которые охватывают это, оба из которых очень дороги в дополнение к созданию и управлению CA. Если вы полагаетесь на сторонние CA, они должны быть проверены по <a href="http://www.webtrust.org/">WebTrust</a>, <a href="http://www.etsi.org/technologies-clusters/technologies/security/certification-authorities-and-other-certification-service-providers">ETSI</a> или <a href="https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2">SOC 2 Type II</a>.</p>
+<p>Доверие сторонним CA при ненадлежащем подходе может привести к нежелательному чрезмерному доверию для таких вещей, как TLS и подписание кода. Если вы решите доверять сторонним CA, убедитесь, что им доверяют только для процесса проверки подписи IdP.</p>
+<p>Если используются сторонние CA, они по-прежнему не должны выдавать подписывающие сертификаты SAML, у которых срок жизни сертификата превышает срок жизни базовой пары ключей, исходя из руководства стандартных организаций, таких как <a href="https://www.keylength.com/en/">NIST, NSA и т.д.</a>. При использовании наиболее надёжных типов закрытых ключей это устанавливает верхний предел в два года.</p>
+<h5 id="_16">Самоподписанный сертификат<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h5>
+<p>Благодаря явному характеру большинства ассоциаций безопасности SAML самоподписанные сертификаты идеально подходят для данного случая использования. Содержимое сертификата и срок жизни не ограничены политикой или процессом выдающего CA, будь то публичный или частный. Поскольку смена SAML-сертификатов может быть болезненной и трудоёмкой, установка срока жизни сертификата на максимально безопасно возможный срок является ключевым фактором. Немногие CA допускают достаточно длительные сроки жизни из-за их ориентации на модель угроз TLS.</p>
+<h6 id="saml-">Создание самоподписанного SAML-сертификата<a class="headerlink" href="#saml-" title="Permanent link">&para;</a></h6>
+<p>Если вы используете Hardware Security Module (HSM), следуйте инструкциям поставщика. В этом процессе используется openssl. В примере используется слишком обобщённое различающееся имя. Ваше Common Name (CN) должно быть значимым и конкретным.</p>
+<ol>
+<li>
+<p>Генерация закрытого ключа:
+openssl genrsa -out private.key 2048
+или
+openssl ecparam -genkey -name prime256v1 -out private.pem</p>
+</li>
+<li>
+<p>Создание файла конфигурации (например, cert.cnf):</p>
+</li>
+</ol>
+<p>[req]
+distinguished_name = req_distinguished_name
+x509_extensions = v3_ca
+prompt = no</p>
+<p>[req_distinguished_name]
+C = US
+ST = California
+L = San Francisco
+O = MyOrganization
+OU = MyUnit
+CN = SAML Signing</p>
+<p>[v3_ca]
+basicConstraints = CA:FALSE
+keyUsage = digitalSignature
+extendedKeyUsage = 1.3.6.1.5.5.7.3.36</p>
+<ol start="3">
+<li>Генерация самоподписанного сертификата:
+openssl req -x509 -new -nodes -key private.key -sha256 -days 365 -out certificate.crt -config cert.cnf -extensions v3_ca</li>
+</ol>
+<h4 id="url-">URL-адреса метаданных сертификата<a class="headerlink" href="#url-" title="Permanent link">&para;</a></h4>
+<p>Многие IdP публикуют URL-адрес метаданных, содержащий базовую информацию о конфигурации, включая подписывающий сертификат SAML. Многие SP могут получать данные от IdP, обновляя информацию подписывающего сертификата практически в реальном времени. Использование этих параметров является идеальным. Эта модель точно соответствует намерению <a href="https://owasp.org/www-community/controls/Certificate_and_Public_Key_Pinning">Certificate and Public Key Pinning</a> при необходимости использования pinning.</p>
+<p>URL-адрес метаданных должен быть защищён с использованием TLS, где серверный сертификат поступает от WebPKI CA, которому широко доверяют и который соответствует руководству в <a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html#certificates">Transport Layer Security Cheat Sheet</a>.</p>
+<p>Идеальное состояние отношений IdP и SP — использование URL-адресов метаданных, независимо от того, какой тип сертификата используется. Если URL-адреса метаданных не используются, необходимо проявлять особую осторожность, чтобы злоумышленник не убедил SP доверять неправильному сертификату. Избегайте отправки сертификатов по электронной почте. Вместо этого, как и с URL-адресами метаданных, представляйте их через надлежащим образом настроенный TLS.</p>
+<h4 id="_17">Защита ключа подписи<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h4>
+<p>Ключи подписи SAML — это важнейший актив безопасности и <a href="https://www.microsoft.com/en-us/security/blog/2023/07/14/analysis-of-storm-0558-techniques-for-unauthorized-email-access/">цель злоумышленников</a>. При создании ключей и при необходимости копировании их на узлы кластера IdP необходимо проявлять особую осторожность. Ключи на основе файлов тривиально извлечь злоумышленнику, имеющему доступ. Операторы IdP должны настоятельно рассмотреть возможность защиты закрытых ключей с помощью Hardware Security Module (HSM). <a href="https://en.wikipedia.org/wiki/Hardware_security_module">HSM</a> позволяют приложению использовать ключ без возможности его экспорта или копирования. Они имеют механизмы для безопасной репликации ключей в резервный HSM без какого-либо раскрытия ключей за пределами HSM. Качественные HSM имеют рейтинг <a href="https://csrc.nist.gov/pubs/fips/140-2/upd2/final">FIPS 140-2</a> или <a href="https://csrc.nist.gov/pubs/fips/140-3/final">FIPS 140-3</a>.</p>
+<h3 id="identity-provider-idp">Соображения для Identity Provider (IdP)<a class="headerlink" href="#identity-provider-idp" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Проверьте сертификат X.509 на совместимость алгоритмов, стойкость шифрования, ограничения экспорта и содержимое выше</li>
+<li>Проверьте варианты строгой аутентификации для генерации SAML-токена</li>
+<li>Валидация IDP (какой IDP создаёт токен)</li>
+<li>Синхронизация с общим интернет-источником времени</li>
+<li>Определите уровни надёжности для верификации личности</li>
+<li>Предпочитайте асимметричные идентификаторы для утверждений идентификации вместо персональных данных (например, SSN и т.д.)</li>
+<li>Подписывайте каждое отдельное утверждение или весь элемент Response</li>
+</ul>
+<h3 id="service-provider-sp">Соображения для Service Provider (SP)<a class="headerlink" href="#service-provider-sp" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Проверка состояния сессии пользователя</li>
+<li>Уровень детализации при установке контекста авторизации при потреблении SAML-токена (используете ли вы группы, роли, атрибуты)</li>
+<li>Убедитесь, что каждое утверждение или весь элемент Response подписан</li>
+<li><a href="#проверка-подписей">Проверка подписей</a></li>
+<li>Проверка подписи авторизованным IdP</li>
+<li>Проверка сертификатов IDP на отзыв по CRL/OCSP при их наличии</li>
+<li>Проверка NotBefore и NotOnorAfter</li>
+<li>Проверка атрибута Recipient</li>
+<li>Определение критериев для выхода из системы SAML</li>
+<li>Обмен утверждениями только по защищённым транспортным протоколам, таким как TLS</li>
+<li>Определение критериев для управления сессиями</li>
+<li>По возможности проверяйте идентификаторы пользователей, полученные из утверждений SAML-токена.</li>
+</ul>
+<h2 id="_18">Валидация входных данных<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h2>
+<p>Тот факт, что SAML является протоколом безопасности, не означает, что валидация входных данных отходит на второй план.</p>
+<ul>
+<li>Убедитесь, что все поставщики/потребители SAML выполняют надлежащую <a href="Input_Validation_Cheat_Sheet.html">валидацию входных данных</a>.</li>
+</ul>
+<h2 id="_19">Криптография<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h2>
+<p>Решения, основанные на криптографических алгоритмах, должны следить за последними разработками в области криптоанализа.</p>
+<ul>
+<li>Убедитесь, что все элементы SAML в цепочке используют <a href="Cryptographic_Storage_Cheat_Sheet.html#algorithms">надёжное шифрование</a></li>
+<li>Рассмотрите возможность отказа от поддержки <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5">небезопасных алгоритмов XMLEnc</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©Copyright <script>document.write(new Date().getFullYear())</script> - Cheat Sheets Series Team - This work is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
