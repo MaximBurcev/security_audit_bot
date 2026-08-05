@@ -92,10 +92,31 @@ echo "# Npm dependencies have been installed"
 @task('config_project', ['on' => $on])
 echo "# Config project task";
 
-echo "# Linking storage directory";
-rm -rf {{$dirCurrentRelease}}/storage/app;
+{{--
+    Общими делаются storage/app, storage/logs и storage/framework.
+
+    Раньше линковался только storage/app, причём в несуществующий каталог:
+    shared/storage не создавался вовсе, поэтому симлинк был битым и загруженные
+    файлы деваться было некуда. Логи и сессии жили внутри релиза, так что каждый
+    деплой уносил их с собой, а расследовать случившееся до последнего деплоя
+    было уже нечем.
+
+    storage/api-docs и storage/debugbar намеренно остаются внутри релиза:
+    api-docs.json лежит в репозитории и должен соответствовать своей версии кода.
+--}}
+echo "# Linking storage directories";
+mkdir -p {{$dirShared}}/storage/app/public;
+mkdir -p {{$dirShared}}/storage/framework/cache/data;
+mkdir -p {{$dirShared}}/storage/framework/sessions;
+mkdir -p {{$dirShared}}/storage/framework/views;
+mkdir -p {{$dirShared}}/storage/logs;
+
+rm -rf {{$dirCurrentRelease}}/storage/app {{$dirCurrentRelease}}/storage/logs {{$dirCurrentRelease}}/storage/framework;
+ln -nfs {{$dirShared}}/storage/app {{$dirCurrentRelease}}/storage/app;
+ln -nfs {{$dirShared}}/storage/logs {{$dirCurrentRelease}}/storage/logs;
+ln -nfs {{$dirShared}}/storage/framework {{$dirCurrentRelease}}/storage/framework;
+
 cd {{$dirCurrentRelease}};
-ln -nfs {{$dirShared}}/storage/app storage/app;
 php artisan storage:link
 
 echo "# Linking .env file";
