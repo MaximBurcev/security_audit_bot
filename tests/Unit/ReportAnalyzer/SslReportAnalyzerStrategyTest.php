@@ -27,9 +27,23 @@ Preferred TLSv1.0  128 bits  ECDHE-ECDSA-AES128-SHA        Curve 25519 DHE 253
 Accepted  TLSv1.0  112 bits  TLS_RSA_WITH_3DES_EDE_CBC_SHA
 TXT;
 
-    private function analyze(string $output): array
+    /** Момент, относительно которого считается срок действия сертификата. */
+    private const NOW = 1785888000; // 2026-08-05
+
+    private function analyze(string $output, ?int $now = null): array
     {
-        return (new SslReportAnalyzerStrategy())->analyzeOutput(explode("\n", $output));
+        return (new SslReportAnalyzerStrategy($now ?? self::NOW))->analyzeOutput(explode("\n", $output));
+    }
+
+    /**
+     * Только находки, требующие действий: пройденные проверки отбрасываем.
+     */
+    private function problems(string $output, ?int $now = null): array
+    {
+        return array_values(array_filter(
+            $this->analyze($output, $now),
+            fn($finding) => $finding['severity'] !== 'ok'
+        ));
     }
 
     private function types(array $findings): array
@@ -75,15 +89,110 @@ Preferred TLSv1.3  128 bits  TLS_AES_128_GCM_SHA256        Curve 25519 DHE 253
 Accepted  TLSv1.2  256 bits  ECDHE-RSA-AES256-GCM-SHA384   Curve 25519 DHE 253
 TXT;
 
-        $this->assertSame([], $this->analyze($modern));
+        $this->assertSame([], $this->problems($modern));
     }
 
     /**
-     * "disabled" в таблице поддержки протоколов не должен считаться находкой.
+     * "disabled" в таблице поддержки протоколов не должен считаться проблемой.
      */
     public function test_disabled_protocols_are_not_flagged(): void
     {
-        $this->assertSame([], $this->analyze("  SSLv2     disabled\n  SSLv3     disabled"));
+        $this->assertSame([], $this->problems("  SSLv2     disabled\n  SSLv3     disabled"));
+    }
+
+    public function test_disabled_protocols_become_a_passed_check(): void
+    {
+        $findings = $this->analyze("  SSLv2     disabled\n  TLSv1.0   disabled");
+
+        $this->assertSame('Протоколы', $findings[0]['type']);
+        $this->assertSame('ok', $findings[0]['severity']);
+    }
+
+    /**
+     * Устаревший протокол найден — значит проверка не пройдена и зелёной
+     * отметки быть не должно.
+     */
+    public function test_passed_check_disappears_when_a_protocol_is_enabled(): void
+    {
+        $report = "  SSLv2     disabled\n  TLSv1.0   enabled\nAccepted  TLSv1.0  128 bits  AES128-SHA";
+
+        $this->assertNotContains('Протоколы', array_column($this->analyze($report), 'type'));
+    }
+
+    public function test_only_aead_ciphers_is_a_passed_check(): void
+    {
+        $report = 'Accepted  TLSv1.2  256 bits  ECDHE-RSA-AES256-GCM-SHA384   Curve 25519 DHE 253';
+
+        $findings = $this->analyze($report);
+
+        $this->assertSame('Шифры', $findings[0]['type']);
+        $this->assertSame('ok', $findings[0]['severity']);
+    }
+
+    /**
+     * CBC-наборы не «слабые» в смысле 3DES, но уступают AEAD и заслуживают
+     * жёлтой отметки, а не зелёной.
+     */
+    public function test_cbc_ciphers_are_reported_as_medium(): void
+    {
+        $report = <<<'TXT'
+Accepted  TLSv1.2  256 bits  ECDHE-ECDSA-AES256-GCM-SHA384 Curve 25519 DHE 253
+Accepted  TLSv1.2  128 bits  ECDHE-ECDSA-AES128-SHA        Curve 25519 DHE 253
+Accepted  TLSv1.2  256 bits  ECDHE-ECDSA-AES256-SHA        Curve 25519 DHE 253
+TXT;
+
+        $cbc = $this->problems($report);
+
+        $this->assertSame('Шифры в режиме CBC', $cbc[0]['type']);
+        $this->assertSame('medium', $cbc[0]['severity']);
+        $this->assertSame('2 набора', $cbc[0]['problem']);
+    }
+
+    public function test_heartbleed_check_passes(): void
+    {
+        $findings = $this->analyze("TLSv1.2 not vulnerable to heartbleed");
+
+        $this->assertSame('Heartbleed', $findings[0]['type']);
+        $this->assertSame('ok', $findings[0]['severity']);
+    }
+
+    public function test_heartbleed_vulnerability_is_not_a_passed_check(): void
+    {
+        $this->assertSame([], $this->analyze('TLSv1.2 vulnerable to heartbleed'));
+    }
+
+    public function test_valid_certificate_reports_days_left(): void
+    {
+        $findings = $this->analyze('Not valid after:  Sep 29 19:31:42 2026 GMT');
+
+        $this->assertSame('Сертификат', $findings[0]['type']);
+        $this->assertSame('ok', $findings[0]['severity']);
+        $this->assertSame('действует ещё 55 дн.', $findings[0]['problem']);
+    }
+
+    /**
+     * Главное, чего не хватало: предупреждение до аварии, а не после.
+     */
+    public function test_certificate_expiring_soon_is_a_warning(): void
+    {
+        $findings = $this->analyze('Not valid after:  Aug 25 19:31:42 2026 GMT');
+
+        $this->assertSame('Скорое истечение сертификата', $findings[0]['type']);
+        $this->assertSame('medium', $findings[0]['severity']);
+    }
+
+    public function test_certificate_expiring_within_a_week_is_high(): void
+    {
+        $findings = $this->analyze('Not valid after:  Aug 10 19:31:42 2026 GMT');
+
+        $this->assertSame('high', $findings[0]['severity']);
+    }
+
+    public function test_expired_certificate_is_reported(): void
+    {
+        $findings = $this->analyze('Not valid after:  Jul 30 19:31:42 2026 GMT');
+
+        $this->assertSame('Истекший сертификат', $findings[0]['type']);
     }
 
     /**

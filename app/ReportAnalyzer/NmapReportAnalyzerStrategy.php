@@ -50,6 +50,8 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
         'Анонимный доступ FTP'         => 'high',
         'Небезопасные HTTP-методы'     => 'medium',
         'Открытый порт'                => 'low',
+        'Чувствительные порты'         => 'ok',
+        'Уязвимости'                   => 'ok',
     ];
 
     public function analyzeOutput($output): array
@@ -98,7 +100,52 @@ class NmapReportAnalyzerStrategy implements ReportAnalyzerInterface
             }
         }
 
-        return array_values($recommendations);
+        return array_merge(array_values($recommendations), $this->passedChecks($output, $recommendations));
+    }
+
+    /**
+     * Пройденные проверки: без них пустой список неотличим от «сканирование не отработало».
+     *
+     * @param array<int, string> $output
+     * @param array<int, array<string, mixed>> $found
+     * @return array<int, array<string, mixed>>
+     */
+    private function passedChecks(array $output, array $found): array
+    {
+        // Итоговая таблица портов — признак того, что сканирование дошло до конца
+        if (preg_match('/^PORT\s+STATE\s+SERVICE/m', implode("\n", $output)) !== 1) {
+            return [];
+        }
+
+        $types = array_column($found, 'type');
+        $checks = [];
+
+        $sensitiveFound = array_filter(
+            $found,
+            fn($item) => $item['type'] === 'Открытый порт' && $item['severity'] !== 'low'
+        );
+
+        if ($sensitiveFound === []) {
+            $checks[] = [
+                'type'           => 'Чувствительные порты',
+                'problem'        => 'не обнаружены',
+                'recommendation' => 'Проверка пройдена: СУБД, кеши и средства удалённого управления снаружи не видны.',
+                'severity'       => 'ok',
+                'link'           => null,
+            ];
+        }
+
+        if (!array_intersect(['Уязвимость', 'CVE-уязвимость'], $types)) {
+            $checks[] = [
+                'type'           => 'Уязвимости',
+                'problem'        => 'не обнаружены',
+                'recommendation' => 'Проверка пройдена: NSE-скрипты не нашли известных уязвимостей.',
+                'severity'       => 'ok',
+                'link'           => null,
+            ];
+        }
+
+        return $checks;
     }
 
     private function extractProblem(string $type, string $line, array $matches): string

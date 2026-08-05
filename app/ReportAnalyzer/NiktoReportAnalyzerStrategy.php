@@ -32,6 +32,7 @@ class NiktoReportAnalyzerStrategy implements ReportAnalyzerInterface
         'Несоответствие сертификата'       => 'medium',
         'Отсутствует заголовок безопасности' => 'medium',
         'Ненужный сервис'                  => 'low',
+        'Известные уязвимости'             => 'ok',
     ];
 
     public function analyzeOutput($output): array
@@ -51,6 +52,19 @@ class NiktoReportAnalyzerStrategy implements ReportAnalyzerInterface
                     break;
                 }
             }
+        }
+
+        // Явно сообщаем, что проверка отработала и ничего не нашла: пустой отчёт
+        // иначе неотличим от несостоявшегося сканирования.
+        $scanCompleted = preg_match('/host\(s\) tested|\d+ item\(s\) reported/i', implode("\n", $output)) === 1;
+
+        if ($scanCompleted && !in_array('Уязвимость', array_column($recommendations, 'type'), true)) {
+            $recommendations[] = [
+                'type'           => 'Известные уязвимости',
+                'problem'        => 'не обнаружены',
+                'recommendation' => 'Проверка пройдена: сканирование не нашло известных уязвимостей.',
+                'severity'       => 'ok',
+            ];
         }
 
         return $recommendations;

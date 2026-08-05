@@ -92,4 +92,39 @@ class ReportAnalyzerTest extends TestCase
     {
         $this->assertSame([], $this->analyzerReturning([])->get([]));
     }
+
+    /**
+     * Пройденные проверки — не проблемы, поэтому всегда ниже любых находок.
+     */
+    public function test_passed_checks_are_sorted_below_problems(): void
+    {
+        $analyzer = $this->analyzerReturning([
+            $this->finding('Heartbleed', 'сервер не уязвим', 'ok'),
+            $this->finding('Открытый порт', '80/tcp', 'low'),
+            $this->finding('Уязвимость', 'smb-vuln', 'critical'),
+        ]);
+
+        $this->assertSame(
+            ['critical', 'low', 'ok'],
+            array_column($analyzer->get([]), 'severity')
+        );
+    }
+
+    public function test_summarize_separates_problems_from_passed_checks(): void
+    {
+        $summary = ReportAnalyzer::summarize([
+            $this->finding('Уязвимость', 'a', 'critical'),
+            $this->finding('Шифры в режиме CBC', 'b', 'medium'),
+            $this->finding('Heartbleed', 'c', 'ok'),
+            $this->finding('Сертификат', 'd', 'ok'),
+            $this->finding('Протоколы', 'e', 'ok'),
+        ]);
+
+        $this->assertSame(['problems' => 2, 'passed' => 3], $summary);
+    }
+
+    public function test_summarize_handles_an_empty_report(): void
+    {
+        $this->assertSame(['problems' => 0, 'passed' => 0], ReportAnalyzer::summarize([]));
+    }
 }

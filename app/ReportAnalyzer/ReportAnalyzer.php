@@ -25,7 +25,11 @@ class ReportAnalyzer
     }
 
 
-    private const SEVERITY_ORDER = ['critical' => 0, 'high' => 1, 'medium' => 2, 'low' => 3];
+    /**
+     * "ok" — пройденная проверка, а не проблема, поэтому она всегда в конце списка,
+     * после всех находок, требующих действий.
+     */
+    private const SEVERITY_ORDER = ['critical' => 0, 'high' => 1, 'medium' => 2, 'low' => 3, 'ok' => 4];
 
     public function get($report): array
     {
@@ -46,5 +50,21 @@ class ReportAnalyzer
         );
 
         return $result;
+    }
+
+    /**
+     * Сколько находок требует действий, а сколько проверок пройдено.
+     *
+     * @param array<int, array<string, mixed>> $findings
+     * @return array{problems: int, passed: int}
+     */
+    public static function summarize(array $findings): array
+    {
+        $passed = count(array_filter($findings, fn($item) => ($item['severity'] ?? null) === 'ok'));
+
+        return [
+            'problems' => count($findings) - $passed,
+            'passed'   => $passed,
+        ];
     }
 }
