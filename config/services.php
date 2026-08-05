@@ -31,4 +31,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    /*
+     * Отчёт Selectel Uptime Monitoring, из которого синхронизируется список проектов.
+     * Страница отдаёт HTML без API, поэтому парсится разметка (см. ProjectSyncService).
+     */
+    'uptime_report' => [
+        'url'     => env('UPTIME_REPORT_URL'),
+        'timeout' => (int) env('UPTIME_REPORT_TIMEOUT', 60),
+        'scheme'  => env('UPTIME_REPORT_SCHEME', 'https'),
+    ],
+
 ];

@@ -19,6 +19,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:cache:warmup')->dailyAt('03:00')->sendOutputTo(storage_path('logs/app.cache.warmup.log'),
             true);
 
+        $schedule->command('app:projects.sync')->dailyAt('03:30')->withoutOverlapping()
+            ->sendOutputTo(storage_path('logs/app.projects.sync.log'), true);
+
         $tasks = Task::query()->get();
         foreach ($tasks as $task) {
             $schedule->command('app:report.update',
