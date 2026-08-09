@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Task;
 
+use App\Rules\ValidCronExpression;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreFormRequest extends FormRequest
@@ -24,7 +25,7 @@ class StoreFormRequest extends FormRequest
         return [
             'title'       => 'required|string',
             'report_id'   => 'required|integer',
-            'cron_format' => 'required|string',
+            'cron_format' => ['required', 'string', new ValidCronExpression()],
         ];
     }
 

@@ -54,7 +54,7 @@ class ReportService
     }
 
 
-    public function update(int $id, array $data = []): int
+    public function update(int $id, array $data = []): Report
     {
         return $this->reportRepository->update($id, $data);
     }

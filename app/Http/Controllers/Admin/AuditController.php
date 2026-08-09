@@ -76,7 +76,7 @@ class AuditController extends Controller
      */
     public function update(UpdateFormRequest $request, Audit $audit)
     {
-        $this->auditService->update($request, $audit);
+        $this->auditService->updateByRequest($request, $audit);
 
         return redirect()->route('audits.show', $audit->id);
     }

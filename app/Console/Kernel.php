@@ -3,8 +3,10 @@
 namespace App\Console;
 
 use App\Models\Task;
+use Cron\CronExpression;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,6 +26,18 @@ class Kernel extends ConsoleKernel
 
         $tasks = Task::query()->get();
         foreach ($tasks as $task) {
+            // Планировщик разбирает cron уже при вычислении «пора ли запускать», и невалидное
+            // выражение выбрасывает исключение из schedule:run целиком — вместе со всеми
+            // остальными задачами. Одна битая запись не должна глушить расписание.
+            if (!is_string($task->cron_format) || !CronExpression::isValidExpression($task->cron_format)) {
+                Log::warning('Задача пропущена: некорректное cron-выражение', [
+                    'task_id'     => $task->id,
+                    'cron_format' => $task->cron_format,
+                ]);
+
+                continue;
+            }
+
             $schedule->command('app:report.update',
                 [$task->report_id])->cron($task->cron_format)->sendOutputTo(storage_path('logs/app.report.update.log'),
                 true);

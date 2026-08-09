@@ -37,9 +37,11 @@ interface BaseContract
      *
      * @param int $id
      * @param array $data
-     * @return integer
+     * @return Model
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function update(int $id, array $data): int;
+    public function update(int $id, array $data): Model;
 
     /**
      * Delete existing resource.

@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Report;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,9 +18,8 @@ class AuditFactory extends Factory
     public function definition(): array
     {
         return [
-            'title'     => fake()->name(),
-            'user_id'   => User::factory(),
-            'report_id' =>  Report::factory()
+            'title'   => fake()->name(),
+            'user_id' => User::factory(),
         ];
     }
 }

@@ -29,11 +29,13 @@ abstract class BaseRepository implements BaseContract
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): int
+    public function update(int $id, array $data): Model
     {
-        return $this->model
-            ->where('id', $id)
-            ->update($data);
+        $model = $this->model->findOrFail($id);
+
+        $model->update($data);
+
+        return $model;
     }
 
     public function delete(int $id): bool
