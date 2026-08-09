@@ -1,0 +1,1185 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="OWASP Top 10:2025 — десять наиболее критичных рисков безопасности веб-приложений">
+      
+      
+      
+        <link rel="canonical" href="https://owasp.org/Top10/2025/A03_2025-Software_Supply_Chain_Failures/">
+      
+      
+        <link rel="prev" href="../A02_2025-Security_Misconfiguration/">
+      
+      
+        <link rel="next" href="../A04_2025-Cryptographic_Failures/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>A03 Уязвимости цепочки поставок ПО - OWASP Top 10:2025</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#a032025-уязвимости-цепочки-поставок-программного-обеспечения" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="OWASP Top 10:2025" class="md-header__button md-logo" aria-label="OWASP Top 10:2025" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo_Transp.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Top 10:2025
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              A03 Уязвимости цепочки поставок ПО
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/Top10" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/Top10
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="OWASP Top 10:2025" class="md-nav__button md-logo" aria-label="OWASP Top 10:2025" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo_Transp.png" alt="logo">
+
+    </a>
+    OWASP Top 10:2025
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/Top10" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/Top10
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0x00_2025-Introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Введение
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0x01_2025-About_OWASP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Об OWASP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0x02_2025-What_are_Application_Security_Risks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Что такое риски безопасности приложений?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0x03_2025-Establishing_a_Modern_Application_Security_Program/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Создание современной программы безопасности приложений
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Список Top 10:2025
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Список Top 10:2025
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A01_2025-Broken_Access_Control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A01 Нарушение контроля доступа
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A02_2025-Security_Misconfiguration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A02 Небезопасная конфигурация
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A03 Уязвимости цепочки поставок ПО
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A03 Уязвимости цепочки поставок ПО
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#общие-сведения" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Общие сведения.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#таблица-оценок" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Таблица оценок.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#описание" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Описание.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#как-предотвратить" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как предотвратить.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#примеры-сценариев-атак" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примеры сценариев атак.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ссылки" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ссылки
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#список-связанных-cwe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список связанных CWE
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A04_2025-Cryptographic_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A04 Криптографические сбои
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A05_2025-Injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A05 Инъекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A06_2025-Insecure_Design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A06 Небезопасное проектирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A07_2025-Authentication_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A07 Сбои аутентификации
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A08_2025-Software_or_Data_Integrity_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A08 Нарушение целостности ПО или данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A09_2025-Security_Logging_and_Alerting_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A09 Сбои журналирования и оповещения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A10_2025-Mishandling_of_Exceptional_Conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A10 Некорректная обработка исключительных ситуаций
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../X01_2025-Next_Steps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дальнейшие шаги
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#общие-сведения" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Общие сведения.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#таблица-оценок" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Таблица оценок.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#описание" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Описание.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#как-предотвратить" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как предотвратить.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#примеры-сценариев-атак" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примеры сценариев атак.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ссылки" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ссылки
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#список-связанных-cwe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список связанных CWE
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="a032025-уязвимости-цепочки-поставок-программного-обеспечения">A03:2025 Уязвимости цепочки поставок программного обеспечения <img align="right" alt="icon" src="../assets/TOP_10_Icons_Final_Vulnerable_Outdated_Components.png" style="height:80px;width:80px" /></h1>
+<h2 id="общие-сведения">Общие сведения.</h2>
+<p>Эта категория заняла первое место в опросе сообщества Top 10: ровно 50% респондентов поставили её на #1. С момента первого появления в Top 10 2013 года как «A9 — Использование компонентов с известными уязвимостями» риск расширился до охвата всех сбоев цепочки поставок, а не только связанных с известными уязвимостями. Несмотря на расширенный охват, сбои цепочки поставок по-прежнему сложно идентифицировать: только 11 CVE имеют связанные CWE. Однако в предоставленных данных эта категория имеет наибольшую среднюю частоту встречаемости — 5,19%. Соответствующие CWE: <em>CWE-477: Использование устаревшей функции, CWE-1104: Использование неподдерживаемых сторонних компонентов</em>, <em>CWE-1329: Зависимость от компонента, который не может быть обновлён</em>, и <em>CWE-1395: Зависимость от уязвимого стороннего компонента</em>.</p>
+<h2 id="таблица-оценок">Таблица оценок.</h2>
+<table>
+  <tr>
+   <td>Число CWE
+   </td>
+   <td>Макс. частота встречаемости
+   </td>
+   <td>Ср. частота встречаемости
+   </td>
+   <td>Макс. охват
+   </td>
+   <td>Ср. охват
+   </td>
+   <td>Ср. взвешенная эксплуатируемость
+   </td>
+   <td>Ср. взвешенное воздействие
+   </td>
+   <td>Общее число встречаемостей
+   </td>
+   <td>Общее число CVE
+   </td>
+  </tr>
+  <tr>
+   <td>6
+   </td>
+   <td>9,56%
+   </td>
+   <td>5,72%
+   </td>
+   <td>65,42%
+   </td>
+   <td>27,47%
+   </td>
+   <td>8,17
+   </td>
+   <td>5,23
+   </td>
+   <td>215 248
+   </td>
+   <td>11
+   </td>
+  </tr>
+</table>
+
+<h2 id="описание">Описание.</h2>
+<p>Сбои в цепочке поставок программного обеспечения — это сбои или иные компрометации в процессе создания, распространения или обновления программного обеспечения. Они часто вызваны уязвимостями или вредоносными изменениями в стороннем коде, инструментах или других зависимостях, на которые опирается система.</p>
+<p>Вы, вероятно, уязвимы, если:</p>
+<ul>
+<li>Вы не ведёте тщательного учёта версий всех используемых компонентов (как на стороне клиента, так и на стороне сервера), включая прямые и транзитивные зависимости.</li>
+<li>Программное обеспечение уязвимо, не поддерживается или устарело: ОС, веб-/серверы приложений, СУБД, приложения, API, компоненты, среды выполнения, библиотеки.</li>
+<li>Вы не проводите регулярное сканирование на уязвимости и не подписаны на бюллетени безопасности для используемых компонентов.</li>
+<li>У вас нет процесса управления изменениями или отслеживания изменений в цепочке поставок, включая IDE, расширения и обновления IDE, изменения в репозитории кода, sandbox-среды, репозитории образов и библиотек, способы создания и хранения артефактов и т.д. Каждая часть цепочки поставок должна быть задокументирована, особенно изменения.</li>
+<li>Вы не усилили каждую часть цепочки поставок, уделяя особое внимание контролю доступа и принципу наименьших привилегий.</li>
+<li>В системах вашей цепочки поставок нет разделения обязанностей. Ни один человек не должен иметь возможность написать код и продвинуть его вплоть до производственной среды без контроля со стороны другого человека.</li>
+<li>Компоненты из ненадёжных источников, в любой части технологического стека, используются в производственных средах или могут влиять на них.</li>
+<li>Вы не исправляете и не обновляете базовую платформу, фреймворки и зависимости своевременно на основе оценки рисков. Это часто происходит в средах, где применение патчей — ежемесячная или квартальная задача, что оставляет организации уязвимыми на дни или месяцы до исправления.</li>
+<li>Разработчики не тестируют совместимость обновлённых или пропатченных библиотек.</li>
+<li>Вы не обеспечиваете безопасность конфигурации каждой части системы (см. <a href="https://owasp.org/Top10/2025/A02_2025-Security_Misconfiguration/">A02:2025-Небезопасная конфигурация</a>).</li>
+<li>Ваш CI/CD-конвейер имеет более слабую защиту, чем системы, которые он собирает и разворачивает, особенно если он сложный.</li>
+</ul>
+<h2 id="как-предотвратить">Как предотвратить.</h2>
+<p>Необходимо наладить процесс управления патчами:</p>
+<ul>
+<li>Централизованно генерировать и управлять Software Bill of Materials (SBOM) для всего вашего программного обеспечения.</li>
+<li>Отслеживать не только прямые зависимости, но и их транзитивные зависимости, и далее по цепочке.</li>
+<li>Сокращать поверхность атаки за счёт удаления неиспользуемых зависимостей, ненужных функций, компонентов, файлов и документации.</li>
+<li>Непрерывно вести инвентарь версий клиентских и серверных компонентов (фреймворков, библиотек) и их зависимостей с помощью инструментов, таких как OWASP Dependency Track, OWASP Dependency Check, retire.js и т.д.</li>
+<li>Непрерывно отслеживать источники, такие как CVE, NVD и <a href="https://osv.dev/">Open Source Vulnerabilities (OSV)</a>, для выявления уязвимостей в используемых компонентах. Использовать инструменты анализа состава ПО, безопасности цепочки поставок или SBOM-инструменты для автоматизации процесса. Подписывайтесь на уведомления об уязвимостях для используемых компонентов.</li>
+<li>Получать компоненты только из официальных (надёжных) источников по защищённым каналам. Предпочитать подписанные пакеты для снижения риска включения изменённого вредоносного компонента (см. <a href="https://owasp.org/Top10/2025/A08_2025-Software_or_Data_Integrity_Failures/">A08:2025-Нарушение целостности ПО и данных</a>).</li>
+<li>Сознательно выбирать версию используемой зависимости и обновлять её только при необходимости.</li>
+<li>Отслеживать библиотеки и компоненты, которые больше не поддерживаются или не выпускают патчи безопасности для старых версий. При невозможности применения патча рассмотрите переход на альтернативу или виртуальный патч для мониторинга, обнаружения или защиты.</li>
+<li>Регулярно обновляйте CI/CD, IDE и другие инструменты разработчиков.</li>
+<li>Избегайте одновременного развёртывания обновлений на всех системах. Используйте поэтапные или канареечные развёртывания для ограничения воздействия в случае компрометации доверенного поставщика.</li>
+</ul>
+<p>Необходимо наладить процесс управления изменениями для отслеживания изменений в:</p>
+<ul>
+<li>Настройках CI/CD (все инструменты сборки и конвейеры)</li>
+<li>Репозиториях кода</li>
+<li>Sandbox-областях</li>
+<li>IDE разработчиков</li>
+<li>Инструментах SBOM и создаваемых артефактах</li>
+<li>Системах журналирования и журналах</li>
+<li>Сторонних интеграциях (например, SaaS)</li>
+<li>Репозиториях артефактов</li>
+<li>Реестрах контейнеров</li>
+</ul>
+<p>Усилите следующие системы, включив MFA и ограничив IAM:</p>
+<ul>
+<li>Репозиторий кода (не допускайте попадания секретов, защищайте ветки, создавайте резервные копии)</li>
+<li>Рабочие станции разработчиков (регулярное применение патчей, MFA, мониторинг и др.)</li>
+<li>Сервер сборки и CI/CD (разделение обязанностей, контроль доступа, подписанные сборки, секреты с ограниченным областью применения, журналы с защитой от фальсификации и др.)</li>
+<li>Артефакты (обеспечьте целостность через провенанс, подписание и временны́е метки, продвигайте артефакты вместо пересборки для каждой среды, следите за неизменяемостью сборок)</li>
+<li>Инфраструктура как код (управляется как весь код, включая использование PR и контроля версий)</li>
+</ul>
+<p>Каждая организация должна обеспечить непрерывный план мониторинга, сортировки и применения обновлений или изменений конфигурации на протяжении всего жизненного цикла приложения или портфеля.</p>
+<h2 id="примеры-сценариев-атак">Примеры сценариев атак.</h2>
+<p><strong>Сценарий №1:</strong> Доверенный поставщик скомпрометирован вредоносным ПО, что приводит к компрометации ваших компьютерных систем при обновлении. Наиболее известный пример:</p>
+<ul>
+<li>Компрометация SolarWinds в 2019 году, повлёкшая компрометацию ~18 000 организаций. <a href="https://www.npr.org/2021/04/16/985439655/a-worst-nightmare-cyberattack-the-untold-story-of-the-solarwinds-hack">https://www.npr.org/2021/04/16/985439655/a-worst-nightmare-cyberattack-the-untold-story-of-the-solarwinds-hack</a></li>
+</ul>
+<p><strong>Сценарий №2:</strong> Доверенный поставщик скомпрометирован таким образом, что ведёт себя вредоносно только при определённых условиях.</p>
+<ul>
+<li>Кража криптовалюты на $1,5 млрд у Bybit в 2025 году была вызвана <a href="https://www.sygnia.co/blog/sygnia-investigation-bybit-hack/">атакой на цепочку поставок в программном обеспечении кошелька</a>, которое выполняло вредоносный код только при использовании целевого кошелька.</li>
+</ul>
+<p><strong>Сценарий №3:</strong> <a href="https://www.cisa.gov/news-events/alerts/2025/09/23/widespread-supply-chain-compromise-impacting-npm-ecosystem">Атака на цепочку поставок <code>Shai-Hulud</code></a> в 2025 году стала первым успешным самораспространяющимся npm-червём. Атаки засеяли вредоносные версии популярных пакетов, которые использовали скрипт post-install для сбора и утечки конфиденциальных данных в публичные репозитории GitHub. Вредоносная программа также обнаруживала npm-токены в среде жертвы и автоматически использовала их для публикации вредоносных версий доступных пакетов. Червь охватил более 500 версий пакетов до его нейтрализации.</p>
+<p><strong>Сценарий №4:</strong> Компоненты, как правило, работают с теми же привилегиями, что и само приложение, поэтому уязвимости в любом компоненте могут иметь серьёзные последствия. Примеры эксплуатируемых уязвимостей компонентов:</p>
+<ul>
+<li>CVE-2017-5638 — уязвимость удалённого выполнения кода в Struts 2, позволяющая выполнять произвольный код на сервере.</li>
+<li>CVE-2021-44228 («Log4Shell») — уязвимость нулевого дня в Apache Log4j для удалённого выполнения кода, использовавшаяся в атаках с программами-вымогателями, криптомайнингом и других кампаниях.</li>
+</ul>
+<h2 id="ссылки">Ссылки</h2>
+<ul>
+<li><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP Application Security Verification Standard: V15 Secure Coding and Architecture</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Dependency_Graph_SBOM_Cheat_Sheet.html">OWASP Cheat Sheet Series: Dependency Graph SBOM</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Vulnerable_Dependency_Management_Cheat_Sheet.html">OWASP Cheat Sheet Series: Vulnerable Dependency Management</a></li>
+<li><a href="https://owasp.org/www-project-dependency-track/">OWASP Dependency-Track</a></li>
+<li><a href="https://owasp.org/www-project-cyclonedx/">OWASP CycloneDX</a></li>
+<li><a href="https://owasp-aasvs.readthedocs.io/en/latest/v1.html">OWASP Application Security Verification Standard: V1 Architecture, design and threat modelling</a></li>
+<li><a href="https://owasp.org/www-project-dependency-check/">OWASP Dependency Check (for Java and .NET libraries)</a></li>
+<li>OWASP Testing Guide - Map Application Architecture (OTG-INFO-010)</li>
+<li><a href="https://owasp.org/www-community/Virtual_Patching_Best_Practices">OWASP Virtual Patching Best Practices</a></li>
+<li><a href="https://www.scribd.com/document/105692739/JeffWilliamsPreso-Sm">The Unfortunate Reality of Insecure Libraries</a></li>
+<li><a href="https://www.cve.org">MITRE Common Vulnerabilities and Exposures (CVE) search</a></li>
+<li><a href="https://nvd.nist.gov">National Vulnerability Database (NVD)</a></li>
+<li><a href="https://retirejs.github.io/retire.js/">Retire.js for detecting known vulnerable JavaScript libraries</a></li>
+<li><a href="https://github.com/advisories">GitHub Advisory Database</a></li>
+<li>Ruby Libraries Security Advisory Database and Tools</li>
+<li><a href="https://safecode.org/publication/SAFECode_Software_Integrity_Controls0610.pdf">SAFECode Software Integrity Controls (PDF)</a></li>
+<li><a href="https://thehackernews.com/2025/10/self-spreading-glassworm-infects-vs.html">Glassworm supply chain attack</a></li>
+<li><a href="https://thehackernews.com/2025/10/phantomraven-malware-found-in-126-npm.html">PhantomRaven supply chain attack campaign</a></li>
+</ul>
+<h2 id="список-связанных-cwe">Список связанных CWE</h2>
+<ul>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/447.html">CWE-447 Use of Obsolete Function</a></p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/1035.html">CWE-1035 2017 Top 10 A9: Using Components with Known Vulnerabilities</a></p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/1104.html">CWE-1104 Use of Unmaintained Third Party Components</a></p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/1329.html">CWE-1329 Reliance on Component That is Not Updateable</a></p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/1357.html">CWE-1357 Reliance on Insufficiently Trustworthy Component</a></p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/1395.html">CWE-1395 Dependency on Vulnerable Third-Party Component</a></p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © Copyright 2021-2025 - OWASP Top 10 Team - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.instant", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

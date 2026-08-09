@@ -1,0 +1,910 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="OWASP Top 10:2025 — десять наиболее критичных рисков безопасности веб-приложений">
+      
+      
+      
+        <link rel="canonical" href="https://owasp.org/Top10/2025/0x00_2025-Introduction/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../0x01_2025-About_OWASP/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Введение - OWASP Top 10:2025</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#десять-наиболее-критичных-рисков-безопасности-веб-приложений" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="OWASP Top 10:2025" class="md-header__button md-logo" aria-label="OWASP Top 10:2025" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo_Transp.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Top 10:2025
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Введение
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/Top10" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/Top10
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="OWASP Top 10:2025" class="md-nav__button md-logo" aria-label="OWASP Top 10:2025" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo_Transp.png" alt="logo">
+
+    </a>
+    OWASP Top 10:2025
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/Top10" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/Top10
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Введение
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0x01_2025-About_OWASP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Об OWASP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0x02_2025-What_are_Application_Security_Risks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Что такое риски безопасности приложений?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0x03_2025-Establishing_a_Modern_Application_Security_Program/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Создание современной программы безопасности приложений
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Список Top 10:2025
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Список Top 10:2025
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A01_2025-Broken_Access_Control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A01 Нарушение контроля доступа
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A02_2025-Security_Misconfiguration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A02 Небезопасная конфигурация
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A03_2025-Software_Supply_Chain_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A03 Уязвимости цепочки поставок ПО
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A04_2025-Cryptographic_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A04 Криптографические сбои
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A05_2025-Injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A05 Инъекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A06_2025-Insecure_Design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A06 Небезопасное проектирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A07_2025-Authentication_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A07 Сбои аутентификации
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A08_2025-Software_or_Data_Integrity_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A08 Нарушение целостности ПО или данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A09_2025-Security_Logging_and_Alerting_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A09 Сбои журналирования и оповещения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A10_2025-Mishandling_of_Exceptional_Conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A10 Некорректная обработка исключительных ситуаций
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../X01_2025-Next_Steps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дальнейшие шаги
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p><img alt="OWASP Logo" src="../assets/TOP_10_logo_Final_Logo_Colour.png" /></p>
+<h1 id="десять-наиболее-критичных-рисков-безопасности-веб-приложений">Десять наиболее критичных рисков безопасности веб-приложений</h1>
+<h1 id="введение">Введение</h1>
+<p>Добро пожаловать в 8-й выпуск OWASP Top Ten!</p>
+<p>Огромная благодарность всем, кто предоставил данные и поделился своими мыслями в опросе. Без вас этот выпуск был бы невозможен. <strong>СПАСИБО!</strong></p>
+<h2 id="представляем-owasp-top-102025">Представляем OWASP Top 10:2025</h2>
+<ul>
+<li><a href="../A01_2025-Broken_Access_Control/">A01:2025 - Нарушение контроля доступа</a></li>
+<li><a href="../A02_2025-Security_Misconfiguration/">A02:2025 - Небезопасная конфигурация</a></li>
+<li><a href="../A03_2025-Software_Supply_Chain_Failures/">A03:2025 - Уязвимости цепочки поставок программного обеспечения</a></li>
+<li><a href="../A04_2025-Cryptographic_Failures/">A04:2025 - Криптографические сбои</a></li>
+<li><a href="../A05_2025-Injection/">A05:2025 - Инъекции</a></li>
+<li><a href="../A06_2025-Insecure_Design/">A06:2025 - Небезопасное проектирование</a></li>
+<li><a href="../A07_2025-Authentication_Failures/">A07:2025 - Сбои аутентификации</a></li>
+<li><a href="../A08_2025-Software_or_Data_Integrity_Failures/">A08:2025 - Нарушение целостности программного обеспечения или данных</a></li>
+<li><a href="../A09_2025-Security_Logging_and_Alerting_Failures/">A09:2025 - Сбои журналирования и оповещения</a></li>
+<li><a href="../A10_2025-Mishandling_of_Exceptional_Conditions/">A10:2025 - Некорректная обработка исключительных ситуаций</a></li>
+</ul>
+<h2 id="что-изменилось-в-top-10-за-2025-год">Что изменилось в Top 10 за 2025 год</h2>
+<p>В Top Ten 2025 появились две новые категории и произошло одно объединение. Мы старались по возможности фокусироваться на первопричинах, а не на симптомах. С учётом сложности разработки программного обеспечения и обеспечения его безопасности создать десять категорий без определённого пересечения практически невозможно.</p>
+<p><img alt="Схема соответствия" src="../assets/2025-mappings.png" /></p>
+<ul>
+<li><strong><a href="../A01_2025-Broken_Access_Control/">A01:2025 - Нарушение контроля доступа</a></strong> сохраняет первое место как наиболее серьёзный риск безопасности приложений; предоставленные данные показывают, что в среднем 3,73% протестированных приложений содержат одно или несколько из 40 CWE этой категории. Как показано пунктирной линией на рисунке выше, Server-Side Request Forgery (SSRF) теперь включён в эту категорию.</li>
+<li><strong><a href="../A02_2025-Security_Misconfiguration/">A02:2025 - Небезопасная конфигурация</a></strong> поднялась с 5-го места в 2021 году на 2-е в 2025. Ошибки конфигурации встречаются в данных этого цикла чаще. 3,00% протестированных приложений имели одно или несколько из 16 CWE этой категории. Это неудивительно, поскольку всё больше поведения приложений определяется настройками конфигурации.</li>
+<li><strong><a href="../A03_2025-Software_Supply_Chain_Failures/">A03:2025 - Уязвимости цепочки поставок программного обеспечения</a></strong> — расширение <a href="https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/">A06:2021 — Уязвимые и устаревшие компоненты</a> с более широким охватом компрометаций, происходящих внутри или в рамках всей экосистемы зависимостей программного обеспечения, систем сборки и инфраструктуры распространения. Эта категория была признана главной проблемой в опросе сообщества. Категория содержит 5 CWE и ограниченно представлена в собранных данных, однако мы считаем это следствием сложности тестирования. По частоте встречаемости в данных она наименьшая, зато имеет наивысшие средние оценки эксплуатируемости и воздействия по CVE.</li>
+<li><strong><a href="../A04_2025-Cryptographic_Failures/">A04:2025 - Криптографические сбои</a></strong> опустились на две позиции — с 2-го на 4-е место. Данные показывают, что в среднем 3,80% приложений имеют одно или несколько из 32 CWE этой категории. Данная категория нередко ведёт к раскрытию конфиденциальных данных или компрометации системы.</li>
+<li><strong><a href="../A05_2025-Injection/">A05:2025 - Инъекции</a></strong> опустились на две позиции — с 3-го на 5-е место, сохраняя своё положение относительно криптографических сбоев и небезопасного проектирования. Инъекции — одна из наиболее тестируемых категорий с наибольшим числом CVE среди 38 CWE. Диапазон охватывает Cross-site Scripting (высокая частота/низкое воздействие) и SQL-инъекции (низкая частота/высокое воздействие).</li>
+<li><strong><a href="../A06_2025-Insecure_Design/">A06:2025 - Небезопасное проектирование</a></strong> сместилось на две позиции — с 4-го на 6-е место, уступив место небезопасной конфигурации и уязвимостям цепочки поставок. Категория введена в 2021 году, и с тех пор мы наблюдаем заметное улучшение в отрасли в части моделирования угроз и акцента на безопасном проектировании.</li>
+<li><strong><a href="../A07_2025-Authentication_Failures/">A07:2025 - Сбои аутентификации</a></strong> сохраняет 7-е место с небольшим изменением названия (ранее «<a href="https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/">Сбои идентификации и аутентификации</a>»), точнее отражающим 36 CWE этой категории. Категория остаётся важной, однако возросшее использование стандартизированных фреймворков аутентификации, по всей видимости, снижает частоту сбоев.</li>
+<li><strong><a href="../A08_2025-Software_or_Data_Integrity_Failures/">A08:2025 - Нарушение целостности программного обеспечения или данных</a></strong> остаётся на 8-м месте. Категория сосредоточена на несоблюдении границ доверия и проверки целостности программного обеспечения, кода и артефактов данных на более низком уровне, чем уязвимости цепочки поставок.</li>
+<li><strong><a href="../A09_2025-Security_Logging_and_Alerting_Failures/">A09:2025 - Сбои журналирования и оповещения</a></strong> сохраняет 9-е место. Название немного изменено (ранее «<a href="https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/">Сбои журналирования и мониторинга безопасности</a>») для акцента на важности функции оповещения, необходимой для своевременного реагирования на значимые события в журналах. Хорошее журналирование без оповещений имеет минимальную ценность для выявления инцидентов. Эта категория всегда будет недостаточно представлена в данных и вновь включена в список по результатам опроса сообщества.</li>
+<li><strong><a href="../A10_2025-Mishandling_of_Exceptional_Conditions/">A10:2025 - Некорректная обработка исключительных ситуаций</a></strong> — новая категория 2025 года. Она содержит 24 CWE и охватывает ненадлежащую обработку ошибок, логические ошибки, небезопасные состояния сбоя и другие связанные сценарии, возникающие при нештатных условиях.</li>
+</ul>
+<h2 id="методология">Методология</h2>
+<p>Данный выпуск Top Ten по-прежнему основан на данных, но не слепо ими управляется. Мы ранжировали 12 категорий по предоставленным данным и позволили двум категориям попасть в список по результатам опроса сообщества. Причина проста: анализ предоставленных данных — это взгляд в прошлое. Исследователи безопасности тратят время на выявление новых уязвимостей и разработку методов тестирования. Интеграция этих тестов в инструменты и процессы занимает от нескольких недель до лет. К тому моменту, когда мы можем надёжно тестировать уязвимость в масштабе, может пройти несколько лет. Существуют также важные риски, которые мы, возможно, никогда не сможем надёжно протестировать и отразить в данных. Для балансировки мы используем опрос сообщества, спрашивая практикующих специалистов по безопасности и разработке, что они считают существенными рисками, недостаточно представленными в тестовых данных.</p>
+<h2 id="как-устроены-категории">Как устроены категории</h2>
+<p>Несколько категорий изменились по сравнению с предыдущим выпуском OWASP Top Ten. Ниже — краткое изложение изменений структуры категорий.</p>
+<p>В этой итерации мы запрашивали данные без ограничений по CWE, как это было в выпуске 2021 года. Мы запрашивали количество протестированных приложений за заданный год (начиная с 2021) и количество приложений, в которых при тестировании был обнаружен хотя бы один экземпляр CWE. Такой формат позволяет отслеживать распространённость каждого CWE в популяции приложений. Мы не учитываем частоту: имеет ли приложение четыре экземпляра CWE или 4000 — не важно для расчёта Top Ten. Особенно это актуально, поскольку ручные тестировщики склонны фиксировать уязвимость один раз вне зависимости от числа её проявлений, тогда как автоматизированные системы регистрируют каждый экземпляр отдельно. Число анализируемых CWE возросло с примерно 30 в 2017 году до почти 400 в 2021-м и до 589 в данном выпуске. В дальнейшем мы планируем дополнительный анализ данных. Значительное увеличение числа CWE потребовало изменений в структуре категорий.</p>
+<p>Мы потратили несколько месяцев на группировку и классификацию CWE — и могли бы продолжать ещё месяцами. В CWE существуют типы первопричин и симптомов: первопричины — это, например, «Криптографические сбои» и «Ошибки конфигурации», а симптомы — «Раскрытие конфиденциальных данных» и «Отказ в обслуживании». Мы приняли решение фокусироваться на первопричинах, поскольку это логичнее для руководства по выявлению и устранению. В среднем категория содержит 25 CWE — от минимума в 5 CWE для A03:2025 и A09:2025 до 40 CWE для A01:2025. Мы ограничили количество CWE в категории 40. Обновлённая структура категорий даёт дополнительные преимущества для обучения, позволяя компаниям сосредоточиться на CWE, актуальных для их языка/фреймворка.</p>
+<p>Нас спрашивали, почему бы не перейти к списку из 10 CWE, как в MITRE Top 25. Основных причин две. Во-первых, не все CWE существуют во всех языках программирования или фреймворках, что создаёт проблемы для инструментов и обучения. Во-вторых, для распространённых уязвимостей существует несколько CWE. В этом выпуске Top Ten 2025 представлено 248 CWE в 10 категориях. Всего в <a href="https://cwe.mitre.org">словаре MITRE</a> на момент выпуска насчитывается 968 CWE.</p>
+<h2 id="как-данные-используются-для-выбора-категорий">Как данные используются для выбора категорий</h2>
+<p>Аналогично выпуску 2021 года, мы использовали данные CVE для оценки <em>эксплуатируемости</em> и <em>(технического) воздействия</em>. Мы извлекли оценки CVSS Exploit и Impact из OWASP Dependency Check, сгруппировав их по соответствующим CWE. Все CVE имеют оценки CVSSv2, однако CVSSv2 имеет недостатки, которые должен исправить CVSSv3. Начиная с определённого момента все CVE также получают оценку CVSSv3. Кроме того, диапазоны оценок и формулы были обновлены между CVSSv2 и CVSSv3.</p>
+<p>В CVSSv2 и Exploit, и (Technical) Impact могли достигать 10,0, но формула снижала их до 60% для Exploit и 40% для Impact. В CVSSv3 теоретический максимум ограничен 6,0 для Exploit и 4,0 для Impact. С учётом весовых коэффициентов оценка Impact в CVSSv3 в среднем выросла почти на полтора балла, а эксплуатируемость снизилась примерно на полбалла.</p>
+<p>В Национальной базе данных уязвимостей (NVD), извлечённой из OWASP Dependency Check, содержится около 175 тыс. записей CVE, сопоставленных с CWE (против 125 тыс. в 2021 году). Дополнительно 643 уникальных CWE сопоставлены с CVE (против 241 в 2021 году). Из почти 220 тыс. извлечённых CVE: 160 тыс. имеют оценки CVSS v2, 156 тыс. — CVSS v3, 6 тыс. — CVSS v4.</p>
+<p>Для Top Ten 2025 средние оценки эксплуатируемости и воздействия рассчитывались следующим образом: все CVE с оценками CVSS группировались по CWE, затем оценки взвешивались по доле популяции с CVSSv3 и оставшейся части с CVSSv2. Эти средние значения сопоставлены с CWE в наборе данных для расчёта Exploit и (Technical) Impact.</p>
+<p>Почему не используется CVSS v4.0? Потому что алгоритм оценки был принципиально изменён и больше не предоставляет оценки <em>Exploit</em> и <em>Impact</em> так же удобно, как CVSSv2 и CVSSv3. Мы постараемся найти способ использовать CVSS v4.0 в будущих версиях Top Ten, но для выпуска 2025 года это сделать своевременно не удалось.</p>
+<h2 id="зачем-мы-используем-опрос-сообщества">Зачем мы используем опрос сообщества</h2>
+<p>Результаты в данных во многом ограничены тем, что отрасль способна тестировать в автоматизированном режиме. Опытный специалист по безопасности приложений расскажет о находках и тенденциях, которых ещё нет в данных. Разработка методологий тестирования для определённых типов уязвимостей, а затем их автоматизация и применение к большим популяциям приложений — дело времени. Всё, что мы находим, — это взгляд в прошлое, и мы можем упустить тренды последнего года.</p>
+<p>Поэтому мы выбираем только восемь из десяти категорий из данных, поскольку они неполны. Оставшиеся две категории определяются опросом сообщества Top 10. Это позволяет практикам проголосовать за то, что они считают наибольшими рисками, которые могут не попасть в данные (и, возможно, никогда там не появятся).</p>
+<h2 id="благодарность-участникам-предоставившим-данные">Благодарность участникам, предоставившим данные</h2>
+<p>Следующие организации (а также несколько анонимных доноров) любезно предоставили данные о более чем 2,8 млн приложений, что делает этот набор данных крупнейшим и наиболее полным в области безопасности приложений. Без вас это было бы невозможно.</p>
+<ul>
+<li>Accenture (Прага)</li>
+<li>Anonymous (несколько организаций)</li>
+<li>Bugcrowd</li>
+<li>Contrast Security</li>
+<li>CryptoNet Labs</li>
+<li>Intuitor SoftTech Services</li>
+<li>Orca Security</li>
+<li>Probely</li>
+<li>Semgrep</li>
+<li>Sonar</li>
+<li>usd AG</li>
+<li>Veracode</li>
+<li>Wallarm</li>
+</ul>
+<h2 id="ведущие-авторы">Ведущие авторы</h2>
+<ul>
+<li>Andrew van der Stock - X: <a href="https://x.com/vanderaj">@vanderaj</a></li>
+<li>Brian Glas - X: <a href="https://x.com/infosecdad">@infosecdad</a></li>
+<li>Neil Smithline - X: <a href="https://x.com/appsecneil">@appsecneil</a></li>
+<li>Tanya Janca - X: <a href="https://x.com/shehackspurple">@shehackspurple</a></li>
+<li>Torsten Gigler - Mastodon: <a href="https://infosec.exchange/@torsten_gigler">@torsten_gigler@infosec.exchange</a></li>
+</ul>
+<h2 id="сообщить-об-ошибках-и-отправить-запросы-на-исправление">Сообщить об ошибках и отправить запросы на исправление</h2>
+<p>Пожалуйста, сообщайте об исправлениях и проблемах:</p>
+<h3 id="ссылки-на-проект">Ссылки на проект:</h3>
+<ul>
+<li><a href="https://owasp.org/www-project-top-ten/">Главная страница</a></li>
+<li><a href="https://github.com/OWASP/Top10">Репозиторий GitHub</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © Copyright 2021-2025 - OWASP Top 10 Team - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.instant", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

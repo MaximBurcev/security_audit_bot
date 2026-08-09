@@ -1,0 +1,1665 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="OWASP Top 10:2025 — десять наиболее критичных рисков безопасности веб-приложений">
+      
+      
+      
+        <link rel="canonical" href="https://owasp.org/Top10/2025/X01_2025-Next_Steps/">
+      
+      
+        <link rel="prev" href="../A10_2025-Mishandling_of_Exceptional_Conditions/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Дальнейшие шаги - OWASP Top 10:2025</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#дальнейшие-шаги" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="OWASP Top 10:2025" class="md-header__button md-logo" aria-label="OWASP Top 10:2025" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo_Transp.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OWASP Top 10:2025
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Дальнейшие шаги
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OWASP/Top10" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/Top10
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="OWASP Top 10:2025" class="md-nav__button md-logo" aria-label="OWASP Top 10:2025" data-md-component="logo">
+      
+  <img src="../assets/OWASP_Logo_Transp.png" alt="logo">
+
+    </a>
+    OWASP Top 10:2025
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OWASP/Top10" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OWASP/Top10
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0x00_2025-Introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Введение
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0x01_2025-About_OWASP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Об OWASP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0x02_2025-What_are_Application_Security_Risks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Что такое риски безопасности приложений?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0x03_2025-Establishing_a_Modern_Application_Security_Program/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Создание современной программы безопасности приложений
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Список Top 10:2025
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Список Top 10:2025
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A01_2025-Broken_Access_Control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A01 Нарушение контроля доступа
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A02_2025-Security_Misconfiguration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A02 Небезопасная конфигурация
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A03_2025-Software_Supply_Chain_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A03 Уязвимости цепочки поставок ПО
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A04_2025-Cryptographic_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A04 Криптографические сбои
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A05_2025-Injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A05 Инъекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A06_2025-Insecure_Design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A06 Небезопасное проектирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A07_2025-Authentication_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A07 Сбои аутентификации
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A08_2025-Software_or_Data_Integrity_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A08 Нарушение целостности ПО или данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A09_2025-Security_Logging_and_Alerting_Failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A09 Сбои журналирования и оповещения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A10_2025-Mishandling_of_Exceptional_Conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A10 Некорректная обработка исключительных ситуаций
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дальнейшие шаги
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дальнейшие шаги
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#x012025-недостаточная-устойчивость-приложений" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        X01:2025 Недостаточная устойчивость приложений
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="X01:2025 Недостаточная устойчивость приложений">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#общие-сведения" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Общие сведения.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#таблица-оценок" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Таблица оценок.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#описание" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Описание.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#как-предотвратить" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как предотвратить
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#примеры-сценариев-атак" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примеры сценариев атак.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ссылки" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ссылки.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#список-связанных-cwe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список связанных CWE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#x022025-сбои-управления-памятью" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        X02:2025 Сбои управления памятью
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="X02:2025 Сбои управления памятью">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#общие-сведения_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Общие сведения.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#таблица-оценок_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Таблица оценок.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#описание_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Описание.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#как-предотвратить_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как предотвратить.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#примеры-сценариев-атак_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примеры сценариев атак.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ссылки_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ссылки.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#список-связанных-cwe_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список связанных CWE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#x032025-неуместное-доверие-к-коду-сгенерированному-ии-вайб-кодинг" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        X03:2025 Неуместное доверие к коду, сгенерированному ИИ («Вайб-кодинг»)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="X03:2025 Неуместное доверие к коду, сгенерированному ИИ («Вайб-кодинг»)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#общие-сведения_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Общие сведения.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#описание_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Описание.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#как-предотвратить_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как предотвратить.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ссылки_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ссылки.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#список-связанных-cwe_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список связанных CWE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#x012025-недостаточная-устойчивость-приложений" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        X01:2025 Недостаточная устойчивость приложений
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="X01:2025 Недостаточная устойчивость приложений">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#общие-сведения" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Общие сведения.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#таблица-оценок" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Таблица оценок.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#описание" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Описание.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#как-предотвратить" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как предотвратить
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#примеры-сценариев-атак" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примеры сценариев атак.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ссылки" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ссылки.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#список-связанных-cwe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список связанных CWE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#x022025-сбои-управления-памятью" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        X02:2025 Сбои управления памятью
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="X02:2025 Сбои управления памятью">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#общие-сведения_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Общие сведения.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#таблица-оценок_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Таблица оценок.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#описание_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Описание.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#как-предотвратить_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как предотвратить.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#примеры-сценариев-атак_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примеры сценариев атак.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ссылки_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ссылки.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#список-связанных-cwe_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список связанных CWE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#x032025-неуместное-доверие-к-коду-сгенерированному-ии-вайб-кодинг" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        X03:2025 Неуместное доверие к коду, сгенерированному ИИ («Вайб-кодинг»)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="X03:2025 Неуместное доверие к коду, сгенерированному ИИ («Вайб-кодинг»)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#общие-сведения_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Общие сведения.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#описание_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Описание.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#как-предотвратить_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как предотвратить.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ссылки_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ссылки.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#список-связанных-cwe_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список связанных CWE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="дальнейшие-шаги">Дальнейшие шаги</h1>
+<p>По своей природе OWASP Top 10 ограничен десятью наиболее значимыми рисками. Каждый выпуск OWASP Top 10 содержит риски «на грани», которые долго рассматривались для включения, но в итоге не попали в список. Другие риски оказались более распространёнными и значимыми.</p>
+<p>Следующие два вопроса заслуживают усилий по идентификации и устранению — как для организаций, развивающих зрелую программу AppSec, так и для консультантов по безопасности или поставщиков инструментов, желающих расширить охват своих предложений.</p>
+<h2 id="x012025-недостаточная-устойчивость-приложений">X01:2025 Недостаточная устойчивость приложений</h2>
+<h3 id="общие-сведения">Общие сведения.</h3>
+<p>Это переименование категории «Отказ в обслуживании» из 2021 года. Переименование обусловлено тем, что прежнее название описывало симптом, а не первопричину. Данная категория охватывает CWE, описывающие уязвимости, связанные с проблемами устойчивости. Оценка данной категории была очень близка к A10:2025-Некорректная обработка исключительных ситуаций. Соответствующие CWE: <em>CWE-400 Неконтролируемое потребление ресурсов, CWE-409 Ненадлежащая обработка сильно сжатых данных (усиление данных), CWE-674 Неконтролируемая рекурсия</em> и <em>CWE-835 Цикл с недостижимым условием выхода ('Бесконечный цикл').</em></p>
+<h3 id="таблица-оценок">Таблица оценок.</h3>
+<table>
+  <tr>
+   <td>Число CWE
+   </td>
+   <td>Макс. частота встречаемости
+   </td>
+   <td>Ср. частота встречаемости
+   </td>
+   <td>Макс. охват
+   </td>
+   <td>Ср. охват
+   </td>
+   <td>Ср. взвешенная эксплуатируемость
+   </td>
+   <td>Ср. взвешенное воздействие
+   </td>
+   <td>Общее число встречаемостей
+   </td>
+   <td>Общее число CVE
+   </td>
+  </tr>
+  <tr>
+   <td>16
+   </td>
+   <td>20,05%
+   </td>
+   <td>4,55%
+   </td>
+   <td>86,01%
+   </td>
+   <td>41,47%
+   </td>
+   <td>7,92
+   </td>
+   <td>3,49
+   </td>
+   <td>865 066
+   </td>
+   <td>4 423
+   </td>
+  </tr>
+</table>
+
+<h3 id="описание">Описание.</h3>
+<p>Данная категория представляет системную уязвимость в том, как приложения реагируют на нагрузку, сбои и граничные случаи, из которых оно не может восстановиться. Когда приложение не обрабатывает корректно, не выдерживает или не восстанавливается после неожиданных условий, ограничений ресурсов и других неблагоприятных событий, это легко приводит к проблемам доступности (наиболее распространённым), а также к повреждению данных, раскрытию конфиденциальных данных, каскадным сбоям и/или обходу средств контроля безопасности.</p>
+<p>Кроме того, <a href="#x022025-сбои-управления-памятью">X02:2025 Сбои управления памятью</a> также могут привести к сбою приложения или всей системы.</p>
+<h3 id="как-предотвратить">Как предотвратить</h3>
+<p>Для предотвращения этого типа уязвимостей необходимо проектировать системы с учётом возможности сбоев и восстановления.</p>
+<ul>
+<li>Добавляйте ограничения, квоты и функциональность аварийного переключения, уделяя особое внимание наиболее ресурсоёмким операциям.</li>
+<li>Идентифицируйте ресурсоёмкие страницы и планируйте заранее: сокращайте поверхность атаки, не открывая доступ для неизвестных или ненадёжных пользователей к ненужным «гаджетам» и функциям, требующим большого количества ресурсов (ЦП, памяти).</li>
+<li>Выполняйте строгую проверку входных данных с использованием списков разрешённых значений и ограничений размера, затем тщательно тестируйте.</li>
+<li>Ограничивайте размеры ответов и никогда не отправляйте клиенту необработанные ответы (обрабатывайте на стороне сервера).</li>
+<li>Устанавливайте безопасное/закрытое состояние по умолчанию (никогда открытое), отказывайте по умолчанию и выполняйте откат при ошибке.</li>
+<li>Избегайте блокирующих синхронных вызовов в потоках запросов (используйте асинхронные/неблокирующие подходы, устанавливайте таймауты, ограничения конкурентности и т.д.).</li>
+<li>Тщательно тестируйте функциональность обработки ошибок.</li>
+<li>Реализуйте паттерны устойчивости: автоматические выключатели (circuit breakers), переборки (bulkheads), логику повторных попыток и корректную деградацию.</li>
+<li>Проводите производительное и нагрузочное тестирование; добавьте хаос-инжиниринг, если готовы к такому риску.</li>
+<li>Реализуйте и проектируйте избыточность там, где это разумно и доступно.</li>
+<li>Реализуйте мониторинг, наблюдаемость и оповещение.</li>
+<li>Фильтруйте недопустимые адреса отправителей в соответствии с RFC 2267.</li>
+<li>Блокируйте известные ботнеты по отпечаткам, IP-адресам или динамически по поведению.</li>
+<li>Доказательство работы (Proof-of-Work): инициируйте ресурсоёмкие операции на стороне <em>злоумышленника</em>, которые не оказывают большого влияния на обычных пользователей, но влияют на ботов, пытающихся отправлять огромное количество запросов. Усложняйте Proof-of-Work при повышении общей нагрузки на систему, особенно для менее доверенных систем или кажущихся ботами.</li>
+<li>Ограничивайте время серверной сессии на основе бездействия и финального таймаута.</li>
+<li>Ограничивайте хранилище информации, привязанной к сессии.</li>
+</ul>
+<h3 id="примеры-сценариев-атак">Примеры сценариев атак.</h3>
+<p><strong>Сценарий №1:</strong> Злоумышленники намеренно потребляют ресурсы приложения для провокации сбоев в системе, что приводит к отказу в обслуживании. Это может быть исчерпание памяти, заполнение дискового пространства, насыщение ЦП или открытие бесконечных соединений.</p>
+<p><strong>Сценарий №2:</strong> Фаззинг входных данных, приводящий к сформированным ответам, нарушающим бизнес-логику приложения.</p>
+<p><strong>Сценарий №3:</strong> Злоумышленники атакуют зависимости приложения, выводя из строя API или другие внешние сервисы, и приложение не может продолжать работу.</p>
+<h3 id="ссылки">Ссылки.</h3>
+<ul>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html">OWASP Cheat Sheet: Denial of Service</a></li>
+<li><a href="https://mas.owasp.org/MASVS/11-MASVS-RESILIENCE/">OWASP MASVS‑RESILIENCE</a></li>
+<li><a href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/best-practices?view=aspnetcore-9.0">ASP.NET Core Best Practices (Microsoft)</a></li>
+<li><a href="https://medium.com/@parserdigital/resilience-in-microservices-bulkhead-vs-circuit-breaker-54364c1f9d53">Resilience in Microservices: Bulkhead vs Circuit Breaker (Parser)</a></li>
+<li><a href="https://www.geeksforgeeks.org/system-design/bulkhead-pattern/">Bulkhead Pattern (Geeks for Geeks)</a></li>
+<li><a href="https://www.nist.gov/cyberframework">NIST Cybersecurity Framework (CSF)</a></li>
+<li><a href="https://www.devlane.com/blog/avoid-blocking-calls-go-async-in-java">Avoid Blocking Calls: Go Async in Java (Devlane)</a></li>
+</ul>
+<h3 id="список-связанных-cwe">Список связанных CWE</h3>
+<ul>
+<li><a href="https://cwe.mitre.org/data/definitions/73.html">CWE-73  External Control of File Name or Path</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/183.html">CWE-183 Permissive List of Allowed Inputs</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/256.html">CWE-256 Plaintext Storage of a Password</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/266.html">CWE-266 Incorrect Privilege Assignment</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/269.html">CWE-269 Improper Privilege Management</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/286.html">CWE-286 Incorrect User Management</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/311.html">CWE-311 Missing Encryption of Sensitive Data</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/312.html">CWE-312 Cleartext Storage of Sensitive Information</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/313.html">CWE-313 Cleartext Storage in a File or on Disk</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/316.html">CWE-316 Cleartext Storage of Sensitive Information in Memory</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/362.html">CWE-362 Concurrent Execution using Shared Resource with Improper Synchronization ('Race Condition')</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/382.html">CWE-382 J2EE Bad Practices: Use of System.exit()</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/419.html">CWE-419 Unprotected Primary Channel</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/434.html">CWE-434 Unrestricted Upload of File with Dangerous Type</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/436.html">CWE-436 Interpretation Conflict</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/444.html">CWE-444 Inconsistent Interpretation of HTTP Requests ('HTTP Request/Response Smuggling')</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/451.html">CWE-451 User Interface (UI) Misrepresentation of Critical Information</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/454.html">CWE-454 External Initialization of Trusted Variables or Data Stores</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/472.html">CWE-472 External Control of Assumed-Immutable Web Parameter</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/501.html">CWE-501 Trust Boundary Violation</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/522.html">CWE-522 Insufficiently Protected Credentials</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/525.html">CWE-525 Use of Web Browser Cache Containing Sensitive Information</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/539.html">CWE-539 Use of Persistent Cookies Containing Sensitive Information</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/598.html">CWE-598 Use of GET Request Method With Sensitive Query Strings</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/602.html">CWE-602 Client-Side Enforcement of Server-Side Security</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/628.html">CWE-628 Function Call with Incorrectly Specified Arguments</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/642.html">CWE-642 External Control of Critical State Data</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/646.html">CWE-646 Reliance on File Name or Extension of Externally-Supplied File</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/653.html">CWE-653 Improper Isolation or Compartmentalization</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/656.html">CWE-656 Reliance on Security Through Obscurity</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/657.html">CWE-657 Violation of Secure Design Principles</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/676.html">CWE-676 Use of Potentially Dangerous Function</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/693.html">CWE-693 Protection Mechanism Failure</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/799.html">CWE-799 Improper Control of Interaction Frequency</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/807.html">CWE-807 Reliance on Untrusted Inputs in a Security Decision</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/841.html">CWE-841 Improper Enforcement of Behavioral Workflow</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/1021.html">CWE-1021 Improper Restriction of Rendered UI Layers or Frames</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/1022.html">CWE-1022 Use of Web Link to Untrusted Target with window.opener Access</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/1125.html">CWE-1125 Excessive Attack Surface</a></li>
+</ul>
+<h2 id="x022025-сбои-управления-памятью">X02:2025 Сбои управления памятью</h2>
+<h3 id="общие-сведения_1">Общие сведения.</h3>
+<p>Языки Java, C#, JavaScript/TypeScript (node.js), Go и «безопасный» Rust являются памятобезопасными. Проблемы управления памятью, как правило, возникают в непамятобезопасных языках, таких как C и C++. Эта категория получила наименьшую оценку в опросе сообщества и низкую оценку в данных, несмотря на третье место по числу связанных CVE. Мы считаем, что это обусловлено преобладанием веб-приложений над традиционными настольными. Уязвимости управления памятью нередко имеют наибольшие оценки CVSS.</p>
+<h3 id="таблица-оценок_1">Таблица оценок.</h3>
+<table>
+  <tr>
+   <td>Число CWE
+   </td>
+   <td>Макс. частота встречаемости
+   </td>
+   <td>Ср. частота встречаемости
+   </td>
+   <td>Макс. охват
+   </td>
+   <td>Ср. охват
+   </td>
+   <td>Ср. взвешенная эксплуатируемость
+   </td>
+   <td>Ср. взвешенное воздействие
+   </td>
+   <td>Общее число встречаемостей
+   </td>
+   <td>Общее число CVE
+   </td>
+  </tr>
+  <tr>
+   <td>24
+   </td>
+   <td>2,96%
+   </td>
+   <td>1,13%
+   </td>
+   <td>55,62%
+   </td>
+   <td>28,45%
+   </td>
+   <td>6,75
+   </td>
+   <td>4,82
+   </td>
+   <td>220 414
+   </td>
+   <td>30 978
+   </td>
+  </tr>
+</table>
+
+<h3 id="описание_1">Описание.</h3>
+<p>Когда приложение вынуждено самостоятельно управлять памятью, очень легко допустить ошибки. Памятобезопасные языки используются всё чаще, однако по всему миру по-прежнему работает множество устаревших систем, создаются новые низкоуровневые системы, требующие непамятобезопасных языков, а веб-приложения взаимодействуют с мейнфреймами, устройствами IoT, прошивками и другими системами, которые могут быть вынуждены управлять собственной памятью. Типичные CWE: <em>CWE-120 Копирование буфера без проверки размера входных данных ('Классическое переполнение буфера')</em> и <em>CWE-121 Переполнение стекового буфера</em>.</p>
+<p>Сбои управления памятью могут происходить при:</p>
+<ul>
+<li>Недостаточном выделении памяти для переменной.</li>
+<li>Отсутствии проверки входных данных, вызывающей переполнение кучи, стека или буфера.</li>
+<li>Хранении значения данных, превышающего максимум для типа переменной.</li>
+<li>Попытке использования невыделенной памяти или адресных пространств.</li>
+<li>Ошибках «на один» (счёт с 1 вместо 0).</li>
+<li>Попытке доступа к объекту после его освобождения.</li>
+<li>Использовании неинициализированных переменных.</li>
+<li>Утечках памяти или ином исчерпании доступной памяти до сбоя приложения.</li>
+</ul>
+<p>Сбои управления памятью могут привести к сбою приложения или всей системы, см. также <a href="#x012025-недостаточная-устойчивость-приложений">X01:2025 Недостаточная устойчивость приложений</a>.</p>
+<h3 id="как-предотвратить_1">Как предотвратить.</h3>
+<p>Лучший способ предотвращения сбоев управления памятью — использовать памятобезопасный язык. Примеры: Rust, Java, Go, C#, Python, Swift, Kotlin, JavaScript и т.д. При создании новых приложений постарайтесь убедить организацию в том, что кривая обучения оправдывает переход на памятобезопасный язык. При полном рефакторинге добивайтесь переписывания на памятобезопасном языке, когда это возможно и целесообразно.</p>
+<p>Если использование памятобезопасного языка невозможно:</p>
+<ul>
+<li>Включите следующие функции сервера, затрудняющие эксплуатацию ошибок управления памятью: рандомизация адресного пространства (ASLR), защита от выполнения данных (DEP) и защита от перезаписи обработчиков структурированных исключений (SEHOP).</li>
+<li>Отслеживайте утечки памяти в приложении.</li>
+<li>Очень тщательно проверяйте все входные данные системы и отклоняйте всё, что не соответствует ожиданиям.</li>
+<li>Изучите используемый язык и составьте список небезопасных и более безопасных функций, затем поделитесь этим списком со всей командой. По возможности включите его в руководство по безопасному кодированию. Например, в C предпочтительнее strncpy() перед strcpy() и strncat() перед strcat().</li>
+<li>Если язык или фреймворк предлагает библиотеки для безопасной работы с памятью — используйте их. Например: Safestringlib или SafeStr.</li>
+<li>Используйте управляемые буферы и строки вместо сырых массивов и указателей везде, где это возможно.</li>
+<li>Пройдите обучение безопасному кодированию с акцентом на проблемы памяти и/или выбранный язык.</li>
+<li>Выполняйте ревью кода и/или статический анализ.</li>
+<li>Используйте инструменты компилятора для управления памятью, такие как StackShield, StackGuard и Libsafe.</li>
+<li>Проводите фаззинг всех входных данных системы.</li>
+<li>При тестировании на проникновение сообщите тестировщику об обеспокоенности проблемами управления памятью и попросите уделить им особое внимание.</li>
+<li>Исправляйте все ошибки компилятора <em>и</em> предупреждения. Не игнорируйте предупреждения, если программа компилируется.</li>
+<li>Убедитесь, что базовая инфраструктура регулярно обновляется, сканируется и укрепляется.</li>
+<li>Специально мониторируйте базовую инфраструктуру на предмет потенциальных уязвимостей памяти и других сбоев.</li>
+<li>Рассмотрите использование <a href="https://en.wikipedia.org/wiki/Buffer_overflow_protection#Canaries">канареек</a> для защиты стека адресов от атак переполнения.</li>
+</ul>
+<h3 id="примеры-сценариев-атак_1">Примеры сценариев атак.</h3>
+<p><strong>Сценарий №1:</strong> Переполнения буфера — наиболее известная уязвимость памяти: ситуация, когда злоумышленник передаёт в поле больше информации, чем оно может принять, что приводит к переполнению буфера для базовой переменной. При успешной атаке символы переполнения перезаписывают указатель стека, позволяя злоумышленнику вставить вредоносные инструкции в программу.</p>
+<p><strong>Сценарий №2:</strong> Use-After-Free (UAF) встречается достаточно часто, чтобы быть распространённой заявкой в программах bug bounty браузеров. Злоумышленник создаёт JavaScript-нагрузку, управляющую DOM-элементами. Через тщательную манипуляцию он заставляет браузер освободить память объекта, сохраняя при этом висячий указатель. До того как браузер осознаёт освобождение памяти, злоумышленник выделяет новый объект, занимающий <em>то же</em> пространство памяти. Когда браузер пытается использовать исходный указатель, он теперь указывает на данные под управлением злоумышленника. Если этот указатель указывал на таблицу виртуальных функций, злоумышленник может перенаправить выполнение кода на свою нагрузку.</p>
+<p><strong>Сценарий №3:</strong> Сетевой сервис, принимающий пользовательский ввод, не проверяет и не обеззараживает его, а затем передаёт напрямую в функцию журналирования. Ввод пользователя передаётся как syslog(user_input) вместо syslog("%s", user_input), не задавая формат. Злоумышленник отправляет вредоносные нагрузки со спецификаторами формата, такими как %x для чтения памяти стека или %n для записи по адресам памяти. Это уязвимость форматной строки (неконтролируемый формат строки).</p>
+<p>Примечание: современные браузеры используют многоуровневую защиту, включая <a href="https://www.geeksforgeeks.org/ethical-hacking/what-is-browser-sandboxing/#types-of-browser-sandboxing">песочницу браузера</a>, ASLR, DEP/NX, RELRO и PIE. Атака с использованием сбоя управления памятью на браузер — непростая задача.</p>
+<h3 id="ссылки_1">Ссылки.</h3>
+<ul>
+<li><a href="https://owasp.org/www-community/vulnerabilities/Memory_leak">OWASP community pages: Memory leak,</a> <a href="https://owasp.org/www-community/vulnerabilities/Doubly_freeing_memory">Doubly freeing memory,</a> <a href="https://owasp.org/www-community/vulnerabilities/Buffer_Overflow">&amp; Buffer Overflow</a></li>
+<li><a href="https://github.com/secfigo/Awesome-Fuzzing">Awesome Fuzzing: a list of fuzzing resources</a></li>
+<li><a href="https://googleprojectzero.blogspot.com">Project Zero Blog</a></li>
+<li><a href="https://www.microsoft.com/en-us/msrc/blog">Microsoft MSRC Blog</a></li>
+</ul>
+<h3 id="список-связанных-cwe_1">Список связанных CWE</h3>
+<ul>
+<li><a href="https://cwe.mitre.org/data/definitions/14.html">CWE-14 Compiler Removal of Code to Clear Buffers</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/119.html">CWE-119 Improper Restriction of Operations within the Bounds of a Memory Buffer</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/120.html">CWE-120 Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/121.html">CWE-121 Stack-based Buffer Overflow</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/122.html">CWE-122 Heap-based Buffer Overflow</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/124.html">CWE-124 Buffer Underwrite ('Buffer Underflow')</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/125.html">CWE-125 Out-of-bounds Read</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/126.html">CWE-126 Buffer Over-read</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/190.html">CWE-190 Integer Overflow or Wraparound</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/191.html">CWE-191 Integer Underflow (Wrap or Wraparound)</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/196.html">CWE-196 Unsigned to Signed Conversion Error</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/367.html">CWE-367 Time-of-check Time-of-use (TOCTOU) Race Condition</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/415.html">CWE-415 Double Free</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/416.html">CWE-416 Use After Free</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/457.html">CWE-457 Use of Uninitialized Variable</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/459.html">CWE-459 Incomplete Cleanup</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/467.html">CWE-467 Use of sizeof() on a Pointer Type</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/787.html">CWE-787 Out-of-bounds Write</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/788.html">CWE-788 Access of Memory Location After End of Buffer</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/824.html">CWE-824 Access of Uninitialized Pointer</a></li>
+</ul>
+<h2 id="x032025-неуместное-доверие-к-коду-сгенерированному-ии-вайб-кодинг">X03:2025 Неуместное доверие к коду, сгенерированному ИИ («Вайб-кодинг»)</h2>
+<h3 id="общие-сведения_2">Общие сведения.</h3>
+<p>Сейчас весь мир говорит об ИИ и использует его — и разработчики программного обеспечения не исключение. Хотя на сегодняшний день нет CVE или CWE, связанных с кодом, сгенерированным ИИ, хорошо известно и задокументировано, что такой код нередко содержит больше уязвимостей, чем код, написанный людьми.</p>
+<h3 id="описание_2">Описание.</h3>
+<p>Мы наблюдаем изменение практик разработки программного обеспечения: теперь это включает не только код, написанный с помощью ИИ, но и код, созданный и зафиксированный почти без участия человека (нередко называемый «вайб-кодингом»). Подобно тому как никогда не было хорошей идеей копировать фрагменты кода из блогов или сайтов без обдумывания, в данном случае проблема усугубляется. Хорошие и безопасные фрагменты кода всегда были редкостью и могут статистически игнорироваться ИИ из-за системных ограничений.</p>
+<h3 id="как-предотвратить_2">Как предотвратить.</h3>
+<p>Мы настоятельно рекомендуем всем, кто пишет код, учитывать следующее при использовании ИИ:</p>
+<ul>
+<li>Вы должны быть способны читать и полностью понимать весь код, который вы отправляете, даже если он написан ИИ или скопирован с онлайн-форума. Вы несёте ответственность за весь код, который вы коммитите.</li>
+<li>Тщательно проверяйте весь код с помощью ИИ на уязвимости — в идеале своими глазами и с использованием инструментов безопасности, предназначенных для этой цели (например, статического анализа). Рассмотрите использование классических методик ревью кода, описанных в <a href="https://cheatsheetseries.owasp.org/cheatsheets/Secure_Code_Review_Cheat_Sheet.html">OWASP Cheat Sheet Series: Secure Code Review</a>.</li>
+<li>В идеале пишите собственный код, позволяйте ИИ предлагать улучшения, проверяйте код ИИ и позволяйте ИИ вносить исправления до тех пор, пока вы не будете удовлетворены результатом.</li>
+<li>Рассмотрите использование RAG-сервера (Retrieval Augmented Generation) с собственными собранными и проверенными безопасными примерами кода и документацией, такой как руководства, стандарты или политики безопасного кодирования вашей организации, и настройте RAG-сервер на соблюдение политик или стандартов.</li>
+<li>Рассмотрите приобретение инструментов, реализующих ограждения для конфиденциальности и безопасности при использовании выбранного ИИ.</li>
+<li>Рассмотрите приобретение частного ИИ, в идеале с договорным соглашением (включая соглашение о конфиденциальности) о том, что ИИ не будет обучаться на данных, запросах, коде или любой другой конфиденциальной информации вашей организации.</li>
+<li>Рассмотрите внедрение сервера Model Context Protocol (MCP) между IDE и ИИ и настройте его на принудительное использование выбранных инструментов безопасности.</li>
+<li>Реализуйте политики и процессы как часть SDLC для информирования разработчиков (и всех сотрудников) о том, как они должны и не должны использовать ИИ в вашей организации.</li>
+<li>Создайте список эффективных промптов, учитывающих лучшие практики безопасности ИТ. В идеале они должны также учитывать внутренние руководства по безопасному кодированию. Разработчики могут использовать эти промпты как отправную точку для своих программ.</li>
+<li>ИИ, вероятно, станет частью каждой фазы жизненного цикла разработки системы — как с точки зрения эффективного, так и безопасного использования. Используйте его мудро.</li>
+<li>На самом деле <strong><u>не рекомендуется</u></strong> использовать вайб-кодинг для сложных функций, бизнес-критичных программ или программ, используемых длительное время.</li>
+<li>Внедряйте технические проверки и защиту против использования теневого ИИ.</li>
+<li>Обучайте разработчиков своим политикам, а также безопасному использованию ИИ и лучшим практикам применения ИИ в разработке программного обеспечения.</li>
+</ul>
+<h3 id="ссылки_2">Ссылки.</h3>
+<ul>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Secure_Code_Review_Cheat_Sheet.html">OWASP Cheat Sheet: Secure Code Review</a></li>
+</ul>
+<h3 id="список-связанных-cwe_2">Список связанных CWE</h3>
+<p>-нет-</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © Copyright 2021-2025 - OWASP Top 10 Team - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.instant", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
