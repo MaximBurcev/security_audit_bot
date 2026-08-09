@@ -1,0 +1,8 @@
+{
+  "project":{"stack":"laravel","artifacts_root":"docs"},
+  "env":{"setup":"./vendor/bin/sail up -d","run_in":"./vendor/bin/sail"},
+  "verification":{"tests":"./vendor/bin/sail test","lint":"./vendor/bin/sail pint --dirty"},
+  "gates":{"implement":"tests","release":"tests"},
+  "git":{"base_branch":"master"},
+  "tracker":{"system":"none"}
+}
